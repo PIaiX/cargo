@@ -7,6 +7,7 @@ export default function MainPage() {
         <main>
             <section id="sec-1" className="py-5">
                 <div className="container">
+                    
                     <div className="row justify-content-center gx-3">
                         <div className="col-8 col-xxl-7">
                             <div id="slider-1" className="carousel slide" data-bs-ride="carousel">
@@ -46,20 +47,29 @@ export default function MainPage() {
 
             <section id="sec-2">
                 <div className="container py-5">
-                    <div className="row justify-content-center">
-                        <div className="col-4">
-                            <div>Откуда</div>
-                            <input placeholder="Казань" />
+                    <form>
+                        <div className="row justify-content-center">
+                            <div className="col-4">
+                                <div className="fs-15 fw-5 mb-3">Откуда</div>
+                                <input placeholder="Казань" className="fs-15"/>
+                            </div>
+                            <div className="col-4">
+                                <div className="fs-15 fw-5 mb-3">Куда</div>
+                                <input placeholder="Город назначения" className="fs-15"/>
+                            </div>
+                            <div className="col-2">
+                                <div className="fs-15 fw-5 mb-3">Дата</div>
+                                <input placeholder="01.01.2021" className="fs-15"/>
+                            </div>
+                            <div className="col-10 d-flex justify-content-between fs-12">
+                                <div className="d-flex">
+                                    <button type="button" className="btn btn-1">Найти машину</button>
+                                    <button type="button" className="btn btn-1">Найти груз</button>
+                                </div>
+                                <button type="button" className="btn btn-2">Рассчитать расстояние</button>
+                            </div>
                         </div>
-                        <div className="col-4">
-                            <div>Куда</div>
-                            <input placeholder="Город назначения" />
-                        </div>
-                        <div className="col-2">
-                            <div>Дата</div>
-                            <input placeholder="01.01.2021" />
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </section>
 

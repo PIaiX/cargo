@@ -80,10 +80,10 @@ textarea {
   box-shadow: unset;
   outline: none;
   &:not(:placeholder-shown) {
-    border: 1px solid $gray-4;
+    border: 1px solid $gray-5;
   }
   &:hover {
-    border: 1px solid $gray-3;
+    border: 1px solid $gray-4;
   }
   &:focus {
     border: 1px solid $green;
@@ -382,7 +382,7 @@ button {
 }
 .btn {
     @include flex-center;
-    border-radius: 4px;
+    border-radius: .5em;
     padding: 0.5em 2em;
     text-align: center;
     transition: 0.5s;
@@ -394,7 +394,7 @@ button {
         color: #fff;
         &:hover, &:focus, &:active {
             color: #fff;
-            background-color: darken($green, 6%);
+            background-color: $dark-blue;
         }
         &:disabled {
             color: #C4C4C4;
@@ -406,7 +406,7 @@ button {
         color: #fff;
         &:hover, &:focus, &:active {
             color: #fff;
-            background-color: darken($blue, 6%);
+            background-color: $dark-blue;
         }
         &:disabled {
             color: #C4C4C4;
