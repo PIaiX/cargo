@@ -45,10 +45,10 @@ export default function MainPage() {
                 </div>
             </section>
 
-            <section id="sec-2">
+            <section id="sec-2" className="mb-5">
                 <div className="container py-5">
                     <form>
-                        <div className="row justify-content-center">
+                        <div className="row g-4 justify-content-center">
                             <div className="col-4">
                                 <div className="fs-15 fw-5 mb-3">Откуда</div>
                                 <input placeholder="Казань" className="fs-15"/>
@@ -64,7 +64,7 @@ export default function MainPage() {
                             <div className="col-10 d-flex justify-content-between fs-12">
                                 <div className="d-flex">
                                     <button type="button" className="btn btn-1">Найти машину</button>
-                                    <button type="button" className="btn btn-1">Найти груз</button>
+                                    <button type="button" className="btn btn-1 ms-4">Найти груз</button>
                                 </div>
                                 <button type="button" className="btn btn-2">Рассчитать расстояние</button>
                             </div>
@@ -73,66 +73,93 @@ export default function MainPage() {
                 </div>
             </section>
 
-            
+            <section className="sec-3 container mb-6">
+                <h2>Грузы в вашем городе</h2>
+                <div className="position-relative mb-4">
+                    <Slider1 />
+                </div>
+                <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти груз</button>
+            </section>
+
+            <section className="sec-3 container mb-6">
+                <h2>Машины в Вашем городе</h2>
+                <div className="position-relative mb-4">
+                    <Slider1 />
+                </div>
+                <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти МАШИНУ</button>
+            </section>
+
+            <section id="sec-4" className="mb-6">
+                <div className="container h-100 d-flex align-items-center">
+                    <div className="row">
+                        <div className="col-6">
+                            <img src="/img/img1.png" alt="" className="img-fluid" />
+                        </div>
+                        <div className="col-4 pt-4">
+                            <h2 className="text-start">О сервисе</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                            <div className="mt-2">
+                                <a href="#" className="green title-font fw-5 fs-12">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         
-
-            <section className="sec-4 container mb-6">
-                <h3>Срочная продажа</h3>
-                <div className="position-relative">
-                    <Slider1 />
-                </div>
-                <div className="text-center mt-2">
-                    <a href="/" className="fs-11 fw-5">Смотреть все</a>
-                </div>
+            <section id="sec-5" className="container mb-6">
+                <h2>С нами удобно</h2>
             </section>
 
-            <section className="sec-4 container mb-6">
-                <h3>Часто просматриваемые</h3>
-                <div className="position-relative">
-                    <Slider1 />
-                </div>
-                <div className="text-center mt-2">
-                    <a href="/" className="fs-11 fw-5">Смотреть все</a>
-                </div>
-            </section>
-
-            <section className="sec-4 container mb-6">
-                <h3>Рекомендованные Вам</h3>
-                <div className="position-relative">
-                    <Slider1 />
-                </div>
-                <div className="text-center mt-2">
-                    <a href="/" className="fs-11 fw-5">Смотреть все</a>
-                </div>
-            </section>
-
-            <section id="sec-5">
-                <div className="container pb-5">
-                    <div className="row gx-xxl-5 mb-6">
-                        <div className="col-lg-7 col-xl-8">
-                            <img src="/real_estate/img/img4.jpg" alt="" className="w-100"/>
-                        </div>
-                        <div className="info col-lg-5 col-xl-4 pt-xxl-5 mt-4 mt-lg-0">
-                            <h2>Продаете или покупаете недвижимость?</h2>
-                            <div className="d-flex align-items-baseline mt-2 mt-sm-4">
-                                <img src="/real_estate/img/icons/mark.svg" alt=""/>
-                                <div className="color-2 fs-15 ms-2 ms-sm-3">Юридическая консультация</div>
-                            </div>
-                            <div className="d-flex align-items-baseline mt-2 mt-sm-4">
-                                <img src="/real_estate/img/icons/mark.svg" alt=""/>
-                                <div className="color-2 fs-15 ms-2 ms-sm-3">Сопровождение сделок</div>
-                            </div>
-                            <div className="d-flex align-items-baseline mt-2 mt-sm-4">
-                                <img src="/real_estate/img/icons/mark.svg" alt=""/>
-                                <div className="color-2 fs-15 ms-2 ms-sm-3">Оформление ипотеки на выгодных условиях</div>
-                            </div>
-                            <button type="button" className="btn btn-1 fs-15 mx-auto mt-4 mt-lg-5">Услуги риелтора</button>
-                        </div>
-                    </div>
-                    <h3>Статьи</h3>
-                    <div className="position-relative">
-                        <Slider2 />
-                    </div>
+            <section id="sec-6" className="container mb-6">
+                <h2>Новости ПОРТАЛА</h2>
+                <div className="news-grid">
+                    <article>
+                        <figure>
+                            <img src="/img/img2.png" alt=""/>
+                            <figcaption>
+                                <div className="title">Название новости</div>
+                                <div className="text">
+                                    <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</div>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="/img/img2.png" alt=""/>
+                            <figcaption>
+                                <div className="title">Название новости Lorem ipsum dolor sit amet</div>
+                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="/img/img2.png" alt=""/>
+                            <figcaption>
+                                <div className="title">Название новости</div>
+                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="/img/img2.png" alt=""/>
+                            <figcaption>
+                                <div className="title">Название новости</div>
+                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article>
+                        <figure>
+                            <img src="/img/img2.png" alt=""/>
+                            <figcaption>
+                                <div className="title">Название новости</div>
+                                <div className="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                            </figcaption>
+                        </figure>
+                    </article>
                 </div>
             </section>
         </main>

@@ -73,12 +73,8 @@ export const Slider2 = () => {
                 articleUrl="/article-page"
                 />
             </SwiperSlide>
-            <div className="swiper-button-prev">
-                <img src="/real_estate/img/icons/prev.svg" alt="предыдущий" className="w-100"/>
-            </div>
-            <div className="swiper-button-next">
-                <img src="/real_estate/img/icons/next.svg" alt="следующий" className="w-100"/>
-            </div>
+            <div className="swiper-button-prev">❮</div>
+            <div className="swiper-button-next">❯</div>
             <div className="swiper-pagination"></div>
         </Swiper>
     )
