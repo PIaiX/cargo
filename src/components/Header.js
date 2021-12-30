@@ -7,7 +7,7 @@ export default function Header() {
         <>
             <header>
                 <div className="container">
-                    <img src="/img/Лого.png" alt="Название сайта" className="logo me-lg-auto" />
+                    <img src="/cargo/img/Лого.png" alt="Название сайта" className="logo me-lg-auto" />
                     <nav className="d-none d-lg-flex">
                         <NavLink to="/">Главная</NavLink>
                         <a href="/">Поиск</a>
@@ -18,7 +18,7 @@ export default function Header() {
                     <div className="d-flex align-items-center ms-5">
                         <button type="button" className="d-none d-md-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
-                            <img src="/img/icons/user.svg" alt="аккаунт" className="icon"/>
+                            <img src="/cargo/img/icons/user.svg" alt="аккаунт" className="icon"/>
                         </button>
 
                         <CustomSelect className="order-1 order-lg-2 ms-lg-5" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>

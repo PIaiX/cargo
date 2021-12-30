@@ -17,13 +17,13 @@ export default function MainPage() {
                                 </div>
                                 <div className="carousel-inner">
                                     <div className="carousel-item active">
-                                        <img src="/img/img-slider.png" className="img" alt="слайд 1" />
+                                        <img src="/cargo/img/img-slider.png" className="img" alt="слайд 1" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img src="/img/img-slider.png" className="img" alt="слайд 2" />
+                                        <img src="/cargo/img/img-slider.png" className="img" alt="слайд 2" />
                                     </div>
                                     <div className="carousel-item">
-                                        <img src="/img/img-slider.png" className="img" alt="слайд 3" />
+                                        <img src="/cargo/img/img-slider.png" className="img" alt="слайд 3" />
                                     </div>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@ export default function MainPage() {
                 <div className="container h-100 d-flex align-items-center">
                     <div className="row">
                         <div className="col-6">
-                            <img src="/img/img1.png" alt="" className="img-fluid" />
+                            <img src="/cargo/img/img1.png" alt="" className="img-fluid" />
                         </div>
                         <div className="col-5 col-lg-4 pt-xxl-4">
                             <h2 className="text-start">О сервисе</h2>
@@ -132,7 +132,7 @@ export default function MainPage() {
                         </div>
                     </div>
                     <div className="col-4">
-                        <img src="/img/scheme.png" alt="Схема" className="scheme"/>
+                        <img src="/cargo/img/scheme.png" alt="Схема" className="scheme"/>
                     </div>
                     <div className="col-3 d-flex flex-column justify-content-between py-4">
                     <div>
@@ -164,7 +164,7 @@ export default function MainPage() {
                 <div className="news-grid">
                     <article>
                         <figure>
-                            <img src="/img/img2.png" alt="Название новости"/>
+                            <img src="/cargo/img/img2.png" alt="Название новости"/>
                             <figcaption>
                                 <div className="title">Название новости</div>
                                 <div className="hidden-div">
@@ -178,7 +178,7 @@ export default function MainPage() {
                     </article>
                     <article>
                         <figure>
-                            <img src="/img/img2.png" alt="Название новости"/>
+                            <img src="/cargo/img/img2.png" alt="Название новости"/>
                             <figcaption>
                                 <div className="title">Название новости Lorem ipsum dolor sit amet</div>
                                 <div className="hidden-div">
@@ -192,7 +192,7 @@ export default function MainPage() {
                     </article>
                     <article>
                         <figure>
-                            <img src="/img/img2.png" alt="Название новости"/>
+                            <img src="/cargo/img/img2.png" alt="Название новости"/>
                             <figcaption>
                                 <div className="title">Название новости</div>
                                 <div className="hidden-div">
@@ -206,7 +206,7 @@ export default function MainPage() {
                     </article>
                     <article>
                         <figure>
-                            <img src="/img/img2.png" alt="Название новости"/>
+                            <img src="/cargo/img/img2.png" alt="Название новости"/>
                             <figcaption>
                                 <div className="title">Название новости</div>
                                 <div className="hidden-div">
@@ -220,7 +220,7 @@ export default function MainPage() {
                     </article>
                     <article>
                         <figure>
-                            <img src="/img/img2.png" alt="Название новости"/>
+                            <img src="/cargo/img/img2.png" alt="Название новости"/>
                             <figcaption>
                                 <div className="title">Название новости</div>
                                 <div className="hidden-div">
