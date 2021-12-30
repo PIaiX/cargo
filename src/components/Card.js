@@ -12,7 +12,7 @@ export default function Card(props) {
             <div className="fs-11 mt-2"><span className="fw-5">Объем:</span> {props.size} м<sup>2</sup></div>
             <div className="fs-11 mt-2"><span className="fw-5">Вес:</span> {props.weight}</div>
             <div className="fs-11 mt-2"><span className="fw-5">Особые пометки:</span> {props.notes}</div>
-            <NavLink to="/card-page" className="btn btn-1 w-100 fs-12 mt-5">Перейти</NavLink>
+            <NavLink to="/card-page" className="btn btn-1 w-100 fs-12 mt-4 mt-xl-5">Перейти</NavLink>
         </div>
     )
 }
