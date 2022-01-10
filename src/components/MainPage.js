@@ -5,7 +5,7 @@ import { Slider1 } from './Slider1';
 export default function MainPage() {
     return (
         <main>
-            <section id="sec-1" className="py-5">
+            <section id="sec-1" className="py-4 py-sm-5">
                 <div className="container">
                     <div className="row justify-content-center gx-3">
                         <div className="col-lg-8 col-xxl-7">
@@ -32,12 +32,12 @@ export default function MainPage() {
                             <div className="box text-center">
                                 <div className="title-font dark-blue fw-9 fs-25 mb-2">2 512 359</div>
                                 <div className="fs-12 mb-3">Грузов доставленно</div>
-                                <button type="button" className="btn btn-1 fs-12 w-100">Добавить груз</button>
+                                <button type="button" className="btn btn-1 fs-12 w-100 px-2">Добавить груз</button>
                             </div>
                             <div className="box text-center">
                                 <div className="title-font dark-blue fw-9 fs-25 mb-2">12 359</div>
                                 <div className="fs-12 mb-3">Машин на сайте</div>
-                                <button type="button" className="btn btn-1 fs-12 w-100">Добавить машину</button>
+                                <button type="button" className="btn btn-1 fs-12 w-100 px-2">Добавить машину</button>
                             </div>
                         </div>
                     </div>
@@ -45,27 +45,27 @@ export default function MainPage() {
             </section>
 
             <section id="sec-2" className="mb-5">
-                <div className="container py-5">
+                <div className="container py-4 py-sm-5">
                     <form>
-                        <div className="row g-4 justify-content-center">
-                            <div className="col-4">
-                                <div className="fs-15 fw-5 mb-3">Откуда</div>
+                        <div className="row g-3 g-sm-4 justify-content-center">
+                            <div className="col-md-4">
+                                <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
                                 <input type="text" placeholder="Город отправления" className="fs-15"/>
                             </div>
-                            <div className="col-4">
-                                <div className="fs-15 fw-5 mb-3">Куда</div>
+                            <div className="col-md-4">
+                                <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
                                 <input type="text" placeholder="Город назначения" className="fs-15"/>
                             </div>
-                            <div className="col-4 col-xl-3 col-xxl-2">
-                                <div className="fs-15 fw-5 mb-3">Дата</div>
+                            <div className="col-md-4 col-xl-3 col-xxl-2">
+                                <div className="fs-15 fw-5 mb-1 mb-sm-3">Дата</div>
                                 <input type="date" className="fs-15"/>
                             </div>
-                            <div className="col-12 col-xl-11 col-xxl-10 d-flex justify-content-between fs-12">
+                            <div className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">
+                                <button type="button" className="btn btn-2 mb-2 mb-sm-3 mb-md-0">Рассчитать расстояние</button>
                                 <div className="d-flex">
-                                    <button type="button" className="btn btn-1">Найти машину</button>
-                                    <button type="button" className="btn btn-1 ms-4">Найти груз</button>
+                                    <button type="button" className="btn btn-1 px-2">Найти машину</button>
+                                    <button type="button" className="btn btn-1 ms-2 ms-sm-4 px-2">Найти груз</button>
                                 </div>
-                                <button type="button" className="btn btn-2">Рассчитать расстояние</button>
                             </div>
                         </div>
                     </form>
@@ -90,16 +90,16 @@ export default function MainPage() {
 
             <section id="sec-4" className="mb-6">
                 <div className="container h-100 d-flex align-items-center">
-                    <div className="row">
-                        <div className="col-6">
-                            <img src="/cargo/img/img1.png" alt="" className="img-fluid" />
-                        </div>
-                        <div className="col-5 col-lg-4 pt-xxl-4">
-                            <h2 className="text-start">О сервисе</h2>
+                    <div className="row flex-md-row-reverse justify-content-end">
+                        <div className="col-md-6 col-lg-5 col-xl-4 pt-xxl-4">
+                            <h2 className="text-md-start">О сервисе</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                             <div className="mt-2">
                                 <a href="#" className="green title-font fw-5 fs-12">Подробнее</a>
                             </div>
+                        </div>
+                        <div className="col-md-6">
+                            <img src="/cargo/img/img1.png" alt="" className="img-fluid" />
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ export default function MainPage() {
         
             <section id="sec-5" className="container mb-6">
                 <h2>С нами удобно</h2>
-                <div className="row gx-4 gx-xxl-5">
+                <div className="d-none d-lg-flex row gx-4 gx-xxl-5">
                     <div className="col-1">
                         <div className="ribbon ribbon-left">Грузоотправитель</div>
                     </div>
@@ -155,6 +155,18 @@ export default function MainPage() {
                     </div>
                     <div className="col-1 d-flex justify-content-end">
                         <div className="ribbon ribbon-right">Перевозчик</div>
+                    </div>
+                </div>
+                <div className="d-block d-lg-none">
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-1.svg" alt="Размещает груз на площадке" className=""/>
+                        </div>
+                        <div className="text">
+                            <div className="title"><span>1. Размещает груз на площадке</span></div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                        </div>
+                        <div class="ribbon ribbon-left">Грузоотправитель</div>
                     </div>
                 </div>
             </section>
