@@ -23,7 +23,7 @@ export default function Header() {
 
                         <CustomSelect className="order-1 order-lg-2 ms-lg-5" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
 
-                        <button type="button" className="order-3 d-block d-lg-none ms-4">
+                        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
                             <svg className="icon" viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M2 9H20.1212"/>
                                 <path d="M2 2H20.1212"/>
@@ -39,11 +39,10 @@ export default function Header() {
                     <nav>
                         <ul data-bs-dismiss="offcanvas">
                             <li><NavLink to="/">Главная</NavLink></li>
-                            <li><a href="/">Услуги</a></li>
-                            <li><a href="/">Задать вопрос</a></li>
-                            <li><a href="/">Личный кабинет</a></li>
-                            <li><a href="/">Избранное</a></li>
-                            <li><a href="/">Сообщения</a></li>
+                            <li><a>Поиск</a></li>
+                            <li><a>Форум</a></li>
+                            <li><a>Информация</a></li>
+                            <li><a>Задать вопрос</a></li>
                         </ul>
                     </nav>
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas">

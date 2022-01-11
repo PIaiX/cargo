@@ -63,8 +63,8 @@ export default function MainPage() {
                             <div className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">
                                 <button type="button" className="btn btn-2 mb-2 mb-sm-3 mb-md-0">Рассчитать расстояние</button>
                                 <div className="d-flex">
-                                    <button type="button" className="btn btn-1 px-2">Найти машину</button>
-                                    <button type="button" className="btn btn-1 ms-2 ms-sm-4 px-2">Найти груз</button>
+                                    <button type="button" className="btn btn-1 px-2 px-md-4 px-lg-5">Найти машину</button>
+                                    <button type="button" className="btn btn-1 ms-2 ms-sm-4 px-2 px-md-4 px-lg-5">Найти груз</button>
                                 </div>
                             </div>
                         </div>
@@ -160,13 +160,62 @@ export default function MainPage() {
                 <div className="d-block d-lg-none">
                     <div className="point">
                         <div className="icon">
-                            <img src="/cargo/img/icons/icon-1.svg" alt="Размещает груз на площадке" className=""/>
+                            <img src="/cargo/img/icons/icon-1.svg" alt="Размещает груз на площадке"/>
                         </div>
                         <div className="text">
                             <div className="title"><span>1. Размещает груз на площадке</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
                         <div class="ribbon ribbon-left">Грузоотправитель</div>
+                    </div>
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-2.svg" alt="Берет груз"/>
+                        </div>
+                        <div className="text">
+                            <div className="title"><span>2. Берет груз</span></div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                        </div>
+                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                    </div>
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-3.svg" alt="Готовит заявку"/>
+                        </div>
+                        <div className="text">
+                            <div className="title"><span>3. Готовит заявку</span></div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                        </div>
+                        <div class="ribbon ribbon-left">Грузоотправитель</div>
+                    </div>
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-4.svg" alt="Одобряет заявку"/>
+                        </div>
+                        <div className="text">
+                            <div className="title"><span>4. Одобряет заявку</span></div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                        </div>
+                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                    </div>
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-5.svg" alt="Закрытие сделки"/>
+                        </div>
+                        <div className="text">
+                            <div className="title"><span>5. Закрытие сделки</span></div>
+                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
+                        </div>
+                        <div class="ribbon ribbon-left">Грузоотправитель</div>
+                    </div>
+                    <div className="point">
+                        <div className="icon">
+                            <img src="/cargo/img/icons/icon-6.svg" alt="Все готово для перевозки"/>
+                        </div>
+                        <div className="text">
+                            <div className="title mb-0"><span>Все готово для перевозки</span></div>
+                        </div>
+                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
                     </div>
                 </div>
             </section>

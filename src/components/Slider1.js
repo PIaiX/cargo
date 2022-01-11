@@ -9,7 +9,8 @@ export const Slider1 = () => {
     return (
         <Swiper className="swiper-4"
             spaceBetween={10}
-            slidesPerView={1}
+            slidesPerView={'auto'}
+            freeMode={true}
             breakpoints={{
                 576: {
                     slidesPerView: 2,
@@ -40,6 +41,7 @@ export const Slider1 = () => {
         >
             <SwiperSlide>
                 <Card 
+                    className=""
                     title="Продукты питания" 
                     route="Казань-Москва"
                     size="30"
@@ -49,6 +51,7 @@ export const Slider1 = () => {
             </SwiperSlide>
             <SwiperSlide>
                 <Card 
+                    className=""
                     title="Оборудование" 
                     route="Казань-Москва"
                     size="30"
@@ -58,6 +61,7 @@ export const Slider1 = () => {
             </SwiperSlide>
             <SwiperSlide>    
                 <Card 
+                    className=""
                     title="Продукты питания" 
                     route="Казань-Москва"
                     size="30"
@@ -67,6 +71,7 @@ export const Slider1 = () => {
             </SwiperSlide>
             <SwiperSlide>
                 <Card 
+                    className=""
                     title="Оборудование" 
                     route="Казань-Москва"
                     size="30"
@@ -76,6 +81,7 @@ export const Slider1 = () => {
             </SwiperSlide>
             <SwiperSlide>    
                 <Card 
+                    className=""
                     title="Продукты питания" 
                     route="Казань-Москва"
                     size="30"
@@ -85,6 +91,7 @@ export const Slider1 = () => {
             </SwiperSlide>
             <SwiperSlide>
                 <Card 
+                    className=""
                     title="Оборудование" 
                     route="Казань-Москва"
                     size="30"

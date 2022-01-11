@@ -1247,6 +1247,12 @@ main {
   padding: 2em;
 }
 
+@media (max-width: 767px) {
+  .card-mini {
+    padding: 1.5em;
+  }
+}
+
 .card-mini .title {
   white-space: nowrap;
   overflow: hidden;
@@ -1484,10 +1490,19 @@ main {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin-top: 1em;
+}
+
+#sec-5 .point:nth-child(odd) {
+  --color: #01BFC4;
+}
+
+#sec-5 .point:nth-child(even) {
+  --color: #038CB8;
 }
 
 #sec-5 .point .icon {
-  background-color: #01BFC4;
+  background-color: var(--color);
   width: 6em;
   height: 6em;
   border-radius: 50%;
@@ -1503,9 +1518,23 @@ main {
           align-items: center;
 }
 
+@media (max-width: 575px) {
+  #sec-5 .point .icon {
+    width: 4em;
+    height: 4em;
+  }
+}
+
 #sec-5 .point .icon img {
   width: 3em;
   height: 3em;
+}
+
+@media (max-width: 575px) {
+  #sec-5 .point .icon img {
+    width: 2em;
+    height: 2em;
+  }
 }
 
 #sec-5 .point .text {
@@ -1516,27 +1545,49 @@ main {
 }
 
 #sec-5 .point .text .title span {
-  border-bottom: 4px solid #01BFC4;
+  border-bottom: 4px solid var(--color);
+}
+
+@media (max-width: 767px) {
+  #sec-5 .point .text .title span {
+    border-bottom: 2px solid var(--color);
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-5 .point .text .title {
+    font-size: 1.1em;
+    margin-bottom: 0.5em;
+  }
 }
 
 #sec-5 .point .ribbon {
   height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
+  min-height: 120px;
   font-size: .8em;
   width: 2em;
+  font-weight: 500;
+  background-color: var(--color);
+}
+
+@media (max-width: 575px) {
+  #sec-5 .point .ribbon {
+    min-height: 90px;
+  }
 }
 
 #sec-5 .point .ribbon::before {
   border-left: 1em solid transparent;
   border-right: 1em solid transparent;
-  border-bottom: 1em solid #01BFC4;
+  border-bottom: 1em solid var(--color);
 }
 
 #sec-5 .point .ribbon::after {
   border-bottom: 1em solid transparent;
-  border-left: 1em solid #01BFC4;
-  border-right: 1em solid #01BFC4;
+  border-left: 1em solid var(--color);
+  border-right: 1em solid var(--color);
 }
 
 /* SECTION 6 */
@@ -2888,6 +2939,12 @@ footer {
   right: calc(100% + .5rem);
 }
 
+@media (max-width: 575px) {
+  .swiper-4 .swiper-slide {
+    width: 260px;
+  }
+}
+
 .swiper-button-prev::after, .swiper-button-next::after {
   content: unset;
 }
@@ -3158,7 +3215,7 @@ footer {
 }
 
 .offcanvas {
-  width: 450px;
+  width: 300px;
 }
 
 @media (max-width: 575px) {
