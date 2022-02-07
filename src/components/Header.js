@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import CustomSelect from '../utilities/CustomSelect';
+import CustomSelect from './utilities/CustomSelect';
 
 export default function Header() {
     return (
@@ -10,7 +10,7 @@ export default function Header() {
                     <img src="/cargo/img/Лого.png" alt="Название сайта" className="logo me-lg-auto" />
                     <nav className="d-none d-lg-flex">
                         <NavLink to="/">Главная</NavLink>
-                        <a href="/">Поиск</a>
+                        <NavLink to="/search">Поиск</NavLink>
                         <a href="/">Форум</a>
                         <a href="/">Информация</a>
                         <a href="/">Задать вопрос</a>
@@ -21,7 +21,7 @@ export default function Header() {
                             <img src="/cargo/img/icons/user.svg" alt="аккаунт" className="icon"/>
                         </button>
 
-                        <CustomSelect className="order-1 order-lg-2 ms-lg-5" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
+                        <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
 
                         <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
                             <svg className="icon" viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg">

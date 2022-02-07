@@ -38,7 +38,7 @@ export default function CustomSelect(props) {
                 {options.map(function(item) {
                     return (
                         <label className="radio-line" key={item}>
-                            <input type="radio" name="type" value={item} checked={(item === checkedVal) ? true : false} onChange={handleChange}/>
+                            <input type="radio" name={props.name} value={item} checked={(item === checkedVal) ? true : false} onChange={handleChange}/>
                             <div>{item}</div>
                         </label>
                     )

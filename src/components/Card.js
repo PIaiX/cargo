@@ -2,9 +2,6 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default function Card(props) {
-    // const type = props.type;
-    const images = props.images;
-
     return (
         <div className={"card-mini " + props.className}>
             <div className="title mb-3">{props.title}</div>

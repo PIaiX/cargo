@@ -1,6 +1,9 @@
 import React from 'react';
-import { Slider2 } from './Slider2';
-import { Slider1 } from './Slider1';
+import Card from './Card';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+SwiperCore.use([Navigation, Pagination]);
 
 export default function MainPage() {
     return (
@@ -75,7 +78,103 @@ export default function MainPage() {
             <section className="sec-3 container mb-6">
                 <h2>Грузы в вашем городе</h2>
                 <div className="position-relative mb-4">
-                    <Slider1 />
+                <Swiper className="swiper-4"
+                    spaceBetween={10}
+                    slidesPerView={'auto'}
+                    freeMode={true}
+                    breakpoints={{
+                        576: {
+                            slidesPerView: 2,
+                            spaceBetween: 10,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 16,
+                        },
+                        992: {
+                            slidesPerView: 3,
+                            spaceBetween: 16,
+                        },
+                        1400: {
+                            slidesPerView: 4,
+                            spaceBetween: 20,
+                        }
+                    }}
+                    pagination={{
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                        clickable: true,
+                    }}
+                    navigation={{
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    }}
+                >
+                    <SwiperSlide>
+                        <Card 
+                            className=""
+                            title="Продукты питания" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Холод"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            className=""
+                            title="Оборудование" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Хрупкое"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>    
+                        <Card 
+                            className=""
+                            title="Продукты питания" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Холод"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            className=""
+                            title="Оборудование" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Хрупкое"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>    
+                        <Card 
+                            className=""
+                            title="Продукты питания" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Холод"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            className=""
+                            title="Оборудование" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="Хрупкое"
+                        />
+                    </SwiperSlide>
+
+                    <div className="swiper-button-prev">❮</div>
+                    <div className="swiper-button-next">❯</div>
+                    <div className="swiper-pagination"></div>
+                </Swiper>
                 </div>
                 <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти груз</button>
             </section>
@@ -83,7 +182,103 @@ export default function MainPage() {
             <section className="sec-3 container mb-6">
                 <h2>Машины в Вашем городе</h2>
                 <div className="position-relative mb-4">
-                    <Slider1 />
+                    <Swiper className="swiper-4"
+                        spaceBetween={10}
+                        slidesPerView={'auto'}
+                        freeMode={true}
+                        breakpoints={{
+                            576: {
+                                slidesPerView: 2,
+                                spaceBetween: 10,
+                            },
+                            768: {
+                                slidesPerView: 2,
+                                spaceBetween: 16,
+                            },
+                            992: {
+                                slidesPerView: 3,
+                                spaceBetween: 16,
+                            },
+                            1400: {
+                                slidesPerView: 4,
+                                spaceBetween: 20,
+                            }
+                        }}
+                        pagination={{
+                            el: '.swiper-pagination',
+                            type: 'bullets',
+                            clickable: true,
+                        }}
+                        navigation={{
+                            nextEl: '.swiper-button-next',
+                            prevEl: '.swiper-button-prev',
+                        }}
+                    >
+                        <SwiperSlide>
+                            <Card 
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Холод"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Card 
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Хрупкое"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>    
+                            <Card 
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Холод"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Card 
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Хрупкое"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>    
+                            <Card 
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Холод"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Card 
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="Хрупкое"
+                            />
+                        </SwiperSlide>
+
+                        <div className="swiper-button-prev">❮</div>
+                        <div className="swiper-button-next">❯</div>
+                        <div className="swiper-pagination"></div>
+                    </Swiper>
                 </div>
                 <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти МАШИНУ</button>
             </section>
