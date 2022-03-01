@@ -39,10 +39,10 @@ export default function Header() {
                     <nav>
                         <ul data-bs-dismiss="offcanvas">
                             <li><NavLink to="/">Главная</NavLink></li>
-                            <li><a>Поиск</a></li>
-                            <li><a>Форум</a></li>
-                            <li><a>Информация</a></li>
-                            <li><a>Задать вопрос</a></li>
+                            <li><NavLink to="/search">Поиск</NavLink></li>
+                            <li><a href="/">Форум</a></li>
+                            <li><a href="/">Информация</a></li>
+                            <li><a href="/">Задать вопрос</a></li>
                         </ul>
                     </nav>
                     <button type="button" className="btn-close" data-bs-dismiss="offcanvas">

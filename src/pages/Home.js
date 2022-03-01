@@ -1,11 +1,12 @@
 import React from 'react';
-import Card from './Card';
+import Card from '../components/Card';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
+import Article from '../components/Article';
 SwiperCore.use([Navigation, Pagination]);
 
-export default function MainPage() {
+export default function Home() {
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
@@ -14,7 +15,7 @@ export default function MainPage() {
                         <div className="col-lg-8 col-xxl-7">
                             <div id="slider-1" className="carousel slide" data-bs-ride="carousel">
                                 <div className="carousel-indicators">
-                                    <button type="button" data-bs-target="#slider-1" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                                    <button type="button" data-bs-target="#slider-1" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
                                     <button type="button" data-bs-target="#slider-1" data-bs-slide-to="1" aria-label="Slide 2"></button>
                                     <button type="button" data-bs-target="#slider-1" data-bs-slide-to="2" aria-label="Slide 3"></button>
                                 </div>
@@ -290,7 +291,7 @@ export default function MainPage() {
                             <h2 className="text-md-start">О сервисе</h2>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                             <div className="mt-2">
-                                <a href="#" className="green title-font fw-5 fs-12">Подробнее</a>
+                                <a href="/" className="green title-font fw-5 fs-12">Подробнее</a>
                             </div>
                         </div>
                         <div className="col-md-6">
@@ -361,7 +362,7 @@ export default function MainPage() {
                             <div className="title"><span>1. Размещает груз на площадке</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
-                        <div class="ribbon ribbon-left">Грузоотправитель</div>
+                        <div className="ribbon ribbon-left">Грузоотправитель</div>
                     </div>
                     <div className="point">
                         <div className="icon">
@@ -371,7 +372,7 @@ export default function MainPage() {
                             <div className="title"><span>2. Берет груз</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
-                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                        <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
                     </div>
                     <div className="point">
                         <div className="icon">
@@ -381,7 +382,7 @@ export default function MainPage() {
                             <div className="title"><span>3. Готовит заявку</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
-                        <div class="ribbon ribbon-left">Грузоотправитель</div>
+                        <div className="ribbon ribbon-left">Грузоотправитель</div>
                     </div>
                     <div className="point">
                         <div className="icon">
@@ -391,7 +392,7 @@ export default function MainPage() {
                             <div className="title"><span>4. Одобряет заявку</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
-                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                        <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
                     </div>
                     <div className="point">
                         <div className="icon">
@@ -401,7 +402,7 @@ export default function MainPage() {
                             <div className="title"><span>5. Закрытие сделки</span></div>
                             <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud </div>
                         </div>
-                        <div class="ribbon ribbon-left">Грузоотправитель</div>
+                        <div className="ribbon ribbon-left">Грузоотправитель</div>
                     </div>
                     <div className="point">
                         <div className="icon">
@@ -410,7 +411,7 @@ export default function MainPage() {
                         <div className="text">
                             <div className="title mb-0"><span>Все готово для перевозки</span></div>
                         </div>
-                        <div class="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                        <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
                     </div>
                 </div>
             </section>
@@ -418,76 +419,11 @@ export default function MainPage() {
             <section id="sec-6" className="container mb-6">
                 <h2>Новости ПОРТАЛА</h2>
                 <div className="news-grid">
-                    <article>
-                        <figure>
-                            <img src="/cargo/img/img2.png" alt="Название новости"/>
-                            <figcaption>
-                                <div className="title">Название новости</div>
-                                <div className="hidden-div">
-                                    <div className="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    </div>
-                                </div>
-                            </figcaption>
-                            <a href="#" class="stretched-link"></a>
-                        </figure>
-                    </article>
-                    <article>
-                        <figure>
-                            <img src="/cargo/img/img2.png" alt="Название новости"/>
-                            <figcaption>
-                                <div className="title">Название новости Lorem ipsum dolor sit amet</div>
-                                <div className="hidden-div">
-                                    <div className="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    </div>
-                                </div>
-                            </figcaption>
-                            <a href="#" class="stretched-link"></a>
-                        </figure>
-                    </article>
-                    <article>
-                        <figure>
-                            <img src="/cargo/img/img2.png" alt="Название новости"/>
-                            <figcaption>
-                                <div className="title">Название новости</div>
-                                <div className="hidden-div">
-                                    <div className="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    </div>
-                                </div>
-                            </figcaption>
-                            <a href="#" class="stretched-link"></a>
-                        </figure>
-                    </article>
-                    <article>
-                        <figure>
-                            <img src="/cargo/img/img2.png" alt="Название новости"/>
-                            <figcaption>
-                                <div className="title">Название новости</div>
-                                <div className="hidden-div">
-                                    <div className="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    </div>
-                                </div>
-                            </figcaption>
-                            <a href="#" class="stretched-link"></a>
-                        </figure>
-                    </article>
-                    <article>
-                        <figure>
-                            <img src="/cargo/img/img2.png" alt="Название новости"/>
-                            <figcaption>
-                                <div className="title">Название новости</div>
-                                <div className="hidden-div">
-                                    <div className="text">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    </div>
-                                </div>
-                            </figcaption>
-                            <a href="#" class="stretched-link"></a>
-                        </figure>
-                    </article>
+                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
                 </div>
             </section>
         </main>
