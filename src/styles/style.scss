@@ -14,6 +14,7 @@ $gray-3: #828282;
 $gray-4: #BDBDBD;
 $gray-5: #E0E0E0;
 $gray-6: #F2F2F2;
+$radius: 8px;
 
 a, a:hover, a:focus, a:active {
   color: inherit;
@@ -74,21 +75,28 @@ input,
 textarea {
   background: #ffffff;
   border: 1px solid $gray-5;
-  border-radius: 0.3em;
+  border-radius: $radius;
   padding: .5em .85em;
   width: 100%;
   line-height: normal;
   box-shadow: unset;
   outline: none;
-  &:not(:placeholder-shown) {
+  &:not(:placeholder-shown) {border: 1px solid $gray-5;}
+  &:hover {border: 1px solid $gray-4;}
+  &:focus {border: 1px solid $green;}
+  &:-moz-placeholde {color: $gray-4;}
+  &::-moz-placeholder {color: $gray-4;}
+  &::-webkit-input-placeholder {color: $gray-4;}
+  &:-ms-input-placeholder {color: $gray-4;}
+  &::-ms-input-placeholder {color: $gray-4;}
+  &::placeholder {color: $gray-4;}
+}
+.inp {
+    background: #ffffff;
     border: 1px solid $gray-5;
-  }
-  &:hover {
-    border: 1px solid $gray-4;
-  }
-  &:focus {
-    border: 1px solid $green;
-  }
+    border-radius: $radius;
+    padding: .5em .85em;
+    width: 100%;
 }
 input {
     &[type="number"] {
@@ -151,6 +159,9 @@ input {
         background-size: auto;
         }
     }
+    &::-webkit-calendar-picker-indicator {
+        background-image: url(bg-imgs/calendar-green.svg);
+    }
 }
 label {
     display: flex;
@@ -187,7 +198,7 @@ select {
     outline: none;
     border: none;
     line-height: normal;
-    background: url(bg-imgs/caret-down.svg) no-repeat right center;
+    // background: url(bg-imgs/caret-down.svg) no-repeat right center;
     background-size: 1em .5em;
     padding: 0 1.2em 0 0;
 }
@@ -249,7 +260,7 @@ select {
         overflow-y: auto;
         background: #FFFFFF;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-        border-radius: 4px;
+        border-radius: $radius;
         z-index: 2;
         &[data-alignment="right"]{
             left: unset;
@@ -383,13 +394,14 @@ button {
 }
 .btn {
     @include flex-center;
-    border-radius: .5em;
+    border-radius: $radius;
     padding: 0.5em 2em;
     text-align: center;
     transition: 0.5s;
     width: fit-content;
     font-size: 1em;
     line-height: normal;
+    text-transform: uppercase;
     &-1 {
         background-color: $green;
         color: #fff;
@@ -415,6 +427,11 @@ button {
         }
         svg {
             line {stroke: #fff;}
+        }
+    }
+    &-view {
+        svg {
+            rect {fill: $blue;}
         }
     }
     &-fav {
@@ -1257,7 +1274,7 @@ main {
         border: 1px solid $light-green;
         border-bottom-left-radius: 1em;
         border-bottom-right-radius: 1em;
-        padding: 2em;
+        padding: 2em 3em;
         label {font-size: 1.2em;}
         input {font-size: 1.5em;}
     }
@@ -1448,22 +1465,36 @@ footer {
     justify-content: center;
     .page-item {
         width: 2em;
-        height: 1.9em;
+        height: 2em;
         @include flex-center();
+        margin: 0 .25em;
         .page-link {
             width: 100%;
             height: 100%;
             color: $gray-3;
+            font-size: 1.2em;
+            border-radius: 5px;
+            background-color: transparent;
             border: none;
             padding: 0px;
             @include flex-center();
-        }
-        &.active {
-            .page-link {
-                background-color: $green;
+            svg {
+                width: 1.5em;
+                height: 1.5em;
+                fill: none;
+                path {
+                    stroke: $gray-3;
+                    stroke-width: 2px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                }
+            }
+            &.active {
+                background-color: $blue;
                 color: #fff;
             }
         }
+        
     }
 }
 

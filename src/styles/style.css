@@ -58,7 +58,7 @@ input,
 textarea {
   background: #ffffff;
   border: 1px solid #E0E0E0;
-  border-radius: 0.3em;
+  border-radius: 8px;
   padding: .5em .85em;
   width: 100%;
   line-height: normal;
@@ -80,6 +80,39 @@ textarea:hover {
 input:focus,
 textarea:focus {
   border: 1px solid #01BFC4;
+}
+
+input:-moz-placeholde,
+textarea:-moz-placeholde {
+  color: #BDBDBD;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #BDBDBD;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #BDBDBD;
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: #BDBDBD;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #BDBDBD;
+}
+
+.inp {
+  background: #ffffff;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: .5em .85em;
+  width: 100%;
 }
 
 input[type="number"] {
@@ -148,6 +181,10 @@ input[type="checkbox"]:checked {
   background-size: auto;
 }
 
+input::-webkit-calendar-picker-indicator {
+  background-image: url(bg-imgs/calendar-green.svg);
+}
+
 label {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -197,7 +234,6 @@ select {
   outline: none;
   border: none;
   line-height: normal;
-  background: url(bg-imgs/caret-down.svg) no-repeat right center;
   background-size: 1em .5em;
   padding: 0 1.2em 0 0;
 }
@@ -291,7 +327,7 @@ select {
   background: #FFFFFF;
   -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
           box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
+  border-radius: 8px;
   z-index: 2;
 }
 
@@ -491,7 +527,7 @@ button {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border-radius: .5em;
+  border-radius: 8px;
   padding: 0.5em 2em;
   text-align: center;
   -webkit-transition: 0.5s;
@@ -501,6 +537,7 @@ button {
   width: fit-content;
   font-size: 1em;
   line-height: normal;
+  text-transform: uppercase;
 }
 
 .btn-1 {
@@ -535,6 +572,10 @@ button {
 
 .btn-2 svg line {
   stroke: #fff;
+}
+
+.btn-view svg rect {
+  fill: #038CB8;
 }
 
 .btn-fav {
@@ -1860,7 +1901,7 @@ main {
   border: 1px solid #D5F6EF;
   border-bottom-left-radius: 1em;
   border-bottom-right-radius: 1em;
-  padding: 2em;
+  padding: 2em 3em;
 }
 
 #sec-7 form label {
@@ -2136,7 +2177,7 @@ footer {
 
 .pagination .page-item {
   width: 2em;
-  height: 1.9em;
+  height: 2em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2146,12 +2187,16 @@ footer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin: 0 .25em;
 }
 
 .pagination .page-item .page-link {
   width: 100%;
   height: 100%;
   color: #828282;
+  font-size: 1.2em;
+  border-radius: 5px;
+  background-color: transparent;
   border: none;
   padding: 0px;
   display: -webkit-box;
@@ -2165,8 +2210,21 @@ footer {
           align-items: center;
 }
 
-.pagination .page-item.active .page-link {
-  background-color: #01BFC4;
+.pagination .page-item .page-link svg {
+  width: 1.5em;
+  height: 1.5em;
+  fill: none;
+}
+
+.pagination .page-item .page-link svg path {
+  stroke: #828282;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pagination .page-item .page-link.active {
+  background-color: #038CB8;
   color: #fff;
 }
 
