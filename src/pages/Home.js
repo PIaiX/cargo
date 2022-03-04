@@ -80,17 +80,16 @@ export default function Home() {
                 <h2>Грузы в вашем городе</h2>
                 <div className="position-relative mb-4">
                 <Swiper className="swiper-4"
-                    spaceBetween={10}
-                    slidesPerView={'auto'}
-                    freeMode={true}
+                    spaceBetween={4}
+                    slidesPerView={2}
                     breakpoints={{
                         576: {
                             slidesPerView: 2,
                             spaceBetween: 10,
                         },
                         768: {
-                            slidesPerView: 2,
-                            spaceBetween: 16,
+                            slidesPerView: 3,
+                            spaceBetween: 8,
                         },
                         992: {
                             slidesPerView: 3,
@@ -171,7 +170,6 @@ export default function Home() {
                             notes="Хрупкое"
                         />
                     </SwiperSlide>
-
                     <div className="swiper-button-prev">❮</div>
                     <div className="swiper-button-next">❯</div>
                     <div className="swiper-pagination"></div>
@@ -184,8 +182,8 @@ export default function Home() {
                 <h2>Машины в Вашем городе</h2>
                 <div className="position-relative mb-4">
                     <Swiper className="swiper-4"
-                        spaceBetween={10}
-                        slidesPerView={'auto'}
+                        spaceBetween={4}
+                        slidesPerView={2}
                         freeMode={true}
                         breakpoints={{
                             576: {
@@ -193,8 +191,8 @@ export default function Home() {
                                 spaceBetween: 10,
                             },
                             768: {
-                                slidesPerView: 2,
-                                spaceBetween: 16,
+                                slidesPerView: 3,
+                                spaceBetween: 8,
                             },
                             992: {
                                 slidesPerView: 3,

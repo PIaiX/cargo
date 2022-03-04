@@ -350,6 +350,12 @@ select {
   white-space: nowrap;
 }
 
+@media (max-width: 991px) {
+  .custom-select .options label.radio-line {
+    padding: 0.5em 1em;
+  }
+}
+
 .custom-select .options label.radio-line:hover input {
   background-color: rgba(1, 191, 196, 0.22);
 }
@@ -537,7 +543,6 @@ button {
   width: fit-content;
   font-size: 1em;
   line-height: normal;
-  text-transform: uppercase;
 }
 
 .btn-1 {
@@ -556,6 +561,7 @@ button {
 }
 
 .btn-2 {
+  text-transform: uppercase;
   background-color: #038CB8;
   color: #fff;
 }
@@ -1286,9 +1292,16 @@ main {
   padding: 2em;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 991px) {
   .card-mini {
     padding: 1.5em;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 575px) {
+  .card-mini {
+    padding: .75em;
   }
 }
 
@@ -1299,6 +1312,23 @@ main {
   font-family: "Gotham Pro";
   font-size: 1.5em;
   font-weight: bold;
+}
+
+@media (max-width: 575px) {
+  .card-mini .title {
+    font-size: 1.2em;
+  }
+}
+
+.card-mini .btn-1 {
+  font-size: 1.2em;
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .card-mini .btn-1 {
+    font-size: 1em;
+  }
 }
 
 /* SECTION 4 */
@@ -1845,6 +1875,7 @@ main {
 
 /* SECTION 7 */
 #sec-7 .switch {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1872,6 +1903,8 @@ main {
   background-size: auto 165%;
   background-position: right center;
   background-blend-mode: overlay;
+  position: relative;
+  z-index: 1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1883,17 +1916,56 @@ main {
           align-items: center;
 }
 
+@media (max-width: 991px) {
+  #sec-7 .switch button {
+    padding: 1em 4em 1em 2em;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-7 .switch button {
+    padding: 1em 2em;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-7 .switch button {
+    padding: .75em 1em;
+  }
+}
+
 #sec-7 .switch button:first-child {
   background-image: url(bg-imgs/cargo.png);
+}
+
+@media (max-width: 767px) {
+  #sec-7 .switch button:first-child {
+    background-image: none;
+  }
 }
 
 #sec-7 .switch button:nth-child(2) {
   background-image: url(bg-imgs/car.png);
 }
 
+@media (max-width: 767px) {
+  #sec-7 .switch button:nth-child(2) {
+    background-image: none;
+  }
+}
+
 #sec-7 .switch button.active {
   background-color: #01BFC4;
   color: #fff;
+  z-index: 2;
+}
+
+@media (max-width: 767px) {
+  #sec-7 .switch button.active {
+    -webkit-box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
+            box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
+  }
 }
 
 #sec-7 form {
@@ -1904,12 +1976,68 @@ main {
   padding: 2em 3em;
 }
 
+@media (max-width: 1199px) {
+  #sec-7 form {
+    padding: 2em;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-7 form .w-50 {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-7 form {
+    padding: 1em;
+  }
+}
+
 #sec-7 form label {
   font-size: 1.2em;
 }
 
-#sec-7 form input {
+@media (max-width: 1199px) {
+  #sec-7 form label {
+    font-size: 1.1em;
+  }
+}
+
+#sec-7 form input, #sec-7 form select, #sec-7 form button, #sec-7 form .fs-15 {
   font-size: 1.5em;
+}
+
+@media (max-width: 1659px) {
+  #sec-7 form input, #sec-7 form select, #sec-7 form button, #sec-7 form .fs-15 {
+    font-size: 1.4em;
+  }
+}
+
+@media (max-width: 1199px) {
+  #sec-7 form input, #sec-7 form select, #sec-7 form button, #sec-7 form .fs-15 {
+    font-size: 1.3em;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-7 form input, #sec-7 form select, #sec-7 form button, #sec-7 form .fs-15 {
+    font-size: 1.1em;
+  }
+}
+
+#sec-7 form .icon {
+  width: 2.5em;
+  height: 2.5em;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+@media (max-width: 767px) {
+  #sec-7 form .icon {
+    width: 2em;
+    height: 2em;
+  }
 }
 
 footer {

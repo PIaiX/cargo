@@ -276,6 +276,9 @@ select {
             padding: 0.5em 2em;
             cursor: pointer;
             white-space: nowrap;
+            @media (max-width: 991px){
+                padding: 0.5em 1em;
+            }
             &:hover {
                 input {background-color: rgba($green, .22);}
             }
@@ -401,7 +404,6 @@ button {
     width: fit-content;
     font-size: 1em;
     line-height: normal;
-    text-transform: uppercase;
     &-1 {
         background-color: $green;
         color: #fff;
@@ -415,6 +417,7 @@ button {
         }
     }
     &-2 {
+        text-transform: uppercase;
         background-color: $blue;
         color: #fff;
         &:hover, &:focus, &:active {
@@ -866,8 +869,12 @@ main {
     background: #FFF;
     box-shadow: 1px 4px 9px rgba($green, 0.34);
     padding: 2em;
-    @media (max-width: 767px){
+    @media (max-width: 991px){
         padding: 1.5em;
+        font-size: 12px;
+    }
+    @media (max-width: 575px){
+        padding: .75em;
     }
     .title {
         white-space: nowrap;
@@ -876,6 +883,16 @@ main {
         font-family: $title-font;
         font-size: 1.5em;
         font-weight: bold;
+        @media (max-width: 575px){
+            font-size: 1.2em;
+        }
+    }
+    .btn-1 {
+        font-size: 1.2em;
+        width: 100%;
+        @media (max-width: 575px){
+            font-size: 1em;
+        }
     }
 }
 
@@ -1241,6 +1258,7 @@ main {
 /* SECTION 7 */
 #sec-7 {
     .switch {
+        position: relative;
         @include flex-center();
         button {
             flex-grow: 1;
@@ -1256,16 +1274,32 @@ main {
             background-size: auto 165%;
             background-position: right center;
             background-blend-mode: overlay;
+            position: relative;
+            z-index: 1;
+            @media (max-width: 991px){
+                padding: 1em 4em 1em 2em;
+            }
+            @media (max-width: 767px){
+                padding: 1em 2em;
+                text-align: center;
+            }
+            @media (max-width: 575px){padding: .75em 1em;}
             &:first-child {
-                background-image: url(bg-imgs/cargo.png); 
+                background-image: url(bg-imgs/cargo.png);
+                @media (max-width: 767px){background-image:none;}
             }
             &:nth-child(2) {
-                background-image: url(bg-imgs/car.png); 
+                background-image: url(bg-imgs/car.png);
+                @media (max-width: 767px){background-image:none;}
             }
             @include flex-center();
             &.active {
                 background-color: $green;
                 color: #fff;
+                z-index: 2;
+                @media (max-width: 767px){
+                    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
+                }
             }
         }
     }
@@ -1275,8 +1309,32 @@ main {
         border-bottom-left-radius: 1em;
         border-bottom-right-radius: 1em;
         padding: 2em 3em;
-        label {font-size: 1.2em;}
-        input {font-size: 1.5em;}
+        @media (max-width: 1199px){
+            padding: 2em;  
+        }
+        @media (max-width: 767px){
+            .w-50 {width: 100% !important;}
+        }
+        @media (max-width: 575px){padding: 1em;}
+        label {
+            font-size: 1.2em;
+            @media (max-width: 1199px){font-size: 1.1em;}
+        }
+        input, select, button, .fs-15 {
+            font-size: 1.5em;
+            @media (max-width: 1659px){font-size: 1.4em;}
+            @media (max-width: 1199px){font-size: 1.3em;}
+            @media (max-width: 575px){font-size: 1.1em;}
+        }
+        .icon {
+            width: 2.5em;
+            height: 2.5em;
+            object-fit: contain;
+            @media (max-width: 767px){
+                width: 2em;
+                height: 2em;
+            }
+        }
     }
 }
 
