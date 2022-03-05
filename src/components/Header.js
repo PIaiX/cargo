@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import CustomSelect from './utilities/CustomSelect';
+import { IconContext  } from "react-icons";
+import { MdPersonOutline, MdMenu } from 'react-icons/md';
 
 export default function Header() {
     return (
@@ -18,17 +20,17 @@ export default function Header() {
                     <div className="d-flex align-items-center ms-5">
                         <button type="button" className="d-none d-md-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
-                            <img src="/cargo/img/icons/user.svg" alt="аккаунт" className="icon"/>
+                            <IconContext.Provider value={{className: "icon", title: "аккаунт" }}>
+                                <MdPersonOutline />
+                            </IconContext.Provider>
                         </button>
 
                         <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
 
                         <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
-                            <svg className="icon" viewBox="0 0 22 18" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M2 9H20.1212"/>
-                                <path d="M2 2H20.1212"/>
-                                <path d="M2 16H20.1212"/>
-                            </svg>
+                            <IconContext.Provider value={{className: "icon", title: "меню" }}>
+                                <MdMenu />
+                            </IconContext.Provider>
                         </button>
                     </div>
                 </div> 

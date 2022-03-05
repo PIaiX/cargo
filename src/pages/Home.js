@@ -1,9 +1,11 @@
 import React from 'react';
 import Card from '../components/Card';
+import Article from '../components/Article';
+
+import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
-import Article from '../components/Article';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
@@ -111,15 +113,15 @@ export default function Home() {
                     }}
                 >
                     <SwiperSlide>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </SwiperSlide>
+                            <Card 
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes={{text:'Холод', icon: 'ice'}}
+                            />
+                        </SwiperSlide>
                     <SwiperSlide>
                         <Card 
                             className=""
@@ -127,7 +129,7 @@ export default function Home() {
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes="Хрупкое"
+                            notes={{text:'Холод', icon: 'ice'}}
                         />
                     </SwiperSlide>
                     <SwiperSlide>    
@@ -137,7 +139,7 @@ export default function Home() {
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes="Холод"
+                            notes={{text:'Хрупкое', icon: 'fragile'}}
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -147,7 +149,7 @@ export default function Home() {
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes="Хрупкое"
+                            notes={{text:'Нет', icon: 'none'}}
                         />
                     </SwiperSlide>
                     <SwiperSlide>    
@@ -157,7 +159,7 @@ export default function Home() {
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes="Холод"
+                            notes={{text:'Нет', icon: 'none'}}
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -167,11 +169,15 @@ export default function Home() {
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes="Хрупкое"
+                            notes={{text:'Нет', icon: 'none'}}
                         />
                     </SwiperSlide>
-                    <div className="swiper-button-prev">❮</div>
-                    <div className="swiper-button-next">❯</div>
+                    <div className="swiper-button-prev">
+                        <IoChevronBackSharp />
+                    </div>
+                    <div className="swiper-button-next">
+                        <IoChevronForwardSharp />
+                    </div>
                     <div className="swiper-pagination"></div>
                 </Swiper>
                 </div>
@@ -220,7 +226,7 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Холод"
+                                notes={{text:'Холод', icon: 'ice'}}
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -230,7 +236,7 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Хрупкое"
+                                notes={{text:'Холод', icon: 'ice'}}
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
@@ -240,7 +246,7 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Холод"
+                                notes={{text:'Хрупкое', icon: 'fragile'}}
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -250,7 +256,7 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Хрупкое"
+                                notes={{text:'Нет', icon: 'none'}}
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
@@ -260,7 +266,7 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Холод"
+                                notes={{text:'Нет', icon: 'none'}}
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -270,12 +276,15 @@ export default function Home() {
                                 route="Казань-Москва"
                                 size="30"
                                 weight="10 т"
-                                notes="Хрупкое"
+                                notes={{text:'Нет', icon: 'none'}}
                             />
                         </SwiperSlide>
-
-                        <div className="swiper-button-prev">❮</div>
-                        <div className="swiper-button-next">❯</div>
+                        <div className="swiper-button-prev">
+                            <IoChevronBackSharp />
+                        </div>
+                        <div className="swiper-button-next">
+                            <IoChevronForwardSharp />
+                        </div>
                         <div className="swiper-pagination"></div>
                     </Swiper>
                 </div>

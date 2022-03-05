@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 import Card from '../components/Card';
-import { IoChevronDownSharp } from 'react-icons/io5';
+import { IoChevronDownSharp, IoSwapHorizontalSharp, IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { IconContext  } from "react-icons";
+
 
 export default function Search() {
     const [search, setSearch] = useState('cargo');
@@ -32,12 +34,14 @@ export default function Search() {
                     <form>
                         <div className="row g-3 g-sm-4 g-xl-5">
                             <div className="col-lg-8 d-sm-flex align-items-end">
-                                <div className="w-50 mb-3 mb-sm-0">
+                                <div className="flex-1 mb-3 mb-sm-0">
                                     <label className="title-font mb-2 mb-xl-3">Откуда</label>
                                     <input type="text" placeholder="Город отправления"/>
                                 </div>
-                                <img src="/cargo/img/icons/arrows.svg" alt="путь" className="d-none d-sm-block icon mx-2 mx-md-3 mb-1 mb-md-2"/>
-                                <div className="w-50">
+                                <IconContext.Provider value={{className: "green icon d-none d-sm-block mx-2 mx-md-3 mb-1 mb-md-2" }}>
+                                    <IoSwapHorizontalSharp />
+                                </IconContext.Provider>
+                                <div className="flex-1">
                                     <label className="title-font mb-2 mb-xl-3">Куда</label>
                                     <input type="text" placeholder="Город назначения"/>
                                 </div>
@@ -97,9 +101,23 @@ export default function Search() {
                                 </>
                             }
                             <div className="col-md-4 d-md-flex align-items-end">
-                                <button type="button" className="d-md-none">
-                                    <span className="blue me-2">Расширенный поиск</span>
-                                    <IoChevronDownSharp color={'#038CB8'} width="20px"/>
+                                <button type="button" onClick={(advSearch) ? ()=>setAdvSearch(false) : ()=>setAdvSearch(true)} className="d-flex align-items-center d-md-none mx-auto mb-4">
+                                    {
+                                        (advSearch) ?
+                                        <>
+                                        <span className="blue me-2">Свернуть поиск</span>
+                                        <IconContext.Provider value={{className: "blue rotate-180", size: "1.25em"}}>
+                                            <IoChevronDownSharp/>
+                                        </IconContext.Provider>
+                                        </>
+                                        : <>
+                                        <span className="blue me-2">Расширенный поиск</span>
+                                        <IconContext.Provider value={{className: "blue", size: "1.25em"}}>
+                                            <IoChevronDownSharp/>
+                                        </IconContext.Provider>
+                                        </>
+                                    }
+                                    
                                 </button>
                                 <button type="button" className="btn btn-2 fs-15 w-100 px-3">Найти грузы</button>
                             </div>
@@ -271,9 +289,7 @@ export default function Search() {
                     <ul className="pagination">
                         <li className="page-item">
                             <a className="page-link" href="/" aria-label="Previous">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 18L9 12L15 6"/>
-                                </svg>
+                                <IoChevronBack />
                             </a>
                         </li>
                         <li className="page-item"><a className="page-link active" href="/">1</a></li>
@@ -283,9 +299,7 @@ export default function Search() {
                         <li className="page-item"><a className="page-link" href="/">6</a></li>
                         <li className="page-item">
                             <a className="page-link" href="/" aria-label="Next">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 18L15 12L9 6"/>
-                                </svg>
+                                <IoChevronForward />
                             </a>
                         </li>
                     </ul>
