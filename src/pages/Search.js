@@ -6,7 +6,7 @@ import { IconContext  } from "react-icons";
 
 
 export default function Search() {
-    const [search, setSearch] = useState('cargo');
+    const [search, setSearch] = useState('cargo'); // cargo & car
     const [advSearch, setAdvSearch] = useState(true);
 
     useEffect(() => {
@@ -127,12 +127,14 @@ export default function Search() {
                     <form>
                         <div className="row g-3 g-sm-4 g-xl-5">
                             <div className="col-lg-8 d-sm-flex align-items-end">
-                                <div className="w-50 mb-3 mb-sm-0">
+                                <div className="flex-1 mb-3 mb-sm-0">
                                     <label className="title-font mb-2 mb-xl-3">Откуда</label>
                                     <input type="text" placeholder="Город отправления"/>
                                 </div>
-                                <img src="/cargo/img/icons/arrows.svg" alt="путь" className="d-none d-sm-block icon mx-2 mx-md-3 mb-1 mb-md-2"/>
-                                <div className="w-50">
+                                <IconContext.Provider value={{className: "green icon d-none d-sm-block mx-2 mx-md-3 mb-1 mb-md-2" }}>
+                                    <IoSwapHorizontalSharp />
+                                </IconContext.Provider>
+                                <div className="flex-1">
                                     <label className="title-font mb-2 mb-xl-3">Куда</label>
                                     <input type="text" placeholder="Город назначения"/>
                                 </div>
@@ -141,52 +143,75 @@ export default function Search() {
                                 <label className="title-font mb-2 mb-xl-3">Дата</label>
                                 <input type="date" placeholder="С сегодняшнего дня"/>
                             </div>
-                            <div className="col-md-7 col-lg-5 col-xxl-4">
-                                <div className="row row-cols-sm-2">
-                                    <div className="mb-3 mb-sm-0">
-                                        <label className="title-font mb-2 mb-xl-3">Объем, м3</label>
-                                        <div className="d-flex align-items-center">
-                                            <input type="number" placeholder="От" />
-                                            <span className="fs-15 mx-1 mx-xl-2">—</span>
-                                            <input type="number" placeholder="До" />
+                            {
+                                (advSearch) &&
+                                <>
+                                    <div className="col-md-7 col-lg-5 col-xxl-4">
+                                        <div className="row row-cols-sm-2">
+                                            <div className="mb-3 mb-sm-0">
+                                                <label className="title-font mb-2 mb-xl-3">Объем, м3</label>
+                                                <div className="d-flex align-items-center">
+                                                    <input type="number" placeholder="От" />
+                                                    <span className="fs-15 mx-1 mx-xl-2">—</span>
+                                                    <input type="number" placeholder="До" />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="title-font mb-2 mb-xl-3">Вес, т</label>
+                                                <div className="d-flex align-items-center">
+                                                    <input type="number" placeholder="От" />
+                                                    <span className="fs-15 mx-1 mx-xl-2">—</span>
+                                                    <input type="number" placeholder="До" />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label className="title-font mb-2 mb-xl-3">Вес, т</label>
-                                        <div className="d-flex align-items-center">
-                                            <input type="number" placeholder="От" />
-                                            <span className="fs-15 mx-1 mx-xl-2">—</span>
-                                            <input type="number" placeholder="До" />
+                                    <div className="col-lg-7 col-xxl-8">
+                                        <label className="title-font mb-2 mb-xl-3">Максимальное значение габаритов груза, м</label>
+                                        <div className="d-sm-flex align-items-center">
+                                            <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
+                                                <label className="me-2">Длина:</label>
+                                                <input type="number" placeholder="0"/>
+                                            </div>
+                                            <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
+                                                <label className="me-2">Ширина:</label>
+                                                <input type="number" placeholder="0"/>
+                                            </div>
+                                            <div className="d-flex align-items-center">
+                                                <label className="me-2">Высота:</label>
+                                                <input type="number" placeholder="0" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-7 col-xxl-8">
-                                <label className="title-font mb-2 mb-xl-3">Максимальное значение габаритов груза, м</label>
-                                <div className="d-sm-flex align-items-center">
-                                    <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
-                                        <label className="me-2">Длина:</label>
-                                        <input type="number" placeholder="0"/>
+                                    <div className="col-sm-6 col-md-4">
+                                        <label className="title-font mb-2 mb-xl-3">Тип груза</label>
+                                        <CustomSelect name="type-cargo" className="w-100" btnClass="inp fs-15" checkedOpt="Не важно" options={['Не важно', 'Тип 1', 'Тип 2']}/>
                                     </div>
-                                    <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
-                                        <label className="me-2">Ширина:</label>
-                                        <input type="number" placeholder="0"/>
+                                    <div className="col-sm-6 col-md-4">
+                                        <label className="title-font mb-2 mb-xl-3">Особые пометки</label>
+                                        <CustomSelect name="special-notes" className="w-100" btnClass="inp fs-15" checkedOpt="Нет" options={['Нет', 'Пометка 1', 'Пометка 2']}/>
                                     </div>
-                                    <div className="d-flex align-items-center">
-                                        <label className="me-2">Высота:</label>
-                                        <input type="number" placeholder="0" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-sm-6 col-md-4">
-                                <label className="title-font mb-2 mb-xl-3">Тип груза</label>
-                                <CustomSelect name="type-cargo" className="w-100" btnClass="inp fs-15" checkedOpt="Не важно" options={['Не важно', 'Тип 1', 'Тип 2']}/>
-                            </div>
-                            <div className="col-sm-6 col-md-4">
-                                <label className="title-font mb-2 mb-xl-3">Особые пометки</label>
-                                <CustomSelect name="special-notes" className="w-100" btnClass="inp fs-15" checkedOpt="Нет" options={['Нет', 'Пометка 1', 'Пометка 2']}/>
-                            </div>
-                            <div className="col-md-4 d-flex align-items-end">
+                                </>
+                            }
+                            <div className="col-md-4 d-md-flex align-items-end">
+                                <button type="button" onClick={(advSearch) ? ()=>setAdvSearch(false) : ()=>setAdvSearch(true)} className="d-flex align-items-center d-md-none mx-auto mb-4">
+                                    {
+                                        (advSearch) ?
+                                        <>
+                                        <span className="blue me-2">Свернуть поиск</span>
+                                        <IconContext.Provider value={{className: "blue rotate-180", size: "1.25em"}}>
+                                            <IoChevronDownSharp/>
+                                        </IconContext.Provider>
+                                        </>
+                                        : <>
+                                        <span className="blue me-2">Расширенный поиск</span>
+                                        <IconContext.Provider value={{className: "blue", size: "1.25em"}}>
+                                            <IoChevronDownSharp/>
+                                        </IconContext.Provider>
+                                        </>
+                                    }
+                                    
+                                </button>
                                 <button type="button" className="btn btn-2 fs-15 w-100 px-3">Найти МаШИНЫ</button>
                             </div>
                         </div>
@@ -202,88 +227,327 @@ export default function Search() {
                         <CustomSelect name="sort" className="w-100" alignment="right" checkedOpt="По времени добавления" options={['По времени добавления', 'По другому признаку']}/>
                     </div>
                 </div>
-                <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
+                
+                {
+                    (search === 'cargo') ?
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="cold"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="fragile"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Стройматериалы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="none"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Трубы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="dimensional"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="cold"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="fragile"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Стройматериалы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="none"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Трубы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="dimensional"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Продукты питания" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="cold"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Оборудование" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="fragile"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Стройматериалы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="none"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="cargo"
+                                className=""
+                                title="Трубы" 
+                                route="Казань-Москва"
+                                size="30"
+                                weight="10 т"
+                                notes="dimensional"
+                                url="cargo-page"
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
+                    :
+                    <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Тягач"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Рефрижератор"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Тягач"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Рефрижератор"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Тягач"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Рефрижератор"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
+                        <div>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                    <div>
-                        <Card 
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="Холод"
-                        />
-                    </div>
-                </div>
+                }
                 <button type="button" className="fs-11 dark-blue mx-auto mt-4 mt-sm-5 bb-1">Показать еще</button>
                 <nav className="mt-4">
                     <ul className="pagination">

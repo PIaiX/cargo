@@ -113,63 +113,75 @@ export default function Home() {
                     }}
                 >
                     <SwiperSlide>
-                            <Card 
-                                className=""
-                                title="Продукты питания" 
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes={{text:'Холод', icon: 'ice'}}
-                            />
-                        </SwiperSlide>
-                    <SwiperSlide>
                         <Card 
-                            className=""
-                            title="Оборудование" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes={{text:'Холод', icon: 'ice'}}
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>    
-                        <Card 
+                            type="cargo"
                             className=""
                             title="Продукты питания" 
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes={{text:'Хрупкое', icon: 'fragile'}}
+                            notes="cold"
+                            url="cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
                         <Card 
+                            type="cargo"
                             className=""
                             title="Оборудование" 
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes={{text:'Нет', icon: 'none'}}
+                            notes="fragile"
+                            url="cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>    
                         <Card 
+                            type="cargo"
+                            className=""
+                            title="Стройматериалы" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="none"
+                            url="cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Трубы" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="dimensional"
+                            url="cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
                             className=""
                             title="Продукты питания" 
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes={{text:'Нет', icon: 'none'}}
+                            notes="cold"
+                            url="cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
                         <Card 
+                            type="cargo"
                             className=""
                             title="Оборудование" 
                             route="Казань-Москва"
                             size="30"
                             weight="10 т"
-                            notes={{text:'Нет', icon: 'none'}}
+                            notes="fragile"
+                            url="cargo-page"
                         />
                     </SwiperSlide>
                     <div className="swiper-button-prev">
@@ -221,62 +233,114 @@ export default function Home() {
                     >
                         <SwiperSlide>
                             <Card 
+                                type="car"
                                 className=""
-                                title="Продукты питания" 
                                 route="Казань-Москва"
+                                carType="Фура"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Холод', icon: 'ice'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
                             <Card 
+                                type="car"
                                 className=""
-                                title="Оборудование" 
-                                route="Казань-Москва"
+                                route="Казань — Москва"
+                                carType="Тягач"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Холод', icon: 'ice'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
                             <Card 
+                                type="car"
                                 className=""
-                                title="Продукты питания" 
-                                route="Казань-Москва"
+                                route="Казань — Москва"
+                                carType="Рефрижератор"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Хрупкое', icon: 'fragile'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
                             <Card 
+                                type="car"
                                 className=""
-                                title="Оборудование" 
                                 route="Казань-Москва"
+                                carType="Фура"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Нет', icon: 'none'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань-Москва"
+                                carType="Фура"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
+                            />
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Card 
+                                type="car"
+                                className=""
+                                route="Казань — Москва"
+                                carType="Тягач"
+                                verified={true}
+                                date="Ежедневно"
+                                carrying="20"
+                                size="30"
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
                             <Card 
+                                type="car"
                                 className=""
-                                title="Продукты питания" 
-                                route="Казань-Москва"
+                                route="Казань — Москва"
+                                carType="Рефрижератор"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Нет', icon: 'none'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
                             <Card 
+                                type="car"
                                 className=""
-                                title="Оборудование" 
                                 route="Казань-Москва"
+                                carType="Фура"
+                                verified={false}
+                                date="Ежедневно"
+                                carrying="20"
                                 size="30"
-                                weight="10 т"
-                                notes={{text:'Нет', icon: 'none'}}
+                                dimensions="13/2,45/2,45"
+                                url="cargo-page"
                             />
                         </SwiperSlide>
                         <div className="swiper-button-prev">

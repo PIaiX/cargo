@@ -668,7 +668,7 @@ button {
   fill: #01BFC4;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5 {
   font-family: "Gotham Pro";
 }
 
@@ -735,11 +735,18 @@ h3 {
 }
 
 h4 {
-  font-family: "Gotham Pro";
   text-align: left;
   color: #545454;
   font-size: 1.5em;
   font-weight: 700;
+}
+
+h5 {
+  text-align: left;
+  color: #02537D;
+  font-size: 1.25em;
+  font-weight: 700;
+  margin-bottom: 1em;
 }
 
 .title-font {
@@ -862,6 +869,10 @@ h4 {
   color: #545454;
 }
 
+.red {
+  color: #D17777;
+}
+
 .rotate-180 {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
@@ -979,6 +990,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #545454;
   font-size: 16px;
+  font-weight: 400;
   background-color: rgba(213, 246, 239, 0.2);
 }
 
@@ -1311,6 +1323,15 @@ main {
   .card-mini .btn-1 {
     font-size: 1em;
   }
+}
+
+.card-mini .icon {
+  color: #038CB8;
+}
+
+.card-mini .icon svg {
+  width: 1.5em;
+  height: 1.5em;
 }
 
 /* SECTION 4 */
@@ -2012,6 +2033,12 @@ main {
     width: 2em;
     height: 2em;
   }
+}
+
+/* SECTION 8 */
+#sec-8 .border {
+  border: 1px solid #E0E0E0;
+  border-radius: 6px;
 }
 
 footer {
