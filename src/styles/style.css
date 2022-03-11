@@ -527,9 +527,11 @@ button {
   width: fit-content;
   font-size: 1em;
   line-height: normal;
+  font-weight: 500;
 }
 
 .btn-1 {
+  border: 1px solid #01BFC4;
   background-color: #01BFC4;
   color: #fff;
 }
@@ -537,102 +539,57 @@ button {
 .btn-1:hover, .btn-1:focus, .btn-1:active {
   color: #fff;
   background-color: #02537D;
+  border: 1px solid #02537D;
 }
 
 .btn-1:disabled {
   color: #C4C4C4;
   background-color: #7a7878;
+  border: 1px solid #7a7878;
 }
 
 .btn-2 {
-  text-transform: uppercase;
   background-color: #038CB8;
+  border: 1px solid #038CB8;
   color: #fff;
 }
 
 .btn-2:hover, .btn-2:focus, .btn-2:active {
   color: #fff;
   background-color: #02537D;
+  border: 1px solid #02537D;
 }
 
 .btn-2:disabled {
   color: #C4C4C4;
   background-color: #7a7878;
+  border: 1px solid #7a7878;
 }
 
 .btn-2 svg line {
   stroke: #fff;
 }
 
+.btn-3 {
+  background-color: transparent;
+  border: 1px solid #01BFC4;
+  color: #01BFC4;
+}
+
+.btn-3:hover, .btn-3:focus, .btn-3:active {
+  color: #038CB8;
+  background-color: transparent;
+  border: 1px solid #038CB8;
+}
+
+.btn-3:disabled {
+  color: #7a7878;
+  background-color: transparent;
+  border: 1px solid #7a7878;
+}
+
 .btn-view svg rect {
   fill: #038CB8;
-}
-
-.btn-fav {
-  width: 2.125em;
-  height: 2.125em;
-  border-radius: 50%;
-  background-color: #02537D;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding-top: 2px;
-}
-
-.btn-fav svg {
-  width: 1.375em;
-  height: 1.375em;
-  fill: none;
-}
-
-.btn-fav svg path {
-  fill: #828282;
-  -webkit-transition: .2s ease-in-out;
-  transition: .2s ease-in-out;
-}
-
-.btn-fav:hover svg path, .btn-fav:focus svg path {
-  fill: #01BFC4;
-}
-
-.btn-fav:active, .btn-fav.clicked {
-  background-color: #038CB8;
-}
-
-.btn-fav:active svg path, .btn-fav.clicked svg path {
-  fill: #fff;
-}
-
-.btn-pin {
-  width: 2.125em;
-  height: 2.125em;
-  border-radius: 50%;
-  background-color: #02537D;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.btn-pin svg {
-  width: 1em;
-  height: 1.125em;
-  fill: none;
-}
-
-.btn-pin svg path {
-  fill: #01BFC4;
 }
 
 .btn-notice {
@@ -1140,6 +1097,10 @@ header .icon {
 main {
   min-height: calc(100vh - 230px);
   position: relative;
+}
+
+main.bg-white {
+  background-color: #fff;
 }
 
 @media (max-width: 767px) {
@@ -2038,6 +1999,22 @@ main {
 /* SECTION 8 */
 #sec-8 .border {
   border: 1px solid #E0E0E0;
+  border-radius: 6px;
+}
+
+#sec-8 .icon {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+#sec-8 .icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+#sec-8 .user-contacts {
+  background-color: #F2F6F6;
+  padding: 1em;
   border-radius: 6px;
 }
 

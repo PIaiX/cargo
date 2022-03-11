@@ -121,7 +121,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="cold"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -133,7 +133,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="fragile"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>    
@@ -145,7 +145,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="none"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -157,7 +157,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="dimensional"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -169,7 +169,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="cold"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <SwiperSlide>
@@ -181,7 +181,7 @@ export default function Home() {
                             size="30"
                             weight="10 т"
                             notes="fragile"
-                            url="cargo-page"
+                            url="/cargo-page"
                         />
                     </SwiperSlide>
                     <div className="swiper-button-prev">
@@ -242,7 +242,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -256,7 +256,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
@@ -270,7 +270,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -284,7 +284,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -298,7 +298,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -312,7 +312,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>    
@@ -326,7 +326,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <SwiperSlide>
@@ -340,7 +340,7 @@ export default function Home() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </SwiperSlide>
                         <div className="swiper-button-prev">

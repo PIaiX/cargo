@@ -240,7 +240,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="cold"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -252,7 +252,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="fragile"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -264,7 +264,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="none"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -276,7 +276,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="dimensional"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -288,7 +288,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="cold"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -300,7 +300,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="fragile"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -312,7 +312,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="none"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -324,7 +324,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="dimensional"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -336,7 +336,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="cold"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -348,7 +348,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="fragile"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -360,7 +360,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="none"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -372,7 +372,7 @@ export default function Search() {
                                 size="30"
                                 weight="10 т"
                                 notes="dimensional"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                     </div>
@@ -389,7 +389,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -403,7 +403,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -417,7 +417,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -431,7 +431,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -445,7 +445,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -459,7 +459,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -473,7 +473,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -487,7 +487,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -501,7 +501,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -515,7 +515,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -529,7 +529,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                         <div>
@@ -543,7 +543,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="cargo-page"
+                                url="/cargo-page"
                             />
                         </div>
                     </div>
