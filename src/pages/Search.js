@@ -26,8 +26,14 @@ export default function Search() {
         <main>
             <section id="sec-7" className="py-4 py-sm-5 container">
                 <div className="switch">
-                    <button type="button" onClick={() => setSearch('cargo')} className={(search === 'cargo') && "active"}>Найти груз</button>
-                    <button type="button" onClick={() => setSearch('car')} className={(search === 'car') && "active"}>Найти машину</button>
+                    <button type="button" onClick={() => setSearch('cargo')} className={(search === 'cargo') && "active"}>
+                        <img src="/cargo/img/bg/cargo.png" alt="грузы" />
+                        <span>Найти груз</span>
+                    </button>
+                    <button type="button" onClick={() => setSearch('car')} className={(search === 'car') && "active"}>
+                        <img src="/cargo/img/bg/car.png" alt="машина" />
+                        <span>Найти машину</span>
+                    </button>
                 </div>
                 {
                     (search === 'cargo') ?

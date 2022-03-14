@@ -29,6 +29,7 @@ export default function Card(props) {
     if(type === 'cargo') {
         return (
             <div className={"card-mini " + props.className}>
+                <div>
                 <div className="title mb-2 mb-sm-3">{props.title}</div>
                 {
                     (props.route) &&
@@ -61,12 +62,14 @@ export default function Card(props) {
                         })
                     }
                 </div>
+                </div>
                 <Link to={props.url} className="btn btn-1 mt-2 mt-sm-4 mt-xl-5">Перейти</Link>
             </div>
         )
     } else if(type === 'car'){
         return (
             <div className={"card-mini " + props.className}>
+                <div>
                 <div className="title mb-2 mb-sm-3">{props.route}</div>
                 {
                     (props.carType) &&
@@ -96,6 +99,7 @@ export default function Card(props) {
                     (props.dimensions)&&
                     <div className="fs-11 mt-1 mt-sm-2"><span className="fw-5">Габариты кузова:</span> {props.dimensions} м</div>
                 }
+                </div>
                 <Link to={props.url} className="btn btn-1 mt-2 mt-sm-3 mt-xl-4">Перейти</Link>
             </div>
         )

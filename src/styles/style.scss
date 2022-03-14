@@ -843,6 +843,10 @@ main {
     background: #FFF;
     box-shadow: 1px 4px 9px rgba($green, 0.34);
     padding: 2em;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     @media (max-width: 991px){
         padding: 1.5em;
         font-size: 12px;
@@ -1251,29 +1255,23 @@ main {
             text-transform: uppercase;
             padding: 2em 6em 2em 2em;
             border-radius: 8px 8px 0px 0px;
-            background-repeat: no-repeat;
-            background-size: auto 165%;
-            background-position: right center;
-            background-blend-mode: overlay;
             position: relative;
             z-index: 1;
-            @media (max-width: 991px){
-                padding: 1em 4em 1em 2em;
-            }
-            @media (max-width: 767px){
-                padding: 1em 2em;
-                text-align: center;
-            }
-            @media (max-width: 575px){padding: .75em 1em;}
-            &:first-child {
-                background-image: url(bg-imgs/cargo.png);
-                @media (max-width: 767px){background-image:none;}
-            }
-            &:nth-child(2) {
-                background-image: url(bg-imgs/car.png);
-                @media (max-width: 767px){background-image:none;}
-            }
+            overflow: hidden;
             @include flex-center();
+            span {
+                position: relative;
+                z-index: 1;
+            }
+            img {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 0px;
+                height: 160%;
+                z-index: 0;
+                opacity: 50%;
+            }
             &.active {
                 background-color: $green;
                 color: #fff;
@@ -1282,6 +1280,15 @@ main {
                     box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
                 }
             }
+            @media (max-width: 991px){
+                padding: 1em 4em 1em 2em;
+            }
+            @media (max-width: 767px){
+                padding: 1em 2em;
+                text-align: center;
+                img {display: none;}
+            }
+            @media (max-width: 575px){padding: .75em 1em;}
         }
     }
     form {
@@ -1335,8 +1342,24 @@ main {
     }
     .user-contacts {
         background-color: #F2F6F6;
-        padding: 1em;
+        padding: 2em;
         border-radius: 6px;
+        img.logo {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: auto;
+        }
+        img.sample {
+            width: 100%;
+            height: 220px;
+            object-fit: scale-down;
+            opacity: 50%;
+            display: block;
+            margin: auto;
+        }
     }
 }
 
@@ -1351,6 +1374,10 @@ footer {
 .swiper-4 {
     overflow: hidden;
     padding: 1em 0 2em;
+    .swiper-wrapper {
+        align-items: stretch;
+        .swiper-slide {height: auto;}
+    }
     .swiper-button-prev,
     .swiper-button-next {
         font-size: 1em;

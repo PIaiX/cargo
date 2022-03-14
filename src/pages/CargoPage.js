@@ -1,7 +1,17 @@
 import React from 'react';
+
+import Card from '../components/Card';
+
 import { RiFlag2Fill, RiChat4Fill } from "react-icons/ri";
+import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 import { IoCalendarOutline, IoTimeOutline, IoLocationSharp, IoCube, IoRepeat, IoSnow } from "react-icons/io5";
 import { IconContext } from "react-icons";
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination } from 'swiper';
+import UserContacts from '../components/UserContacts';
+SwiperCore.use([Navigation, Pagination]);
+
 
 export default function CargoPage() {
     return (
@@ -33,10 +43,7 @@ export default function CargoPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="user-contacts">
-                            <h4 className="text-center">ООО НТК</h4>
-                            <button type="button" className="btn btn-2 fs-11 mt-4 mx-auto">Показать контакты</button>
-                        </div>
+                        <UserContacts type="cargo" img="/cargo/img/users/logo.png" company="ООО НТК"/>
                     </div>
                     <div className="col-9">
                         <div className="d-flex">
@@ -193,6 +200,124 @@ export default function CargoPage() {
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <section className="sec-3 container mt-5 mb-6">
+                <h2>Похожие объявления</h2>
+                <div className="position-relative mb-4">
+                <Swiper className="swiper-4"
+                    spaceBetween={4}
+                    slidesPerView={2}
+                    breakpoints={{
+                        576: {
+                            slidesPerView: 2,
+                            spaceBetween: 10,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                            spaceBetween: 8,
+                        },
+                        992: {
+                            slidesPerView: 3,
+                            spaceBetween: 16,
+                        },
+                        1400: {
+                            slidesPerView: 4,
+                            spaceBetween: 20,
+                        }
+                    }}
+                    pagination={{
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                        clickable: true,
+                    }}
+                    navigation={{
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    }}
+                >
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Продукты питания" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="cold"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Оборудование" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="fragile"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>    
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Стройматериалы" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="none"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Трубы" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="dimensional"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Продукты питания" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="cold"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <Card 
+                            type="cargo"
+                            className=""
+                            title="Оборудование" 
+                            route="Казань-Москва"
+                            size="30"
+                            weight="10 т"
+                            notes="fragile"
+                            url="/cargo-page"
+                        />
+                    </SwiperSlide>
+                    <div className="swiper-button-prev">
+                        <IoChevronBackSharp />
+                    </div>
+                    <div className="swiper-button-next">
+                        <IoChevronForwardSharp />
+                    </div>
+                    <div className="swiper-pagination"></div>
+                </Swiper>
+                </div>
+                <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти груз</button>
             </section>
         </main>
     )
