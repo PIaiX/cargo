@@ -1,6 +1,6 @@
 import React from 'react';
-
 import Card from '../components/Card';
+import UserContacts from '../components/UserContacts';
 
 import { RiFlag2Fill, RiChat4Fill } from "react-icons/ri";
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
@@ -9,7 +9,6 @@ import { IconContext } from "react-icons";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
-import UserContacts from '../components/UserContacts';
 SwiperCore.use([Navigation, Pagination]);
 
 
@@ -17,18 +16,18 @@ export default function CargoPage() {
     return (
         <main className="bg-white">
             <section id="sec-8" className="container py-4 py-sm-5">
-                <h1 className="mb-5">Груз № 356790 Гомзово — Набережные Челны</h1>
+                <h1 className="mb-4 mb-sm-5">Груз № 356790 Гомзово — Набережные Челны</h1>
                 <div className="row flex-md-row-reverse">
-                    <div className="col-3">
-                        <div className="order-1 mb-4">
-                            <h5>Маршрут</h5>
+                    <div className="col-md-5 col-xl-4 col-xxl-3 d-flex flex-column">
+                        <div className="order-3 order-md-1 mb-4 mb-xxl-5">
+                            <h5 className="mb-2 mb-lg-3">Маршрут</h5>
                             <div className="border p-3">
                                 <div className="mb-2"><span className="green fw-5">452 км</span> Казань — Набережные Челны — Москва</div>
                                 <div><span className="red fw-5">584 км</span> Альметьевск — Казань — Набережные Челны — Москва</div>
                             </div>
                         </div>
-                        <div className="order-2 mb-5">
-                            <h5>Оплата</h5>
+                        <div className="order-2 mb-4 mb-lg-5">
+                            <h5 className="mb-2 mb-lg-3">Оплата</h5>
                             <div className="border p-3">
                                 <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
                                     <div>58 000 ₽ с НДС</div>
@@ -43,32 +42,32 @@ export default function CargoPage() {
                                 </div>
                             </div>
                         </div>
-                        <UserContacts type="cargo" img="/cargo/img/users/logo.png" company="ООО НТК"/>
+                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/cargo/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
                     </div>
-                    <div className="col-9">
-                        <div className="d-flex">
-                            <IconContext.Provider value={{className: "green icon me-3"}}>
+                    <div className="col-md-7 col-xl-8 col-xxl-9">
+                        <div className="d-flex mb-2 mb-lg-3">
+                            <IconContext.Provider value={{className: "green icon me-2 me-sm-3"}}>
                                 <RiFlag2Fill />
                             </IconContext.Provider>
-                            <h5>Загрузка</h5>
+                            <h5 className="mb-0">Загрузка</h5>
                         </div>
-                        <div className="border p-3 mb-5">
-                            <div className="d-flex">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                            <div className="d-flex flex-wrap align-items-center">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Дата: </span>
                                 <time>11.11.2021</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoTimeOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Время загрузки: </span>
                                 <time>07:00–18:00</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoLocationSharp />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
@@ -77,29 +76,29 @@ export default function CargoPage() {
                             </div>
                         </div>
 
-                        <div className="d-flex">
-                            <IconContext.Provider value={{className: "green icon me-3"}}>
+                        <div className="d-flex mb-2 mb-lg-3">
+                            <IconContext.Provider value={{className: "green icon me-2 me-sm-3"}}>
                                 <RiFlag2Fill />
                             </IconContext.Provider>
-                            <h5>Загрузка 2</h5>
+                            <h5 className="mb-0">Загрузка 2</h5>
                         </div>
-                        <div className="border p-3 mb-5">
-                            <div className="d-flex">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                            <div className="d-flex flex-wrap align-items-center">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Дата: </span>
                                 <time>11.11.2021</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoTimeOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Время загрузки: </span>
                                 <time>07:00–18:00</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoLocationSharp />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
@@ -108,29 +107,29 @@ export default function CargoPage() {
                             </div>
                         </div>
 
-                        <div className="d-flex">
-                            <IconContext.Provider value={{className: "green icon me-3"}}>
+                        <div className="d-flex mb-2 mb-lg-3">
+                            <IconContext.Provider value={{className: "green icon me-2 me-sm-3"}}>
                                 <RiFlag2Fill />
                             </IconContext.Provider>
-                            <h5>Разгрузка</h5>
+                            <h5 className="mb-0">Разгрузка</h5>
                         </div>
-                        <div className="border p-3 mb-5">
-                            <div className="d-flex">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                            <div className="d-flex flex-wrap align-items-center">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Дата: </span>
                                 <time>11.11.2021</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoTimeOutline />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Время разгрузки: </span>
                                 <time>07:00–18:00</time>
                             </div>
-                            <div className="d-flex mt-2">
-                                <IconContext.Provider value={{className: "gray-4 icon me-3"}}>
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
+                                <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoLocationSharp />
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место разгрузки: </span>
@@ -139,60 +138,60 @@ export default function CargoPage() {
                             </div>
                         </div>
 
-                        <div className="d-flex">
-                            <IconContext.Provider value={{className: "green icon me-3"}}>
+                        <div className="d-flex mb-2 mb-lg-3">
+                            <IconContext.Provider value={{className: "green icon me-2 me-sm-3"}}>
                                 <IoCube />
                             </IconContext.Provider>
-                            <h5>Груз</h5>
+                            <h5 className="mb-0">Груз</h5>
                         </div>
-                        <div className="border p-3 mb-5">
-                            <div className="d-flex">
+                        <div className="border p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
+                            <div className="d-flex flex-wrap align-items-center">
                                 <span className="fw-5 me-2">Тип груза: </span>
                                 <span>Продукты</span>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Объем: </span>
                                 <span>10 м<sup>3</sup></span>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Вес: </span>
                                 <span>10 т</span>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Габариты: </span>
                                 <span>10/1/3 м</span>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Упаковка: </span>
                                 <span>Коробки 20шт</span>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Особые пометки: </span>
                                 <span>Холод</span>
                                 <IconContext.Provider value={{className: "blue icon ms-2"}}>
                                     <IoSnow/>
                                 </IconContext.Provider>
                             </div>
-                            <div className="d-flex mt-2">
+                            <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                 <span className="fw-5 me-2">Требования к машине: </span>
                                 <span>Изотермический, Рефрижератор 0-5°C</span>
                             </div>
                         </div>
 
-                        <div className="d-flex">
-                            <IconContext.Provider value={{className: "green icon me-3"}}>
+                        <div className="d-flex mb-2 mb-lg-3">
+                            <IconContext.Provider value={{className: "green icon me-2 me-sm-3"}}>
                                 <RiChat4Fill />
                             </IconContext.Provider>
-                            <h5>Примечание</h5>
+                            <h5 className="mb-0">Примечание</h5>
                         </div>
-                        <div className="border p-3 mb-5">
+                        <div className="border p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                             <div>Требуется мед. книжка и сан.обработка.</div>
                         </div>
 
-                        <div className="d-flex justify-content-end">
+                        <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
                             <button type="button" className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ</button>
-                            <button type="button" className="btn btn-3 fs-12 ms-3">
-                                <IconContext.Provider value={{className: "icon me-3"}}>
+                            <button type="button" className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3">
+                                <IconContext.Provider value={{className: "icon me-1 me-lg-3"}}>
                                     <IoRepeat />
                                 </IconContext.Provider>
                                 <span>Поиск грузов в обратном направлении</span>

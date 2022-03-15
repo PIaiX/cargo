@@ -395,7 +395,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -409,7 +409,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -423,7 +423,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -437,7 +437,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -451,7 +451,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -465,7 +465,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -479,7 +479,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -493,7 +493,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -507,7 +507,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -521,7 +521,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -535,7 +535,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                         <div>
@@ -549,7 +549,7 @@ export default function Search() {
                                 carrying="20"
                                 size="30"
                                 dimensions="13/2,45/2,45"
-                                url="/cargo-page"
+                                url="/car-page"
                             />
                         </div>
                     </div>
