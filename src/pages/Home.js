@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from '../components/Card';
 import Article from '../components/Article';
 
@@ -38,7 +39,7 @@ export default function Home() {
                             <div className="box text-center">
                                 <div className="title-font dark-blue fw-9 fs-25 mb-2">2 512 359</div>
                                 <div className="fs-12 mb-3">Грузов доставленно</div>
-                                <button type="button" className="btn btn-1 fs-12 w-100 px-2">Добавить груз</button>
+                                <Link to="add-cargo" className="btn btn-1 fs-12 w-100 px-2">Добавить груз</Link>
                             </div>
                             <div className="box text-center">
                                 <div className="title-font dark-blue fw-9 fs-25 mb-2">12 359</div>

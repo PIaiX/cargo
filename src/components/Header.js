@@ -18,7 +18,7 @@ export default function Header() {
                         <a href="/">Задать вопрос</a>
                     </nav>
                     <div className="d-flex align-items-center ms-5">
-                        <button type="button" className="d-none d-md-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
+                        <button type="button" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
                             <IconContext.Provider value={{className: "icon", title: "аккаунт" }}>
                                 <MdPersonOutline />

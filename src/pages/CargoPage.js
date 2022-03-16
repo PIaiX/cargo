@@ -3,8 +3,7 @@ import Card from '../components/Card';
 import UserContacts from '../components/UserContacts';
 
 import { RiFlag2Fill, RiChat4Fill } from "react-icons/ri";
-import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
-import { IoCalendarOutline, IoTimeOutline, IoLocationSharp, IoCube, IoRepeat, IoSnow } from "react-icons/io5";
+import { IoChevronBackSharp, IoChevronForwardSharp, IoWarning, IoEllipsisVertical, IoCalendarOutline, IoTimeOutline, IoLocationSharp, IoCube, IoRepeat, IoSnow } from 'react-icons/io5';
 import { IconContext } from "react-icons";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -16,19 +15,36 @@ export default function CargoPage() {
     return (
         <main className="bg-white">
             <section id="sec-8" className="container py-4 py-sm-5">
-                <h1 className="mb-4 mb-sm-5">Груз № 356790 Гомзово — Набережные Челны</h1>
+                <div className="d-flex align-items-center justify-content-between mb-4 mb-sm-5">
+                    <h1 className="mb-0">Груз № 356790 Гомзово — Набережные Челны</h1>
+                    <div className="dropdown d-block d-md-none">
+                        <button type="button" data-bs-toggle="dropdown" aria-expanded="false" className="dropdown-toggle">
+                            <IconContext.Provider value={{className: "green icon-20"}}>
+                                <IoEllipsisVertical />
+                            </IconContext.Provider>
+                        </button>
+                        <div className="dropdown-menu">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#report" className="gray-3 d-flex align-items-center">
+                                <IconContext.Provider value={{className: "gray-4 icon"}}>
+                                    <IoWarning />
+                                </IconContext.Provider>
+                                <span className="ms-2">Подать жалобу</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div className="row flex-md-row-reverse">
                     <div className="col-md-5 col-xl-4 col-xxl-3 d-flex flex-column">
                         <div className="order-3 order-md-1 mb-4 mb-xxl-5">
                             <h5 className="mb-2 mb-lg-3">Маршрут</h5>
-                            <div className="border p-3">
+                            <div className="box p-3">
                                 <div className="mb-2"><span className="green fw-5">452 км</span> Казань — Набережные Челны — Москва</div>
                                 <div><span className="red fw-5">584 км</span> Альметьевск — Казань — Набережные Челны — Москва</div>
                             </div>
                         </div>
                         <div className="order-2 mb-4 mb-lg-5">
                             <h5 className="mb-2 mb-lg-3">Оплата</h5>
-                            <div className="border p-3">
+                            <div className="box p-3">
                                 <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
                                     <div>58 000 ₽ с НДС</div>
                                     <div>(80 ₽/км)</div>
@@ -43,6 +59,12 @@ export default function CargoPage() {
                             </div>
                         </div>
                         <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/cargo/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#report" className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
+                            <IconContext.Provider value={{className: "gray-4 icon"}}>
+                                <IoWarning />
+                            </IconContext.Provider>
+                            <span className="ms-2">Подать жалобу</span>
+                        </button>
                     </div>
                     <div className="col-md-7 col-xl-8 col-xxl-9">
                         <div className="d-flex mb-2 mb-lg-3">
@@ -51,7 +73,7 @@ export default function CargoPage() {
                             </IconContext.Provider>
                             <h5 className="mb-0">Загрузка</h5>
                         </div>
-                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                        <div className="box p-3 p-lg-4 mb-4 mb-lg-5">
                             <div className="d-flex flex-wrap align-items-center">
                                 <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
@@ -82,7 +104,7 @@ export default function CargoPage() {
                             </IconContext.Provider>
                             <h5 className="mb-0">Загрузка 2</h5>
                         </div>
-                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                        <div className="box p-3 p-lg-4 mb-4 mb-lg-5">
                             <div className="d-flex flex-wrap align-items-center">
                                 <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
@@ -113,7 +135,7 @@ export default function CargoPage() {
                             </IconContext.Provider>
                             <h5 className="mb-0">Разгрузка</h5>
                         </div>
-                        <div className="border p-3 p-lg-4 mb-4 mb-lg-5">
+                        <div className="box p-3 p-lg-4 mb-4 mb-lg-5">
                             <div className="d-flex flex-wrap align-items-center">
                                 <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                     <IoCalendarOutline />
@@ -144,7 +166,7 @@ export default function CargoPage() {
                             </IconContext.Provider>
                             <h5 className="mb-0">Груз</h5>
                         </div>
-                        <div className="border p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
+                        <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                             <div className="d-flex flex-wrap align-items-center">
                                 <span className="fw-5 me-2">Тип груза: </span>
                                 <span>Продукты</span>
@@ -184,12 +206,12 @@ export default function CargoPage() {
                             </IconContext.Provider>
                             <h5 className="mb-0">Примечание</h5>
                         </div>
-                        <div className="border p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
+                        <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                             <div>Требуется мед. книжка и сан.обработка.</div>
                         </div>
 
                         <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                            <button type="button" className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ</button>
+                            <button type="button" data-bs-toggle="offcanvas" data-bs-target="#warning" className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ</button>
                             <button type="button" className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3">
                                 <IconContext.Provider value={{className: "icon me-1 me-lg-3"}}>
                                     <IoRepeat />
