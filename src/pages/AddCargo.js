@@ -30,6 +30,11 @@ export default function AddCargo() {
                                             <input type="radio" name="frequency" value="Постоянно"/>
                                             <span className="title-font fs-12 fw-5 ms-3">Постоянно</span>
                                         </label>
+                                        <div className="d-flex align-items-center">
+                                            <input type="date" />
+                                            <span className="mx-3">+</span>
+                                            <input type="date" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
