@@ -112,7 +112,7 @@ textarea::placeholder {
   background: #ffffff;
   border: 1px solid #E0E0E0;
   border-radius: 8px;
-  padding: .5em .85em;
+  padding: .6em .85em;
   width: 100%;
 }
 
@@ -131,19 +131,24 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
   margin: 0;
 }
 
-input[type="number"].price {
-  background-image: url(bg-imgs/rub.svg);
+input[type="number"].price, input[type="number"].size, input[type="number"].length, input[type="number"].weight {
   padding: .5em 1.5em .5em .5em;
 }
 
-input[type="number"].area {
-  background-image: url(bg-imgs/м2.svg);
-  padding: .5em 1.5em .5em .5em;
+input[type="number"].price {
+  background-image: url(bg-imgs/rub.svg);
+}
+
+input[type="number"].size {
+  background-image: url(bg-imgs/м3.svg);
 }
 
 input[type="number"].length {
   background-image: url(bg-imgs/м.svg);
-  padding: .5em 1.5em .5em .5em;
+}
+
+input[type="number"].weight {
+  background-image: url(bg-imgs/tons.svg);
 }
 
 input[type="radio"] {
@@ -185,18 +190,20 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
-  width: 16px;
-  height: 16px;
-  background-color: transparent;
+  width: 1.25rem;
+  height: 1.25rem;
   padding: 0px;
   border-radius: 2px;
-  -webkit-box-sizing: content-box;
-          box-sizing: content-box;
+  border: 1px solid #E0E0E0;
+  background-image: url(bg-imgs/mark.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #fff;
 }
 
 input[type="checkbox"]:checked {
-  background: url(bg-imgs/mark2.svg) no-repeat center;
-  background-size: auto;
+  border: 1px solid #038CB8;
+  background-color: #038CB8;
 }
 
 input::-webkit-calendar-picker-indicator {
@@ -210,10 +217,6 @@ label {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-}
-
-label input:checked + span {
-  color: #01BFC4;
 }
 
 label span {
@@ -250,10 +253,12 @@ select {
   width: -moz-fit-content;
   width: fit-content;
   outline: none;
-  border: none;
   line-height: normal;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: .6em 1.7em .6em .7em;
+  background: url(bg-imgs/caret-down.svg) no-repeat calc(100% - .5em) center;
   background-size: 1em .5em;
-  padding: 0 1.2em 0 0;
 }
 
 /* custom select */
@@ -374,10 +379,15 @@ select {
   border-radius: 0px;
   -webkit-transition: .2s;
   transition: .2s;
+  border: none;
 }
 
 .custom-select .options label.radio-line input:checked {
   background-color: rgba(1, 191, 196, 0.22);
+}
+
+.custom-select .options label.radio-line input:checked::before {
+  content: unset;
 }
 
 .custom-select.dual .options {
