@@ -112,7 +112,7 @@ textarea::placeholder {
   background: #ffffff;
   border: 1px solid #E0E0E0;
   border-radius: 8px;
-  padding: .6em .85em;
+  padding: .5em .85em;
   width: 100%;
 }
 
@@ -121,7 +121,7 @@ input[type="number"] {
   background-size: auto;
   background-position: calc(100% - 0.5em) center;
   padding: .5em .5em .5em .5em;
-  width: 70px;
+  width: 100px;
   max-width: 100%;
   -moz-appearance: textfield;
 }
@@ -131,7 +131,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
   margin: 0;
 }
 
-input[type="number"].price, input[type="number"].size, input[type="number"].length, input[type="number"].weight {
+input[type="number"].price, input[type="number"].size, input[type="number"].length, input[type="number"].weight, input[type="number"].pcs, input[type="number"].temp {
   padding: .5em 1.5em .5em .5em;
 }
 
@@ -149,6 +149,14 @@ input[type="number"].length {
 
 input[type="number"].weight {
   background-image: url(bg-imgs/tons.svg);
+}
+
+input[type="number"].pcs {
+  background-image: url(bg-imgs/pcs.svg);
+}
+
+input[type="number"].temp {
+  background-image: url(bg-imgs/c.svg);
 }
 
 input[type="radio"] {
@@ -915,24 +923,24 @@ h5 {
 }
 
 /* ICONS */
+.icon-10 svg, .icon-15 svg, .icon-20 svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-10 {
+  width: 1em;
+  height: 1em;
+}
+
 .icon-15 {
   width: 1.5em;
   height: 1.5em;
 }
 
-.icon-15 svg {
-  width: 100%;
-  height: 100%;
-}
-
 .icon-20 {
   width: 2em;
   height: 2em;
-}
-
-.icon-20 svg {
-  width: 100%;
-  height: 100%;
 }
 
 body {

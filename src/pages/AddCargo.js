@@ -1,7 +1,8 @@
 import React from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 
-import { IoAddCircle } from 'react-icons/io5';
+import { IoAddCircle, IoCloseOutline } from 'react-icons/io5';
+import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
 export default function AddCargo() {
@@ -138,38 +139,106 @@ export default function AddCargo() {
 
                         <h4 className="mt-5 mb-3">Груз</h4>
                         <fieldset className="box py-4 px-5">
-                            <div className="row mb-4">
+                            <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Тип груза</div>
                                 </div>
                                 <div className="col-9">
-                                    <CustomSelect className="inp w-100" name="cargo-type"  options={['тип 1', 'тип 2']}/>
+                                    <CustomSelect className="inp w-100 fs-12" name="cargo-type"  options={['тип 1', 'тип 2']}/>
                                 </div>
                             </div>
-                            <div className="row mb-4">
+                            <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Вес*</div>
                                 </div>
                                 <div className="col-9">
                                     <div className="row">
                                         <div className="col-4">
-                                            <input type="number" className="weight w-100"/>
+                                            <input type="number" className="weight w-100 fs-12"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row mb-4">
+                            <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Объем*</div>
                                 </div>
                                 <div className="col-9">
                                     <div className="row">
                                         <div className="col-4">
-                                            <input type="number" className="size w-100"/>
+                                            <input type="number" className="size w-100 fs-12"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Габариты</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className="d-flex fs-12">
+                                        <label className="me-2">Длина:</label>
+                                        <input type="number" className="length me-4"/>
+                                        <label className="me-2">Ширина:</label>
+                                        <input type="number" className="length me-4"/>
+                                        <label className="me-2">Высота:</label>
+                                        <input type="number" className="length"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Упаковка</div>
+                                </div>
+                                <div className="col-9 fs-12 d-flex align-items-center">
+                                    <CustomSelect className="inp" name="package"  options={['упаковка 1', 'упаковка 2']}/>
+                                    <IconContext.Provider value={{className: "icon-10 mx-3"}}>
+                                        <VscChromeClose />
+                                    </IconContext.Provider>
+                                    <input type="number" className="pcs"/>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Особые пометки</div>
+                                </div>
+                                <div className="col-9">
+                                    <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt="Нет" options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                            <IconContext.Provider value={{className: "green icon-15"}}>
+                                <IoAddCircle />
+                            </IconContext.Provider>
+                            <span className="ms-2">Добавить груз</span>
+                        </button>
+
+                        <h4 className="mt-5 mb-3">Требовани я к машине</h4>
+                        <fieldset className="box py-4 px-5">
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Тип кузова</div>
+                                </div>
+                                <div className="col-9">
+                                    <CustomSelect className="inp w-100 fs-12" name="carcase" options={['тип 1', 'тип 2', 'тип 3']}/>
+                                </div>
+                            </div>
+                            <div className="row align-items-center">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Температура</div>
+                                </div>
+                                <div className="col-9 fs-12 d-flex align-items-center">
+                                    <input type="number" placeholder="0" className="temp"/>
+                                    <span className="mx-3">—</span>
+                                    <input type="number" placeholder="0" className="temp"/>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <h4 className="mt-5 mb-3">Оплата</h4>
+                        <fieldset className="box py-4 px-5">
+
                         </fieldset>
                     </div>
                     <div className="col-4 pt-5">

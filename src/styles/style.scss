@@ -97,7 +97,7 @@ textarea {
     background: #ffffff;
     border: 1px solid $gray-5;
     border-radius: $radius;
-    padding: .6em .85em;
+    padding: .5em .85em;
     width: 100%;
 }
 input {
@@ -106,7 +106,7 @@ input {
         background-size: auto;
         background-position: calc(100% - 0.5em) center;
         padding: .5em .5em .5em .5em;
-        width: 70px;
+        width: 100px;
         max-width: 100%;
         -moz-appearance: textfield; //Firefox 
         &::-webkit-outer-spin-button,
@@ -114,7 +114,7 @@ input {
             -webkit-appearance: none; //Chrome, Safari, Edge, Opera
             margin: 0;
         }
-        &.price, &.size, &.length, &.weight {padding: .5em 1.5em .5em .5em;}
+        &.price, &.size, &.length, &.weight, &.pcs, &.temp {padding: .5em 1.5em .5em .5em;}
         &.price {
             background-image: url(bg-imgs/rub.svg);
         }
@@ -126,6 +126,12 @@ input {
         }
         &.weight {
             background-image: url(bg-imgs/tons.svg);
+        }
+        &.pcs {
+            background-image: url(bg-imgs/pcs.svg);
+        }
+        &.temp {
+            background-image: url(bg-imgs/c.svg);
         }
     }
     &[type="radio"] {
@@ -622,21 +628,23 @@ h5 {
 }
 
 /* ICONS */
-.icon-15 {
-    width: 1.5em;
-    height: 1.5em;
+.icon-10, .icon-15, .icon-20 {
     svg {
         width: 100%;
         height: 100%;
     }
 }
+.icon-10 {
+    width: 1em;
+    height: 1em;
+}
+.icon-15 {
+    width: 1.5em;
+    height: 1.5em;
+}
 .icon-20 {
     width: 2em;
     height: 2em;
-    svg {
-        width: 100%;
-        height: 100%;
-    }
 }
 
 
