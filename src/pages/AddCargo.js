@@ -13,7 +13,7 @@ export default function AddCargo() {
                 <div className="row">
                     <div className="col-8">
                         <h4 className="mb-3">Загрузка</h4>
-                        <fieldset className="box py-4 px-5">
+                        <fieldset className="box">
                             <div className="row mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Дата*</div>
@@ -26,10 +26,10 @@ export default function AddCargo() {
                                                     <input type="radio" name="frequency" value="Единожды"/>
                                                     <span className="title-font fs-12 fw-5 ms-3">Единожды</span>
                                                 </label>
-                                                <div className="d-flex align-items-center">
-                                                    <input type="date" />
+                                                <div className="d-flex fs-12 align-items-center">
+                                                    <input type="date" className='flex-1'/>
                                                     <span className="mx-3">+</span>
-                                                    <CustomSelect className="inp w-100" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
+                                                    <CustomSelect className="inp" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -39,7 +39,7 @@ export default function AddCargo() {
                                                     <input type="radio" name="frequency" value="Постоянно"/>
                                                     <span className="title-font fs-12 fw-5 ms-3">Постоянно</span>
                                                 </label>
-                                                <CustomSelect className="inp w-100" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным']}/>
+                                                <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным']}/>
                                             </div>
                                         </div>
                                     </div>
@@ -50,14 +50,14 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Время загрузки</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className="d-flex align-items-center">
+                                    <div className="d-flex fs-12 align-items-center">
                                         <input type="time" />
                                         <span className="mx-3">—</span>
                                         <input type="time" />
                                     </div>
                                     <label className="mt-2">
                                         <input type="checkbox" name="frequency" value="Круглосуточно"/>
-                                        <span className="ms-2">Круглосуточно</span>
+                                        <span className="ms-2 fs-09">Круглосуточно</span>
                                     </label>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Место загрузки*</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className="row">
+                                    <div className="row fs-12">
                                         <div className="col-5">
                                             <input type="text" placeholder="Населеный пункт"/>
                                         </div>
@@ -85,15 +85,15 @@ export default function AddCargo() {
                         </button>
 
                         <h4 className="mt-5 mb-3">Разгрузка</h4>
-                        <fieldset className="box py-4 px-5">
-                            <div className="row mb-4">
+                        <fieldset className="box">
+                            <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Дата</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className="d-flex align-items-center">
+                                    <div className="d-flex fs-12 align-items-center">
                                         <input type="date"/>
-                                        <span className="fs-12 mx-3">—</span>
+                                        <span className="mx-3">—</span>
                                         <input type="date" />
                                     </div>
                                 </div>
@@ -103,14 +103,14 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Время загрузки</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className="d-flex align-items-center">
+                                    <div className="d-flex align-items-center fs-12">
                                         <input type="time" />
                                         <span className="mx-3">—</span>
                                         <input type="time" />
                                     </div>
                                     <label className="mt-2">
                                         <input type="checkbox" name="frequency" value="Круглосуточно"/>
-                                        <span className="ms-2">Круглосуточно</span>
+                                        <span className="ms-2 fs-09">Круглосуточно</span>
                                     </label>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Место загрузки*</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className="row">
+                                    <div className="row fs-12">
                                         <div className="col-5">
                                             <input type="text" placeholder="Населеный пункт"/>
                                         </div>
@@ -138,7 +138,7 @@ export default function AddCargo() {
                         </button>
 
                         <h4 className="mt-5 mb-3">Груз</h4>
-                        <fieldset className="box py-4 px-5">
+                        <fieldset className="box">
                             <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Тип груза</div>
@@ -177,12 +177,18 @@ export default function AddCargo() {
                                 </div>
                                 <div className="col-9">
                                     <div className="d-flex fs-12">
-                                        <label className="me-2">Длина:</label>
-                                        <input type="number" className="length me-4"/>
-                                        <label className="me-2">Ширина:</label>
-                                        <input type="number" className="length me-4"/>
-                                        <label className="me-2">Высота:</label>
-                                        <input type="number" className="length"/>
+                                        <div className='d-xxl-flex me-4'>
+                                            <label className="me-2">Длина:</label>
+                                            <input type="number" className="length"/>
+                                        </div>
+                                        <div className='d-xxl-flex me-4'>
+                                            <label className="me-2">Ширина:</label>
+                                            <input type="number" className="length"/>
+                                        </div>
+                                        <div className='d-xxl-flex'>
+                                            <label className="me-2">Высота:</label>
+                                            <input type="number" className="length"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -215,7 +221,7 @@ export default function AddCargo() {
                         </button>
 
                         <h4 className="mt-5 mb-3">Требовани я к машине</h4>
-                        <fieldset className="box py-4 px-5">
+                        <fieldset className="box">
                             <div className="row align-items-center mb-4">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Тип кузова</div>
@@ -237,16 +243,131 @@ export default function AddCargo() {
                         </fieldset>
 
                         <h4 className="mt-5 mb-3">Оплата</h4>
-                        <fieldset className="box py-4 px-5">
-
+                        <fieldset className="box">
+                            <div className='row row-cols-2 row-cols-xxl-3 mb-3'>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="bargain" value="Возможен торг"/>
+                                        <span className="title-font fs-12 fw-5 ms-3">Возможен торг</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="bargain" value="Без торга"/>
+                                        <span className="title-font fs-12 fw-5 ms-3">Без торга</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div className='row row-cols-2 row-cols-xxl-3 mb-4'>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="payment-type" value="Наличный расчет"/>
+                                        <span className="title-font fs-12 fw-5 ms-3">Наличный расчет</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input type="radio" name="payment-type" value="Перевод по карте"/>
+                                        <span className="title-font fs-12 fw-5 ms-3">Перевод по карте</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">С НДС</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className='row'>
+                                        <div className='col-4'>
+                                            <input type="number" className="price w-100 fs-12"/>
+                                        </div>
+                                        <div className='col-3'>
+                                            <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="₽" options={['₽', '₽/км']}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mb-4">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">без НДС</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className='row'>
+                                        <div className='col-4'>
+                                            <input type="number" className="price w-100 fs-12"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row align-items-center">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Предоплата:</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className='row'>
+                                        <div className='col-4'>
+                                            <input type="number" className="percent w-100 fs-12"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </fieldset>
+
+                        <h4 className="mt-5 mb-3">Контакты</h4>
+                        <fieldset className="box">
+                            <div className="row align-items-center mb-3">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Телефон*</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className='row align-items-center w-100'>
+                                        <div className='col-7'>
+                                            <input type="tel" placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                        </div>
+                                        <div className='col-5'>
+                                        <button type="button" className="green fw-5 fs-12 w-100">
+                                            <IconContext.Provider value={{className: "green icon-15"}}>
+                                                <IoAddCircle />
+                                            </IconContext.Provider>
+                                            <span className="ms-2">Добавить контакт</span>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row align-items-center mb-3">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Имя*</div>
+                                </div>
+                                <div className="col-9">
+                                    <div className='row align-items-center w-100'>
+                                        <div className='col-7'>
+                                            <input type="text" placeholder='Имя' className="w-100 fs-12"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-3">
+                                    <div className="title-font fs-12 fw-5">Примечание</div>
+                                </div>
+                                <div className="col-9">
+                                    <textarea rows={3} placeholder='Укажите здесь дополнительную информацию '></textarea>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div className='title-font fs-09 fw-5 mt-3'>* Поля обязательные к заполнению</div>
                     </div>
-                    <div className="col-4 pt-5">
-                        <fieldset className="box py-4 px-5">
-                            <nav>
+                    <div className="col-4 pt-5 position-relative">
+                        <aside className="box">
+                            <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <a>Загрузка</a>
+                                        <a className='active'>Загрузка</a>
+                                        <div className='fs-09'>
+                                            <div>11.11.2021, круглосуточно</div>
+                                            <div>Казань, Четаева 89</div>
+                                        </div>
                                     </li>
                                     <li>
                                         <a>Разгрузка</a>
@@ -265,7 +386,9 @@ export default function AddCargo() {
                                     </li>
                                 </ol>
                             </nav>
-                        </fieldset>
+                            <button type='button' className='btn btn-1 text-uppercase fs-15 mx-auto mt-5'>разместить груз</button>
+                            <button type='button' className='fs-11 mx-auto mt-3 blue'>Сохранить шаблон</button>
+                        </aside>
                     </div>
                 </div>
             </section>
