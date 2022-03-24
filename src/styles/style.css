@@ -645,6 +645,24 @@ button {
   border: 1px solid #7a7878;
 }
 
+.btn-4 {
+  background-color: transparent;
+  border: 1px solid #038CB8;
+  color: #038CB8;
+}
+
+.btn-4:hover, .btn-4:focus, .btn-4:active {
+  color: #01BFC4;
+  background-color: transparent;
+  border: 1px solid #01BFC4;
+}
+
+.btn-4:disabled {
+  color: #7a7878;
+  background-color: transparent;
+  border: 1px solid #7a7878;
+}
+
 .btn-view svg rect {
   fill: #038CB8;
 }
@@ -1015,7 +1033,6 @@ header {
 
 @media (max-width: 575px) {
   header {
-    height: 48px;
     padding: .75em 0;
   }
 }
@@ -1120,7 +1137,7 @@ header .icon {
 }
 
 main {
-  min-height: calc(100vh - 230px);
+  min-height: calc(100vh - 70px - 160px);
   position: relative;
 }
 
@@ -1132,15 +1149,15 @@ main.bg-gray {
   background-color: #FAFAFA;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1199px) {
   main {
-    min-height: calc(100vh - 105px);
+    min-height: calc(100vh - 55px - 160px);
   }
 }
 
-@media (max-width: 575px) {
+@media (max-width: 991px) {
   main {
-    min-height: calc(100vh - 98px);
+    min-height: calc(100vh - 50px - 50px);
   }
 }
 
@@ -2111,6 +2128,49 @@ main.bg-gray {
 }
 
 /* SECTION 9 */
+#sec-9 form fieldset[data-show="true"] {
+  display: block;
+}
+
+#sec-9 form fieldset[data-show="false"] {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  #sec-9 form .box {
+    border: unset;
+    border-radius: unset;
+    background-color: unset;
+    padding: 0px;
+  }
+}
+
+#sec-9 form .mobile-btns {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  background: #FFFFFF;
+  -webkit-box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
+  height: 100px;
+  padding: 1em;
+}
+
+#sec-9 form .mobile-btns .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100%;
+}
+
 #sec-9 nav.contents ol {
   counter-reset: li;
   list-style: none;
@@ -2197,6 +2257,61 @@ main.bg-gray {
   width: 100%;
 }
 
+#sec-9 .mobile-indicators {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 2em;
+}
+
+#sec-9 .mobile-indicators div {
+  font-family: "Gotham Pro";
+  position: relative;
+  font-size: 1.25em;
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 50%;
+  background-color: #E0E0E0;
+  color: #fff;
+  font-weight: 700;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#sec-9 .mobile-indicators div:not(:first-child) {
+  margin-left: 1em;
+}
+
+#sec-9 .mobile-indicators div:not(:first-child)::after {
+  content: "";
+  position: absolute;
+  right: 100%;
+  bottom: calc(50% - 2px);
+  width: 1em;
+  border-bottom: 2px dashed #E0E0E0;
+}
+
+#sec-9 .mobile-indicators div.active {
+  background-color: #01BFC4;
+}
+
+#sec-9 .mobile-indicators div.active::after {
+  border-bottom: 2px dashed #01BFC4;
+}
+
 @media (max-width: 1399px) {
   #sec-9 .fs-12 {
     font-size: 1em;
@@ -2206,9 +2321,27 @@ main.bg-gray {
   }
 }
 
+@media (max-width: 1199px) {
+  #sec-9 .fs-15 {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 991px) {
+  #sec-9 .fs-12 {
+    font-size: 1.2em;
+  }
+}
+
 footer {
   background-color: #575E62;
   height: 160px;
+}
+
+@media (max-width: 991px) {
+  footer {
+    height: 50px;
+  }
 }
 
 /* SWIPER SLIDERS */
