@@ -485,6 +485,21 @@ button {
             border: 1px solid #7a7878;
         }
     }
+    &-4 {
+        background-color: transparent;
+        border: 1px solid $blue;
+        color: $blue;
+        &:hover, &:focus, &:active {
+            color: $green;
+            background-color: transparent;
+            border: 1px solid $green;
+        }
+        &:disabled {
+            color: #7a7878;
+            background-color: transparent;
+            border: 1px solid #7a7878;
+        }
+    }
     &-view {
         svg {
             rect {fill: $blue;}
@@ -696,7 +711,6 @@ header {
         height: 50px;
     }
     @media (max-width: 575px) {
-        height: 48px;
         padding: .75em 0;
     }
     .container {
@@ -765,15 +779,15 @@ header {
 }
 
 main {
-    min-height: calc(100vh - 230px);
+    min-height: calc(100vh - 70px - 160px);
     position: relative;
     &.bg-white {background-color: #fff;}
     &.bg-gray {background-color: #FAFAFA;}
-    @media (max-width: 767px) {
-        min-height: calc(100vh - 105px);
+    @media (max-width: 1199px) {
+        min-height: calc(100vh - 55px - 160px);
     }
-    @media (max-width: 575px) {
-        min-height: calc(100vh - 98px);
+    @media (max-width: 991px) {
+        min-height: calc(100vh - 50px - 50px);
     }
 }
 
@@ -1400,6 +1414,36 @@ main {
 
 /* SECTION 9 */
 #sec-9 {
+    form {
+        fieldset {
+            &[data-show="true"]{display: block;}
+            &[data-show="false"]{display: none;}
+        }
+        @media (max-width: 991px){
+            .box {
+                border: unset;
+                border-radius: unset;
+                background-color: unset;
+                padding: 0px;
+            }
+        }
+        .mobile-btns {
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            width: 100%;
+            background: #FFFFFF;
+            box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.1);
+            height: 100px;
+            padding: 1em;
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+            }
+        }
+    }
     nav.contents {
         ol {
             counter-reset: li; 
@@ -1465,17 +1509,57 @@ main {
         left: 0px;
         width: 100%;
     }
+    .mobile-indicators {
+        @include flex-center();
+        margin-bottom: 2em;
+        div {
+            font-family: $title-font;
+            position: relative;
+            font-size: 1.25em;
+            width: 1.75em;
+            height: 1.75em;
+            border-radius: 50%;
+            background-color: $gray-5;
+            color: #fff;
+            font-weight: 700;
+            @include flex-center();
+            &:not(:first-child) {
+                margin-left: 1em;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    right: 100%;
+                    bottom: calc(50% - 2px);
+                    width: 1em;
+                    border-bottom: 2px dashed $gray-5;
+                }
+            }
+            &.active {
+                background-color: $green;
+                &::after {border-bottom: 2px dashed $green;}
+                
+            }
+        }
+    }
     @media (max-width: 1399px){
         .fs-12 {font-size: 1em;}
         .fs-15 {font-size: 1.3em;}
     }
-    
+    @media (max-width: 1199px){
+        .fs-15 {font-size: 1.2em;}
+    }
+    @media (max-width: 991px){
+        .fs-12 {font-size: 1.2em;}
+    }
 }
 
 
 footer {
     background-color: #575E62;
     height: 160px;
+    @media (max-width: 991px){
+        height: 50px;
+    }
 }
 
 /* SWIPER SLIDERS */
