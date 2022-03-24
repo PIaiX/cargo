@@ -11,7 +11,7 @@ export default function AddCargo() {
             <section id="sec-9" className="container py-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
                 <div className="row">
-                    <div className="col-8">
+                    <div className="col-lg-8">
                         <h4 className="mb-3">Загрузка</h4>
                         <fieldset className="box">
                             <div className="row mb-4">
@@ -20,24 +20,24 @@ export default function AddCargo() {
                                 </div>
                                 <div className="col-9">
                                     <div className="row">
-                                        <div className="col-7">
+                                        <div className="col-xl-7 mb-2 mb-xl-0">
                                             <div className="box p-3">
-                                                <label className="mb-3">
+                                                <label className="mb-2 mb-xl-3">
                                                     <input type="radio" name="frequency" value="Единожды"/>
-                                                    <span className="title-font fs-12 fw-5 ms-3">Единожды</span>
+                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
                                                 </label>
                                                 <div className="d-flex fs-12 align-items-center">
                                                     <input type="date" className='flex-1'/>
-                                                    <span className="mx-3">+</span>
+                                                    <span className="mx-2 mx-xxl-3">+</span>
                                                     <CustomSelect className="inp" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-5">
+                                        <div className="col-xl-5">
                                             <div className="box p-3">
-                                                <label className="mb-3">
+                                                <label className="mb-2 mb-xl-3">
                                                     <input type="radio" name="frequency" value="Постоянно"/>
-                                                    <span className="title-font fs-12 fw-5 ms-3">Постоянно</span>
+                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                 </label>
                                                 <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным']}/>
                                             </div>
@@ -204,7 +204,7 @@ export default function AddCargo() {
                                     <input type="number" className="pcs"/>
                                 </div>
                             </div>
-                            <div className="row align-items-center mb-4">
+                            <div className="row align-items-center">
                                 <div className="col-3">
                                     <div className="title-font fs-12 fw-5">Особые пометки</div>
                                 </div>
@@ -248,13 +248,13 @@ export default function AddCargo() {
                                 <div>
                                     <label>
                                         <input type="radio" name="bargain" value="Возможен торг"/>
-                                        <span className="title-font fs-12 fw-5 ms-3">Возможен торг</span>
+                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Возможен торг</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label>
                                         <input type="radio" name="bargain" value="Без торга"/>
-                                        <span className="title-font fs-12 fw-5 ms-3">Без торга</span>
+                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Без торга</span>
                                     </label>
                                 </div>
                             </div>
@@ -262,13 +262,13 @@ export default function AddCargo() {
                                 <div>
                                     <label>
                                         <input type="radio" name="payment-type" value="Наличный расчет"/>
-                                        <span className="title-font fs-12 fw-5 ms-3">Наличный расчет</span>
+                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Наличный расчет</span>
                                     </label>
                                 </div>
                                 <div>
                                     <label>
                                         <input type="radio" name="payment-type" value="Перевод по карте"/>
-                                        <span className="title-font fs-12 fw-5 ms-3">Перевод по карте</span>
+                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Перевод по карте</span>
                                     </label>
                                 </div>
                             </div>
@@ -282,7 +282,7 @@ export default function AddCargo() {
                                             <input type="number" className="price w-100 fs-12"/>
                                         </div>
                                         <div className='col-3'>
-                                            <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="₽" options={['₽', '₽/км']}/>
+                                            <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="0" options={['₽', '₽/км']}/>
                                         </div>
                                     </div>
                                 </div>
@@ -320,7 +320,7 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Телефон*</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className='row align-items-center w-100'>
+                                    <div className='row align-items-center'>
                                         <div className='col-7'>
                                             <input type="tel" placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                         </div>
@@ -340,7 +340,7 @@ export default function AddCargo() {
                                     <div className="title-font fs-12 fw-5">Имя*</div>
                                 </div>
                                 <div className="col-9">
-                                    <div className='row align-items-center w-100'>
+                                    <div className='row align-items-center'>
                                         <div className='col-7'>
                                             <input type="text" placeholder='Имя' className="w-100 fs-12"/>
                                         </div>
@@ -358,7 +358,7 @@ export default function AddCargo() {
                         </fieldset>
                         <div className='title-font fs-09 fw-5 mt-3'>* Поля обязательные к заполнению</div>
                     </div>
-                    <div className="col-4 pt-5 position-relative">
+                    <div className="col-lg-4 pt-lg-5 position-relative  d-none d-lg-block">
                         <aside className="box">
                             <nav className='contents'>
                                 <ol>
@@ -386,8 +386,8 @@ export default function AddCargo() {
                                     </li>
                                 </ol>
                             </nav>
-                            <button type='button' className='btn btn-1 text-uppercase fs-15 mx-auto mt-5'>разместить груз</button>
-                            <button type='button' className='fs-11 mx-auto mt-3 blue'>Сохранить шаблон</button>
+                            <button type='button' className='btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5'>разместить груз</button>
+                            <button type='button' className='fs-11 mx-auto mt-2 mt-xl-3 blue'>Сохранить шаблон</button>
                         </aside>
                     </div>
                 </div>

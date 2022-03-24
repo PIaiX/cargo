@@ -844,7 +844,6 @@ main {
     }
 }
 
-
 /* SECTION 2 */
 #sec-2 {
     background: #FFFFFF;
@@ -859,7 +858,6 @@ main {
         }
     }
 }
-
 
 /* SECTION 3 */
 /* card */
@@ -905,7 +903,6 @@ main {
         }
     }
 }
-
 
 /* SECTION 4 */
 #sec-4 {
@@ -959,7 +956,6 @@ main {
         z-index: 2;
     }
 }
-
 
 /* SECTION 5 */
 #sec-5 {
@@ -1137,7 +1133,6 @@ main {
     }
 }
 
-
 /* SECTION 6 */
 .news-grid {
     display: grid;
@@ -1264,7 +1259,6 @@ main {
     }
 }
 
-
 /* SECTION 7 */
 #sec-7 {
     .switch {
@@ -1350,7 +1344,6 @@ main {
     }
 }
 
-
 /* SECTION 8 */
 #sec-8 {
     .icon {
@@ -1405,6 +1398,7 @@ main {
     }
 }
 
+/* SECTION 9 */
 #sec-9 {
     nav.contents {
         ol {
@@ -1426,12 +1420,18 @@ main {
                 position: relative;
                 z-index: 2;
                 &:not(:last-child){margin-bottom: 1.25em;}
+                @media (max-width: 1399px){
+                    padding-left: 3em;
+                }
                 a {
                     font-family: $title-font;
                     font-size: 1.25em;
                     font-weight: 500;
                     transition: .2s;
                     line-height: 1.75em;
+                    @media (max-width: 1399px){
+                        font-size: 1.1em;
+                    }
                     &::before {
                         content: counter(li);
                         counter-increment: li;
@@ -1467,17 +1467,16 @@ main {
     }
     @media (max-width: 1399px){
         .fs-12 {font-size: 1em;}
+        .fs-15 {font-size: 1.3em;}
     }
     
 }
-
 
 
 footer {
     background-color: #575E62;
     height: 160px;
 }
-
 
 /* SWIPER SLIDERS */
 .swiper-4 {

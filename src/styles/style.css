@@ -2110,6 +2110,7 @@ main.bg-gray {
   }
 }
 
+/* SECTION 9 */
 #sec-9 nav.contents ol {
   counter-reset: li;
   list-style: none;
@@ -2137,6 +2138,12 @@ main.bg-gray {
   margin-bottom: 1.25em;
 }
 
+@media (max-width: 1399px) {
+  #sec-9 nav.contents ol li {
+    padding-left: 3em;
+  }
+}
+
 #sec-9 nav.contents ol li a {
   font-family: "Gotham Pro";
   font-size: 1.25em;
@@ -2144,6 +2151,12 @@ main.bg-gray {
   -webkit-transition: .2s;
   transition: .2s;
   line-height: 1.75em;
+}
+
+@media (max-width: 1399px) {
+  #sec-9 nav.contents ol li a {
+    font-size: 1.1em;
+  }
 }
 
 #sec-9 nav.contents ol li a::before {
@@ -2187,6 +2200,9 @@ main.bg-gray {
 @media (max-width: 1399px) {
   #sec-9 .fs-12 {
     font-size: 1em;
+  }
+  #sec-9 .fs-15 {
+    font-size: 1.3em;
   }
 }
 
