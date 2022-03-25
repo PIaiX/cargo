@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 
-import { IoAddCircle } from 'react-icons/io5';
+import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash } from 'react-icons/io5';
 import { VscChromeClose, VscPreview } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
@@ -9,8 +9,9 @@ export default function AddCargo() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
     return (
+        <>
         <main className="bg-gray">
-            <section id="sec-9" className="container py-5">
+            <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
                 <form className="row">
                     <div className="col-lg-8">
@@ -24,16 +25,16 @@ export default function AddCargo() {
                         </div>
                         
                         <fieldset data-show={(activeField === 1) ? 'true' : 'false'}>
-                            <div className='d-flex align-items-center justify-content-between mb-3'>
-                                <h4 className="mb-0">Загрузка</h4>
+                            <div className='d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3'>
+                                <h4 className="text-center text-lg-start mb-0">Загрузка</h4>
                                 <div className='d-none d-lg-flex align-items-center fs-09'>
-                                    <button type='button' className='btn btn-4 p-2'>
+                                    <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <VscPreview/>
                                         </IconContext.Provider>
                                         <span className='ms-2'>Использовать шаблон</span>
                                     </button>
-                                    <button type='button' className='btn btn-4 p-2 ms-3'>
+                                    <button type='reset' className='btn btn-4 p-2 ms-3'>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <VscChromeClose/>
                                         </IconContext.Provider>
@@ -43,13 +44,13 @@ export default function AddCargo() {
                             </div>
                             <div className="box">
                                 <div className="row mb-4">
-                                    <div className="col-3">
+                                    <div className="col-md-3 mb-3 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Дата*</div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-md-9">
                                         <div className="row">
-                                            <div className="col-xl-7 mb-2 mb-xl-0">
-                                                <div className="box p-3">
+                                            <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
+                                                <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
                                                         <input type="radio" defaultChecked={true} name="frequency" value="Единожды"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
@@ -62,7 +63,7 @@ export default function AddCargo() {
                                                 </div>
                                             </div>
                                             <div className="col-xl-5">
-                                                <div className="box p-3">
+                                                <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
                                                         <input type="radio" name="frequency" value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
@@ -74,10 +75,10 @@ export default function AddCargo() {
                                     </div>
                                 </div>
                                 <div className="row mb-4">
-                                    <div className="col-3">
+                                    <div className="col-md-3 mb-3 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Время загрузки</div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-md-9">
                                         <div className="d-flex fs-12 align-items-center">
                                             <input type="time" />
                                             <span className="mx-3">—</span>
@@ -90,15 +91,15 @@ export default function AddCargo() {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-3">
+                                    <div className="col-md-3 mb-3 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Место загрузки*</div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-md-9">
                                         <div className="row fs-12">
-                                            <div className="col-5">
+                                            <div className="col-sm-5 mb-2 mb-sm-0">
                                                 <input type="text" placeholder="Населеный пункт" value={'Казань'}/>
                                             </div>
-                                            <div className="col-7">
+                                            <div className="col-sm-7">
                                                 <input type="text" placeholder="Адрес" value={'Четаева 89'}/>
                                             </div>
                                         </div>
@@ -121,301 +122,499 @@ export default function AddCargo() {
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
-                                        <button type='button'>
+                                        <button type="reset">
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Очистить форму</span>
                                         </button>
                                     </div>
-                                    <button type='button' onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>Далее</button>
+                                    <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                        <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
+                                        <IconContext.Provider value={{className: "icon-15"}}>
+                                            <IoChevronForwardOutline/>
+                                        </IconContext.Provider>
+                                    </button>
                                 </div>
                             </div>
                         </fieldset>
 
                         <fieldset data-show={(activeField === 2) ? 'true' : 'false'}>
-                        <h4 className="mt-5 mb-3">Разгрузка</h4>
-                        <div className="box">
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Дата</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="d-flex fs-12 align-items-center">
-                                        <input type="date"/>
-                                        <span className="mx-3">—</span>
-                                        <input type="date" />
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Разгрузка</h4>
+                            <div className="box">
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Дата</div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="row mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Время загрузки</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="d-flex align-items-center fs-12">
-                                        <input type="time" />
-                                        <span className="mx-3">—</span>
-                                        <input type="time" />
-                                    </div>
-                                    <label className="mt-2">
-                                        <input type="checkbox" name="frequency" value="Круглосуточно"/>
-                                        <span className="ms-2 fs-09">Круглосуточно</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Место загрузки*</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="row fs-12">
-                                        <div className="col-5">
-                                            <input type="text" placeholder="Населеный пункт"/>
-                                        </div>
-                                        <div className="col-7">
-                                            <input type="text" placeholder="Адрес"/>
+                                    <div className="col-md-9">
+                                        <div className="d-flex fs-12 align-items-center">
+                                            <input type="date"/>
+                                            <span className="mx-3">—</span>
+                                            <input type="date" />
                                         </div>
                                     </div>
                                 </div>
+                                <div className="row mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className="d-flex align-items-center fs-12">
+                                            <input type="time" />
+                                            <span className="mx-3">—</span>
+                                            <input type="time" />
+                                        </div>
+                                        <label className="mt-2">
+                                            <input type="checkbox" name="frequency" value="Круглосуточно"/>
+                                            <span className="ms-2 fs-09">Круглосуточно</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className="row fs-12">
+                                            <div className="col-sm-5 mb-2 mb-sm-0">
+                                                <input type="text" placeholder="Населеный пункт"/>
+                                            </div>
+                                            <div className="col-sm-7">
+                                                <input type="text" placeholder="Адрес"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
-                            <IconContext.Provider value={{className: "green icon-15"}}>
-                                <IoAddCircle />
-                            </IconContext.Provider>
-                            <span className="ms-2">Добавить точку разгрузки</span>
-                        </button>
+                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                                <IconContext.Provider value={{className: "green icon-15"}}>
+                                    <IoAddCircle />
+                                </IconContext.Provider>
+                                <span className="ms-2">Добавить точку разгрузки</span>
+                            </button>
+
+                            <div className='mobile-btns d-block d-lg-none'>
+                                <div className='container'>
+                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
+                                        <button type='button'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscPreview/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Использовать шаблон</span>
+                                        </button>
+                                        <button type='reset'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscChromeClose/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Очистить форму</span>
+                                        </button>
+                                    </div>
+                                    <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(1)}     className='btn btn-1 w-100 fs-11'>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronBackOutline/>
+                                                </IconContext.Provider>
+                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                                <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronForwardOutline/>
+                                                </IconContext.Provider>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </fieldset>
 
                         <fieldset data-show={(activeField === 3) ? 'true' : 'false'}>
-                        <h4 className="mt-5 mb-3">Груз</h4>
-                        <div className="box">
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Тип груза</div>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Груз</h4>
+                            <div className="box">
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Тип груза</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type"  options={['тип 1', 'тип 2']}/>
+                                    </div>
                                 </div>
-                                <div className="col-9">
-                                    <CustomSelect className="inp w-100 fs-12" name="cargo-type"  options={['тип 1', 'тип 2']}/>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-3">
+                                        <div className="title-font fs-12 fw-5">Вес*</div>
+                                    </div>
+                                    <div className="col-9">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                <input type="number" className="weight w-100 fs-12"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-3">
+                                        <div className="title-font fs-12 fw-5">Объем*</div>
+                                    </div>
+                                    <div className="col-9">
+                                        <div className="row">
+                                            <div className="col-md-4">
+                                                <input type="number" className="size w-100 fs-12"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Габариты</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className="row row-cols-sm-3 gx-3 gx-xxl-4 fs-12">
+                                            <div className='mb-2 mb-sm-0'>
+                                                <div className='row gx-2 align-items-center'>
+                                                    <div className='col-3 col-sm-5'>
+                                                        <label for="length">Длина:</label>
+                                                    </div>
+                                                    <div className='col-9 col-sm-7'>
+                                                        <input type="number" name="length" id="length" className="length"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='mb-2 mb-sm-0'>
+                                                <div className='row gx-2 align-items-center'>
+                                                    <div className='col-3 col-sm-5'>
+                                                        <label for='width'>Ширина:</label>
+                                                    </div>
+                                                    <div className='col-9 col-sm-7'>
+                                                        <input type="number" name='width' id='width' className="length"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className='row gx-2 align-items-center'>
+                                                    <div className='col-3 col-sm-5'>
+                                                        <label for='height'>Высота:</label>
+                                                    </div>
+                                                    <div className='col-9 col-sm-7'>
+                                                        <input type="number" name='height' id='height' className="length"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Упаковка</div>
+                                    </div>
+                                    <div className="col-md-9 fs-12 d-flex align-items-center">
+                                        <CustomSelect className="inp" name="package"  options={['упаковка 1', 'упаковка 2']}/>
+                                        <IconContext.Provider value={{className: "icon-10 mx-3"}}>
+                                            <VscChromeClose />
+                                        </IconContext.Provider>
+                                        <input type="number" className="pcs"/>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Особые пометки</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt="Нет" options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Вес*</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <input type="number" className="weight w-100 fs-12"/>
+                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                                <IconContext.Provider value={{className: "green icon-15"}}>
+                                    <IoAddCircle />
+                                </IconContext.Provider>
+                                <span className="ms-2">Добавить груз</span>
+                            </button>
+
+                            <div className='mobile-btns d-block d-lg-none'>
+                                <div className='container'>
+                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
+                                        <button type='button'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscPreview/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Использовать шаблон</span>
+                                        </button>
+                                        <button type='reset'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscChromeClose/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Очистить форму</span>
+                                        </button>
+                                    </div>
+                                    <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronBackOutline/>
+                                                </IconContext.Provider>
+                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(4)}     className='btn btn-1 w-100 fs-11'>
+                                                <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronForwardOutline/>
+                                                </IconContext.Provider>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Объем*</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <input type="number" className="size w-100 fs-12"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Габариты</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className="d-flex fs-12">
-                                        <div className='d-xxl-flex me-4'>
-                                            <label className="me-2">Длина:</label>
-                                            <input type="number" className="length"/>
-                                        </div>
-                                        <div className='d-xxl-flex me-4'>
-                                            <label className="me-2">Ширина:</label>
-                                            <input type="number" className="length"/>
-                                        </div>
-                                        <div className='d-xxl-flex'>
-                                            <label className="me-2">Высота:</label>
-                                            <input type="number" className="length"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Упаковка</div>
-                                </div>
-                                <div className="col-9 fs-12 d-flex align-items-center">
-                                    <CustomSelect className="inp" name="package"  options={['упаковка 1', 'упаковка 2']}/>
-                                    <IconContext.Provider value={{className: "icon-10 mx-3"}}>
-                                        <VscChromeClose />
-                                    </IconContext.Provider>
-                                    <input type="number" className="pcs"/>
-                                </div>
-                            </div>
-                            <div className="row align-items-center">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Особые пометки</div>
-                                </div>
-                                <div className="col-9">
-                                    <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt="Нет" options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
-                            <IconContext.Provider value={{className: "green icon-15"}}>
-                                <IoAddCircle />
-                            </IconContext.Provider>
-                            <span className="ms-2">Добавить груз</span>
-                        </button>
                         </fieldset>
 
                         <fieldset data-show={(activeField === 4) ? 'true' : 'false'}>
-                        <h4 className="mt-5 mb-3">Требовани я к машине</h4>
-                        <div className="box">
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Тип кузова</div>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Требовани я к машине</h4>
+                            <div className="box">
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Тип кузова</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <CustomSelect className="inp w-100 fs-12" name="carcase" options={['тип 1', 'тип 2', 'тип 3']}/>
+                                    </div>
                                 </div>
-                                <div className="col-9">
-                                    <CustomSelect className="inp w-100 fs-12" name="carcase" options={['тип 1', 'тип 2', 'тип 3']}/>
+                                <div className="row align-items-center">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Температура</div>
+                                    </div>
+                                    <div className="col-md-9 fs-12 d-flex align-items-center">
+                                        <input type="number" placeholder="0" className="temp"/>
+                                        <span className="mx-3">—</span>
+                                        <input type="number" placeholder="0" className="temp"/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Температура</div>
-                                </div>
-                                <div className="col-9 fs-12 d-flex align-items-center">
-                                    <input type="number" placeholder="0" className="temp"/>
-                                    <span className="mx-3">—</span>
-                                    <input type="number" placeholder="0" className="temp"/>
+
+                            <div className='mobile-btns d-block d-lg-none'>
+                                <div className='container'>
+                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
+                                        <button type='button'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscPreview/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Использовать шаблон</span>
+                                        </button>
+                                        <button type='reset'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscChromeClose/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Очистить форму</span>
+                                        </button>
+                                    </div>
+                                    <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronBackOutline/>
+                                                </IconContext.Provider>
+                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(5)}     className='btn btn-1 w-100 fs-11'>
+                                                <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronForwardOutline/>
+                                                </IconContext.Provider>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </fieldset>
 
                         <fieldset data-show={(activeField === 5) ? 'true' : 'false'}>
-                        <h4 className="mt-5 mb-3">Оплата</h4>
-                        <div className="box">
-                            <div className='row row-cols-2 row-cols-xxl-3 mb-3'>
-                                <div>
-                                    <label>
-                                        <input type="radio" name="bargain" value="Возможен торг"/>
-                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Возможен торг</span>
-                                    </label>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Оплата</h4>
+                            <div className="box">
+                                <div className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
+                                    <div className='mb-2 mb-sm-0'>
+                                        <label>
+                                            <input type="radio" name="bargain" value="Возможен торг"/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Возможен торг</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="bargain" value="Без торга"/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Без торга</span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label>
-                                        <input type="radio" name="bargain" value="Без торга"/>
-                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Без торга</span>
-                                    </label>
+                                <div className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
+                                    <div className='mb-2 mb-sm-0'>
+                                        <label>
+                                            <input type="radio" name="payment-type" value="Наличный расчет"/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Наличный расчет</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="payment-type" value="Перевод по карте"/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Перевод по карте</span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className='row row-cols-2 row-cols-xxl-3 mb-4'>
-                                <div>
-                                    <label>
-                                        <input type="radio" name="payment-type" value="Наличный расчет"/>
-                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Наличный расчет</span>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label>
-                                        <input type="radio" name="payment-type" value="Перевод по карте"/>
-                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Перевод по карте</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">С НДС</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className='row'>
-                                        <div className='col-4'>
-                                            <input type="number" className="price w-100 fs-12"/>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div className="title-font fs-12 fw-5">С НДС</div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className='row gx-2 gx-sm-4'>
+                                            <div className='col-8 col-sm-5 col-xl-4'>
+                                                <input type="number" className="price w-100 fs-12"/>
+                                            </div>
+                                            <div className='col-4 col-sm-4 col-xl-3'>
+                                                <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="0" options={['₽', '₽/км']}/>
+                                            </div>
                                         </div>
-                                        <div className='col-3'>
-                                            <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="0" options={['₽', '₽/км']}/>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div className="title-font fs-12 fw-5">без НДС</div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className='row'>
+                                            <div className='col-8 col-sm-5 col-xl-4'>
+                                                <input type="number" className="price w-100 fs-12"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div className="title-font fs-12 fw-5">Предоплата:</div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className='row'>
+                                            <div className='col-8 col-sm-5 col-xl-4'>
+                                                <input type="number" className="percent w-100 fs-12"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center mb-4">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">без НДС</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className='row'>
-                                        <div className='col-4'>
-                                            <input type="number" className="price w-100 fs-12"/>
+
+                            <div className='mobile-btns d-block d-lg-none'>
+                                <div className='container'>
+                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
+                                        <button type='button'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscPreview/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Использовать шаблон</span>
+                                        </button>
+                                        <button type='reset'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscChromeClose/>
+                                            </IconContext.Provider>
+                                            <span className='ms-1'>Очистить форму</span>
+                                        </button>
+                                    </div>
+                                    <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(4)}     className='btn btn-1 w-100 fs-11'>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronBackOutline/>
+                                                </IconContext.Provider>
+                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button type='button' onClick={() => setActiveField(6)}     className='btn btn-1 w-100 fs-11'>
+                                                <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronForwardOutline/>
+                                                </IconContext.Provider>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Предоплата:</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className='row'>
-                                        <div className='col-4'>
-                                            <input type="number" className="percent w-100 fs-12"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         </fieldset>
 
                         <fieldset data-show={(activeField === 6) ? 'true' : 'false'}>
-                        <h4 className="mt-5 mb-3">Контакты</h4>
-                        <div className="box">
-                            <div className="row align-items-center mb-3">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Телефон*</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className='row align-items-center'>
-                                        <div className='col-7'>
-                                            <input type="tel" placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
+                            <div className="box">
+                                <div className="row align-items-center mb-3">
+                                    <div className="col-md-3 mb-2 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Телефон*</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className='row align-items-center'>
+                                            <div className='col-sm-7'>
+                                                <input type="tel" placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                            </div>
+                                            <div className='col-sm-5 mt-3 mt-sm-0'>
+                                            <button type="button" className="green fw-5 fs-12 w-100">
+                                                <IconContext.Provider value={{className: "green icon-15"}}>
+                                                    <IoAddCircle />
+                                                </IconContext.Provider>
+                                                <span className="ms-2">Добавить контакт</span>
+                                            </button>
+                                            </div>
                                         </div>
-                                        <div className='col-5'>
-                                        <button type="button" className="green fw-5 fs-12 w-100">
-                                            <IconContext.Provider value={{className: "green icon-15"}}>
-                                                <IoAddCircle />
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-3">
+                                    <div className="col-md-3 mb-2 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Имя*</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className='row align-items-center'>
+                                            <div className='col-sm-7'>
+                                                <input type="text" placeholder='Имя' className="w-100 fs-12"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-3 mb-2 mb-md-0">
+                                        <div className="title-font fs-12 fw-5">Примечание</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <textarea rows={3} placeholder='Укажите здесь дополнительную информацию '></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className='mobile-btns d-block d-lg-none'>
+                                <div className='container'>
+                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
+                                        <button type='button'>
+                                            <IconContext.Provider value={{className: "icon-15"}}>
+                                                <VscPreview/>
                                             </IconContext.Provider>
-                                            <span className="ms-2">Добавить контакт</span>
+                                            <span className='ms-1'>Использовать шаблон</span>
                                         </button>
+                                        <button type='button'>Сохранить шаблон</button>
+                                    </div>
+                                    <div className='row gx-2 gx-sm-4 title-font'>
+                                        <div className='col-5 col-sm-6'>
+                                            <button type='button' onClick={() => setActiveField(5)} className='btn btn-1 px-3 w-100 fs-11'>
+                                                <IconContext.Provider value={{className: "icon-15"}}>
+                                                    <IoChevronBackOutline/>
+                                                </IconContext.Provider>
+                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
+                                            </button>
+                                        </div>
+                                        <div className='col-7 col-sm-6'>
+                                            <button type='submit' className='btn btn-2 w-100 h-100 fs-11 text-uppercase px-3'>Разместить груз</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="row align-items-center mb-3">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Имя*</div>
-                                </div>
-                                <div className="col-9">
-                                    <div className='row align-items-center'>
-                                        <div className='col-7'>
-                                            <input type="text" placeholder='Имя' className="w-100 fs-12"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">
-                                    <div className="title-font fs-12 fw-5">Примечание</div>
-                                </div>
-                                <div className="col-9">
-                                    <textarea rows={3} placeholder='Укажите здесь дополнительную информацию '></textarea>
-                                </div>
-                            </div>
-                        </div>
                         </fieldset>
-                        <div className='title-font fs-09 fw-5 mt-3'>* Поля обязательные к заполнению</div>
+                        <div className='d-none d-lg-block title-font fs-09 fw-5 mt-3'>* Поля обязательные к заполнению</div>
                     </div>
                     <div className="col-lg-4 pt-lg-5 position-relative d-none d-lg-block">
                         <aside className="box">
@@ -456,5 +655,33 @@ export default function AddCargo() {
                 </form>
             </section>
         </main>
+        {/* Modal */}
+        <div className="modal fade" id="usePattern" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h2>Выберите шаблон</h2>
+                        <div className='box p-4'>
+                            <div className='d-flex align-items-center'>
+                                <div className='flex-1'>
+                                    <div className='title-font fs-12 fw-7 mb-1'>Название шаблона 1</div>
+                                    <div className='fs-11'>Примечание 1</div>
+                                </div>
+                                <button type='button' className='btn btn-1 fs-09'>Выбрать</button>
+                                <button type='button' className='ms-3'>
+                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
+                                        <IoTrash />
+                                    </IconContext.Provider>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </>
     )
 }
