@@ -176,6 +176,10 @@ input[type="number"].percent {
   background-image: url(bg-imgs/percent.svg);
 }
 
+input[type="number"].distance {
+  background-image: url(bg-imgs/km.svg);
+}
+
 input[type="radio"] {
   appearance: none;
   -webkit-appearance: none;
@@ -2339,6 +2343,15 @@ main.bg-gray {
   }
 }
 
+.patterns.box {
+  overflow-y: auto;
+  max-height: 235px;
+}
+
+.patterns.box > div:not(:first-child) {
+  margin-top: 1em;
+}
+
 footer {
   background-color: #575E62;
   height: 160px;
@@ -2538,6 +2551,12 @@ footer {
 
 .modal-body {
   padding: 2.5em;
+}
+
+@media (max-width: 575px) {
+  .modal-body {
+    padding: 1.5em;
+  }
 }
 
 .offcanvas {

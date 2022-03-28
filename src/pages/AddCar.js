@@ -1,18 +1,25 @@
 import React, {useState} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 
-import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash } from 'react-icons/io5';
+import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline } from 'react-icons/io5';
 import { VscChromeClose, VscPreview } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
-export default function AddCargo() {
+// import { Tooltip } from 'bootstrap.esm.min.js'
+
+export default function AddCar() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
+
+    const exampleEl = document.getElementById('example')
+    const tooltip = new bootstrap.Tooltip(exampleEl, {
+        boundary: document.body // or document.querySelector('#boundary')
+    })
 
     return (
         <>
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-                <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
+                <h1 className="dark-blue text-center text-uppercase">Добавление Машины</h1>
                 <form className="row">
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
@@ -26,7 +33,7 @@ export default function AddCargo() {
                         
                         <fieldset data-show={(activeField === 1) ? 'true' : 'false'}>
                             <div className='d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3'>
-                                <h4 className="text-center text-lg-start mb-0">Загрузка</h4>
+                                <h4 className="text-center text-lg-start mb-0">Маршрут</h4>
                                 <div className='d-none d-lg-flex align-items-center fs-09'>
                                     <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
                                         <IconContext.Provider value={{className: "icon-15"}}>
@@ -43,75 +50,55 @@ export default function AddCargo() {
                                 </div>
                             </div>
                             <div className="box">
-                                <div className="row mb-4">
+                                <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Дата*</div>
+                                        <label for="departure" className="title-font fs-12 fw-5">Откуда*</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
-                                            <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
-                                                <div className="box p-lg-3">
-                                                    <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" defaultChecked={true} name="frequency" value="Единожды"/>
-                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
-                                                    </label>
-                                                    <div className="d-flex fs-12 align-items-center">
-                                                        <input type="date" value={'2021-11-11'} className='flex-1'/>
-                                                        <span className="mx-2 mx-xxl-3">+</span>
-                                                        <CustomSelect className="inp" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-5">
-                                                <div className="box p-lg-3">
-                                                    <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" value="Постоянно"/>
-                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
-                                                    </label>
-                                                    <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
-                                                </div>
+                                            <div className="col-xl-6">
+                                                <input type='text' id="departure" placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row mb-4">
+                                <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
+                                        <label for="departure-radius" className="title-font fs-12 fw-5">Радиус загрузки</label>
                                     </div>
                                     <div className="col-md-9">
-                                        <div className="d-flex fs-12 align-items-center">
-                                            <input type="time" />
-                                            <span className="mx-3">—</span>
-                                            <input type="time" />
+                                        <div className="row">
+                                            <div className="col-xl-3">
+                                                <input type='number' id="departure-radius" placeholder='0' className='w-100 fs-12 distance'/>
+                                            </div>
                                         </div>
-                                        <label className="mt-2">
-                                            <input type="checkbox" defaultChecked={true} name="frequency" value="Круглосуточно"/>
-                                            <span className="ms-2 fs-09">Круглосуточно</span>
-                                        </label>
                                     </div>
                                 </div>
-                                <div className="row">
+                                <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
+                                        <label for="arrival" className="title-font fs-12 fw-5">Куда*</label>
                                     </div>
                                     <div className="col-md-9">
-                                        <div className="row fs-12">
-                                            <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <input type="text" placeholder="Населеный пункт" value={'Казань'}/>
+                                        <div className="row">
+                                            <div className="col-xl-6">
+                                                <input type='text' id="arrival" placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
-                                            <div className="col-sm-7">
-                                                <input type="text" placeholder="Адрес" value={'Четаева 89'}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <label for="arrival-radius" className="title-font fs-12 fw-5">Радиус загрузки</label>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <div className="row">
+                                            <div className="col-xl-3">
+                                                <input type='number' id="arrival-radius" placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
-                                <IconContext.Provider value={{className: "green icon-15"}}>
-                                    <IoAddCircle />
-                                </IconContext.Provider>
-                                <span className="ms-2">Добавить точку загрузки</span>
-                            </button>
 
                             <div className='mobile-btns d-block d-lg-none'>
                                 <div className='container'>
@@ -140,58 +127,40 @@ export default function AddCargo() {
                         </fieldset>
 
                         <fieldset data-show={(activeField === 2) ? 'true' : 'false'}>
-                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Разгрузка</h4>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Дата</h4>
                             <div className="box">
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
+                                <div className="row">
+                                    <div className="col-md-2 mb-3 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Дата</div>
                                     </div>
-                                    <div className="col-md-9">
-                                        <div className="d-flex fs-12 align-items-center">
-                                            <input type="date"/>
-                                            <span className="mx-3">—</span>
-                                            <input type="date" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="d-flex align-items-center fs-12">
-                                            <input type="time" />
-                                            <span className="mx-3">—</span>
-                                            <input type="time" />
-                                        </div>
-                                        <label className="mt-2">
-                                            <input type="checkbox" name="frequency" value="Круглосуточно"/>
-                                            <span className="ms-2 fs-09">Круглосуточно</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="row fs-12">
-                                            <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <input type="text" placeholder="Населеный пункт"/>
+                                    <div className="col-md-10">
+                                        <div className="row">
+                                            <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
+                                                <div className="box p-lg-3">
+                                                    <label className="mb-2 mb-xl-3">
+                                                        <input type="radio" defaultChecked={true} name="frequency" value="Единожды"/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
+                                                    </label>
+                                                    <div className="d-flex fs-12 align-items-center">
+                                                        <input type="date" value={'2021-11-11'} className='flex-1'/>
+                                                        <span className="mx-2 mx-xxl-3">+</span>
+                                                        <CustomSelect className="inp" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div className="col-sm-7">
-                                                <input type="text" placeholder="Адрес"/>
+                                            <div className="col-xl-5">
+                                                <div className="box p-lg-3">
+                                                    <label className="mb-2 mb-xl-3">
+                                                        <input type="radio" name="frequency" value="Постоянно"/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
+                                                    </label>
+                                                    <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
-                                <IconContext.Provider value={{className: "green icon-15"}}>
-                                    <IoAddCircle />
-                                </IconContext.Provider>
-                                <span className="ms-2">Добавить точку разгрузки</span>
-                            </button>
 
                             <div className='mobile-btns d-block d-lg-none'>
                                 <div className='container'>
@@ -232,19 +201,39 @@ export default function AddCargo() {
                         </fieldset>
 
                         <fieldset data-show={(activeField === 3) ? 'true' : 'false'}>
-                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Груз</h4>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">О Машине</h4>
                             <div className="box">
-                                <div className="row align-items-center mb-4">
+                                <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Тип груза</div>
+                                        <div className="title-font fs-12 fw-5">Тип машины*</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type"  options={['тип 1', 'тип 2']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="car-type" options={['тягач', 'фура', 'рефрижератор']}/>
+                                        <div className='row row-cols-3 mt-3'>
+                                            <div>
+                                                <label>
+                                                    <input type="radio" name="car-type-2" value="Грузовик"/>
+                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Грузовик</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <input type="radio" name="car-type-2" value="Полуприцеп"/>
+                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Полуприцеп</span>
+                                                </label>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <input type="radio" name="car-type-2" value="Сцепка"/>
+                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Сцепка</span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-3">
-                                        <div className="title-font fs-12 fw-5">Вес*</div>
+                                        <div className="title-font fs-12 fw-5">Грузоподъемность*</div>
                                     </div>
                                     <div className="col-9">
                                         <div className="row">
@@ -306,32 +295,59 @@ export default function AddCargo() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Упаковка</div>
+                                    <div className="col-3">
+                                        <div className="title-font fs-12 fw-5 d-flex align-items-center">
+                                            СТС
+                                            <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
+                                                <IoHelpCircleOutline/>
+                                            </IconContext.Provider>
+                                        </div>
                                     </div>
-                                    <div className="col-md-9 fs-12 d-flex align-items-center">
-                                        <CustomSelect className="inp" name="package"  options={['упаковка 1', 'упаковка 2']}/>
-                                        <IconContext.Provider value={{className: "icon-10 mx-3"}}>
-                                            <VscChromeClose />
-                                        </IconContext.Provider>
-                                        <input type="number" className="pcs"/>
+                                    <div className="col-9">
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" placeholder='СТС' className="w-100 fs-12"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-3">
+                                        <div className="title-font fs-12 fw-5">
+                                            VIN код
+                                            <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
+                                                <IoHelpCircleOutline/>
+                                            </IconContext.Provider>
+                                        </div>
+                                    </div>
+                                    <div className="col-9">
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" placeholder='VIN код' className="w-100 fs-12"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Особые пометки</div>
+                                    <div className="col-3">
+                                        <div className="title-font fs-12 fw-5">
+                                            ПТС
+                                            <button id="example" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="ПТС">
+                                            <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
+                                                <IoHelpCircleOutline/>
+                                            </IconContext.Provider>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt="Нет" options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                    <div className="col-9">
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" placeholder='ПТС' className="w-100 fs-12"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
-                                <IconContext.Provider value={{className: "green icon-15"}}>
-                                    <IoAddCircle />
-                                </IconContext.Provider>
-                                <span className="ms-2">Добавить груз</span>
-                            </button>
 
                             <div className='mobile-btns d-block d-lg-none'>
                                 <div className='container'>

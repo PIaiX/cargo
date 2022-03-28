@@ -142,6 +142,9 @@ input {
         &.percent {
             background-image: url(bg-imgs/percent.svg);
         }
+        &.distance {
+            background-image: url(bg-imgs/km.svg);
+        }
     }
     &[type="radio"] {
         appearance: none;
@@ -1557,6 +1560,13 @@ main {
         .fs-12 {font-size: 1.2em;}
     }
 }
+.patterns.box {
+    overflow-y: auto;
+    max-height: 235px;
+    &>div:not(:first-child) {
+        margin-top: 1em;
+    }
+}
 
 
 footer {
@@ -1707,7 +1717,12 @@ footer {
         border-radius: 0px;
         border: none;
     }
-    &-body {padding: 2.5em;}
+    &-body {
+        padding: 2.5em;
+        @media (max-width: 575px){
+            padding: 1.5em;
+        }
+    }
 }
 .offcanvas {
     width: 300px;

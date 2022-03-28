@@ -44,7 +44,7 @@ export default function Home() {
                             <div className="box text-center">
                                 <div className="title-font dark-blue fw-9 fs-25 mb-2">12 359</div>
                                 <div className="fs-12 mb-3">Машин на сайте</div>
-                                <button type="button" className="btn btn-1 fs-12 w-100 px-2">Добавить машину</button>
+                                <Link to="add-car" className="btn btn-1 fs-12 w-100 px-2">Добавить машину</Link>
                             </div>
                         </div>
                     </div>
