@@ -22,7 +22,6 @@ export default function AddCar() {
                             <div className={(activeField === 3) ? 'active' : ''}>3</div>
                             <div className={(activeField === 4) ? 'active' : ''}>4</div>
                             <div className={(activeField === 5) ? 'active' : ''}>5</div>
-                            <div className={(activeField === 6) ? 'active' : ''}>6</div>
                         </div>
                         
                         <fieldset data-show={(activeField === 1) ? 'true' : 'false'}>
@@ -62,7 +61,7 @@ export default function AddCar() {
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
-                                            <div className="col-xl-3">
+                                            <div className="col-sm-6 col-xl-3">
                                                 <input type='number' id="departure-radius" placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
@@ -86,7 +85,7 @@ export default function AddCar() {
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
-                                            <div className="col-xl-3">
+                                            <div className="col-sm-6 col-xl-3">
                                                 <input type='number' id="arrival-radius" placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
@@ -203,14 +202,14 @@ export default function AddCar() {
                                     </div>
                                     <div className="col-md-9">
                                         <CustomSelect className="inp w-100 fs-12" name="car-type" options={['тягач', 'фура', 'рефрижератор']}/>
-                                        <div className='row row-cols-3 mt-3'>
-                                            <div>
+                                        <div className='row row-cols-sm-3 mt-3'>
+                                            <div className='mb-3 mb-sm-0'>
                                                 <label>
                                                     <input type="radio" name="car-type-2" value="Грузовик"/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Грузовик</span>
                                                 </label>
                                             </div>
-                                            <div>
+                                            <div className='mb-3 mb-sm-0'>
                                                 <label>
                                                     <input type="radio" name="car-type-2" value="Полуприцеп"/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Полуприцеп</span>
@@ -226,10 +225,10 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
-                                    <div className="col-3">
-                                        <div className="title-font fs-12 fw-5">Грузоподъемность*</div>
+                                    <div className="col-sm-5 col-md-3">
+                                        <div className="title-font fs-12 fw-5 mb-2 mb-sm-0">Грузоподъемность*</div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-sm-7 col-md-9">
                                         <div className="row">
                                             <div className="col-md-4">
                                                 <input type="number" className="weight w-100 fs-12"/>
@@ -238,10 +237,10 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
-                                    <div className="col-3">
-                                        <div className="title-font fs-12 fw-5">Объем*</div>
+                                    <div className="col-sm-5 col-md-3">
+                                        <div className="title-font fs-12 fw-5 mb-2 mb-sm-0">Объем*</div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-sm-7 col-md-9">
                                         <div className="row">
                                             <div className="col-md-4">
                                                 <input type="number" className="size w-100 fs-12"/>
@@ -289,7 +288,7 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
-                                    <div className="col-3">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
                                             <span>СТС</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
@@ -297,7 +296,7 @@ export default function AddCar() {
                                             </IconContext.Provider>
                                         </div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <input type="text" placeholder='СТС' className="w-100 fs-12"/>
@@ -306,7 +305,7 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
-                                    <div className="col-3">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5">
                                             <span>VIN код</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
@@ -314,7 +313,7 @@ export default function AddCar() {
                                             </IconContext.Provider>
                                         </div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <input type="text" placeholder='VIN код' className="w-100 fs-12"/>
@@ -323,7 +322,7 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 <div className="row align-items-center">
-                                    <div className="col-3">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5">
                                             <span>ПТС</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
@@ -331,7 +330,7 @@ export default function AddCar() {
                                             </IconContext.Provider>
                                         </div>
                                     </div>
-                                    <div className="col-9">
+                                    <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <input type="text" placeholder='ПТС' className="w-100 fs-12"/>
@@ -380,67 +379,6 @@ export default function AddCar() {
                         </fieldset>
 
                         <fieldset data-show={(activeField === 4) ? 'true' : 'false'}>
-                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Требовани я к машине</h4>
-                            <div className="box">
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Тип кузова</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="carcase" options={['тип 1', 'тип 2', 'тип 3']}/>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Температура</div>
-                                    </div>
-                                    <div className="col-md-9 fs-12 d-flex align-items-center">
-                                        <input type="number" placeholder="0" className="temp"/>
-                                        <span className="mx-3">—</span>
-                                        <input type="number" placeholder="0" className="temp"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='mobile-btns d-block d-lg-none'>
-                                <div className='container'>
-                                    <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
-                                        <button type='button'>
-                                            <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
-                                            </IconContext.Provider>
-                                            <span className='ms-1'>Использовать шаблон</span>
-                                        </button>
-                                        <button type='reset'>
-                                            <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscChromeClose/>
-                                            </IconContext.Provider>
-                                            <span className='ms-1'>Очистить форму</span>
-                                        </button>
-                                    </div>
-                                    <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
-                                        <div>
-                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
-                                                <IconContext.Provider value={{className: "icon-15"}}>
-                                                    <IoChevronBackOutline/>
-                                                </IconContext.Provider>
-                                                <span className='ms-1 ms-sm-3 text-uppercase'>Назад</span>
-                                            </button>
-                                        </div>
-                                        <div>
-                                            <button type='button' onClick={() => setActiveField(5)}     className='btn btn-1 w-100 fs-11'>
-                                                <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
-                                                <IconContext.Provider value={{className: "icon-15"}}>
-                                                    <IoChevronForwardOutline/>
-                                                </IconContext.Provider>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-
-                        <fieldset data-show={(activeField === 5) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Оплата</h4>
                             <div className="box">
                                 <div className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
@@ -530,7 +468,7 @@ export default function AddCar() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(4)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -538,7 +476,7 @@ export default function AddCar() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(6)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(5)}     className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -550,7 +488,7 @@ export default function AddCar() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 6) ? 'true' : 'false'}>
+                        <fieldset data-show={(activeField === 5) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
                                 <div className="row align-items-center mb-3">
@@ -608,7 +546,7 @@ export default function AddCar() {
                                     </div>
                                     <div className='row gx-2 gx-sm-4 title-font'>
                                         <div className='col-5 col-sm-6'>
-                                            <button type='button' onClick={() => setActiveField(5)} className='btn btn-1 px-3 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(4)} className='btn btn-1 px-3 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -629,24 +567,19 @@ export default function AddCar() {
                             <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <a className='active'>Загрузка</a>
+                                        <a className='active'>Маршрут</a>
                                         <div className='fs-09'>
-                                            <div>11.11.2021, круглосуточно</div>
-                                            <div>Казань, Четаева 89</div>
+                                            <div>Казань +50км — Москва +50км</div>
                                         </div>
                                     </li>
                                     <li>
-                                        <a className='active'>Разгрузка</a>
+                                        <a className='active'>Дата</a>
                                         <div className='fs-09'>
-                                            <div>11.11.2021, круглосуточно</div>
-                                            <div>Казань, Четаева 89</div>
+                                            <div>Ежедневно</div>
                                         </div>
                                     </li>
                                     <li>
-                                        <a>Груз</a>
-                                    </li>
-                                    <li>
-                                        <a>Требования к машине</a>
+                                        <a>Информация о машине</a>
                                     </li>
                                     <li>
                                         <a>Оплата</a>
@@ -657,6 +590,7 @@ export default function AddCar() {
                                 </ol>
                             </nav>
                             <button type='button' className='btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5'>разместить груз</button>
+                            <div className='fs-09 text-center mt-2 mt-xl-3'>Объявление будет опубликованно до  1 января включительно, после чего удалится в архив</div>
                             <button type='button' data-bs-toggle="modal" data-bs-target="#savePattern" className='fs-11 mx-auto mt-2 mt-xl-3 blue'>Сохранить шаблон</button>
                         </aside>
                     </div>
