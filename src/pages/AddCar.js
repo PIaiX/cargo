@@ -4,17 +4,11 @@ import CustomSelect from '../components/utilities/CustomSelect';
 import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline } from 'react-icons/io5';
 import { VscChromeClose, VscPreview } from "react-icons/vsc";
 import { IconContext } from "react-icons";
-
-// import { Tooltip } from 'bootstrap.esm.min.js'
+// import * as bootstrap from 'bootstrap';
 
 export default function AddCar() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
-
-    const exampleEl = document.getElementById('example')
-    const tooltip = new bootstrap.Tooltip(exampleEl, {
-        boundary: document.body // or document.querySelector('#boundary')
-    })
-
+    
     return (
         <>
         <main className="bg-gray">
@@ -297,7 +291,7 @@ export default function AddCar() {
                                 <div className="row align-items-center mb-4">
                                     <div className="col-3">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                                            СТС
+                                            <span>СТС</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                 <IoHelpCircleOutline/>
                                             </IconContext.Provider>
@@ -314,7 +308,7 @@ export default function AddCar() {
                                 <div className="row align-items-center mb-4">
                                     <div className="col-3">
                                         <div className="title-font fs-12 fw-5">
-                                            VIN код
+                                            <span>VIN код</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                 <IoHelpCircleOutline/>
                                             </IconContext.Provider>
@@ -331,12 +325,10 @@ export default function AddCar() {
                                 <div className="row align-items-center">
                                     <div className="col-3">
                                         <div className="title-font fs-12 fw-5">
-                                            ПТС
-                                            <button id="example" type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="ПТС">
+                                            <span>ПТС</span>
                                             <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                 <IoHelpCircleOutline/>
                                             </IconContext.Provider>
-                                            </button>
                                         </div>
                                     </div>
                                     <div className="col-9">
