@@ -25,7 +25,7 @@ export default function Header() {
                             </IconContext.Provider>
                         </button>
 
-                        <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt="Казань" options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
+                        <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt={1} options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
 
                         <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
                             <IconContext.Provider value={{className: "icon", title: "меню" }}>

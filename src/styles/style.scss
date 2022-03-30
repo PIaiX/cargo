@@ -1150,7 +1150,7 @@ main {
     }
 }
 
-/* SECTION 6 */
+/* SECTION 6 - Новости*/
 .news-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1271,6 +1271,69 @@ main {
             grid-row: span 2;
             @media (max-width: 575px){
                 grid-row: span 1;
+            }
+        }
+    }
+}
+article {
+    &.mini {
+        position: relative;
+        figure {
+            margin-bottom: 1em;
+            @media (max-width: 1199px){margin-bottom: .5em;}
+            img {
+                width: 100%;
+                height: 285px;
+                object-fit: cover;
+                margin-bottom: 1em;
+                @media (max-width: 1659px){height: 235px;}
+                @media (max-width: 1399px){height: 200px;}
+                @media (max-width: 1199px){
+                    height: 170px;
+                    margin-bottom: .5em;
+                }
+                @media (max-width: 767px){height: 190px;}
+                @media (max-width: 575px){height: 34vw;}
+            }
+            figcaption {
+                font-size: 1.5em;
+                font-family: $title-font;
+                font-weight: 700;
+                color: #545454;
+                @media (max-width: 575px){font-size: 1.25em;}
+            }
+        }
+        .text {
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.2em;
+            height: 6em;
+            font-size: .9em;
+        }
+        .stretched-link {
+            &:hover, &:focus {
+                color: $green;
+            }
+        }
+    }
+    &.full {
+        figure {
+            display: inline-block;
+            width: 100%;
+            img {
+                width: 50%;
+                float: left;
+                margin: 0 1em 1em 0;
+                @media (max-width: 575px){
+                    width: 100%;
+                    float: unset;
+                    margin: 0 0 1em 0;
+                }
+            }
+            figcaption {
+                p {margin-bottom: 1em;}
             }
         }
     }
@@ -1576,6 +1639,40 @@ footer {
         height: 50px;
     }
 }
+
+/* FORUM */
+.forum-widget {
+    background-color: #FAFAFA;
+    padding: 1em;
+    @media (max-width: 1399px){
+        padding: 0 1em;
+    }
+    .message {
+        border-bottom: 1px solid $gray-5;
+        padding: .75em 0px;
+        h5 {
+            color: #545454;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: .4em;
+        }
+        .text {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.1em;
+            height: 3.3em;
+            font-size: .9em;
+            .author {
+                color: $blue;
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
 
 /* SWIPER SLIDERS */
 .swiper-4 {

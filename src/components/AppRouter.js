@@ -6,6 +6,8 @@ import CargoPage from '../pages/CargoPage';
 import CarPage from '../pages/CarPage';
 import Home from '../pages/Home';
 import Search from '../pages/Search';
+import AllNews from '../pages/AllNews';
+import ArticleFull from '../pages/ArticleFull';
 
 export default function AppRouter() {
     return (
@@ -16,6 +18,8 @@ export default function AppRouter() {
             <Route path="/car-page" element={<CarPage />} />
             <Route path="/add-cargo" element={<AddCargo />} />
             <Route path="/add-car" element={<AddCar />} />
+            <Route path="/all-news" element={<AllNews />} />
+            <Route path="/news" element={<ArticleFull />} />
         </Routes>
     )
 }

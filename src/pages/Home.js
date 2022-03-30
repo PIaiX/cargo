@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from '../components/Card';
-import Article from '../components/Article';
+import ArticleCard from '../components/ArticleCard';
 
 import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
@@ -488,15 +488,16 @@ export default function Home() {
                 </div>
             </section>
 
-            <section id="sec-6" className="container mb-6">
+            <section id="sec-6" className="container mb-5">
                 <h2>Новости ПОРТАЛА</h2>
                 <div className="news-grid">
-                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <Article title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
                 </div>
+                <Link to="all-news" className='btn btn-2 mx-auto mt-5 fs-12 text-uppercase'>К другим новостям</Link>
             </section>
         </main>
     )
