@@ -98,7 +98,7 @@ export default function Search() {
                                     </div>
                                     <div className="col-sm-6 col-md-4">
                                         <label className="title-font mb-2 mb-xl-3">Тип груза</label>
-                                        <CustomSelect name="type-cargo" className="w-100" btnClass="inp fs-15" checkedOpt="Не важно" options={['Не важно', 'Тип 1', 'Тип 2']}/>
+                                        <CustomSelect name="type-cargo" className="w-100" btnClass="inp fs-15" checkedOpt={1} options={['Не важно', 'Тип 1', 'Тип 2']}/>
                                     </div>
                                     <div className="col-sm-6 col-md-4">
                                         <label className="title-font mb-2 mb-xl-3">Особые пометки</label>
@@ -195,7 +195,7 @@ export default function Search() {
                                     </div>
                                     <div className="col-sm-6 col-md-4">
                                         <label className="title-font mb-2 mb-xl-3">Особые пометки</label>
-                                        <CustomSelect name="special-notes" className="w-100" btnClass="inp fs-15" checkedOpt="Нет" options={['Нет', 'Пометка 1', 'Пометка 2']}/>
+                                        <CustomSelect name="special-notes" className="w-100" btnClass="inp fs-15" checkedOpt={1} options={['Нет', 'Пометка 1', 'Пометка 2']}/>
                                     </div>
                                 </>
                             }
@@ -230,7 +230,7 @@ export default function Search() {
                     <div className="fs-15 fw-5 mb-2 mb-md-0">Найденно 421 грузов</div>
                     <div className="fs-12 ms-md-5 d-flex align-items-center">
                         <span className="me-2">Сортировать:</span>
-                        <CustomSelect name="sort" className="w-100" alignment="right" checkedOpt="По времени добавления" options={['По времени добавления', 'По другому признаку']}/>
+                        <CustomSelect name="sort" className="w-100" alignment="right" checkedOpt={1} options={['По времени добавления', 'По другому признаку']}/>
                     </div>
                 </div>
                 

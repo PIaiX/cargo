@@ -376,7 +376,7 @@ select {
   right: 0;
 }
 
-.custom-select .options label.radio-line {
+.custom-select .options label.line {
   display: block;
   position: relative;
   z-index: 1;
@@ -391,16 +391,16 @@ select {
 }
 
 @media (max-width: 991px) {
-  .custom-select .options label.radio-line {
+  .custom-select .options label.line {
     padding: 0.5em 1em;
   }
 }
 
-.custom-select .options label.radio-line:hover input {
-  background-color: rgba(1, 191, 196, 0.22);
+.custom-select .options label.line:hover input {
+  background: rgba(1, 191, 196, 0.22);
 }
 
-.custom-select .options label.radio-line input {
+.custom-select .options label.line input {
   position: absolute;
   top: 0;
   left: 0;
@@ -408,18 +408,18 @@ select {
   height: 100%;
   z-index: -1;
   cursor: pointer;
-  background-color: transparent;
+  background: transparent;
   border-radius: 0px;
   -webkit-transition: .2s;
   transition: .2s;
   border: none;
 }
 
-.custom-select .options label.radio-line input:checked {
-  background-color: rgba(1, 191, 196, 0.22);
+.custom-select .options label.line input:checked {
+  background: rgba(1, 191, 196, 0.22);
 }
 
-.custom-select .options label.radio-line input:checked::before {
+.custom-select .options label.line input:checked::before {
   content: unset;
 }
 

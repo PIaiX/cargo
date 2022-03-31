@@ -299,7 +299,7 @@ select {
             left: unset;
             right: 0;
         }
-        label.radio-line {
+        label.line {
             display: block;
             position: relative;
             z-index: 1;
@@ -313,7 +313,7 @@ select {
                 padding: 0.5em 1em;
             }
             &:hover {
-                input {background-color: rgba($green, .22);}
+                input {background: rgba($green, .22);}
             }
             input {
                 position: absolute;
@@ -323,12 +323,12 @@ select {
                 height: 100%;
                 z-index: -1;
                 cursor: pointer;
-                background-color: transparent;
+                background: transparent;
                 border-radius: 0px;
                 transition: .2s;
                 border: none;
                 &:checked {
-                    background-color: rgba($green, .22);
+                    background: rgba($green, .22);
                     &::before {content: unset;}
                 }
             }

@@ -58,7 +58,7 @@ export default function AddCargo() {
                                                     <div className="d-flex fs-12 align-items-center">
                                                         <input type="date" value={'2021-11-11'} className='flex-1'/>
                                                         <span className="mx-2 mx-xxl-3">+</span>
-                                                        <CustomSelect className="inp" name="days" checkedOpt="0 дн." options={['0 дн.', '1 дн.']}/>
+                                                        <CustomSelect className="inp" name="days" checkedOpt={1} options={['0 дн.', '1 дн.']}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -68,7 +68,7 @@ export default function AddCargo() {
                                                         <input type="radio" name="frequency" value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
-                                                    <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt="По рабочим дням" options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                    <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt={1} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,7 +322,7 @@ export default function AddCargo() {
                                         <div className="title-font fs-12 fw-5">Особые пометки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt="Нет" options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt={1} options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
                                     </div>
                                 </div>
                             </div>
@@ -473,7 +473,7 @@ export default function AddCargo() {
                                                 <input type="number" className="price w-100 fs-12"/>
                                             </div>
                                             <div className='col-4 col-sm-4 col-xl-3'>
-                                                <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt="0" options={['₽', '₽/км']}/>
+                                                <CustomSelect className="inp w-100 fs-12" name="carcase" checkedOpt={1} options={['₽', '₽/км']}/>
                                             </div>
                                         </div>
                                     </div>

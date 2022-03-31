@@ -7,7 +7,7 @@ export default function ArticleCard(props) {
             <figure>
                 <img src={props.img} alt={props.title}/>
                 <figcaption>
-                    <Link to="/" className="title stretched-link">{props.title}</Link>
+                    <Link to={props.url} className="title stretched-link">{props.title}</Link>
                     <div className="hidden-div">
                         <div className="text">
                             {props.text}

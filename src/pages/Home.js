@@ -491,11 +491,11 @@ export default function Home() {
             <section id="sec-6" className="container mb-5">
                 <h2>Новости ПОРТАЛА</h2>
                 <div className="news-grid">
-                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
+                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
                 </div>
                 <Link to="all-news" className='btn btn-2 mx-auto mt-5 fs-12 text-uppercase'>К другим новостям</Link>
             </section>
