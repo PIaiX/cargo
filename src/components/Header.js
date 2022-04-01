@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import CustomSelect from './utilities/CustomSelect';
 import { IconContext  } from "react-icons";
 import { MdPersonOutline, MdMenu } from 'react-icons/md';
@@ -18,12 +18,12 @@ export default function Header() {
                         <a href="/">Задать вопрос</a>
                     </nav>
                     <div className="d-flex align-items-center ms-5">
-                        <button type="button" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
+                        <Link to="entrance" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
                             <IconContext.Provider value={{className: "icon", title: "аккаунт" }}>
                                 <MdPersonOutline />
                             </IconContext.Provider>
-                        </button>
+                        </Link>
 
                         <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt={1} options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
 

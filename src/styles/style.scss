@@ -208,22 +208,6 @@ label {
     //     &:checked + span {color: $green;}
     // }
     span {flex: 1;}
-    &.inp-text {
-        div {
-            padding: .5em 1em;
-            background-color: $blue;
-            color: #fff;
-            border-radius: 2em;
-        }
-        input {
-            opacity: 0;
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            z-index: 1;
-            &:checked + div {background-color: $green;}
-        }
-    }
 }
 
 
@@ -376,6 +360,28 @@ select {
         }
     }
 }
+
+.password {
+    position: relative;
+    input {
+        position: relative;
+        z-index: 1;
+    }
+    button {
+        position: absolute;
+        top: 0px;
+        right: 1em;
+        height: 100%;
+        z-index: 2;
+        width: 2.5em;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: scale-down;
+        }
+    }
+}
+
 
 .input-file {
     @include flex-center();
@@ -538,7 +544,6 @@ h1 {
   font-weight: 700;
   margin-bottom: 1em;
   font-size: 1.875em;
-  color: #545454;
   @media (max-width: 575px){
     font-size: 1.5em;
   }
@@ -582,7 +587,6 @@ h3 {
 }
 h4 {
     text-align: left;
-    color: #545454;
     font-size: 1.5em;
     font-weight: 700;
 }
@@ -598,6 +602,7 @@ h5 {
 .sec-font {font-family: $sec-font;}
 .fs {
   &-07 {font-size: 0.7em;}
+  &-075 {font-size: 0.75em;}
   &-08 {font-size: 0.8em;}
   &-09 {font-size: 0.9em;}
   &-11 {font-size: 1.1em;}
@@ -629,6 +634,7 @@ h5 {
 .dark-blue {color: $dark-blue;}
 .text-color {color: $text-color;}
 .red {color: $red;}
+.white {color: #fff;}
 
 .rotate-180 {transform: rotate(180deg);}
 .bb-1 {border-bottom: 1px solid;}
@@ -656,6 +662,17 @@ h5 {
     border-radius: 6px;
     background-color: #fff;
     padding: 2em;
+}
+
+.marked-list {
+    list-style: none;
+    padding-left: 0px;
+    li {
+        padding-left: 1.5em;
+        background: url(bg-imgs/checkbox.svg) no-repeat left center;
+        background-size: 1em;
+        margin-bottom: .5em;
+    }
 }
 
 /* ICONS */
@@ -786,6 +803,16 @@ main {
     position: relative;
     &.bg-white {background-color: #fff;}
     &.bg-gray {background-color: #FAFAFA;}
+    // &.entrance {
+    //     background-image: url(bg-imgs/bg-entrance.png);
+    //     background-repeat: no-repeat;
+    //     background-position: right center;
+    //     background-size: calc((100% - 1600px)/2 + 600px) auto;
+    //     @media (max-width: 1659px){
+    //         background-size: calc((100% - 1320px)/2 + 1320px/3) auto;
+    //         background-image: url(bg-imgs/bg-entrance.png);
+    //     }
+    // }
     @media (max-width: 1199px) {
         min-height: calc(100vh - 55px - 160px);
     }
@@ -793,6 +820,7 @@ main {
         min-height: calc(100vh - 50px - 50px);
     }
 }
+
 
 
 #sec-1 {
@@ -1630,6 +1658,36 @@ article {
         margin-top: 1em;
     }
 }
+
+
+/* SECTION 10 */
+#sec-10 {
+    position: relative;
+    z-index: 1;
+}
+.entrance-bg {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 100%;
+    width: calc((100% - 1600px)/2 + 600px);
+    object-fit: cover;
+    z-index: 0;
+    @media (max-width: 1659px){
+        width: calc((100% - 1320px)/2 + 500px);
+    }
+    @media (max-width: 1399px){
+        width: calc((100% - 1140px)/2 + 500px);
+    }
+    @media (max-width: 1199px){
+        width: calc((100% - 960px)/2 + 420px);
+    }
+    @media (max-width: 991px){
+        width: calc((100% - 720px)/2 + 360px);
+    }
+    @media (max-width: 767px){display: none;}
+}
+
 
 
 footer {

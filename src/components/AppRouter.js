@@ -8,6 +8,8 @@ import Home from '../pages/Home';
 import Search from '../pages/Search';
 import AllNews from '../pages/AllNews';
 import ArticleFull from '../pages/ArticleFull';
+import Entrance from '../pages/Entrance';
+import Registration from '../pages/Registration';
 
 export default function AppRouter() {
     return (
@@ -20,6 +22,8 @@ export default function AppRouter() {
             <Route path="/add-car" element={<AddCar />} />
             <Route path="/all-news" element={<AllNews />} />
             <Route path="/news" element={<ArticleFull />} />
+            <Route path="/entrance" element={<Entrance />} />
+            <Route path="/registration" element={<Registration />} />
         </Routes>
     )
 }
