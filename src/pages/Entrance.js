@@ -21,9 +21,11 @@ export default function Entrance() {
                                     <input type="checkbox" className='me-2'/>
                                     <span className='blue'>Запомнить меня</span>
                                 </label>
-                                <a className='blue'>Забыли пароль?</a>
+                                <Link to="/reset-password" className='blue'>Забыли пароль?</Link>
                             </div>
-                            <button type='button' className='btn btn-2 fs-12 text-uppercase w-100 mt-3'>Войти</button>
+                            {/* <button type='submit' className='btn btn-2 fs-12 text-uppercase w-100 mt-3'>Войти</button> */}
+                            <Link to="/personal-account" className='btn btn-2 fs-12 text-uppercase w-100 mt-3'>Войти</Link>
+                            
                             <div className='text-center mt-3'>У Вас еще нет аккаунта? <Link to="/registration" className='blue'>Зарегистрироваться</Link></div>
                         </form>
                     </div>

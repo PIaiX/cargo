@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 
-import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash } from 'react-icons/io5';
-import { VscChromeClose, VscPreview } from "react-icons/vsc";
+import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoNewspaperOutline } from 'react-icons/io5';
+import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
 export default function AddCargo() {
@@ -30,7 +30,7 @@ export default function AddCargo() {
                                 <div className='d-none d-lg-flex align-items-center fs-09'>
                                     <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
                                         <IconContext.Provider value={{className: "icon-15"}}>
-                                            <VscPreview/>
+                                            <IoNewspaperOutline/>
                                         </IconContext.Provider>
                                         <span className='ms-2'>Использовать шаблон</span>
                                     </button>
@@ -118,7 +118,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
@@ -198,7 +198,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
@@ -338,7 +338,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
@@ -399,7 +399,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
@@ -509,7 +509,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>
@@ -592,7 +592,7 @@ export default function AddCargo() {
                                     <div className='d-flex align-items-center justify-content-between blue title-font fw-5 fs-11'>
                                         <button type='button'>
                                             <IconContext.Provider value={{className: "icon-15"}}>
-                                                <VscPreview/>
+                                                <IoNewspaperOutline/>
                                             </IconContext.Provider>
                                             <span className='ms-1'>Использовать шаблон</span>
                                         </button>

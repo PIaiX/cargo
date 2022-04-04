@@ -1689,6 +1689,38 @@ article {
 }
 
 
+/* SECTION 11 - Forum */
+#sec-11 {
+    .stat {
+        background-color: #EEF3F3;
+    }
+}
+
+/* SECTION 12 - Personal Account */
+#sec-12 {
+    .box {border: none;}
+    .menu {
+        ul {
+            list-style: none;
+            padding-left: 0px;
+            li {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                padding: .75em 0;
+                &:not(:last-child){border-bottom: 1px solid $gray-5;}
+                
+                a, button {
+                    font-size: 1.25em;
+                    font-weight: 500;
+                    font-family: $title-font;
+                    margin-left: .5em;
+                }
+            }
+        }
+    }
+}
+
 
 footer {
     background-color: #575E62;

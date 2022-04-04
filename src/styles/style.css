@@ -2526,6 +2526,45 @@ article.full figure figcaption p {
   }
 }
 
+/* SECTION 11 - Forum */
+#sec-11 .stat {
+  background-color: #EEF3F3;
+}
+
+/* SECTION 12 - Personal Account */
+#sec-12 .box {
+  border: none;
+}
+
+#sec-12 .menu ul {
+  list-style: none;
+  padding-left: 0px;
+}
+
+#sec-12 .menu ul li {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  padding: .75em 0;
+}
+
+#sec-12 .menu ul li:not(:last-child) {
+  border-bottom: 1px solid #E0E0E0;
+}
+
+#sec-12 .menu ul li a, #sec-12 .menu ul li button {
+  font-size: 1.25em;
+  font-weight: 500;
+  font-family: "Gotham Pro";
+  margin-left: .5em;
+}
+
 footer {
   background-color: #575E62;
   height: 160px;

@@ -10,6 +10,10 @@ import AllNews from '../pages/AllNews';
 import ArticleFull from '../pages/ArticleFull';
 import Entrance from '../pages/Entrance';
 import Registration from '../pages/Registration';
+import ResetPassword from '../pages/ResetPassword';
+import ResetPassword2 from '../pages/ResetPassword2';
+import Forum from '../pages/Forum';
+import PersonalAccount from '../account/PersonalAccount';
 
 export default function AppRouter() {
     return (
@@ -22,8 +26,12 @@ export default function AppRouter() {
             <Route path="/add-car" element={<AddCar />} />
             <Route path="/all-news" element={<AllNews />} />
             <Route path="/news" element={<ArticleFull />} />
+            <Route path="/forum" element={<Forum />} />
             <Route path="/entrance" element={<Entrance />} />
             <Route path="/registration" element={<Registration />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/reset-password-2" element={<ResetPassword2 />} />
+            <Route path="/personal-account/*" element={<PersonalAccount />} />
         </Routes>
     )
 }

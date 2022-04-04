@@ -13,7 +13,7 @@ export default function Header() {
                     <nav className="d-none d-lg-flex">
                         <NavLink to="/">Главная</NavLink>
                         <NavLink to="/search">Поиск</NavLink>
-                        <a href="/">Форум</a>
+                        <NavLink to="/forum">Форум</NavLink>
                         <a href="/">Информация</a>
                         <a href="/">Задать вопрос</a>
                     </nav>
@@ -42,7 +42,7 @@ export default function Header() {
                         <ul data-bs-dismiss="offcanvas">
                             <li><NavLink to="/">Главная</NavLink></li>
                             <li><NavLink to="/search">Поиск</NavLink></li>
-                            <li><a href="/">Форум</a></li>
+                            <li><NavLink to="/forum">Форум</NavLink></li>
                             <li><a href="/">Информация</a></li>
                             <li><a href="/">Задать вопрос</a></li>
                         </ul>
