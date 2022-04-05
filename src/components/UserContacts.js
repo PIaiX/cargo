@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 
 export default function UserContacts(props) {
     const [visible, setVisibility] = useState(false);
@@ -14,7 +15,9 @@ export default function UserContacts(props) {
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">
                 <h4 className="text-left text-md-center mt-md-4 mb-2 mb-sm-3">
-                    {props.title}
+                    <Link to="/personal-account/view-profile">
+                        {props.title}
+                    </Link>
                 </h4>
                 {
                     (visible) &&

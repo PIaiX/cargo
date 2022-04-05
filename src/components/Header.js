@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import CustomSelect from './utilities/CustomSelect';
 import { IconContext  } from "react-icons";
-import { MdPersonOutline, MdMenu } from 'react-icons/md';
+import { MdMenu } from 'react-icons/md';
+import { RiUserLine } from "react-icons/ri";
 
 export default function Header() {
     return (
@@ -21,7 +22,7 @@ export default function Header() {
                         <Link to="entrance" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
                             <IconContext.Provider value={{className: "icon", title: "аккаунт" }}>
-                                <MdPersonOutline />
+                                <RiUserLine />
                             </IconContext.Provider>
                         </Link>
 
