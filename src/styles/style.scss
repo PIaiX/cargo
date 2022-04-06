@@ -266,7 +266,6 @@ select {
             }
         }
     }
-    .dropdown-toggle::after {content: unset;}
     .options {
         position: absolute;
         top: calc(100% + 5px);
@@ -1706,7 +1705,12 @@ article {
 
 /* SECTION 12 - Personal Account */
 #sec-12 {
-    .box {border: none;}
+    .box {
+        border: none;
+        @media (max-width: 991px){
+            background-color: transparent;
+        }
+    }
     .menu {
         ul {
             list-style: none;
@@ -1904,11 +1908,12 @@ footer {
 }
 
 
-.dropdown {
-    &-toggle {
-        &::after {content: unset;}
+.dropdown, .dropstart {
+    position: relative;
+    .dropdown-toggle {
+        &::before, &::after {content: unset;}
     }
-    &-menu {
+    .dropdown-menu {
         background: #FFFFFF;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
@@ -1916,16 +1921,6 @@ footer {
         width: max-content;
         padding: 1em;
         font-size: 1em;
-        // li {
-        //     a.dropdown-item {
-        //         color: $green !important;
-        //         padding: 0.5em 2em !important;
-        //         transition: .2s;
-        //         &:hover, &:focus, &.active, &:active {
-        //             background-color: $dark-blue;
-        //         }
-        //     }
-        // }
     }
 }
 

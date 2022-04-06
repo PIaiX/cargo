@@ -22,7 +22,7 @@ export default function AccountMenu() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-ads">
+                        <NavLink to="user-cars">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Мои машины" }}>
                                 <MdLocalShipping />
                             </IconContext.Provider>
@@ -35,7 +35,7 @@ export default function AccountMenu() {
                         </button>
                     </li>
                     <li>
-                        <NavLink to="my-services">
+                        <NavLink to="profile">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Мои грузы" }}>
                                 <IoCube />
                             </IconContext.Provider>
@@ -48,7 +48,7 @@ export default function AccountMenu() {
                         </button>
                     </li>
                     <li>
-                        <NavLink to="favorites">
+                        <NavLink to="profile">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Шаблоны" }}>
                                 <IoNewspaperSharp/>
                             </IconContext.Provider>
@@ -56,7 +56,7 @@ export default function AccountMenu() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="my-messages">
+                        <NavLink to="profile">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Документы" }}>
                                 <IoDocumentTextSharp />
                             </IconContext.Provider>

@@ -34,7 +34,7 @@ export const Footer = () => {
         </div>
 
         {/* Offcanvas */}
-        <div class="offcanvas offcanvas-top" tabIndex="-1" id="warning">
+        <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
             <div className="d-flex align-items-center justify-content-center">
                 <IconContext.Provider value={{className: "icon-20"}}>
                     <MdPerson />

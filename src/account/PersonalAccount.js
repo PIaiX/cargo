@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import AccountMenu from './AccountMenu';
 import UserProfile from './UserProfile';
 import ViewAccount from './ViewAccount';
+import ProfileEdit from './ProfileEdit';
+import UserCars from './UserCars';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);
@@ -35,6 +37,8 @@ export default function PersonalAccount() {
                                 <Route path="/" element={<UserProfile />} />
                                 <Route path="profile" element={<UserProfile />} />
                                 <Route path="view-profile" element={<ViewAccount />} />
+                                <Route path="profile/edit" element={<ProfileEdit />} />
+                                <Route path="user-cars" element={<UserCars />} />
                             </Routes>
 
                         </div>
@@ -44,6 +48,8 @@ export default function PersonalAccount() {
                         <Route path="/" element={<AccountMenu />} />
                         <Route path="profile" element={<UserProfile />} />
                         <Route path="view-profile" element={<ViewAccount />} />
+                        <Route path="profile/edit" element={<ProfileEdit />} />
+                        <Route path="user-cars" element={<UserCars />} />
                     </Routes>
                 }
                 {/* <div className="d-block d-lg-none">

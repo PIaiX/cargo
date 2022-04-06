@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
 import { MdModeEdit } from "react-icons/md";
 
@@ -79,10 +80,10 @@ export default function UserProfile() {
                     <IoShieldCheckmarkSharp />
                     <span className='ms-2'>Подтвердить профиль</span>
                 </button>
-                <button type='button' className='d-flex align-items-center mt-3 mt-md-0 ms-md-5'>
+                <Link to="edit" className='d-flex align-items-center mt-3 mt-md-0 ms-md-5'>
                     <MdModeEdit />  
                     <span className='ms-2'>Редактировать профиль</span>
-                </button>
+                </Link>
             </div>
         </div>
     )
