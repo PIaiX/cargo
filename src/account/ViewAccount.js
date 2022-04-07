@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from '../components/Card';
-import { Dropdown } from 'bootstrap';
 import { IconContext  } from "react-icons";
 import { IoChevronBackSharp, IoChevronForwardSharp, IoEllipsisVertical } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,12 +7,6 @@ import SwiperCore, { Navigation, Pagination } from 'swiper';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function ViewAccount() {
-    // dropdown activation
-    let dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-    let dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-        return new Dropdown(dropdownToggleEl)
-    })
-
     return (
         <div className='box p-0'>
             <div className='p-3 p-md-4 d-flex align-items-center'>
@@ -24,9 +17,9 @@ export default function ViewAccount() {
                             <IoEllipsisVertical />
                         </IconContext.Provider>
                     </button>
-                    <div className="dropdown-menu">
-                        <button type='button'>Пожаловаться на пользователя</button>
-                    </div>
+                    <ul className="dropdown-menu">
+                        <li><button type='button'>Пожаловаться на пользователя</button></li>
+                    </ul>
                 </div>
             </div>
             <hr />

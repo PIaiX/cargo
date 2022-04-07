@@ -28,27 +28,27 @@ export default function AccountMenu() {
                             </IconContext.Provider>
                             <span className='ms-2 ms-xl-3'>Мои машины</span>
                         </NavLink>
-                        <button type='button'>
+                        <Link to="/add-car">
                             <IconContext.Provider value={{className: "icon-15 blue", title: "Добавить машину" }}>
                                 <IoAddCircleSharp />
                             </IconContext.Provider>
-                        </button>
+                        </Link>
                     </li>
                     <li>
-                        <NavLink to="profile">
+                        <NavLink to="user-cargo">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Мои грузы" }}>
                                 <IoCube />
                             </IconContext.Provider>
                             <span className='ms-2 ms-xl-3'>Мои грузы</span>
                         </NavLink>
-                        <button type='button'>
+                        <Link to="/add-cargo">
                             <IconContext.Provider value={{className: "icon-15 blue", title: "Добавить груз" }}>
                                 <IoAddCircleSharp />
                             </IconContext.Provider>
-                        </button>
+                        </Link>
                     </li>
                     <li>
-                        <NavLink to="profile">
+                        <NavLink to="user-patterns">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Шаблоны" }}>
                                 <IoNewspaperSharp/>
                             </IconContext.Provider>

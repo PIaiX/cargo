@@ -334,6 +334,8 @@ select {
 }
 
 .custom-select .options {
+  list-style: none;
+  padding: 0px;
   position: absolute;
   top: calc(100% + 5px);
   left: 0;
@@ -1335,6 +1337,7 @@ main.bg-gray {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  position: relative;
 }
 
 @media (max-width: 991px) {
@@ -1383,6 +1386,12 @@ main.bg-gray {
 .card-mini .icon svg {
   width: 1.5em;
   height: 1.5em;
+}
+
+.card-mini .dropdown {
+  position: absolute;
+  top: .5em;
+  right: 0px;
 }
 
 /* SECTION 4 */
@@ -2587,6 +2596,10 @@ article.full figure figcaption p {
           align-items: center;
 }
 
+#sec-12 .menu ul li a.active, #sec-12 .menu ul li button.active {
+  color: #038CB8;
+}
+
 #sec-12 .profile-picture {
   width: 240px;
   height: 240px;
@@ -2615,6 +2628,50 @@ article.full figure figcaption p {
   height: 100%;
   -o-object-fit: scale-down;
      object-fit: scale-down;
+}
+
+#sec-12 .tab-btn {
+  border-bottom: 6px solid transparent;
+  padding: 0.3em 0;
+}
+
+#sec-12 .tab-btn.active {
+  border-bottom: 6px solid #01BFC4;
+}
+
+#sec-12 details {
+  border-radius: 8px;
+  border: 1px solid #BDBDBD;
+  padding: 1em;
+}
+
+#sec-12 details[open] > summary svg {
+  -webkit-transform: rotate(-180deg);
+          transform: rotate(-180deg);
+}
+
+#sec-12 details summary::-webkit-details-marker, #sec-12 details summary::marker {
+  display: none;
+  font-size: 0px;
+}
+
+#sec-12 details summary svg {
+  -webkit-transition: 200ms;
+  transition: 200ms;
+}
+
+#sec-12 details table {
+  font-size: .9em;
+}
+
+#sec-12 details table th {
+  font-family: "Roboto";
+  font-weight: 500;
+  padding-right: 2em;
+}
+
+#sec-12 details table td {
+  padding: .25em 0;
 }
 
 footer {
@@ -2847,8 +2904,19 @@ footer {
   width: -webkit-max-content;
   width: -moz-max-content;
   width: max-content;
-  padding: 1em;
+  padding: 0px;
   font-size: 1em;
+}
+
+.dropdown .dropdown-menu li button, .dropdown .dropdown-menu li a, .dropstart .dropdown-menu li button, .dropstart .dropdown-menu li a {
+  padding: 0.5em 2em;
+  width: 100%;
+  text-align: left;
+  display: block;
+}
+
+.dropdown .dropdown-menu li button:hover, .dropdown .dropdown-menu li button:focus, .dropdown .dropdown-menu li a:hover, .dropdown .dropdown-menu li a:focus, .dropstart .dropdown-menu li button:hover, .dropstart .dropdown-menu li button:focus, .dropstart .dropdown-menu li a:hover, .dropstart .dropdown-menu li a:focus {
+  background: rgba(1, 191, 196, 0.22);
 }
 
 /* MODAL WINDOWS */

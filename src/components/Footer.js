@@ -33,6 +33,25 @@ export const Footer = () => {
             </div>
         </div>
 
+        <div className="modal fade" id="delete-ad" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <div className='p-lg-5'>
+                            <div className='dark-blue fs-12 fw-7 title-font text-center'>Вы действительно хотите удалить объявление?</div>
+                            <div className='row row-cols-sm-2 gx-2 gx-lg-4 mt-4 fs-12'>
+                                <div><button type='button' className='btn btn-1 w-100 px-4 mb-3 mb-sm-0'>Удалить совсем</button></div>
+                                <div><button type='button' className='btn btn-2 w-100 px-4'>Перенести в архив</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {/* Offcanvas */}
         <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
             <div className="d-flex align-items-center justify-content-center">

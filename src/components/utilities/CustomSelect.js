@@ -63,16 +63,18 @@ export default function CustomSelect(props) {
                     <IoCaretDown />
                 </IconContext.Provider>
             </button>
-            <div className={visible ? 'options py-2' : 'options d-none py-2'} data-alignment={props.alignment}>
+            <ul className={visible ? 'options py-2' : 'options d-none py-2'} data-alignment={props.alignment}>
                 {options.map(function(item, index) {
                     return (
-                        <label className='line' key={index}>
-                            <input type="checkbox" name={props.name} value={item} checked={(checkedVal.includes(index+1)) ? true : false} onChange={(e) => handleChange(e)}/>
-                            <div>{item}</div>
-                        </label>
+                        <li key={index}>
+                            <label className='line'>
+                                <input type="checkbox" name={props.name} value={item} checked={(checkedVal.includes(index+1)) ? true : false} onChange={(e) => handleChange(e)}/>
+                                <div>{item}</div>
+                            </label>
+                        </li>
                     )
                 })}
-            </div>
+            </ul>
         </div>
         : <div ref={ref} className={"custom-select " + props.className}>
             <button type="button" className={props.btnClass} onClick={() => setVisibility((visible === false) ? true : false)}> 
@@ -85,16 +87,18 @@ export default function CustomSelect(props) {
                     <IoCaretDown />
                 </IconContext.Provider>
             </button>
-            <div className={visible ? 'options py-2' : 'options d-none py-2'} data-alignment={props.alignment}>
+            <ul className={visible ? 'options py-2' : 'options d-none py-2'} data-alignment={props.alignment}>
                 {options.map(function(item, index) {
                     return (
-                        <label className="line" key={index}>
-                            <input type="radio" name={props.name} value={item} checked={(index === checkedVal-1) ? true : false} onChange={(e) => handleChange(e)}/>
-                            <div>{item}</div>
-                        </label>
+                        <li key={index}>
+                            <label className="line">
+                                <input type="radio" name={props.name} value={item} checked={(index === checkedVal-1) ? true : false} onChange={(e) => handleChange(e)}/>
+                                <div>{item}</div>
+                            </label>
+                        </li>
                     )
                 })}
-            </div>
+            </ul>
         </div>
     )
 }

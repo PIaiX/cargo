@@ -5,6 +5,8 @@ import UserProfile from './UserProfile';
 import ViewAccount from './ViewAccount';
 import ProfileEdit from './ProfileEdit';
 import UserCars from './UserCars';
+import UserCargo from './UserCargo';
+import UserPatterns from './UserPatterns';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);
@@ -39,6 +41,8 @@ export default function PersonalAccount() {
                                 <Route path="view-profile" element={<ViewAccount />} />
                                 <Route path="profile/edit" element={<ProfileEdit />} />
                                 <Route path="user-cars" element={<UserCars />} />
+                                <Route path="user-cargo" element={<UserCargo />} />
+                                <Route path="user-patterns" element={<UserPatterns />} />
                             </Routes>
 
                         </div>
@@ -50,6 +54,8 @@ export default function PersonalAccount() {
                         <Route path="view-profile" element={<ViewAccount />} />
                         <Route path="profile/edit" element={<ProfileEdit />} />
                         <Route path="user-cars" element={<UserCars />} />
+                        <Route path="user-cargo" element={<UserCargo />} />
+                        <Route path="user-patterns" element={<UserPatterns />} />
                     </Routes>
                 }
                 {/* <div className="d-block d-lg-none">
