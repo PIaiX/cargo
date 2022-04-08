@@ -17,7 +17,7 @@ export default function ViewAccount() {
                             <IoEllipsisVertical />
                         </IconContext.Provider>
                     </button>
-                    <ul className="dropdown-menu">
+                    <ul className="dropdown-menu py-2">
                         <li><button type='button'>Пожаловаться на пользователя</button></li>
                     </ul>
                 </div>

@@ -18,8 +18,8 @@ export default function UserCargo() {
                     <span className='ms-2'>Добавить груз</span>
                 </Link>
                 <div className='d-flex align-items-center fs-12 fw-5 title-font'>
-                    <button type='button' className='tab-btn active' onClick={()=>setTab('active')}>Активные объявления (4)</button>
-                    <button type='button' className='tab-btn ms-3 ms-sm-4 ms-xl-5' onClick={()=>setTab('archive')}>Архив (15)</button>
+                    <button type='button' className={(tab === 'active') ? 'active tab-btn' : 'tab-btn'} onClick={()=>setTab('active')}>Активные объявления (4)</button>
+                    <button type='button' className={(tab === 'archive') ? 'active tab-btn ms-3 ms-sm-4 ms-xl-5' : 'tab-btn ms-3 ms-sm-4 ms-xl-5'} onClick={()=>setTab('archive')}>Архив (15)</button>
                 </div>
             </div>
             {
@@ -78,7 +78,7 @@ export default function UserCargo() {
                         />
                     </div>
                 </div>
-                : <div className='text-center fs-15'>Активных объявлений нет</div>
+                : <div className='text-center fs-15'>Архивных объявлений нет</div>
                 // : <div className='row row-cols-3 g-4'>
                 //     <div>
                 //         <Card 

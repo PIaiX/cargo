@@ -1777,7 +1777,7 @@ article {
         border-radius: $radius;
         border: 1px solid $gray-4;
         padding: 1em;
-        &[open] > summary svg {
+        &[open] > summary h5>svg {
             transform: rotate(-180deg);
         }
         summary {
@@ -1785,7 +1785,7 @@ article {
                 display: none;
                 font-size: 0px;
             }
-            svg {transition: 200ms;}
+            h5>svg {transition: 200ms;}
         }
         table {
             font-size: .9em;
@@ -1793,6 +1793,7 @@ article {
                 font-family: $main-font;
                 font-weight: 500;
                 padding-right: 2em;
+                @media (max-width: 575px){padding-right: 1em;}
             }
             td { padding: .25em 0;}
         }

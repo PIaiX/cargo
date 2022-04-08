@@ -2645,7 +2645,7 @@ article.full figure figcaption p {
   padding: 1em;
 }
 
-#sec-12 details[open] > summary svg {
+#sec-12 details[open] > summary h5 > svg {
   -webkit-transform: rotate(-180deg);
           transform: rotate(-180deg);
 }
@@ -2655,7 +2655,7 @@ article.full figure figcaption p {
   font-size: 0px;
 }
 
-#sec-12 details summary svg {
+#sec-12 details summary h5 > svg {
   -webkit-transition: 200ms;
   transition: 200ms;
 }
@@ -2668,6 +2668,12 @@ article.full figure figcaption p {
   font-family: "Roboto";
   font-weight: 500;
   padding-right: 2em;
+}
+
+@media (max-width: 575px) {
+  #sec-12 details table th {
+    padding-right: 1em;
+  }
 }
 
 #sec-12 details table td {
