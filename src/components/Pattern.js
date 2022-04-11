@@ -28,14 +28,14 @@ export default function Pattern(props) {
                     </button>
                     <ul className="dropdown-menu py-2">
                         <li><button type='button'>Открыть</button></li>
-                        <li><button type='button'>Переименовать</button></li>
-                        <li><button type='button'>Удалить</button></li>
+                        <li><button type='button' data-bs-toggle="modal" data-bs-target="#rename-pattern">Переименовать</button></li>
+                        <li><button type='button' data-bs-toggle="modal" data-bs-target="#delete-pattern">Удалить</button></li>
                     </ul>
                 </div>
                 <div className='d-none d-md-flex'>
                     <button type='button' className='btn btn-1 fs-09'>Открыть</button>
-                    <button type='button' className='btn btn-1 fs-09 ms-2 ms-xxl-3'>Переименовать</button>
-                    <button type='button' className='ms-3 ms-xxl-4'>
+                    <button type='button' data-bs-toggle="modal" data-bs-target="#rename-pattern" className='btn btn-1 fs-09 ms-2 ms-xxl-3'>Переименовать</button>
+                    <button type='button' data-bs-toggle="modal" data-bs-target="#delete-pattern" className='ms-3 ms-xxl-4'>
                         <IconContext.Provider value={{className: "icon-15 gray-4", title: "Удалить" }}>
                             <IoTrash />
                         </IconContext.Provider>

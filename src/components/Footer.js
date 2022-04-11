@@ -52,6 +52,54 @@ export const Footer = () => {
             </div>
         </div>
 
+        <div className="modal fade" id="delete-pattern" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <div className='fs-12 fw-7 title-font text-center dark-blue mb-4'>Вы действительно хотите удалить шаблон?</div>
+                        <div className="row row-cols-sm-2 fs-12">
+                            <div className='mb-3 mb-sm-0'>
+                                <button type="button" data-bs-dismiss="modal" className="btn btn-1 w-100">Отмена</button>
+                            </div>
+                            <div>
+                                <button type="button" className="btn btn-2 w-100">Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="rename-pattern" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Переименовать шаблон</h3>
+                        <form className='fs-12'>
+                            <label className='mb-2'>Название шаблона</label>
+                            <input type="text" className='mb-3' placeholder='Название'/>
+                            <label className='mb-2'>Примечание</label>
+                            <input type="text" className='mb-3' placeholder='Примечание'/>
+                            <div className='row row-cols-sm-2 mt-4'>
+                                <div className='mb-3 mb-sm-0'>
+                                    <button type='button' className='btn btn-1 w-100'>Отмена</button>
+                                </div>
+                                <div>
+                                    <button type='button' className='btn btn-2 w-100'>Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {/* Offcanvas */}
         <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
             <div className="d-flex align-items-center justify-content-center">

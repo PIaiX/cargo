@@ -1,7 +1,5 @@
 import React, {useState} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
-import { IoShieldCheckmarkSharp } from 'react-icons/io5';
-import { MdModeEdit } from "react-icons/md";
 
 export default function ProfileEdit() {
     const [entity, setEntity] = useState('entity');

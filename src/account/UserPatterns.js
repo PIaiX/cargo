@@ -1,6 +1,4 @@
 import React, {useState} from 'react';
-import { IconContext  } from "react-icons";
-import { IoTrash, IoCaretDown } from 'react-icons/io5';
 import Pattern from '../components/Pattern';
 
 export default function UserPatterns() {
@@ -8,11 +6,11 @@ export default function UserPatterns() {
 
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
+            <h1 className='dark-blue text-center d-lg-none'>Шаблоны</h1>
             <div className='d-flex align-items-center fs-12 fw-5 title-font mb-4 mb-xl-5'>
                 <button type='button' className={(tab === 'cars') ? 'active tab-btn' : 'tab-btn'} onClick={()=>setTab('cars')}>Машины (3)</button>
                 <button type='button' className={(tab === 'cargo') ? 'active tab-btn ms-3 ms-sm-4 ms-xl-5' : 'tab-btn ms-3 ms-sm-4 ms-xl-5'} onClick={()=>setTab('cargo')}>Грузы (3)</button>
             </div>
-
             {
                 (tab === 'cars')?
                 <div>

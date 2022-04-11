@@ -56,7 +56,7 @@ export default function AccountMenu() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="profile">
+                        <NavLink to="user-documents">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Документы" }}>
                                 <IoDocumentTextSharp />
                             </IconContext.Provider>
