@@ -1,7 +1,8 @@
 import React from 'react';
-import { IoCloseOutline } from 'react-icons/io5';
+import { IoCloseOutline, IoDocumentText } from 'react-icons/io5';
 import { MdPerson } from 'react-icons/md';
 import { IconContext  } from "react-icons";
+import { Link } from 'react-router-dom';
 
 export const Footer = () => {
     return (
@@ -95,6 +96,54 @@ export const Footer = () => {
                                 </div>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="docs-patterns" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Выберите шаблон</h3>
+                        <div className='fs-12 mb-4'>Все шаблоны составлены профессиональными юристами. Вы можете быстро заполнить документы скачать или использовать, как печатные. <a href='/' className='blue text-decoration-underline'>Как выбрать шаблон</a></div>
+                        <ul className='docs-list fs-12 fw-7 title-font'>
+                            <li>
+                                <Link to='/'>
+                                    <IconContext.Provider value={{className: "icon-15 gray-3", title: "Заявка" }}>
+                                        <IoDocumentText />
+                                    </IconContext.Provider>
+                                    <span>Заявка</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/'>
+                                    <IconContext.Provider value={{className: "icon-15 gray-3", title: "Доверенность на водителя" }}>
+                                        <IoDocumentText />
+                                    </IconContext.Provider>
+                                    <span>Доверенность на водителя</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/'>
+                                    <IconContext.Provider value={{className: "icon-15 gray-3", title: "Договор" }}>
+                                        <IoDocumentText />
+                                    </IconContext.Provider>
+                                    <span>Договор</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to='/'>
+                                    <IconContext.Provider value={{className: "icon-15 gray-3", title: "Счет на оплату" }}>
+                                        <IoDocumentText />
+                                    </IconContext.Provider>
+                                    <span>Счет на оплату</span>
+                                </Link>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

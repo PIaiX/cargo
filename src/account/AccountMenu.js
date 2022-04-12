@@ -62,6 +62,11 @@ export default function AccountMenu() {
                             </IconContext.Provider>
                             <span className='ms-2 ms-xl-3'>Документы</span>
                         </NavLink>
+                        <button type='button' data-bs-toggle="modal" data-bs-target="#docs-patterns">
+                            <IconContext.Provider value={{className: "icon-15 blue", title: "Добавить документ" }}>
+                                <IoAddCircleSharp />
+                            </IconContext.Provider>
+                        </button>
                     </li>
                     <li>
                         <button type="button">
