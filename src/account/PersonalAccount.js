@@ -8,6 +8,7 @@ import UserCars from './UserCars';
 import UserCargo from './UserCargo';
 import UserPatterns from './UserPatterns';
 import UserDocuments from './UserDocuments';
+import Document from './Document';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);

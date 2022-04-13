@@ -69,7 +69,7 @@ export default function AccountMenu() {
                         </button>
                     </li>
                     <li>
-                        <button type="button">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#account-exit">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Выход" }}>
                                 <IoExitSharp />
                             </IconContext.Provider>

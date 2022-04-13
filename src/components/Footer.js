@@ -110,9 +110,9 @@ export const Footer = () => {
                         </button>
                         <h3>Выберите шаблон</h3>
                         <div className='fs-12 mb-4'>Все шаблоны составлены профессиональными юристами. Вы можете быстро заполнить документы скачать или использовать, как печатные. <a href='/' className='blue text-decoration-underline'>Как выбрать шаблон</a></div>
-                        <ul className='docs-list fs-12 fw-7 title-font'>
+                        <ul data-bs-dismiss="modal" className='docs-list fs-12 fw-7 title-font'>
                             <li>
-                                <Link to='/'>
+                                <Link to='/document'>
                                     <IconContext.Provider value={{className: "icon-15 gray-3", title: "Заявка" }}>
                                         <IoDocumentText />
                                     </IconContext.Provider>
@@ -120,7 +120,7 @@ export const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to='/'>
+                                <Link to='/document'>
                                     <IconContext.Provider value={{className: "icon-15 gray-3", title: "Доверенность на водителя" }}>
                                         <IoDocumentText />
                                     </IconContext.Provider>
@@ -128,7 +128,7 @@ export const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to='/'>
+                                <Link to='/document'>
                                     <IconContext.Provider value={{className: "icon-15 gray-3", title: "Договор" }}>
                                         <IoDocumentText />
                                     </IconContext.Provider>
@@ -136,7 +136,7 @@ export const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <Link to='/'>
+                                <Link to='/document'>
                                     <IconContext.Provider value={{className: "icon-15 gray-3", title: "Счет на оплату" }}>
                                         <IoDocumentText />
                                     </IconContext.Provider>
@@ -144,6 +144,76 @@ export const Footer = () => {
                                 </Link>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="account-exit" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Выход</h3>
+                        <div className='fs-12 title-font text-center mb-4 mb-sm-5'>Вы действительно хотите выйти из личного кабинета?</div>
+                        <div className="row row-cols-sm-2 fs-12">
+                            <div className='mb-3 mb-sm-0'>
+                                <button type="button" data-bs-dismiss="modal" className="btn btn-1 w-100">Отмена</button>
+                            </div>
+                            <div>
+                                <button type="button" className="btn btn-2 w-100">Выйти</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="save-doc" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Сохранить изменения?</h3>
+                        <div className="row row-cols-sm-2 fs-12">
+                            <div className='mb-3 mb-sm-0'>
+                                <button type="button" data-bs-dismiss="modal" className="btn btn-1 w-100">Не сохранять</button>
+                            </div>
+                            <div>
+                                <button type="button" className="btn btn-2 w-100">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="save-as-pattern" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Сохранить шаблон</h3>
+                        <form className='fs-12'>
+                            <label className='mb-2'>Название шаблона</label>
+                            <input type="text" className='mb-3' placeholder='Название'/>
+                            <label className='mb-2'>Примечание</label>
+                            <input type="text" className='mb-3' placeholder='Примечание'/>
+                            <div className='row row-cols-sm-2 mt-4'>
+                                <div className='mb-3 mb-sm-0'>
+                                    <button type='button' className='btn btn-1 w-100'>Отмена</button>
+                                </div>
+                                <div>
+                                    <button type='button' className='btn btn-2 w-100'>Сохранить</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

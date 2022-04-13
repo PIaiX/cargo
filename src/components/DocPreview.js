@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { IoEllipsisVertical } from 'react-icons/io5';
 import { BsPencilSquare, BsPrinter, BsDownload, BsTrash } from "react-icons/bs";
 
 export default function DocPreview(props) {
-    const [tab, setTab] = useState('doc');
     const view = props.type;
 
     return (
@@ -15,7 +14,7 @@ export default function DocPreview(props) {
             </label>
             {
                 (view === 'doc')?
-                <div className='title'>{props.title}</div>
+                <div className='title' title={props.title}>{props.title}</div>
                 : <div className='title'>
                     <div>{props.title}</div>
                     <div>{props.note}</div>

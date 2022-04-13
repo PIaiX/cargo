@@ -23,7 +23,7 @@ export default function UserDocuments() {
                 </div>
             </div>
 
-            <div className='d-flex align-items-center fs-11'>
+            <div className='d-md-flex align-items-center fs-11'>
                 <form className='form-search'>
                     <input type="search" placeholder='Поиск по контрагенту'/>
                     <button>
@@ -32,13 +32,15 @@ export default function UserDocuments() {
                         </IconContext.Provider>
                     </button>
                 </form>
-                <div className='d-flex align-items-center ms-5'>
-                    <span className='me-1'>Тип&nbsp;документов:</span>
-                    <CustomSelect name="docs-type" checkedOpt={1} options={['Все', 'тип 1', 'тип 2']} alignment="left"/>
-                </div>
-                <div className='d-flex align-items-center ms-5'>
-                    <span className='me-1'>Дата:</span>
-                    <CustomSelect name="date-sort" options={['сначала новые', 'сначала старые']} alignment="left"/>
+                <div className='d-flex justify-content-between justify-content-md-start align-items-center mt-3 mt-md-0 ms-md-5'>
+                    <div className='d-flex align-items-center'>
+                        <span className='d-none d-sm-block me-1'>Тип&nbsp;документов:</span>
+                        <CustomSelect name="docs-type" checkedOpt={1} options={['Все', 'тип 1', 'тип 2']} alignment="left"/>
+                    </div>
+                    <div className='d-flex align-items-center ms-md-5'>
+                        <span className='d-none d-sm-block me-1'>Дата:</span>
+                        <CustomSelect name="date-sort" options={['сначала новые', 'сначала старые']} alignment="left"/>
+                    </div>
                 </div>
             </div>
 
@@ -57,6 +59,7 @@ export default function UserDocuments() {
                         <button type='button'></button>
                         </div>
                     </div>
+                    <DocPreview type='doc' className='mt-3' docId='id111' title='ЗаявкаЗаявка Заявка Заявка ЗаявкаЗаявка Заявка' number='689065980-67' date='13.12.2021' contractor={{name:'ООО НТК', url: '/personal-account/view-profile'}} />
                    <DocPreview type='doc' className='mt-3' docId='id111' title='Заявка' number='689065980-67' date='13.12.2021' contractor={{name:'ООО НТК', url: '/personal-account/view-profile'}} />
                    <DocPreview type='doc' className='mt-3' docId='id111' title='Заявка' number='689065980-67' date='13.12.2021' contractor={{name:'ООО НТК', url: '/personal-account/view-profile'}} />
                    <DocPreview type='doc' className='mt-3' docId='id111' title='Заявка' number='689065980-67' date='13.12.2021' contractor={{name:'ООО НТК', url: '/personal-account/view-profile'}} />

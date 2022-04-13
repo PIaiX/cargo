@@ -2708,38 +2708,153 @@ article.full figure figcaption p {
   font-size: 1.1em;
 }
 
-#sec-12 .docs-header label, #sec-12 .docs-preview label {
+@media (max-width: 1659px) {
+  #sec-12 .docs-header, #sec-12 .docs-preview {
+    padding: .75em 1em;
+  }
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header, #sec-12 .docs-preview {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-12 .docs-header, #sec-12 .docs-preview {
+    padding: .5em .75em;
+  }
+}
+
+#sec-12 .docs-header label, #sec-12 .docs-header .title, #sec-12 .docs-header .number, #sec-12 .docs-header .date, #sec-12 .docs-header .doc-type, #sec-12 .docs-header .contractor, #sec-12 .docs-preview label, #sec-12 .docs-preview .title, #sec-12 .docs-preview .number, #sec-12 .docs-preview .date, #sec-12 .docs-preview .doc-type, #sec-12 .docs-preview .contractor {
   margin-right: 2em;
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header label, #sec-12 .docs-header .title, #sec-12 .docs-header .number, #sec-12 .docs-header .date, #sec-12 .docs-header .doc-type, #sec-12 .docs-header .contractor, #sec-12 .docs-preview label, #sec-12 .docs-preview .title, #sec-12 .docs-preview .number, #sec-12 .docs-preview .date, #sec-12 .docs-preview .doc-type, #sec-12 .docs-preview .contractor {
+    margin-right: 1em;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-12 .docs-header label, #sec-12 .docs-header .title, #sec-12 .docs-header .number, #sec-12 .docs-header .date, #sec-12 .docs-header .doc-type, #sec-12 .docs-header .contractor, #sec-12 .docs-preview label, #sec-12 .docs-preview .title, #sec-12 .docs-preview .number, #sec-12 .docs-preview .date, #sec-12 .docs-preview .doc-type, #sec-12 .docs-preview .contractor {
+    margin-right: .5em;
+  }
 }
 
 #sec-12 .docs-header .title, #sec-12 .docs-preview .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  margin-right: 2em;
 }
 
 #sec-12 .docs-header .number, #sec-12 .docs-preview .number {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 150px;
   text-align: center;
-  margin-right: 2em;
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header .number, #sec-12 .docs-preview .number {
+    width: 120px;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-12 .docs-header .number, #sec-12 .docs-preview .number {
+    display: none;
+  }
 }
 
 #sec-12 .docs-header .date, #sec-12 .docs-preview .date {
   width: 150px;
   text-align: center;
-  margin-right: 2em;
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header .date, #sec-12 .docs-preview .date {
+    width: 120px;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-12 .docs-header .date, #sec-12 .docs-preview .date {
+    display: none;
+  }
 }
 
 #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 250px;
   text-align: center;
-  margin-right: 2em;
+}
+
+@media (max-width: 1659px) {
+  #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+    width: 225px;
+  }
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+    width: 200px;
+  }
+}
+
+@media (max-width: 1199px) {
+  #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+    width: 175px;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+    width: 130px;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-12 .docs-header .doc-type, #sec-12 .docs-preview .doc-type {
+    display: none;
+  }
 }
 
 #sec-12 .docs-header .contractor, #sec-12 .docs-preview .contractor {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   width: 200px;
-  margin-right: 2em;
+}
+
+@media (max-width: 1659px) {
+  #sec-12 .docs-header .contractor, #sec-12 .docs-preview .contractor {
+    width: 150px;
+  }
+}
+
+@media (max-width: 1399px) {
+  #sec-12 .docs-header .contractor, #sec-12 .docs-preview .contractor {
+    width: 135px;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-12 .docs-header .contractor, #sec-12 .docs-preview .contractor {
+    width: 120px;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-12 .docs-header .contractor, #sec-12 .docs-preview .contractor {
+    width: 75px;
+  }
 }
 
 #sec-12 .docs-header .dropdown > button, #sec-12 .docs-preview .dropdown > button {
@@ -2750,7 +2865,6 @@ article.full figure figcaption p {
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #BDBDBD;
-  padding: 1.25em 2em;
 }
 
 #sec-12 .docs-preview:hover, #sec-12 .docs-preview:focus {
