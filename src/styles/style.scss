@@ -1721,6 +1721,41 @@ article {
     .stat {
         background-color: #EEF3F3;
     }
+    .forum-header, .forum-section {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 1em;
+        .icon {
+            width: 5em;
+            text-align: center;
+        }
+        .text {
+            flex: 1;
+        }
+        .topics, .messages, .latest {
+            margin-left: 2em;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .topics {
+            width: 150px;
+        }
+        .messages {
+            width: 160px;
+        }
+        .latest {
+            width: 240px;
+        }
+    }
+    .forum-header {
+        background: #EEF3F3;
+    }
+    .forum-section {
+        &:nth-child(even) {
+            background-color: #F6FCFB;
+        }
+    }
 }
 
 /* SECTION 12 - Personal Account */
