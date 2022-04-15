@@ -2174,6 +2174,9 @@ footer {
     font-size: .8em;
     margin-bottom: 0px;
 }
+.breadcrumb-item+.breadcrumb-item::before {
+    content: ">";
+}
 
 
 /* pagination */

@@ -15,6 +15,7 @@ import ResetPassword2 from '../pages/ResetPassword2';
 import Forum from '../pages/Forum';
 import PersonalAccount from '../account/PersonalAccount';
 import Document from '../account/Document';
+import ForumSublevel from '../pages/ForumSublevel';
 
 export default function AppRouter() {
     return (
@@ -28,6 +29,7 @@ export default function AppRouter() {
             <Route path="/all-news" element={<AllNews />} />
             <Route path="/news" element={<ArticleFull />} />
             <Route path="/forum" element={<Forum />} />
+            <Route path="/forum-section" element={<ForumSublevel />} />
             <Route path="/entrance" element={<Entrance />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/reset-password" element={<ResetPassword />} />

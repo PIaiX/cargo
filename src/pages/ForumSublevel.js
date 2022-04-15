@@ -6,17 +6,19 @@ import { IconContext  } from "react-icons";
 import { IoSearch, IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { BsFillInfoSquareFill } from "react-icons/bs";
 
-export default function Forum() {
+export default function ForumSublevel() {
     return (
         <main className='bg-white py-5'>
+            
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Разделы форума</a></li>
+                        <li class="breadcrumb-item"><a href="#">Недобросовестные партнеры</a></li>
                     </ol>
                 </nav>
 
-                <h1 className='dark-blue text-uppercase'>Форум ПОРТАЛА</h1>
+                <h1 className='text-start dark-blue'>Недобросовестные партнеры</h1>
 
                 <div className='row flex-lg-row-reverse'>
                     <div className='col-lg-3'>
@@ -60,20 +62,20 @@ export default function Forum() {
 
                         <ForumSection 
                             title="Недобросовестные партнеры Недобросовестные партнеры Недобросовестные партнеры" 
-                            subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} 
+                            subsections={[{name: 'Название подраздела 1', url: '/'}, {name: 'Название подраздела 2', url: '/'}]} 
                             info="Информация о фирмах нарушающих договоренности и задерживающих оплату." 
                             topics={15} 
                             messages={205} 
                             latest="14.04.2022 16:00"
                         />
                         <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
+                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/'}, {name: 'Название подраздела 2', url: '/'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
                         <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
+                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/'}, {name: 'Название подраздела 2', url: '/'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
                         <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
+                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/'}, {name: 'Название подраздела 2', url: '/'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
                         <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
+                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/'}, {name: 'Название подраздела 2', url: '/'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
 
                         <nav className='mt-4'>
                             <ul className="pagination">
