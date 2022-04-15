@@ -1,8 +1,8 @@
 import React from 'react'
 
-export default function ForumWidget() {
+export default function ForumWidget(props) {
     return (
-        <aside>
+        <aside className={props.className}>
             <h5 className='mb-1'>Сообщения на форуме</h5>
             <div className='forum-widget'>
                 <div className='message'>
