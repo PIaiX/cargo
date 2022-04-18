@@ -1,6 +1,5 @@
 import React from 'react';
 import ForumWidget from '../components/ForumWidget';
-import ForumSection from '../components/ForumSection';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
@@ -29,11 +28,13 @@ export default function ForumSublevel() {
 
                 <div className='row flex-lg-row-reverse'>
                     <div className='col-lg-3'>
-                        <div className='d-flex justify-content-end align-items-center mb-3 fs-12'>
-                            <IconContext.Provider value={{className: "icon-10 blue", title: "Мои темы" }}>
-                                <BsFillChatRightTextFill />
-                            </IconContext.Provider>
-                            <span className='ms-2 blue'>Мои темы (2)</span>
+                        <div className='d-flex justify-content-end mb-3'>
+                            <Link to="/my-topics" className='fs-12 d-flex align-items-center'>
+                                <IconContext.Provider value={{className: "icon-10 blue", title: "Мои темы" }}>
+                                    <BsFillChatRightTextFill />
+                                </IconContext.Provider>
+                                <span className='ms-2 blue'>Мои темы (2)</span>
+                            </Link>
                         </div>
 
                         <button type='button' data-bs-toggle="modal" data-bs-target="#new-topic" className='btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex'>
@@ -165,7 +166,6 @@ export default function ForumSublevel() {
                             latest="9.04.2022"
                         />
                         
-
                         <div className='d-flex align-items-center justify-content-between mt-4'>
                             <nav>
                                 <ul className="pagination">
@@ -193,7 +193,10 @@ export default function ForumSublevel() {
                                 <span className='ms-2 d-none d-md-block'>тем на странице</span>
                             </div>
                         </div>
-                        
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-lg-9'>
                         <hr className='mt-5 mb-3'/>
                         <div className='d-flex align-items-center fs-11 mb-3'>
                             <IconContext.Provider value={{className: "icon-10 blue", title: "Правила публикации" }}>

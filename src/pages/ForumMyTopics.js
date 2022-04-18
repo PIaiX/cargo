@@ -1,33 +1,33 @@
 import React from 'react';
 import ForumWidget from '../components/ForumWidget';
-import ForumSection from '../components/ForumSection';
 import CustomSelect from '../components/utilities/CustomSelect';
+import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { IoSearch, IoChevronBack, IoChevronForward, IoAddCircleSharp } from 'react-icons/io5';
 import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
+import ForumSubsection from '../components/ForumSubsection';
+import ForumTopic from '../components/ForumTopic';
 
-
-export default function Forum() {
+export default function ForumMyTopics() {
     return (
         <main className='bg-white py-5'>
+            
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Разделы форума</a></li>
+                        <li class="breadcrumb-item">
+                            <Link to="/forum">Разделы форума</Link>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <Link to="/my-topics">Мои темы</Link>
+                        </li>
                     </ol>
                 </nav>
 
-                <h1 className='dark-blue text-uppercase'>Форум ПОРТАЛА</h1>
+                <h1 className='text-start dark-blue'>Мои темы</h1>
 
                 <div className='row flex-lg-row-reverse'>
                     <div className='col-lg-3'>
-                        <div className='d-flex justify-content-end align-items-center mb-3 fs-12'>
-                            <IconContext.Provider value={{className: "icon-10 blue", title: "Мои темы" }}>
-                                <BsFillChatRightTextFill />
-                            </IconContext.Provider>
-                            <span className='ms-2 blue'>Мои темы (2)</span>
-                        </div>
-
                         <button type='button' data-bs-toggle="modal" data-bs-target="#new-topic" className='btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex'>
                             <IconContext.Provider value={{className: "icon-15 white", title: "Создать тему" }}>
                                 <IoAddCircleSharp />
@@ -89,28 +89,27 @@ export default function Forum() {
 
                         <div className='forum-header'>
                             <div className='icon'></div>
-                            <div className='text'>Название раздела</div>
-                            <div className='topics'>Тем</div>
+                            <div className='text-topic'>Тема</div>
                             <div className='messages'>Сообщений</div>
                             <div className='latest'>Последнее сообщение</div>
                         </div>
 
-                        <ForumSection 
-                            title="Недобросовестные партнеры Недобросовестные партнеры Недобросовестные партнеры" 
-                            subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} 
-                            info="Информация о фирмах нарушающих договоренности и задерживающих оплату." 
-                            topics={15} 
+                        <ForumTopic
+                            blocked={true}
+                            fixedTopic={false}
+                            title="Название закрепленной темы" 
+                            author={{name: 'Имя пользователя', url: '/personal-account/view-profile'}}
                             messages={205} 
-                            latest="14.04.2022 16:00"
+                            latest="10.04.2022"
                         />
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату. Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
+                        <ForumTopic
+                            fixedTopic={false}
+                            title="Название закрепленной темы"
+                            author={{name: 'Имя пользователя', url: '/personal-account/view-profile'}}
+                            messages={205} 
+                            latest="9.04.2022"
+                        />
+                        
 
                         <div className='d-flex align-items-center justify-content-between mt-4'>
                             <nav>
