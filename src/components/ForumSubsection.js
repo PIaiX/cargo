@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { IoFolderOpen, IoFolderOpenOutline, IoCaretDown } from 'react-icons/io5';
 
-export default function ForumSection(props) {
+export default function ForumSubsection(props) {
     return (
         <div className='forum-section'>
             <div className='icon'>
@@ -11,7 +11,7 @@ export default function ForumSection(props) {
                     <IoFolderOpen />
                 </IconContext.Provider>
             </div>
-            <div className='text'>
+            <div className='text-topic'>
                 <Link to="/forum-section" className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
                 {
                     (props.subsections) &&
@@ -45,9 +45,11 @@ export default function ForumSection(props) {
                     <div className='info mt-1'>{props.info}</div>
                 }
             </div>
-            <div className='topics'>{props.topics} <span className='d-none d-xxl-inline'>тем</span></div>
-            <div className='messages'>{props.messages} <span className='d-none d-xxl-inline'>сообщений</span></div>
-            <div className='latest'>{props.latest}</div>
+            <div className='messages'>{props.messages}</div>
+            <div className='latest'>
+                <div className='mb-1'>{props.latest}</div>
+                <div className='blue text-decoration-underline'>Имя пользователя</div>
+            </div>
         </div>
     )
 }

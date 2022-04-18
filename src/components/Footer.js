@@ -219,6 +219,33 @@ export const Footer = () => {
             </div>
         </div>
 
+        <div className="modal fade" id="new-topic" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Новая тема</h3>
+                        <form className='fs-12'>
+                            <label className='mb-2'>Название темы</label>
+                            <input type="text" className='mb-4' placeholder='Придумайте название темы'/>
+                            <label className='mb-2'>Текст темы</label>
+                            <textarea rows="5" placeholder='Ваша история или вопрос'></textarea>
+                            <div className='row flex-sm-row-reverse mt-4'>
+                                <div className='col-sm-5'>
+                                    <button type='submit' className='btn btn-2 w-100'>Сохранить</button>
+                                </div>
+                                <div className='col-sm-7 mt-2 mt-sm-0'>
+                                    <div className='fs-09 text-center'>Нажимая на кнопку “Создать тему”, вы соглашаетесь с <a className='blue' href="/">правилами публикации</a></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {/* Offcanvas */}
         <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
             <div className="d-flex align-items-center justify-content-center">

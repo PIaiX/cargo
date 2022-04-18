@@ -1720,6 +1720,13 @@ article {
 #sec-11 {
     .stat {
         background-color: #EEF3F3;
+        font-size: 1.1em;
+        @media (max-width: 1399px){
+            font-size: 1em;
+        }
+        @media (max-width: 1199px){
+            font-size: .9em;
+        }
     }
     .forum-header, .forum-section {
         display: flex;
@@ -1733,7 +1740,7 @@ article {
         }
         @media (max-width: 575px){
             align-items: flex-start;
-            padding: .5em;
+            padding: 1em .5em;
         }
         .icon {
             width: 90px;
@@ -1777,6 +1784,30 @@ article {
             }
             @media (max-width: 575px){
                 width: calc(100vw - 94px - 1em);
+            }
+            .info {
+                display: -webkit-box;
+                -webkit-line-clamp: 2; // количество строк
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            &-topic {
+                width: 591px;
+                @media (max-width: 1659px){
+                    width: 490px;
+                }
+                @media (max-width: 1399px){
+                    width: 430px;
+                }
+                @media (max-width: 1199px){
+                    width: 410px;
+                }
+                @media (max-width: 767px){
+                    width: 360px;
+                }
+                @media (max-width: 575px){
+                    width: calc(100vw - 54px - 1em);
+                }
             }
         }
         .topics, .messages, .latest {

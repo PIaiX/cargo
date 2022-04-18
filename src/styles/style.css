@@ -2559,6 +2559,19 @@ article.full figure figcaption p {
 /* SECTION 11 - Forum */
 #sec-11 .stat {
   background-color: #EEF3F3;
+  font-size: 1.1em;
+}
+
+@media (max-width: 1399px) {
+  #sec-11 .stat {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 1199px) {
+  #sec-11 .stat {
+    font-size: .9em;
+  }
 }
 
 #sec-11 .forum-header, #sec-11 .forum-section {
@@ -2592,7 +2605,7 @@ article.full figure figcaption p {
     -webkit-box-align: start;
         -ms-flex-align: start;
             align-items: flex-start;
-    padding: .5em;
+    padding: 1em .5em;
   }
 }
 
@@ -2670,6 +2683,47 @@ article.full figure figcaption p {
 @media (max-width: 575px) {
   #sec-11 .forum-header .text, #sec-11 .forum-section .text {
     width: calc(100vw - 94px - 1em);
+  }
+}
+
+#sec-11 .forum-header .text .info, #sec-11 .forum-section .text .info {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+  width: 591px;
+}
+
+@media (max-width: 1659px) {
+  #sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+    width: 490px;
+  }
+}
+
+@media (max-width: 1399px) {
+  #sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+    width: 430px;
+  }
+}
+
+@media (max-width: 1199px) {
+  #sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+    width: 410px;
+  }
+}
+
+@media (max-width: 767px) {
+  #sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+    width: 360px;
+  }
+}
+
+@media (max-width: 575px) {
+  #sec-11 .forum-header .text-topic, #sec-11 .forum-section .text-topic {
+    width: calc(100vw - 54px - 1em);
   }
 }
 
