@@ -17,6 +17,7 @@ import PersonalAccount from '../account/PersonalAccount';
 import Document from '../account/Document';
 import ForumSublevel from '../pages/ForumSublevel';
 import ForumMyTopics from '../pages/ForumMyTopics';
+import ForumTopicChat from '../pages/ForumTopicChat';
 
 export default function AppRouter() {
     return (
@@ -32,6 +33,7 @@ export default function AppRouter() {
             <Route path="/forum" element={<Forum />} />
             <Route path="/forum-section" element={<ForumSublevel />} />
             <Route path="/my-topics" element={<ForumMyTopics />} />
+            <Route path="/forum-topic" element={<ForumTopicChat />} />
             <Route path="/entrance" element={<Entrance />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/reset-password" element={<ResetPassword />} />

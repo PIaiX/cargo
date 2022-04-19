@@ -1874,6 +1874,36 @@ article {
             background-color: #F6FCFB;
         }
     }
+    .comment {
+        display: flex;
+        align-items: flex-start;
+        padding: 2em;
+        &.main {background-color: #F6FCFB;}
+        .user {
+            width: 210px;
+            text-align: center;
+            font-size: 1.1em;
+            img {
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 1em;
+            }
+        }
+        .text {
+            flex: 1;
+            margin: 0 1.5em;
+            font-size: 1.1em;
+        }
+        .btns {
+            width: 190px;
+            border-left: 1px solid $gray-5;
+            padding-left: 1em;
+            font-family: $title-font;
+            font-size: 1.1em;
+        }
+    }
 }
 
 /* SECTION 12 - Personal Account */

@@ -18,7 +18,7 @@ export default function ForumTopic(props) {
                 }
             </div>
             <div className='text-topic'>
-                <Link to="/forum-section" className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
+                <Link to="/forum-topic" className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
                 {
                     (props.author)&&
                     <div className='info mt-2'>Автор: <Link className='blue text-decoration-underline' to={props.author.url}>{props.author.name}</Link></div>

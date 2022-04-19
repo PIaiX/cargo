@@ -2848,6 +2848,51 @@ article.full figure figcaption p {
   background-color: #F6FCFB;
 }
 
+#sec-11 .comment {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 2em;
+}
+
+#sec-11 .comment.main {
+  background-color: #F6FCFB;
+}
+
+#sec-11 .comment .user {
+  width: 210px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+#sec-11 .comment .user img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-bottom: 1em;
+}
+
+#sec-11 .comment .text {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0 1.5em;
+  font-size: 1.1em;
+}
+
+#sec-11 .comment .btns {
+  width: 190px;
+  border-left: 1px solid #E0E0E0;
+  padding-left: 1em;
+  font-family: "Gotham Pro";
+  font-size: 1.1em;
+}
+
 /* SECTION 12 - Personal Account */
 #sec-12 .box {
   border: none;
