@@ -9,7 +9,7 @@ import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
 
 export default function Forum() {
     return (
-        <main className='bg-white py-5'>
+        <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol class="breadcrumb">

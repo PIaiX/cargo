@@ -1,15 +1,19 @@
-import React from 'react';
-import CustomSelect from '../components/utilities/CustomSelect';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import CustomSelect from '../components/utilities/CustomSelect';
+import ForumComment from '../components/ForumComment';
+
 import { IconContext  } from "react-icons";
-import { MdThumbUp, MdThumbDown, MdChatBubble } from "react-icons/md";
+import { MdThumbUp, MdThumbDown, MdChatBubble, MdFormatQuote } from "react-icons/md";
 import { BsFillInfoSquareFill, BsFillExclamationTriangleFill } from "react-icons/bs";
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import { IoChevronBack, IoChevronForward, IoCloseOutline } from 'react-icons/io5';
 
 export default function ForumTopicChat() {
+    const [answer, setAnswer] = useState(false);
+
     return (
-        <main className='bg-white py-5'>
-            
+        <>
+        <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol class="breadcrumb">
@@ -25,53 +29,33 @@ export default function ForumTopicChat() {
                     </ol>
                 </nav>
 
-                <div className='d-flex justify-content-between align-items-center'>
-                    <h1 className='text-start dark-blue'>Название темы</h1>
-                    <div className='title-font fs-12'>205 ответов. Последний сегодня в 13:45</div>
+                <div className='d-md-flex justify-content-between align-items-center mb-4'>
+                    <h1 className='text-start dark-blue mb-md-0'>Название темы</h1>
+                    <div className='title-font fs-12 text-md-end'>205 ответов. Последний сегодня в 13:45</div>
                 </div>
 
-                <div className='comment main'>
-                    <div className='user'>
-                        <img src="/cargo/img/users/photo.jpg" alt="слайд 1" />
-                        <Link to="" className='blue text-decoration-underline d-block mb-2'>Имя пользователя</Link>
-                        <div className='fw-5'>Автор</div>
-                    </div>
-                    <div className='text'>
-                        <div className='gray-3 title-font d-flex align-items-center mb-2'>
-                            <div>14:30</div>
-                            <div className='ms-4'>12 января 22</div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
-                            <p>Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis.</p>
-                        </div>
-                        <button type='button' className='btn btn-2 fs-11 ms-auto'>Ответить на публикацию</button>
-                    </div>
-                    <div className='btns'>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Нравится" }}>
-                                <MdThumbUp />
-                            </IconContext.Provider>
-                            <span className='ms-2'>52</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Не нравится" }}>
-                                <MdThumbDown />
-                            </IconContext.Provider>
-                            <span className='ms-2'>12</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 green", title: "Ответить" }}>
-                                <MdChatBubble />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Ответить</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Пожаловаться" }}>
-                                <BsFillExclamationTriangleFill />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Пожаловаться</span>
-                        </button>
+                <div className='fixed-comment'>
+                    <ForumComment 
+                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        date="12.01.2022" 
+                        time="14:30" 
+                        comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
+                        likes={1000} 
+                        dislikes={13}
+                    />
+                    <div className='answer-to-comment'>
+                        {
+                            (answer)?
+                            <form>
+                                <label for="answer-1" className='title-font fs-12 fw-5 mb-2'>Ваш ответ</label>
+                                <textarea rows="6" placeholder='Текст' id="answer-1"></textarea>
+                                <div className='d-sm-flex align-items-center justify-content-end mt-2 mt-sm-3'>
+                                    <div className='text-end fs-09 me-sm-4 mb-2 mb-sm-0'>Нажимая на кнопку “Ответить”, вы<br/> соглашаетесь с <a href="/" className='blue'>правилами публикации</a></div>
+                                    <button type='submit' onSubmit={() => setAnswer(false)} className='btn btn-2 fs-12 ms-auto ms-sm-0'>Ответить</button>
+                                </div>
+                            </form>
+                            : <button type='button' onClick={() => setAnswer(true)} className='btn btn-2 fs-12 ms-auto'>Ответить на публикацию</button>
+                        }
                     </div>
                 </div>
 
@@ -97,137 +81,32 @@ export default function ForumTopicChat() {
                     </nav>
                 </div>
 
-                <div className='comment main'>
-                    <div className='user'>
-                        <img src="/cargo/img/users/photo.jpg" alt="слайд 1" />
-                        <Link to="" className='blue text-decoration-underline d-block mb-2'>Имя пользователя</Link>
-                        <div className='fw-5'>Автор</div>
-                    </div>
-                    <div className='text'>
-                        <div className='gray-3 title-font d-flex align-items-center mb-2'>
-                            <div>14:30</div>
-                            <div className='ms-4'>12 января 22</div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
-                            <p>Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis.</p>
-                        </div>
-                        <button type='button' className='btn btn-2 fs-11 ms-auto'>Ответить на публикацию</button>
-                    </div>
-                    <div className='btns'>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Нравится" }}>
-                                <MdThumbUp />
-                            </IconContext.Provider>
-                            <span className='ms-2'>52</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Не нравится" }}>
-                                <MdThumbDown />
-                            </IconContext.Provider>
-                            <span className='ms-2'>12</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 green", title: "Ответить" }}>
-                                <MdChatBubble />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Ответить</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Пожаловаться" }}>
-                                <BsFillExclamationTriangleFill />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Пожаловаться</span>
-                        </button>
-                    </div>
-                </div>
-                <div className='comment main'>
-                    <div className='user'>
-                        <img src="/cargo/img/users/photo.jpg" alt="слайд 1" />
-                        <Link to="" className='blue text-decoration-underline d-block mb-2'>Имя пользователя</Link>
-                        <div className='fw-5'>Автор</div>
-                    </div>
-                    <div className='text'>
-                        <div className='gray-3 title-font d-flex align-items-center mb-2'>
-                            <div>14:30</div>
-                            <div className='ms-4'>12 января 22</div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
-                            <p>Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis.</p>
-                        </div>
-                        <button type='button' className='btn btn-2 fs-11 ms-auto'>Ответить на публикацию</button>
-                    </div>
-                    <div className='btns'>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Нравится" }}>
-                                <MdThumbUp />
-                            </IconContext.Provider>
-                            <span className='ms-2'>52</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Не нравится" }}>
-                                <MdThumbDown />
-                            </IconContext.Provider>
-                            <span className='ms-2'>12</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 green", title: "Ответить" }}>
-                                <MdChatBubble />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Ответить</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Пожаловаться" }}>
-                                <BsFillExclamationTriangleFill />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Пожаловаться</span>
-                        </button>
-                    </div>
-                </div>
-                <div className='comment main'>
-                    <div className='user'>
-                        <img src="/cargo/img/users/photo.jpg" alt="слайд 1" />
-                        <Link to="" className='blue text-decoration-underline d-block mb-2'>Имя пользователя</Link>
-                        <div className='fw-5'>Автор</div>
-                    </div>
-                    <div className='text'>
-                        <div className='gray-3 title-font d-flex align-items-center mb-2'>
-                            <div>14:30</div>
-                            <div className='ms-4'>12 января 22</div>
-                        </div>
-                        <div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
-                            <p>Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis.</p>
-                        </div>
-                        <button type='button' className='btn btn-2 fs-11 ms-auto'>Ответить на публикацию</button>
-                    </div>
-                    <div className='btns'>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Нравится" }}>
-                                <MdThumbUp />
-                            </IconContext.Provider>
-                            <span className='ms-2'>52</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Не нравится" }}>
-                                <MdThumbDown />
-                            </IconContext.Provider>
-                            <span className='ms-2'>12</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center mb-3'>
-                            <IconContext.Provider value={{className: "icon-15 green", title: "Ответить" }}>
-                                <MdChatBubble />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Ответить</span>
-                        </button>
-                        <button type='button' className='d-flex align-items-center'>
-                            <IconContext.Provider value={{className: "icon-15 gray-4", title: "Пожаловаться" }}>
-                                <BsFillExclamationTriangleFill />
-                            </IconContext.Provider>
-                            <span className='ms-2'>Пожаловаться</span>
-                        </button>
-                    </div>
+                <div className='answers-box'>
+                    <ForumComment 
+                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Модератор'}} 
+                        date="12.01.2022" 
+                        time="14:30" 
+                        citation = {{name: 'Имя пользователя', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.'}}
+                        comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
+                        likes={10} 
+                        dislikes={3}
+                    />
+                    <ForumComment 
+                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile'}} 
+                        date="12.01.2022" 
+                        time="14:30" 
+                        comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus." 
+                        likes={52} 
+                        dislikes={1}
+                    />
+                    <ForumComment 
+                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        date="12.01.2022" 
+                        time="14:30" 
+                        comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
+                        likes={60} 
+                        dislikes={0}
+                    />
                 </div>
 
                 <div className='d-flex align-items-center justify-content-between mt-4'>
@@ -272,5 +151,61 @@ export default function ForumTopicChat() {
                 </div>
             </section>
         </main>
+
+        <div className="modal fade" id="answer" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog modal-lg">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Добавить ответ</h3>
+                        <form className='fs-12'>
+                            <blockquote className='mb-4'>
+                                <IconContext.Provider value={{className: "icon-20 green me-2", title: "Кавычка" }}>
+                                    <MdFormatQuote />
+                                </IconContext.Provider>
+                                <div className='text'>
+                                <div className='author blue text-decoration-underline me-2'>Имя пользователя:</div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.</p>
+                                </div>
+                            </blockquote>
+
+                            <label for="answer-2" className='mb-2'>Ваш ответ</label>
+                            <textarea id="answer-2" rows="6" placeholder='Текст'></textarea>
+                            <div className='row flex-sm-row-reverse mt-4'>
+                                <div className='col-sm-5'>
+                                    <button type='submit' className='btn btn-2 w-100'>Ответить</button>
+                                </div>
+                                <div className='col-sm-7 mt-2 mt-sm-0'>
+                                    <div className='fs-09 text-end'>Нажимая на кнопку “Ответить”, вы соглашаетесь с <a className='blue' href="/">правилами публикации</a></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="modal fade" id="report-on-comment" tabIndex="-1" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-body">
+                        <button type="button" className="btn-close" data-bs-dismiss="modal">
+                            <IoCloseOutline />
+                        </button>
+                        <h3>Добавить ответ</h3>
+                        <form className='fs-12'>
+                            <label for="report" className='mb-2'>Опишите вашу жалобу</label>
+                            <textarea id="report" rows="3" placeholder='Текст'></textarea>
+                            <button type='submit' className='btn btn-2 w-100 mt-4'>Отправить</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </>
     )
 }
