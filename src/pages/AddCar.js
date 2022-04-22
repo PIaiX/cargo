@@ -4,10 +4,61 @@ import CustomSelect from '../components/utilities/CustomSelect';
 import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
-// import * as bootstrap from 'bootstrap';
 
 export default function AddCar() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
+
+    const [data, setData] = useState([
+        {
+            fieldset: 'route',
+            name: 'loading',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'route',
+            name: 'loading-radius',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'route',
+            name: 'unloading',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'route',
+            name: 'unloading-radius',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'date',
+            name: 'frequency',
+            value: '',
+            required: false
+        }
+    ]);
+    
+    const checkFieldset = (fieldName) => {
+        let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
+        let result = newArr.every(elem => elem.value != '');
+        return result;
+    };
+
+    const handleChange = e => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+
+        setData(data.map(obj => {
+            if (obj.name === inputName) {
+               return {...obj, 'value': inputVal};
+            } else {
+               return obj;
+            }
+        }));
+    };
     
     return (
         <>
@@ -24,7 +75,7 @@ export default function AddCar() {
                             <div className={(activeField === 5) ? 'active' : ''}>5</div>
                         </div>
                         
-                        <fieldset data-show={(activeField === 1) ? 'true' : 'false'}>
+                        <fieldset name="route" data-show={(activeField === 1) ? 'true' : 'false'}>
                             <div className='d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3'>
                                 <h4 className="text-center text-lg-start mb-0">Маршрут</h4>
                                 <div className='d-none d-lg-flex align-items-center fs-09'>
@@ -50,7 +101,7 @@ export default function AddCar() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input type='text' id="departure" placeholder='Населенный пункт' className='fs-12'/>
+                                                <input type='text' id="departure" name='loading' onChange={(e)=> handleChange(e)} placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
                                         </div>
                                     </div>
@@ -62,7 +113,7 @@ export default function AddCar() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' id="departure-radius" placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' onChange={(e)=> handleChange(e)} name='loading-radius' id="departure-radius" placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -74,19 +125,19 @@ export default function AddCar() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input type='text' id="arrival" placeholder='Населенный пункт' className='fs-12'/>
+                                                <input type='text' id="arrival" name='unloading' onChange={(e)=> handleChange(e)} placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label for="arrival-radius" className="title-font fs-12 fw-5">Радиус загрузки</label>
+                                        <label for="arrival-radius" className="title-font fs-12 fw-5">Радиус разгрузки</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' id="arrival-radius" placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' id="arrival-radius" name='unloading-radius' onChange={(e)=> handleChange(e)} placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -119,19 +170,19 @@ export default function AddCar() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 2) ? 'true' : 'false'}>
+                        <fieldset name="date" data-show={(activeField === 2) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Дата</h4>
                             <div className="box">
                                 <div className="row">
                                     <div className="col-md-2 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Дата</div>
+                                        <div className="title-font fs-12 fw-5">Дата*</div>
                                     </div>
                                     <div className="col-md-10">
                                         <div className="row">
                                             <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" defaultChecked={true} name="frequency" value="Единожды"/>
+                                                        <input type="radio" name="frequency" onInput={(e)=> handleChange(e)} value="Единожды"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
                                                     </label>
                                                     <div className="d-flex fs-12 align-items-center">
@@ -144,7 +195,7 @@ export default function AddCar() {
                                             <div className="col-xl-5">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" value="Постоянно"/>
+                                                        <input type="radio" name="frequency" onInput={(e)=> handleChange(e)} value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
                                                     <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt={1} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
@@ -250,7 +301,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Габариты</div>
+                                        <div className="title-font fs-12 fw-5">Габариты*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row row-cols-sm-3 gx-3 gx-xxl-4 fs-12">
@@ -443,7 +494,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" className="percent w-100 fs-12"/>
+                                                <input type="number" name="prepay" className="percent w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -567,15 +618,48 @@ export default function AddCar() {
                             <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <a className='active'>Маршрут</a>
+                                        <a className={checkFieldset('route')&&'active'}>Маршрут</a>
                                         <div className='fs-09'>
-                                            <div>Казань +50км — Москва +50км</div>
+                                            {
+                                                data.map(obj => {
+                                                    if (obj.name === 'loading' && obj.value != '') {
+                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
+                                                    } 
+                                                })
+                                            }
+                                            {
+                                                data.map(obj => {
+                                                    if (obj.name === 'loading-radius' && obj.value != '') {
+                                                    return <span key={obj.name} className='me-1'>+{obj.value}км</span>;
+                                                    } 
+                                                })
+                                            }
+                                            {
+                                                data.map(obj => {
+                                                    if (obj.name === 'unloading' && obj.value != '') {
+                                                    return <span key={obj.name} className='me-1'>— {obj.value}</span>;
+                                                    } 
+                                                })
+                                            }
+                                            {
+                                                data.map(obj => {
+                                                    if (obj.name === 'unloading-radius' && obj.value != '') {
+                                                    return <span key={obj.name}>+{obj.value}км</span>;
+                                                    } 
+                                                })
+                                            }
                                         </div>
                                     </li>
                                     <li>
-                                        <a className='active'>Дата</a>
+                                        <a>Дата</a>
                                         <div className='fs-09'>
-                                            <div>Ежедневно</div>
+                                            {
+                                                data.map(obj => {
+                                                    if (obj.name === 'frequency' && obj.value != '') {
+                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
+                                                    } 
+                                                })
+                                            }
                                         </div>
                                     </li>
                                     <li>
