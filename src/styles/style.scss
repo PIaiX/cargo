@@ -1581,6 +1581,10 @@ article {
                 }
             }
         }
+        [data-warning='true'] {
+            color: $red;
+            .gray-4 {color: $red;}
+        }
     }
     nav.contents {
         ol {

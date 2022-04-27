@@ -2353,6 +2353,14 @@ article.full figure figcaption p {
   }
 }
 
+#sec-9 form [data-warning='true'] {
+  color: #D17777;
+}
+
+#sec-9 form [data-warning='true'] .gray-4 {
+  color: #D17777;
+}
+
 #sec-9 nav.contents ol {
   counter-reset: li;
   list-style: none;

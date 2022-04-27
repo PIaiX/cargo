@@ -228,6 +228,30 @@ export default function AddCar() {
         }
     };
 
+    const onSubmit = e => {
+        e.preventDefault();
+
+        let requiredArr = data.filter(obj => obj.required===true && obj);
+        let verification = requiredArr.every(obj => obj.value!=='' && obj);
+        let empty = requiredArr.filter(obj => obj.value==='' && obj);
+
+        if(verification){
+            let formInfo = data.map(obj => {
+                return obj.name + ': ' + obj.value + '; ';
+            })
+            alert(formInfo);
+        } else {
+            alert('заполните форму!');
+            Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
+            empty.map(obj => {
+                let label = obj.name;
+                console.log('label name =' + obj.name);
+                document.querySelector('[data-label='+label+']').dataset.warning = 'true';
+                console.log('querySelector =' + document.querySelector('[data-label='+label+']'));
+            })
+        }
+    };
+
     useEffect(() => {
         //init tooltip
         Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -239,7 +263,7 @@ export default function AddCar() {
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Машины</h1>
-                <form className="row">
+                <form className="row" onSubmit={(e) => onSubmit(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
                             <div className={(activeField === 1) ? 'active' : ''}>1</div>
@@ -270,48 +294,48 @@ export default function AddCar() {
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label htmlFor="departure" className="title-font fs-12 fw-5">Откуда*</label>
+                                        <label data-label='loading' data-warning='false' className="title-font fs-12 fw-5">Откуда*</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input type='text' id="departure" name='loading' onChange={(e)=> fillDataList(e)} placeholder='Населенный пункт' className='fs-12'/>
+                                                <input type='text' name='loading' onChange={(e)=> fillDataList(e)} placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label htmlFor="departure-radius" className="title-font fs-12 fw-5">Радиус загрузки</label>
+                                        <label data-label='loading-radius' data-warning='false' className="title-font fs-12 fw-5">Радиус загрузки</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' onChange={(e)=> fillDataList(e)} name='loading-radius' id="departure-radius" placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' onChange={(e)=> fillDataList(e)} name='loading-radius' placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label htmlFor="arrival" className="title-font fs-12 fw-5">Куда*</label>
+                                        <label data-label='unloading' data-warning='false' className="title-font fs-12 fw-5">Куда*</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input type='text' id="arrival" name='unloading' onChange={(e)=> fillDataList(e)} placeholder='Населенный пункт' className='fs-12'/>
+                                                <input type='text' name='unloading' onChange={(e)=> fillDataList(e)} placeholder='Населенный пункт' className='fs-12'/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label htmlFor="arrival-radius" className="title-font fs-12 fw-5">Радиус разгрузки</label>
+                                        <label data-label='unloading-radius' data-warning='false' className="title-font fs-12 fw-5">Радиус разгрузки</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' id="arrival-radius" name='unloading-radius' onChange={(e)=> fillDataList(e)} placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' name='unloading-radius' onChange={(e)=> fillDataList(e)} placeholder='0' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -349,7 +373,7 @@ export default function AddCar() {
                             <div className="box">
                                 <div className="row">
                                     <div className="col-md-2 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Дата*</div>
+                                        <div data-label='frequency' data-warning='false' className="title-font fs-12 fw-5">Дата*</div>
                                     </div>
                                     <div className="col-md-10">
                                         <div className="row">
@@ -368,9 +392,13 @@ export default function AddCar() {
                                                             }
                                                         })
                                                     }>
-                                                        <input type="date" name='date' onChange={(e)=> fillDataList(e)} defaultValue={'2021-11-11'} className='flex-1'/>
+                                                        <label data-label='date' data-warning='false' className='flex-1'>
+                                                            <input type="date" name='date' onChange={(e)=> fillDataList(e)} />
+                                                        </label>
                                                         <span className="mx-2 mx-xxl-3">+</span>
-                                                        <CustomSelect className="inp" name="days" onChange={(e)=> fillDataList(e)} checkedOpt={1} options={['0 дн.', '1 дн.']}/>
+                                                        <label style={{maxWidth:'100px'}} data-label='days' data-warning='false'>
+                                                            <CustomSelect className="inp" name="days" onChange={(e)=> fillDataList(e)} options={['0 дн.', '1 дн.']}/>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -380,7 +408,7 @@ export default function AddCar() {
                                                         <input type="radio" name="frequency" onChange={(e)=> changeFrequency(e)} value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
-                                                    <div className={
+                                                    <div data-label='periodicity' data-warning='false' className={
                                                         data.filter(obj => obj.name === "frequency").map(obj => {
                                                             if(obj.value === 'Постоянно'){
                                                                 return ''
@@ -389,7 +417,7 @@ export default function AddCar() {
                                                             }
                                                         })
                                                     }>
-                                                        <CustomSelect className="inp w-100 fs-12" name="periodicity" onChange={(e)=> fillDataList(e)} checkedOpt={1} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                        <CustomSelect className="inp w-100 fs-12" name="periodicity" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -441,11 +469,11 @@ export default function AddCar() {
                             <div className="box">
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Тип машины*</div>
+                                        <div data-label='car-type' data-warning='false' className="title-font fs-12 fw-5">Тип машины*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="car-type" options={['Тягач', 'Фура', 'Рефрижератор']}/>
-                                        <div className='row row-cols-sm-3 mt-3'>
+                                        <div data-label='additional-configuration' data-warning='false' className='row row-cols-sm-3 mt-3'>
                                             <div className='mb-3 mb-sm-0'>
                                                 <label>
                                                     <input type="radio" name="additional-configuration" value="Грузовик" onChange={(e)=> fillDataList(e)}/>
@@ -469,7 +497,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-5 col-md-3">
-                                        <div className="title-font fs-12 fw-5 mb-2 mb-sm-0">Грузоподъемность*</div>
+                                        <div data-label='carrying' data-warning='false' className="title-font fs-12 fw-5 mb-2 mb-sm-0">Грузоподъемность*</div>
                                     </div>
                                     <div className="col-sm-7 col-md-9">
                                         <div className="row">
@@ -481,7 +509,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-5 col-md-3">
-                                        <div className="title-font fs-12 fw-5 mb-2 mb-sm-0">Объем*</div>
+                                        <div data-label='capacity' data-warning='false' className="title-font fs-12 fw-5 mb-2 mb-sm-0">Объем*</div>
                                     </div>
                                     <div className="col-sm-7 col-md-9">
                                         <div className="row">
@@ -500,30 +528,30 @@ export default function AddCar() {
                                             <div className='mb-2 mb-sm-0'>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label htmlFor="length">Длина:</label>
+                                                        <label data-label='length' data-warning='false'>Длина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name="length" id="length" onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name="length" onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className='mb-2 mb-sm-0'>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label htmlFor='width'>Ширина:</label>
+                                                        <label data-label='width' data-warning='false'>Ширина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='width' id='width' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name='width' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label htmlFor='height'>Высота:</label>
+                                                        <label data-label='height' data-warning='false'>Высота:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='height' id='height' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name='height' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -533,7 +561,7 @@ export default function AddCar() {
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                                            <span>СТС</span>
+                                            <span data-label='sts' data-warning='false'>СТС</span>
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Свидетельство о регистрации транспортного средства">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
@@ -552,7 +580,7 @@ export default function AddCar() {
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                                            <span>VIN код</span>
+                                            <span data-label='vin' data-warning='false'>VIN код</span>
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Индивидуальный шифр транспортного средства">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
@@ -571,7 +599,7 @@ export default function AddCar() {
                                 <div className="row align-items-center">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                                            <span>ПТС</span>
+                                            <span data-label='pts' data-warning='false'>ПТС</span>
                                             <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Паспорт транспортного средства">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
@@ -630,7 +658,7 @@ export default function AddCar() {
                         <fieldset name='payment' className='mt-lg-5' data-show={(activeField === 4) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mb-4 mb-lg-3">Оплата</h4>
                             <div className="box">
-                                <div className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
+                                <div data-label='bargain' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
                                     <div className='mb-2 mb-sm-0'>
                                         <label>
                                             <input type="radio" name="bargain" onChange={(e)=> fillDataList(e)} value="Возможен торг"/>
@@ -644,7 +672,7 @@ export default function AddCar() {
                                         </label>
                                     </div>
                                 </div>
-                                <div className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
+                                <div data-label='payment-type' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
                                     <div className='mb-2 mb-sm-0'>
                                         <label>
                                             <input type="radio" name="payment-type" onChange={(e)=> fillDataList(e)} value="Наличный расчет"/>
@@ -660,7 +688,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div className="title-font fs-12 fw-5">С НДС</div>
+                                        <div data-label='price-vat' data-warning='false' className="title-font fs-12 fw-5">С НДС</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row gx-2 gx-sm-4'>
@@ -683,7 +711,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div className="title-font fs-12 fw-5">без НДС</div>
+                                        <div data-label='price-novat' data-warning='false' className="title-font fs-12 fw-5">без НДС</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row'>
@@ -703,7 +731,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div className="title-font fs-12 fw-5">Предоплата:</div>
+                                        <div data-label='prepay' data-warning='false' className="title-font fs-12 fw-5">Предоплата:</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row'>
@@ -758,7 +786,7 @@ export default function AddCar() {
                             <div className="box">
                                 <div className="row align-items-center mb-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Телефон*</div>
+                                        <div data-label='contact-phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className='row align-items-center'>
@@ -778,7 +806,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Имя*</div>
+                                        <div data-label='contact-name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className='row align-items-center'>
@@ -790,7 +818,7 @@ export default function AddCar() {
                                 </div>
                                 <div className="row">
                                     <div className="col-md-3 mb-2 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Примечание</div>
+                                        <div data-label='remark' data-warning='false' className="title-font fs-12 fw-5">Примечание</div>
                                     </div>
                                     <div className="col-md-9">
                                         <textarea rows={3} name='remark' onChange={(e)=> fillDataList(e)} placeholder='Укажите здесь дополнительную информацию '></textarea>
@@ -1043,7 +1071,7 @@ export default function AddCar() {
                                     </li>
                                 </ol>
                             </nav>
-                            <button type='button' className='btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5'>разместить груз</button>
+                            <button type='submit' className='btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5'>разместить груз</button>
                             <div className='fs-09 text-center mt-2 mt-xl-3'>Объявление будет опубликованно до  1 января включительно, после чего удалится в архив</div>
                             <button type='button' data-bs-toggle="modal" data-bs-target="#savePattern" className='fs-11 mx-auto mt-2 mt-xl-3 blue'>Сохранить шаблон</button>
                         </aside>
