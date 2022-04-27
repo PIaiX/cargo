@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
-import { BsFillChatRightTextFill, BsFillPinAngleFill, BsFillExclamationOctagonFill } from "react-icons/bs";
+import { BsFillChatRightTextFill, BsFillExclamationOctagonFill } from "react-icons/bs";
 
 export default function ForumTopic(props) {
     return (

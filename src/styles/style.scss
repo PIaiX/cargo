@@ -17,6 +17,7 @@ $gray-5: #E0E0E0;
 $gray-6: #EEF3F3;
 $radius: 8px;
 
+
 a, a:hover, a:focus, a:active {
   color: inherit;
   outline: none;
@@ -96,6 +97,11 @@ textarea {
     padding: .5em;
   }
 }
+.disabled {
+    opacity: .5;
+    filter: grayscale(1);
+    pointer-events: none;
+}
 .inp {
     background: #ffffff;
     border: 1px solid $gray-5;
@@ -123,6 +129,9 @@ input {
         &.price, &.size, &.length, &.weight, &.pcs, &.temp, &.percent {padding: .5em 1.5em .5em .5em;}
         &.price {
             background-image: url(bg-imgs/rub.svg);
+        }
+        &.price-per-km {
+            background-image: url(bg-imgs/rub-km.svg);
         }
         &.size {
             background-image: url(bg-imgs/м3.svg);
@@ -1623,7 +1632,8 @@ article {
                         justify-content: center;
                         align-items: center;
                     }
-                    &.active {
+                    &.active {color: $green;}
+                    &.filled {
                         &::before {
                             background: $green;
                         }

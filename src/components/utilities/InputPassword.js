@@ -12,7 +12,7 @@ export default function InputPassword(props) {
 
     return (
         <div className={"password " + props.className}>
-            <input type={(visible) ? "text" : "password"} name={props.name} autocomplete="current-password" minlength="4" maxlength="8" size="8" required/>
+            <input type={(visible) ? "text" : "password"} name={props.name} autoComplete="current-password" minLength="4" maxLength="8" size="8" required/>
             <button type="button" onClick={() => handleClick()}>
                 {
                     (visible) ?

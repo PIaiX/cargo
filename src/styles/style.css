@@ -115,6 +115,13 @@ textarea::placeholder {
   }
 }
 
+.disabled {
+  opacity: .5;
+  -webkit-filter: grayscale(1);
+          filter: grayscale(1);
+  pointer-events: none;
+}
+
 .inp {
   background: #ffffff;
   border: 1px solid #E0E0E0;
@@ -150,6 +157,10 @@ input[type="number"].price, input[type="number"].size, input[type="number"].leng
 
 input[type="number"].price {
   background-image: url(bg-imgs/rub.svg);
+}
+
+input[type="number"].price-per-km {
+  background-image: url(bg-imgs/rub-km.svg);
 }
 
 input[type="number"].size {
@@ -2416,7 +2427,11 @@ article.full figure figcaption p {
           align-items: center;
 }
 
-#sec-9 nav.contents ol li a.active::before {
+#sec-9 nav.contents ol li a.active {
+  color: #01BFC4;
+}
+
+#sec-9 nav.contents ol li a.filled::before {
   background: #01BFC4;
 }
 

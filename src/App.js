@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -10,11 +10,11 @@ import { Footer } from './components/Footer';
 import { Dropdown } from 'bootstrap';
 
 function App() {
-  // dropdown activation
-  let dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
-  let dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-      return new Dropdown(dropdownToggleEl)
-  })
+  useEffect(() => {
+    //init dropdown
+    Array.from(document.querySelectorAll('.dropdown-toggle'))
+    .forEach(dropdownNode => new Dropdown(dropdownNode))
+  });
 
   return (
     <HashRouter>

@@ -1,10 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { IconContext  } from "react-icons";
 import { IoTrash, IoCaretDown, IoEllipsisVertical } from 'react-icons/io5';
 
 export default function Pattern(props) {
-    const [tab, setTab] = useState('cars');
-
     return (
         <details className={props.className}>
             <summary className='d-flex align-items-center justify-content-between'>

@@ -2,6 +2,11 @@ import React, {useState, useEffect, useRef} from 'react';
 import { IconContext  } from "react-icons";
 import { IoCaretDown } from 'react-icons/io5';
 
+// required props / обязательные свойства:
+// multy = true / false
+// options = array
+// checkedOpt = num / array {[]} (if multy)
+
 export default function CustomSelect(props) {
     const [visible, setVisibility] = useState(false);
     const [checkedVal, setCheckedVal] = useState(props.checkedOpt);
@@ -12,6 +17,8 @@ export default function CustomSelect(props) {
     const multy = props.multy; // true or false
 
     const ref = useRef(null);
+
+    let func = props.onChange;
 
     const handleChange = e => {
         let val = e.target.value;
@@ -66,9 +73,16 @@ export default function CustomSelect(props) {
             <ul className={visible ? 'options py-2' : 'options d-none py-2'} data-alignment={props.alignment}>
                 {options.map(function(item, index) {
                     return (
+                        (checkedVal)?
                         <li key={index}>
                             <label className='line'>
                                 <input type="checkbox" name={props.name} value={item} checked={(checkedVal.includes(index+1)) ? true : false} onChange={(e) => handleChange(e)}/>
+                                <div>{item}</div>
+                            </label>
+                        </li>
+                        :<li key={index}>
+                            <label className='line'>
+                                <input type="checkbox" name={props.name} value={item} checked={false} onChange={(e) => handleChange(e)}/>
                                 <div>{item}</div>
                             </label>
                         </li>
@@ -92,7 +106,7 @@ export default function CustomSelect(props) {
                     return (
                         <li key={index}>
                             <label className="line">
-                                <input type="radio" name={props.name} value={item} checked={(index === checkedVal-1) ? true : false} onChange={(e) => handleChange(e)}/>
+                                <input type="radio" name={props.name} value={item} checked={(index === checkedVal-1) ? true : false} onChange={(e) => handleChange(e)} onInput={func}/>
                                 <div>{item}</div>
                             </label>
                         </li>

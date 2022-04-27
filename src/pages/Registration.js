@@ -14,7 +14,7 @@ export default function Registration() {
                         <h1 className='text-center dark-blue mt-3 mt-sm-4 mt-lg-5'>Регистрация</h1>
                         <form className='fs-12'>
                             <label>Тип аккаунта</label>
-                            <CustomSelect name="account-type" className="inp w-100 mt-2" options={['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']} alignment="left"/>
+                            <CustomSelect name="account-type" className="inp w-100 mt-2" multy={false} options={['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']} alignment="left"/>
                             <label className='mt-3'>Email</label>
                             <input type="email" placeholder='Email' className='mt-2'/>
                             <label className='mt-3'>Пароль</label>
