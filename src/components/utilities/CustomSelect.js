@@ -50,6 +50,16 @@ export default function CustomSelect(props) {
             document.removeEventListener('click', handleClickOutside, true);
         };
     });
+
+    const onReset = () => {
+        setCheckedVal(props.checkedOpt);
+    };
+    useEffect(() => {
+        document.addEventListener('reset', onReset, true);
+        return () => {
+            document.removeEventListener('reset', onReset, true);
+        };
+    });
     
     return (
         (multy)?
