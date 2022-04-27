@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Tooltip } from 'bootstrap';
 import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
@@ -11,6 +11,7 @@ const scrollToTop = () => {
 };
 
 export default function AddCar() {
+    const ref = useRef(null); // Form
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
     let [data, setData] = useState([
@@ -252,6 +253,12 @@ export default function AddCar() {
         }
     };
 
+    const onReset = e => {
+        setData(data.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+    };
+
     useEffect(() => {
         //init tooltip
         Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -263,7 +270,7 @@ export default function AddCar() {
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Машины</h1>
-                <form className="row" onSubmit={(e) => onSubmit(e)} noValidate>
+                <form ref={ref} className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
                             <div className={(activeField === 1) ? 'active' : ''}>1</div>
