@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-scroll';
 import { Tooltip } from 'bootstrap';
-import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
+import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
@@ -174,8 +174,10 @@ export default function AddCar() {
             name: 'remark',
             value: '',
             required: false
-        }
+        },
     ]);
+    let [contacts, setContacts] = useState([]);
+    let [count, setCount] = useState(1);
     
     let checkFieldset = (fieldName) => {
         let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
@@ -270,6 +272,59 @@ export default function AddCar() {
         Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         .forEach(tooltipNode => new Tooltip(tooltipNode))
     });
+
+    let deleteContacts = (i) => {
+        setContacts(contacts.filter(obj => obj.id !== i));
+        setData(data.filter(obj => obj.name !== 'contact-phone-'+i || obj.name !== 'contact-name-'+i));
+    };
+
+    let addContacts = () => {
+        let phone = {
+            fieldset: 'contacts',
+            name: 'contact-phone-'+ count,
+            value: '',
+            required: true
+        };
+        let userName = {
+            fieldset: 'contacts',
+            name: 'contact-name-'+ count,
+            value: '',
+            required: true
+        };
+        setData([...data, phone, userName]);
+        let htmlObj = {
+            id: count,
+            html: <div className='row'>
+                <div className='col-md-9'>
+                    <div className="row align-items-center gy-2 gy-md-3">
+                        <div className="col-md-4">
+                            <div data-label={'contact-phone-'+count} data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                        </div>
+                        <div className="col-md-8">
+                            <input type="tel" name={'contact-phone-'+count} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                        </div>
+                        <div className="col-md-4">
+                            <div data-label={'contact-name-'+count} data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
+                        </div>
+                        <div className="col-md-8">
+                            <input type="text" name={'contact-name-'+count} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                        </div>
+                    </div>
+                </div>
+                <div className='col-md-3 mt-2 mt-md-0'>
+                    <button type="button" onClick={() => deleteContacts(count)} className="red fs-11 fw-5">
+                        <IconContext.Provider value={{className: "red icon-15"}}>
+                            <IoCloseCircle />
+                        </IconContext.Provider>
+                        <span className="ms-2">Удалить</span>
+                    </button>
+                </div>
+            </div>
+        };
+        setContacts([...contacts, htmlObj]);
+
+        setCount(count+1);
+    }
     
     return (
         <>
@@ -797,38 +852,35 @@ export default function AddCar() {
                         <fieldset name='contacts' className='mt-lg-5' data-show={(activeField === 5) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
-                                <div className="row align-items-center mb-3">
-                                    <div className="col-md-3 mb-2 mb-md-0">
-                                        <div data-label='contact-phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className='row align-items-center'>
-                                            <div className='col-sm-7'>
+                                <div className='row gx-2 gx-sm-4 mb-4 mb-md-0'>
+                                    <div className='col-md-9'>
+                                        <div className="row align-items-center gy-2 gy-md-3">
+                                            <div className="col-md-4">
+                                                <div data-label='contact-phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                                            </div>
+                                            <div className="col-md-8">
                                                 <input type="tel" name='contact-phone' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                             </div>
-                                            <div className='col-sm-5 mt-3 mt-sm-0'>
-                                            <button type="button" className="green fw-5 fs-12 w-100">
-                                                <IconContext.Provider value={{className: "green icon-15"}}>
-                                                    <IoAddCircle />
-                                                </IconContext.Provider>
-                                                <span className="ms-2">Добавить контакт</span>
-                                            </button>
+                                            <div className="col-md-4">
+                                                <div data-label='contact-name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center mb-3">
-                                    <div className="col-md-3 mb-2 mb-md-0">
-                                        <div data-label='contact-name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className='row align-items-center'>
-                                            <div className='col-sm-7'>
+                                            <div className="col-md-8">
                                                 <input type="text" name='contact-name' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
+                                    <div className='col-md-3 mt-2 mt-md-0'>
+                                        <button type="button" onClick={() => addContacts()} className="green fs-11 fw-5 text-start">
+                                            <IconContext.Provider value={{className: "green icon-15"}}>
+                                                <IoAddCircle />
+                                            </IconContext.Provider>
+                                            <span className="ms-2">Добавить контакт</span>
+                                        </button>
+                                    </div>
                                 </div>
+                                {
+                                    contacts.map(obj => <div key={obj.id} className="mb-4 mb-md-0">{obj.html}</div>)
+                                }
                                 <div className="row">
                                     <div className="col-md-3 mb-2 mb-md-0">
                                         <div data-label='remark' data-warning='false' className="title-font fs-12 fw-5">Примечание</div>
