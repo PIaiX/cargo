@@ -2443,6 +2443,10 @@ article.full figure figcaption p {
   background: #01BFC4;
 }
 
+#sec-9 nav.contents ol li .fs-09 span:empty {
+  display: none;
+}
+
 #sec-9 aside {
   position: -webkit-sticky;
   position: sticky;

@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
+import { Link } from 'react-scroll';
 import { Tooltip } from 'bootstrap';
 import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
-import { Link, animateScroll as scroll } from 'react-scroll';
-const scrollToTop = () => {
-    scroll.scrollToTop();
-};
+
 
 export default function AddCar() {
     const ref = useRef(null); // Form
@@ -157,7 +155,7 @@ export default function AddCar() {
             fieldset: 'payment',
             name: 'prepay',
             value: '',
-            required: false
+            required: true
         },
         {
             fieldset: 'contacts',
@@ -181,7 +179,7 @@ export default function AddCar() {
     
     let checkFieldset = (fieldName) => {
         let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
-        let result = newArr.every(elem => elem.value != '');
+        let result = newArr.every(elem => elem.value !== '');
         return result;
     };
 
@@ -228,6 +226,17 @@ export default function AddCar() {
         }
     };
 
+    const findInState = (name) => {
+        let val = '';
+        data.forEach(obj => {
+            if (obj.name === name && obj.value !== '') {
+                val = obj.value
+            //  <span key={obj.name} className='me-1'>{obj.value}</span>;
+            } 
+        })
+        return val;
+    };
+
     const onSubmit = e => {
         e.preventDefault();
 
@@ -243,11 +252,9 @@ export default function AddCar() {
         } else {
             alert('заполните форму!');
             Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
-            empty.map(obj => {
+            empty.forEach(obj => {
                 let label = obj.name;
-                console.log('label name =' + obj.name);
                 document.querySelector('[data-label='+label+']').dataset.warning = 'true';
-                console.log('querySelector =' + document.querySelector('[data-label='+label+']'));
             })
         }
     };
@@ -317,7 +324,7 @@ export default function AddCar() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' onChange={(e)=> fillDataList(e)} name='loading-radius' placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' min="0.5" step="0.1" onChange={(e)=> fillDataList(e)} name='loading-radius' placeholder='0,5' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -341,7 +348,7 @@ export default function AddCar() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' name='unloading-radius' onChange={(e)=> fillDataList(e)} placeholder='0' className='w-100 fs-12 distance'/>
+                                                <input type='number' min=".5" step="0.1" name='unloading-radius' onChange={(e)=> fillDataList(e)} placeholder='0,5' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -508,7 +515,7 @@ export default function AddCar() {
                                     <div className="col-sm-7 col-md-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" name='carrying' onChange={(e)=> fillDataList(e)} className="weight w-100 fs-12"/>
+                                                <input type="number" min="1" name='carrying' placeholder='0' onChange={(e)=> fillDataList(e)} className="weight w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -520,7 +527,7 @@ export default function AddCar() {
                                     <div className="col-sm-7 col-md-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" name='capacity' onChange={(e)=> fillDataList(e)} className="size w-100 fs-12"/>
+                                                <input type="number" min="1" name='capacity' placeholder='0' onChange={(e)=> fillDataList(e)} className="size w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -537,7 +544,7 @@ export default function AddCar() {
                                                         <label data-label='length' data-warning='false'>Длина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name="length" onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" min="1" step="0.1" name="length" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -547,7 +554,7 @@ export default function AddCar() {
                                                         <label data-label='width' data-warning='false'>Ширина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='width' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" min="1" step="0.1" name='width' placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -557,7 +564,7 @@ export default function AddCar() {
                                                         <label data-label='height' data-warning='false'>Высота:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='height' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" min="1" step="0.1" name='height' placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -699,7 +706,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row gx-2 gx-sm-4'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" name='price-vat' onChange={(e)=> fillDataList(e)} className={
+                                                <input type="number" min="1" name='price-vat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
                                                     data.filter(obj => obj.name === "unit").map(obj => {
                                                         if(obj.value === '₽'){
                                                             return 'price w-100 fs-12'
@@ -722,7 +729,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" name='price-novat' onChange={(e)=> fillDataList(e)} className={
+                                                <input type="number" min="1" name='price-novat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
                                                     data.filter(obj => obj.name === "unit").map(obj => {
                                                         if(obj.value === '₽'){
                                                             return 'price w-100 fs-12'
@@ -737,12 +744,12 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div data-label='prepay' data-warning='false' className="title-font fs-12 fw-5">Предоплата:</div>
+                                        <div data-label='prepay' data-warning='false' className="title-font fs-12 fw-5">Предоплата*</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" name="prepay" onChange={(e)=> fillDataList(e)} className="percent w-100 fs-12"/>
+                                                <input type="number" min="0" name="prepay" placeholder='0' onChange={(e)=> fillDataList(e)} className="percent w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -869,32 +876,20 @@ export default function AddCar() {
                                         <Link activeClass="active" to="route" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('route')?'filled':''}>Маршрут</Link>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'loading' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('loading')) &&
+                                                <span className='me-1'>{findInState('loading')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'loading-radius' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>+{obj.value}км</span>;
-                                                    } 
-                                                })
+                                                (findInState('loading-radius')) &&
+                                                <span className='me-1'>+{findInState('loading-radius')}км</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'unloading' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>— {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('unloading')) &&
+                                                <span className='me-1'>— {findInState('unloading')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'unloading-radius' && obj.value != '') {
-                                                    return <span key={obj.name}>+{obj.value}км</span>;
-                                                    } 
-                                                })
+                                                (findInState('unloading-radius')) &&
+                                                <span>+{findInState('unloading-radius')}км</span>
                                             }
                                         </div>
                                     </li>
@@ -902,32 +897,20 @@ export default function AddCar() {
                                         <Link activeClass="active" to="date" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('date')?'filled':''}>Дата</Link>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'frequency' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}:</span>;
-                                                    } 
-                                                })
+                                                (findInState('frequency')) &&
+                                                <span className='me-1'>{findInState('frequency')}:</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'date' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('date')) &&
+                                                <span className='me-1'>{findInState('date')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'days' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>+{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('days')) &&
+                                                <span>+ {findInState('days')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'periodicity' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('periodicity')) &&
+                                                <span>{findInState('periodicity')}</span>
                                             }
                                         </div>
                                     </li>
@@ -935,76 +918,46 @@ export default function AddCar() {
                                         <Link activeClass="active" to="about-car" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('about-car')?'filled':''}>Информация о машине</Link>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'car-type' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('car-type')) &&
+                                                <span className='me-1'>{findInState('car-type')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'additional-configuration' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('additional-configuration')) &&
+                                                <span className='me-1'>, {findInState('additional-configuration')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'carrying' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}т</span>;
-                                                    } 
-                                                })
+                                                (findInState('carrying')) &&
+                                                <span className='me-1'>, {findInState('carrying')}т</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'capacity' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}м<sup>3</sup></span>;
-                                                    } 
-                                                })
+                                                (findInState('capacity')) &&
+                                                <span className='me-1'>, {findInState('capacity')}м<sup>3</sup></span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'length' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('length')) &&
+                                                <span className='me-1'>, {findInState('length')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'width' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>/ {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('width')) &&
+                                                <span className='me-1'>/ {findInState('width')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'height' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>/ {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('height')) &&
+                                                <span className='me-1'>/ {findInState('height')}</span>
                                             }
                                         </div>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'sts' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('sts')) &&
+                                                <span className='me-1'>{findInState('sts')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'vin' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('vin')) &&
+                                                <span className='me-1'>, {findInState('vin')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'pts' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('pts')) &&
+                                                <span className='me-1'>, {findInState('pts')}</span>
                                             }
                                         </div>
                                     </li>
@@ -1012,47 +965,26 @@ export default function AddCar() {
                                         <Link activeClass="active" to="payment" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('payment')?'filled':''}>Оплата</Link>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'bargain' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('bargain')) &&
+                                                <span className='me-1'>{findInState('bargain')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'payment-type' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('payment-type')) &&
+                                                <span className='me-1'>, {findInState('payment-type')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'price-vat' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, с&nbsp;НДС {obj.value}{
-                                                        data.filter(obj => obj.name === "unit").map(obj => {
-                                                            return obj.value
-                                                        })
-                                                    }</span>;
-                                                    } 
-                                                })
+                                                (findInState('price-vat')) &&
+                                                <span className='me-1'>, с&nbsp;НДС {findInState('price-vat')} {findInState('unit')}
+                                                </span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'price-novat' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, без&nbsp;НДС {obj.value}{
-                                                        data.filter(obj => obj.name === "unit").map(obj => {
-                                                            return obj.value
-                                                        })
-                                                    }</span>;
-                                                    } 
-                                                })
+                                                (findInState('price-novat')) &&
+                                                <span className='me-1'>, без&nbsp;НДС {findInState('price-novat')} {findInState('unit')}
+                                                </span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'prepay' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, предоплата {obj.value}%</span>;
-                                                    } 
-                                                })
+                                                (findInState('prepay')) &&
+                                                <span>, предоплата {findInState('prepay')}%</span>
                                             }
                                         </div>
                                     </li>
@@ -1060,18 +992,12 @@ export default function AddCar() {
                                         <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('contacts')?'filled':''}>Контакты</Link>
                                         <div className='fs-09'>
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'contact-phone' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>{obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('contact-phone')) &&
+                                                <span className='me-1'>{findInState('contact-phone')}</span>
                                             }
                                             {
-                                                data.map(obj => {
-                                                    if (obj.name === 'contact-name' && obj.value != '') {
-                                                    return <span key={obj.name} className='me-1'>, {obj.value}</span>;
-                                                    } 
-                                                })
+                                                (findInState('contact-name')) &&
+                                                <span>, {findInState('contact-name')}</span>
                                             }
                                         </div>
                                     </li>
