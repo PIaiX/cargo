@@ -4,8 +4,7 @@ import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { IoSearch, IoChevronBack, IoChevronForward, IoAddCircleSharp } from 'react-icons/io5';
-import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
-import ForumSubsection from '../components/ForumSubsection';
+import { BsFillInfoSquareFill } from "react-icons/bs";
 import ForumTopic from '../components/ForumTopic';
 
 export default function ForumMyTopics() {

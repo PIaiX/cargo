@@ -4,8 +4,8 @@ import CustomSelect from '../components/utilities/CustomSelect';
 import ForumComment from '../components/ForumComment';
 
 import { IconContext  } from "react-icons";
-import { MdThumbUp, MdThumbDown, MdChatBubble, MdFormatQuote } from "react-icons/md";
-import { BsFillInfoSquareFill, BsFillExclamationTriangleFill } from "react-icons/bs";
+import { MdFormatQuote } from "react-icons/md";
+import { BsFillInfoSquareFill } from "react-icons/bs";
 import { IoChevronBack, IoChevronForward, IoCloseOutline } from 'react-icons/io5';
 
 export default function ForumTopicChat() {

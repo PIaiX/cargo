@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Card from '../components/Card';
 import UserContacts from '../components/UserContacts';
 
@@ -12,7 +12,7 @@ import SwiperCore, { Navigation, Pagination } from 'swiper';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function CarPage() {
-    const [verified, setVerified] = useState(true);
+    const verified = true; //иконка напротив заголовка, если машина подтвержденная?
 
     return (
         <main className="bg-white">

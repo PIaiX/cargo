@@ -47,19 +47,16 @@ export default function Card(props) {
                     <div className="fs-11 d-flex align-items-center flex-wrap mt-1 mt-sm-2">
                         <span className="fw-5">Особые пометки:</span> 
                         {
-                            (props.notes) &&
-                            iconsArr.map(item => {
-                                if(props.notes === item.name){
-                                    return (
-                                        <div key={item.toString()} className="d-flex align-items-center ms-1">
-                                            <span>{item.text}</span>
-                                            {
-                                                (item.code)&&
-                                                <div className="icon ms-1">{item.code}</div>
-                                            }
-                                        </div>
-                                    )
-                                }
+                            iconsArr.filter(item => item.name === props.notes).map(item => {
+                                return (
+                                    <div key={item.name} className="d-flex align-items-center ms-1">
+                                        <span>{item.text}</span>
+                                        {
+                                            (item.code)&&
+                                            <div className="icon ms-1">{item.code}</div>
+                                        }
+                                    </div>
+                                )
                             })
                         }
                     </div>

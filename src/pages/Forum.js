@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ForumWidget from '../components/ForumWidget';
 import ForumSection from '../components/ForumSection';
 import CustomSelect from '../components/utilities/CustomSelect';
@@ -13,7 +14,9 @@ export default function Forum() {
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#">Разделы форума</a></li>
+                        <li class="breadcrumb-item">
+                            <Link to="/forum">Разделы форума</Link>
+                        </li>
                     </ol>
                 </nav>
 

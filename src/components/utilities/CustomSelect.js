@@ -26,11 +26,7 @@ export default function CustomSelect(props) {
             if(e.target.checked === true){
                 setCheckedVal([...checkedVal, options.indexOf(val)+1]) 
             } else {
-                setCheckedVal(checkedVal.filter(obj => {
-                    if (obj !== options.indexOf(val)+1) {
-                        return obj;
-                    }
-                }))
+                setCheckedVal(checkedVal.filter(obj => obj !== options.indexOf(val)+1))
             }
         } else {
             setCheckedVal(options.indexOf(val)+1);
