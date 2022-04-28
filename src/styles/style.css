@@ -2468,7 +2468,7 @@ article.full figure figcaption p {
   margin-bottom: 2em;
 }
 
-#sec-9 .mobile-indicators div {
+#sec-9 .mobile-indicators button {
   font-family: "Gotham Pro";
   position: relative;
   font-size: 1.25em;
@@ -2489,11 +2489,11 @@ article.full figure figcaption p {
           align-items: center;
 }
 
-#sec-9 .mobile-indicators div:not(:first-child) {
+#sec-9 .mobile-indicators button:not(:first-child) {
   margin-left: 1em;
 }
 
-#sec-9 .mobile-indicators div:not(:first-child)::after {
+#sec-9 .mobile-indicators button:not(:first-child)::after {
   content: "";
   position: absolute;
   right: 100%;
@@ -2502,7 +2502,7 @@ article.full figure figcaption p {
   border-bottom: 2px dashed #E0E0E0;
 }
 
-#sec-9 .mobile-indicators div.active {
+#sec-9 .mobile-indicators button.active {
   background-color: #01BFC4;
 }
 

@@ -196,6 +196,7 @@ export default function AddCar() {
                return obj;
             }
         }));
+        console.log(data);
     };
 
     let changeFrequency = (e) => {
@@ -242,15 +243,16 @@ export default function AddCar() {
     const onSubmit = e => {
         e.preventDefault();
 
-        let requiredArr = data.filter(obj => obj.required===true && obj);
-        let verification = requiredArr.every(obj => obj.value!=='' && obj);
-        let empty = requiredArr.filter(obj => obj.value==='' && obj);
+        let requiredArr = data.filter(obj => obj.required===true);
+        let verification = requiredArr.every(obj => obj.value!=='');
+        let empty = requiredArr.filter(obj => obj.value==='');
 
         if(verification){
             let formInfo = data.map(obj => {
                 return obj.name + ': ' + obj.value + '; ';
             })
             alert(formInfo);
+            console.log(data);
         } else {
             alert('заполните форму!');
             Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
@@ -292,6 +294,7 @@ export default function AddCar() {
             required: true
         };
         setData([...data, phone, userName]);
+        console.log(data);
         let htmlObj = {
             id: count,
             html: <div className='row'>
@@ -334,11 +337,11 @@ export default function AddCar() {
                 <form ref={ref} className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
-                            <div className={(activeField === 1) ? 'active' : ''}>1</div>
-                            <div className={(activeField === 2) ? 'active' : ''}>2</div>
-                            <div className={(activeField === 3) ? 'active' : ''}>3</div>
-                            <div className={(activeField === 4) ? 'active' : ''}>4</div>
-                            <div className={(activeField === 5) ? 'active' : ''}>5</div>
+                            <button type='button' className={(checkFieldset('route')) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
+                            <button type='button' className={(checkFieldset('date')) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
+                            <button type='button' className={(checkFieldset('about-car')) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
+                            <button type='button' className={(checkFieldset('payment')) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
+                            <button type='button' className={(checkFieldset('contacts')) ? 'active' : ''} onClick={() => setActiveField(5)}>5</button>
                         </div>
                         
                         <fieldset name="route" data-show={(activeField === 1) ? 'true' : 'false'}>
@@ -426,7 +429,7 @@ export default function AddCar() {
                                             <span className='ms-1'>Очистить форму</span>
                                         </button>
                                     </div>
-                                    <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                    <button type='button' disabled={(checkFieldset('route') ? false : true)} onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
                                         <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <IoChevronForwardOutline/>
@@ -512,7 +515,7 @@ export default function AddCar() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(1)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(1)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -520,7 +523,7 @@ export default function AddCar() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('date') ? false : true)} onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -703,7 +706,7 @@ export default function AddCar() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -711,7 +714,7 @@ export default function AddCar() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(4)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('about-car') ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -804,7 +807,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="0" name="prepay" placeholder='0' onChange={(e)=> fillDataList(e)} className="percent w-100 fs-12"/>
+                                                <input type="number" min="0" max="100" name="prepay" placeholder='0' onChange={(e)=> fillDataList(e)} className="percent w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -829,7 +832,7 @@ export default function AddCar() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -837,7 +840,7 @@ export default function AddCar() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(5)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('payment') ? false : true)} onClick={() => setActiveField(5)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -879,9 +882,9 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 {
-                                    contacts.map(obj => <div key={obj.id} className="mb-4 mb-md-0">{obj.html}</div>)
+                                    contacts.map(obj => <div key={obj.id} className="mt-4">{obj.html}</div>)
                                 }
-                                <div className="row">
+                                <div className="row mt-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
                                         <div data-label='remark' data-warning='false' className="title-font fs-12 fw-5">Примечание</div>
                                     </div>
