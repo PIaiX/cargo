@@ -293,9 +293,7 @@ export default function AddCar() {
         setData([...data, phone, userName]);
         
         setContacts([...contacts, newNum]);
-    }
-
-    console.log(data);
+    };
     
     return (
         <>
@@ -397,7 +395,7 @@ export default function AddCar() {
                                             <span className='ms-1'>Очистить форму</span>
                                         </button>
                                     </div>
-                                    <button type='button' disabled={(checkFieldset('route') ? false : true)} onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                    <button type='button' disabled={(checkFieldset('route') ? false : true)} onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
                                         <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <IoChevronForwardOutline/>
@@ -511,7 +509,7 @@ export default function AddCar() {
                                         <div data-label='car-type' data-warning='false' className="title-font fs-12 fw-5">Тип машины*</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect onChange={(e)=> fillDataList(e)}  className="inp w-100 fs-12" name="car-type" options={['Тягач', 'Фура', 'Рефрижератор']}/>
+                                        <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="car-type" options={['Тягач', 'Фура', 'Рефрижератор']}/>
                                         <div data-label='additional-configuration' data-warning='false' className='row row-cols-sm-3 mt-3'>
                                             <div className='mb-3 mb-sm-0'>
                                                 <label>
