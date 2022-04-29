@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-scroll';
 import { Tooltip } from 'bootstrap';
@@ -6,10 +6,7 @@ import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutli
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
-
-
 export default function AddCar() {
-    const ref = useRef(null); // Form
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
     let [data, setData] = useState([
@@ -159,13 +156,13 @@ export default function AddCar() {
         },
         {
             fieldset: 'contacts',
-            name: 'contact-phone',
+            name: 'contact-phone-0',
             value: '',
             required: true
         },
         {
             fieldset: 'contacts',
-            name: 'contact-name',
+            name: 'contact-name-0',
             value: '',
             required: true
         },
@@ -177,7 +174,6 @@ export default function AddCar() {
         },
     ]);
     let [contacts, setContacts] = useState([]);
-    let [count, setCount] = useState(1);
     
     let checkFieldset = (fieldName) => {
         let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
@@ -186,6 +182,7 @@ export default function AddCar() {
     };
 
     let fillDataList = (e) => {
+        console.log('target:' + e.target);
         let inputName = e.target.name;
         let inputVal = e.target.value.trim();
 
@@ -196,7 +193,6 @@ export default function AddCar() {
                return obj;
             }
         }));
-        console.log(data);
     };
 
     let changeFrequency = (e) => {
@@ -252,7 +248,6 @@ export default function AddCar() {
                 return obj.name + ': ' + obj.value + '; ';
             })
             alert(formInfo);
-            console.log(data);
         } else {
             alert('заполните форму!');
             Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
@@ -276,65 +271,38 @@ export default function AddCar() {
     });
 
     let deleteContacts = (i) => {
-        setContacts(contacts.filter(obj => obj.id !== i));
+        setContacts(contacts.filter(obj => obj !== i));
         setData(data.filter(obj => obj.name !== 'contact-phone-'+i || obj.name !== 'contact-name-'+i));
     };
 
     let addContacts = () => {
+        let newNum = Number(contacts)+1;
+
         let phone = {
             fieldset: 'contacts',
-            name: 'contact-phone-'+ count,
+            name: 'contact-phone-'+ newNum,
             value: '',
-            required: true
+            required: false
         };
         let userName = {
             fieldset: 'contacts',
-            name: 'contact-name-'+ count,
+            name: 'contact-name-'+ newNum,
             value: '',
-            required: true
+            required: false
         };
         setData([...data, phone, userName]);
-        console.log(data);
-        let htmlObj = {
-            id: count,
-            html: <div className='row'>
-                <div className='col-md-9'>
-                    <div className="row align-items-center gy-2 gy-md-3">
-                        <div className="col-md-4">
-                            <div data-label={'contact-phone-'+count} data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
-                        </div>
-                        <div className="col-md-8">
-                            <input type="tel" name={'contact-phone-'+count} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
-                        </div>
-                        <div className="col-md-4">
-                            <div data-label={'contact-name-'+count} data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
-                        </div>
-                        <div className="col-md-8">
-                            <input type="text" name={'contact-name-'+count} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
-                        </div>
-                    </div>
-                </div>
-                <div className='col-md-3 mt-2 mt-md-0'>
-                    <button type="button" onClick={() => deleteContacts(count)} className="red fs-11 fw-5">
-                        <IconContext.Provider value={{className: "red icon-15"}}>
-                            <IoCloseCircle />
-                        </IconContext.Provider>
-                        <span className="ms-2">Удалить</span>
-                    </button>
-                </div>
-            </div>
-        };
-        setContacts([...contacts, htmlObj]);
-
-        setCount(count+1);
+        
+        setContacts([...contacts, newNum]);
     }
+
+    console.log(data);
     
     return (
         <>
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Машины</h1>
-                <form ref={ref} className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
+                <form className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
                             <button type='button' className={(checkFieldset('route')) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
@@ -859,16 +827,16 @@ export default function AddCar() {
                                     <div className='col-md-9'>
                                         <div className="row align-items-center gy-2 gy-md-3">
                                             <div className="col-md-4">
-                                                <div data-label='contact-phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                                                <div data-label='contact-phone-0' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="tel" name='contact-phone' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                <input type="tel" name='contact-phone-0' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                             </div>
                                             <div className="col-md-4">
-                                                <div data-label='contact-name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
+                                                <div data-label='contact-name-0' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="text" name='contact-name' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                <input type="text" name='contact-name-0' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -882,7 +850,32 @@ export default function AddCar() {
                                     </div>
                                 </div>
                                 {
-                                    contacts.map(obj => <div key={obj.id} className="mt-4">{obj.html}</div>)
+                                    contacts.map(obj => <div key={obj} className='row mt-3'>
+                                        <div className='col-md-9'>
+                                            <div className="row align-items-center gy-2 gy-md-3">
+                                                <div className="col-md-4">
+                                                    <div data-label={'contact-phone-'+obj} data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <input type="tel" name={'contact-phone-'+obj} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                </div>
+                                                <div className="col-md-4">
+                                                    <div data-label={'contact-name-'+obj} data-warning='false' className="title-font fs-12 fw-5">Имя</div>
+                                                </div>
+                                                <div className="col-md-8">
+                                                    <input type="text" name={'contact-name-'+obj} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className='col-md-3 mt-2 mt-md-0'>
+                                            <button type="button" onClick={() => deleteContacts(obj)} className="red fs-11 fw-5">
+                                                <IconContext.Provider value={{className: "red icon-15"}}>
+                                                    <IoCloseCircle />
+                                                </IconContext.Provider>
+                                                <span className="ms-2">Удалить</span>
+                                            </button>
+                                        </div>
+                                    </div>)
                                 }
                                 <div className="row mt-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
@@ -1047,12 +1040,12 @@ export default function AddCar() {
                                         <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('contacts')?'filled':''}>Контакты</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('contact-phone')) &&
-                                                <span className='me-1'>{findInState('contact-phone')}</span>
+                                                (findInState('contact-phone-0')) &&
+                                                <span className='me-1'>{findInState('contact-phone-0')}</span>
                                             }
                                             {
-                                                (findInState('contact-name')) &&
-                                                <span>, {findInState('contact-name')}</span>
+                                                (findInState('contact-name-0')) &&
+                                                <span>, {findInState('contact-name-0')}</span>
                                             }
                                         </div>
                                     </li>
