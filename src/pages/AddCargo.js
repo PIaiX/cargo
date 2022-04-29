@@ -1,30 +1,360 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
-
-import { IoAddCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoNewspaperOutline } from 'react-icons/io5';
+import { Link } from 'react-scroll';
+import { Tooltip } from 'bootstrap';
+import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
 export default function AddCargo() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
+    let [data, setData] = useState([
+        {
+            fieldset: 'loading',
+            name: 'frequency',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-date',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-days',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-periodicity',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-time-from',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-time-till',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-all-day',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-town',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'loading',
+            name: 'loading-address',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-date-from',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-date-till',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-time-from',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-time-till',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-town',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'unloading',
+            name: 'unloading-address',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'cargo-type',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'weight',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'capacity',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'length',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'width',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'height',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'cargo',
+            name: 'package',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'pcs',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'notes',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'requirements',
+            name: 'car-type',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'bargain',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'payment-type',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'unit',
+            value: '₽',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'price-vat',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'price-novat',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'payment',
+            name: 'prepay',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'contacts',
+            name: 'contact-phone-0',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'contacts',
+            name: 'contact-name-0',
+            value: '',
+            required: true
+        },
+        {
+            fieldset: 'contacts',
+            name: 'remark',
+            value: '',
+            required: false
+        },
+    ]);
+
+    let [contacts, setContacts] = useState([]);
+    
+    let checkFieldset = (fieldName) => {
+        let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
+        let result = newArr.every(elem => elem.value !== '');
+        return result;
+    };
+
+    let fillDataList = (e) => {
+        console.log('target:' + e.target);
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+
+        setData(data.map(obj => {
+            if (obj.name === inputName) {
+               return {...obj, 'value': inputVal};
+            } else {
+               return obj;
+            }
+        }));
+    };
+
+    let changeFrequency = (e) => {
+        //нужно прикрутить очистку инпутов и селекта
+        let inputVal = e.target.value.trim();
+        if(inputVal === 'Единожды') {
+            setData(data.map(obj => {
+                if(obj.name === 'frequency'){
+                    return {...obj, 'value': inputVal};
+                } else if (obj.name === 'date' || obj.name === 'days') {
+                   return {...obj, 'required': true};
+                } else if(obj.name === 'periodicity'){
+                    return {...obj, 'required': false, 'value': ''};
+                } else {
+                   return obj;
+                }
+            }));
+        } else {
+            setData(data.map(obj => {
+                if(obj.name === 'frequency'){
+                    return {...obj, 'value': inputVal};
+                } else if (obj.name === 'periodicity') {
+                   return {...obj, 'required': true};
+                } else if(obj.name === 'date' || obj.name === 'days'){
+                    return {...obj, 'required': false, 'value': ''};
+                } else {
+                   return obj;
+                }
+            }));
+        }
+    };
+
+    const findInState = (name) => {
+        let val = '';
+        data.forEach(obj => {
+            if (obj.name === name && obj.value !== '') {
+                val = obj.value
+            //  <span key={obj.name} className='me-1'>{obj.value}</span>;
+            } 
+        })
+        return val;
+    };
+
+    const onSubmit = e => {
+        e.preventDefault();
+
+        let requiredArr = data.filter(obj => obj.required===true);
+        let verification = requiredArr.every(obj => obj.value!=='');
+        let empty = requiredArr.filter(obj => obj.value==='');
+
+        if(verification){
+            let formInfo = data.map(obj => {
+                return obj.name + ': ' + obj.value + '; ';
+            })
+            alert(formInfo);
+        } else {
+            alert('заполните форму!');
+            Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
+            empty.forEach(obj => {
+                let label = obj.name;
+                document.querySelector('[data-label='+label+']').dataset.warning = 'true';
+            })
+        }
+    };
+
+    const onReset = e => {
+        setData(data.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+    };
+
+    useEffect(() => {
+        //init tooltip
+        Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        .forEach(tooltipNode => new Tooltip(tooltipNode))
+    });
+
+    let deleteContacts = (i) => {
+        setContacts(contacts.filter(obj => obj !== i));
+        setData(data.filter(obj => obj.name !== 'contact-phone-'+i || obj.name !== 'contact-name-'+i));
+    };
+
+    let addContacts = () => {
+        let newNum = Number(contacts)+1;
+
+        let phone = {
+            fieldset: 'contacts',
+            name: 'contact-phone-'+ newNum,
+            value: '',
+            required: false
+        };
+        let userName = {
+            fieldset: 'contacts',
+            name: 'contact-name-'+ newNum,
+            value: '',
+            required: false
+        };
+        setData([...data, phone, userName]);
+        
+        setContacts([...contacts, newNum]);
+    }
+
     return (
         <>
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
-                <form className="row">
+                <form className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
-                            <div className={(activeField === 1) ? 'active' : ''}>1</div>
-                            <div className={(activeField === 2) ? 'active' : ''}>2</div>
-                            <div className={(activeField === 3) ? 'active' : ''}>3</div>
-                            <div className={(activeField === 4) ? 'active' : ''}>4</div>
-                            <div className={(activeField === 5) ? 'active' : ''}>5</div>
-                            <div className={(activeField === 6) ? 'active' : ''}>6</div>
+                            <button type='button' className={(checkFieldset('loading')) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
+                            <button type='button' className={(checkFieldset('unloading')) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
+                            <button type='button' className={(checkFieldset('cargo')) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
+                            <button type='button' className={(checkFieldset('requirements')) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
+                            <button type='button' className={(checkFieldset('payment')) ? 'active' : ''} onClick={() => setActiveField(4)}>5</button>
+                            <button type='button' className={(checkFieldset('contacts')) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
                         </div>
                         
-                        <fieldset data-show={(activeField === 1) ? 'true' : 'false'}>
+                        <fieldset name="loading" data-show={(activeField === 1) ? 'true' : 'false'}>
                             <div className='d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3'>
                                 <h4 className="text-center text-lg-start mb-0">Загрузка</h4>
                                 <div className='d-none d-lg-flex align-items-center fs-09'>
@@ -45,30 +375,52 @@ export default function AddCargo() {
                             <div className="box">
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Дата*</div>
+                                        <div data-label='frequency' data-warning='false' className="title-font fs-12 fw-5">Дата*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" defaultChecked={true} name="frequency" value="Единожды"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> changeFrequency(e)} value="Единожды"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Единожды</span>
                                                     </label>
-                                                    <div className="d-flex fs-12 align-items-center">
-                                                        <input type="date" value={'2021-11-11'} className='flex-1'/>
+                                                    <div className={
+                                                        data.filter(obj => obj.name === "frequency").map(obj => {
+                                                            if(obj.value === 'Единожды'){
+                                                                return 'd-flex fs-12 align-items-center'
+                                                            } else {
+                                                                return 'd-flex fs-12 align-items-center disabled'
+                                                            }
+                                                        })
+                                                    }>
+                                                        <label data-label='loading-date' data-warning='false' className='flex-1'>
+                                                            <input type="date" name='loading-date' onChange={(e)=> fillDataList(e)}/>
+                                                        </label>
                                                         <span className="mx-2 mx-xxl-3">+</span>
-                                                        <CustomSelect className="inp" name="days" checkedOpt={1} options={['0 дн.', '1 дн.']}/>
+                                                        <label style={{maxWidth:'100px'}} data-label='days' data-warning='false'>
+                                                            <CustomSelect className="inp" name="loading-days" onChange={(e)=> fillDataList(e)} options={['0 дн.', '1 дн.']}/>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-5">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" value="Постоянно"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> changeFrequency(e)} value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
-                                                    <CustomSelect className="inp w-100 fs-12" name="periodicity" checkedOpt={1} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                    <div data-label='loading-periodicity' data-warning='false' className={
+                                                        data.filter(obj => obj.name === "frequency").map(obj => {
+                                                            if(obj.value === 'Постоянно'){
+                                                                return ''
+                                                            } else {
+                                                                return 'disabled'
+                                                            }
+                                                        })
+                                                    }>
+                                                        <CustomSelect className="inp w-100 fs-12" name="loading-periodicity" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,31 +428,31 @@ export default function AddCargo() {
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
+                                        <div data-label='loading-time-from loading-time-till' data-warning='false' className="title-font fs-12 fw-5">Время загрузки</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="d-flex fs-12 align-items-center">
-                                            <input type="time" />
+                                            <input type="time" name="loading-time-from" onChange={(e)=> fillDataList(e)}/>
                                             <span className="mx-3">—</span>
-                                            <input type="time" />
+                                            <input type="time" name="loading-time-till" onChange={(e)=> fillDataList(e)}/>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" defaultChecked={true} name="frequency" value="Круглосуточно"/>
-                                            <span className="ms-2 fs-09">Круглосуточно</span>
+                                            <input type="checkbox" name="loading-all-day" onChange={(e)=> fillDataList(e)} value="Круглосуточно"/>
+                                            <span data-label='loading-all-day' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
+                                        <div data-label='loading-town loading-address' data-warning='false' className="title-font fs-12 fw-5">Место загрузки*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row fs-12">
                                             <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <input type="text" placeholder="Населеный пункт" value={'Казань'}/>
+                                                <input type="text" name="loading-town" onChange={(e)=> fillDataList(e)} placeholder="Населеный пункт"/>
                                             </div>
                                             <div className="col-sm-7">
-                                                <input type="text" placeholder="Адрес" value={'Четаева 89'}/>
+                                                <input type="text" name="loading-address" onChange={(e)=> fillDataList(e)} placeholder="Адрес"/>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +481,7 @@ export default function AddCargo() {
                                             <span className='ms-1'>Очистить форму</span>
                                         </button>
                                     </div>
-                                    <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                    <button type='button' disabled={(checkFieldset('loading') ? false : true)} onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
                                         <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <IoChevronForwardOutline/>
@@ -139,48 +491,48 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 2) ? 'true' : 'false'}>
+                        <fieldset name="unloading" data-show={(activeField === 2) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Разгрузка</h4>
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Дата</div>
+                                        <div data-label='unloading-date-from unloading-date-till' data-warning='false' className="title-font fs-12 fw-5">Дата</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="d-flex fs-12 align-items-center">
-                                            <input type="date"/>
+                                            <input type="date" name="unloading-date-from" onChange={(e)=> fillDataList(e)}/>
                                             <span className="mx-3">—</span>
-                                            <input type="date" />
+                                            <input type="date" name="unloading-date-till" onChange={(e)=> fillDataList(e)}/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
+                                        <div data-label='unloading-time-from unloading-time-till' data-warning='false' className="title-font fs-12 fw-5">Время разгрузки</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="d-flex align-items-center fs-12">
-                                            <input type="time" />
+                                            <input type="time" name="unloading-time-from" onChange={(e)=> fillDataList(e)}/>
                                             <span className="mx-3">—</span>
-                                            <input type="time" />
+                                            <input type="time" name="unloading-time-from" onChange={(e)=> fillDataList(e)}/>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" name="frequency" value="Круглосуточно"/>
-                                            <span className="ms-2 fs-09">Круглосуточно</span>
+                                            <input type="checkbox" name="unloading-all-day" onChange={(e)=> fillDataList(e)} value="Круглосуточно"/>
+                                            <span data-label='unloading-all-day' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
+                                        <div data-label='unloading-town unloading-address' data-warning='false' className="title-font fs-12 fw-5">Место разгрузки*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row fs-12">
                                             <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <input type="text" placeholder="Населеный пункт"/>
+                                                <input type="text" name="unloading-town" onChange={(e)=> fillDataList(e)} placeholder="Населеный пункт"/>
                                             </div>
                                             <div className="col-sm-7">
-                                                <input type="text" placeholder="Адрес"/>
+                                                <input type="text" name="unloading-address" onChange={(e)=> fillDataList(e)} placeholder="Адрес"/>
                                             </div>
                                         </div>
                                     </div>
@@ -211,7 +563,7 @@ export default function AddCargo() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(1)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(1)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -219,7 +571,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('unloading') ? false : true)} onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -231,37 +583,37 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 3) ? 'true' : 'false'}>
+                        <fieldset name="cargo" data-show={(activeField === 3) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Груз</h4>
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Тип груза</div>
+                                        <div data-label='cargo-type' data-warning='false' className="title-font fs-12 fw-5">Тип груза</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type"  options={['тип 1', 'тип 2']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" onChange={(e)=> fillDataList(e)} options={['тип 1', 'тип 2']}/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-3">
-                                        <div className="title-font fs-12 fw-5">Вес*</div>
+                                        <div data-label='weight' data-warning='false' className="title-font fs-12 fw-5">Вес*</div>
                                     </div>
                                     <div className="col-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" className="weight w-100 fs-12"/>
+                                                <input type="number" name="weight" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="weight w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-3">
-                                        <div className="title-font fs-12 fw-5">Объем*</div>
+                                        <div data-label='capacity' data-warning='false' className="title-font fs-12 fw-5">Объем*</div>
                                     </div>
                                     <div className="col-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" className="size w-100 fs-12"/>
+                                                <input type="number" name="capacity" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="size w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -275,30 +627,30 @@ export default function AddCargo() {
                                             <div className='mb-2 mb-sm-0'>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label for="length">Длина:</label>
+                                                        <label data-label='length' data-warning='false'>Длина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name="length" id="length" className="length"/>
+                                                        <input type="number" name="length" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className='mb-2 mb-sm-0'>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label for='width'>Ширина:</label>
+                                                        <label data-label='width' data-warning='false'>Ширина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='width' id='width' className="length"/>
+                                                        <input type="number" name='width' min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div>
                                                 <div className='row gx-2 align-items-center'>
                                                     <div className='col-3 col-sm-5'>
-                                                        <label for='height'>Высота:</label>
+                                                        <label data-label='height' data-warning='false'>Высота:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='height' id='height' className="length"/>
+                                                        <input type="number" name='height' min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -307,22 +659,22 @@ export default function AddCargo() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Упаковка</div>
+                                        <div data-label='package' data-warning='false' className="title-font fs-12 fw-5">Упаковка</div>
                                     </div>
                                     <div className="col-md-9 fs-12 d-flex align-items-center">
-                                        <CustomSelect className="inp" name="package"  options={['упаковка 1', 'упаковка 2']}/>
+                                        <CustomSelect className="inp" name="package" onChange={(e)=> fillDataList(e)} options={['упаковка 1', 'упаковка 2']}/>
                                         <IconContext.Provider value={{className: "icon-10 mx-3"}}>
                                             <VscChromeClose />
                                         </IconContext.Provider>
-                                        <input type="number" className="pcs"/>
+                                        <input type="number" placeholder='0' min="0" name="pcs" onChange={(e)=> fillDataList(e)} className="pcs"/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Особые пометки</div>
+                                        <div data-label='notes' data-warning='false' className="title-font fs-12 fw-5">Особые пометки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="cargo-type" checkedOpt={1} options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="notes" onChange={(e)=> fillDataList(e)} options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
                                     </div>
                                 </div>
                             </div>
@@ -351,7 +703,7 @@ export default function AddCargo() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(2)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -359,7 +711,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(4)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('cargo') ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -371,15 +723,15 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 4) ? 'true' : 'false'}>
-                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Требовани я к машине</h4>
+                        <fieldset name="requirements" data-show={(activeField === 4) ? 'true' : 'false'}>
+                            <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Требования к машине</h4>
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Тип кузова</div>
+                                        <div data-label='car-type' data-warning='false' className="title-font fs-12 fw-5">Тип кузова</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="carcase" options={['тип 1', 'тип 2', 'тип 3']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="car-type" onChange={(e)=> fillDataList(e)} options={['тип 1', 'тип 2', 'тип 3']}/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center">
@@ -412,7 +764,7 @@ export default function AddCargo() {
                                     </div>
                                     <div className='row row-cols-2 gx-2 gx-sm-4 title-font'>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(3)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
@@ -420,7 +772,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' onClick={() => setActiveField(5)}     className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' onClick={() => setActiveField(5)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -432,7 +784,7 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 5) ? 'true' : 'false'}>
+                        <fieldset name="payment" data-show={(activeField === 5) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Оплата</h4>
                             <div className="box">
                                 <div className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
@@ -542,7 +894,7 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset data-show={(activeField === 6) ? 'true' : 'false'}>
+                        <fieldset name="contacts" data-show={(activeField === 6) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
                                 <div className="row align-items-center mb-3">
@@ -621,30 +973,22 @@ export default function AddCargo() {
                             <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <a className='active'>Загрузка</a>
-                                        <div className='fs-09'>
-                                            <div>11.11.2021, круглосуточно</div>
-                                            <div>Казань, Четаева 89</div>
-                                        </div>
+                                        <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('loading')?'filled':''}>Загрузка</Link>
                                     </li>
                                     <li>
-                                        <a className='active'>Разгрузка</a>
-                                        <div className='fs-09'>
-                                            <div>11.11.2021, круглосуточно</div>
-                                            <div>Казань, Четаева 89</div>
-                                        </div>
+                                        <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('unloading')?'filled':''}>Разгрузка</Link>
                                     </li>
                                     <li>
-                                        <a>Груз</a>
+                                        <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('cargo')?'filled':''}>Груз</Link>
                                     </li>
                                     <li>
-                                        <a>Требования к машине</a>
+                                        <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('requirements')?'filled':''}>Требования к машине</Link>
                                     </li>
                                     <li>
-                                        <a>Оплата</a>
+                                        <Link activeClass="active" to="payment" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('payment')?'filled':''}>Оплата</Link>
                                     </li>
                                     <li>
-                                        <a>Контакты</a>
+                                        <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('contacts')?'filled':''}>Контакты</Link>
                                     </li>
                                 </ol>
                             </nav>
