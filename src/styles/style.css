@@ -2361,6 +2361,10 @@ article.full figure figcaption p {
   color: #D17777;
 }
 
+#sec-9 form [data-warning='true'] input {
+  border-color: #D17777;
+}
+
 #sec-9 nav.contents ol {
   counter-reset: li;
   list-style: none;

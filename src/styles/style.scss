@@ -1584,6 +1584,7 @@ article {
         [data-warning='true'] {
             color: $red;
             .gray-4 {color: $red;}
+            input {border-color: $red;}
         }
     }
     nav.contents {

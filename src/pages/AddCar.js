@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-scroll';
 import { Tooltip } from 'bootstrap';
-import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoCloseOutline, IoTrash, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
+import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 
@@ -296,7 +296,6 @@ export default function AddCar() {
     };
     
     return (
-        <>
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <h1 className="dark-blue text-center text-uppercase">Добавление Машины</h1>
@@ -1057,124 +1056,5 @@ export default function AddCar() {
                 </form>
             </section>
         </main>
-
-        {/* Modal */}
-
-        <div className="modal fade" id="usePattern" tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                    <div className="modal-body">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <IoCloseOutline />
-                        </button>
-                        <h2>Выберите шаблон</h2>
-                        <div className='box patterns p-2 p-sm-4'>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 1</div>
-                                    <div className='fs-11 mt-1'>Примечание 1</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 2</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 3</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 1</div>
-                                    <div className='fs-11 mt-1'>Примечание 1</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 2</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                            <div className='d-flex align-items-center'>
-                                <div className='flex-1'>
-                                    <div className='title-font fs-12 fw-7'>Название шаблона 3</div>
-                                </div>
-                                <button type='button' className='btn btn-1 fs-09 px-2 px-sm-4 ms-2'>Выбрать</button>
-                                <button type='button' className='ms-2 ms-sm-3'>
-                                    <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                        <IoTrash />
-                                    </IconContext.Provider>
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* если нет шаблонов */}
-
-                        <h5 className='text-center'>У Вас нет сохраненных шаблонов</h5>
-                        <p className='text-center fs-11'>Сохраняйте однотипные объявления в шаблоны <br /> для удобства и экономии времени</p>
-                        <button type='button' data-bs-dismiss="modal" className='btn btn-1 fs-12 mx-auto mt-4'>Закрыть</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div className="modal fade" id="savePattern" tabIndex="-1" aria-hidden="true">
-            <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                    <div className="modal-body">
-                        <button type="button" className="btn-close" data-bs-dismiss="modal">
-                            <IoCloseOutline />
-                        </button>
-                        <h2>Сохранить шаблон груза</h2>
-                        <form className='fs-12'>
-                            <label htmlFor='pattern-name' className='fw-5 title-font mb-2'>Название шаблона</label>
-                            <input id='pattern-name' placeholder='Название' className='mb-4'/>
-                            <label htmlFor='pattern-notes' className='fw-5 title-font mb-2'>Примечание</label>
-                            <input id='pattern-notes' placeholder='Примечание' className='mb-4'/>
-                            <div className='row row-cols-sm-2'>
-                                <div className='mb-3 mb-sm-0'>
-                                    <button type='reset' data-bs-dismiss="modal" className='btn btn-1 w-100'>Отмена</button>
-                                </div>
-                                <div>
-                                    <button type='button' className='btn btn-2 w-100'>Сохранить</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </>
     )
 }
