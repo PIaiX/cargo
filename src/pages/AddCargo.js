@@ -263,22 +263,45 @@ export default function AddCargo() {
                 }
             }));
         }
+    };
 
-        
+    //checkbox click handler
+    let handleCheck = (e) => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+        let clearState = e.target.dataset.clear.split(' ');//inputs whose data should be removed
+
+        if(e.target.checked === true) {
+            setData(data.map(obj => {
+                if (obj.name === inputName) {
+                   return {...obj, 'value': inputVal};//write the value of the checkbox to the State
+                } else if(clearState.includes(obj.name)) {
+                    return {...obj, 'value': ''};//delete values of inputs from State
+                } else {
+                   return obj; //skip the rest
+                }
+            }));
+            clearState.forEach(item => {
+                clearInput(item)
+            })
+        } else {
+            setData(data.map(obj => {
+                if (obj.name === inputName) {
+                   return {...obj, 'value': ''};//delete the value of the checkbox from the State
+                } else {
+                   return obj;
+                }
+            }));
+        }
     };
 
     let clearInput = (item) => {
-        console.log(document.getElementsByName(item));
-        let arr = document.getElementsByName(item);
-        arr.forEach(item => {
-            if(item.type === 'text' || item.type === 'date' || item.type === 'number'){
-                item.value = '';
-                console.log(123);
-            } else if(item.type === 'radio' || item.type === 'checkbox') {
-                item.checked = false;
-                console.log(4);
-            }
-        })
+        let input = document.querySelector('[name="'+item+'"]'); //clear input's value by name
+        if(input.type === 'radio' || input.type === 'checkbox'){
+            input.checked = false;
+        } else {
+            input.value = '';
+        }
     };
 
     let toggleParams = (e) => {
@@ -287,8 +310,6 @@ export default function AddCargo() {
         let inputName = e.target.name;
         let addParams = e.target.dataset.add.split(' ');
         let delParams = e.target.dataset.del.split(' ');
-        console.log('addParams: '+addParams);
-        console.log('delParams: '+delParams);
 
         setData(
             data.map(obj => {
@@ -494,16 +515,28 @@ export default function AddCargo() {
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='loading-time-from loading-time-till' data-warning='false' className="title-font fs-12 fw-5">Время загрузки</div>
+                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <div className="d-flex fs-12 align-items-center">
-                                            <input type="time" name="loading-time-from" onChange={(e)=> fillDataList(e)}/>
+                                        <div className={
+                                            data.filter(obj => obj.name === "loading-all-day").map(obj => {
+                                                if(obj.value === 'Круглосуточно'){
+                                                    return 'd-flex fs-12 align-items-center disabled'
+                                                } else {
+                                                    return 'd-flex fs-12 align-items-center'
+                                                }
+                                            })
+                                        }>
+                                            <label className='flex-1' data-label='loading-time-from' data-warning='false'>
+                                                <input type="time" name="loading-time-from" onChange={(e)=> fillDataList(e)}/>
+                                            </label>
                                             <span className="mx-3">—</span>
-                                            <input type="time" name="loading-time-till" onChange={(e)=> fillDataList(e)}/>
+                                            <label className='flex-1' data-label='loading-time-till' data-warning='false'>
+                                                <input type="time" name="loading-time-till" onChange={(e)=> fillDataList(e)}/>
+                                            </label>
                                         </div>
-                                        <label className="mt-2">
-                                            <input type="checkbox" name="loading-all-day" onChange={(e)=> fillDataList(e)} value="Круглосуточно"/>
+                                        <label data-label='loading-time-till' data-warning='false' className="mt-2">
+                                            <input type="checkbox" name="loading-all-day" onChange={(e)=> handleCheck(e)} data-clear="loading-time-from loading-time-till" value="Круглосуточно"/>
                                             <span data-label='loading-all-day' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -574,16 +607,28 @@ export default function AddCargo() {
                                 </div>
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='unloading-time-from unloading-time-till' data-warning='false' className="title-font fs-12 fw-5">Время разгрузки</div>
+                                        <div className="title-font fs-12 fw-5">Время разгрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <div className="d-flex align-items-center fs-12">
-                                            <input type="time" name="unloading-time-from" onChange={(e)=> fillDataList(e)}/>
+                                        <div data-label='unloading-time-from' data-warning='false' className={
+                                            data.filter(obj => obj.name === "unloading-all-day").map(obj => {
+                                                if(obj.value === 'Круглосуточно'){
+                                                    return 'd-flex fs-12 align-items-center disabled'
+                                                } else {
+                                                    return 'd-flex fs-12 align-items-center'
+                                                }
+                                            })
+                                        }>
+                                            <label className='flex-1' data-label='unloading-time-from' data-warning='false'>
+                                                <input type="time" name="unloading-time-from" onChange={(e)=> fillDataList(e)}/>
+                                            </label>
                                             <span className="mx-3">—</span>
-                                            <input type="time" name="unloading-time-till" onChange={(e)=> fillDataList(e)}/>
+                                            <label className='flex-1' data-label='unloading-time-till' data-warning='false'>
+                                                <input type="time" name="unloading-time-till" onChange={(e)=> fillDataList(e)}/>
+                                            </label>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" name="unloading-all-day" onChange={(e)=> fillDataList(e)} value="Круглосуточно"/>
+                                            <input type="checkbox" name="unloading-all-day" onChange={(e)=> handleCheck(e)} data-clear="unloading-time-from unloading-time-till" value="Круглосуточно"/>
                                             <span data-label='unloading-all-day' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1096,8 +1141,12 @@ export default function AddCargo() {
                                                 <span>{findInState('loading-periodicity')}</span>
                                             }
                                             {
+                                                (findInState('loading-time-from')) &&
+                                                <span>, {findInState('loading-time-from')}</span>
+                                            }
+                                            {
                                                 (findInState('loading-time-till')) &&
-                                                <span>, {findInState('loading-time-till')}</span>
+                                                <span>– {findInState('loading-time-till')}</span>
                                             }
                                             {
                                                 (findInState('loading-all-day')) &&
