@@ -18,7 +18,7 @@ export default function AddCar() {
         },
         {
             fieldset: 'route',
-            name: 'loading-radius',
+            name: 'loadingRadius',
             value: '',
             required: false
         },
@@ -30,7 +30,7 @@ export default function AddCar() {
         },
         {
             fieldset: 'route',
-            name: 'unloading-radius',
+            name: 'unloadingRadius',
             value: '',
             required: false
         },
@@ -54,66 +54,66 @@ export default function AddCar() {
         },
         {
             fieldset: 'date',
-            name: 'periodicity',
+            name: 'loadingPeriodType',
             value: '',
             required: false
         },
         {
-            fieldset: 'about-car',
-            name: 'car-type',
+            fieldset: 'aboutCar',
+            name: 'carType',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
-            name: 'additional-configuration',
+            fieldset: 'aboutCar',
+            name: 'additionalConfiguration',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'carrying',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'capacity',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'length',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'width',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'height',
             value: '',
             required: true
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'sts',
             value: '',
             required: false
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'vin',
             value: '',
             required: false
         },
         {
-            fieldset: 'about-car',
+            fieldset: 'aboutCar',
             name: 'pts',
             value: '',
             required: false
@@ -126,7 +126,7 @@ export default function AddCar() {
         },
         {
             fieldset: 'payment',
-            name: 'payment-type',
+            name: 'paymentType',
             value: '',
             required: false
         },
@@ -138,13 +138,13 @@ export default function AddCar() {
         },
         {
             fieldset: 'payment',
-            name: 'price-vat',
+            name: 'priceVat',
             value: '',
             required: false
         },
         {
             fieldset: 'payment',
-            name: 'price-novat',
+            name: 'priceNovat',
             value: '',
             required: false
         },
@@ -156,13 +156,13 @@ export default function AddCar() {
         },
         {
             fieldset: 'contacts',
-            name: 'contact-phone-0',
+            name: 'contactPhone0',
             value: '',
             required: true
         },
         {
             fieldset: 'contacts',
-            name: 'contact-name-0',
+            name: 'contactName0',
             value: '',
             required: true
         },
@@ -204,7 +204,7 @@ export default function AddCar() {
                     return {...obj, 'value': inputVal};
                 } else if (obj.name === 'date' || obj.name === 'days') {
                    return {...obj, 'required': true};
-                } else if(obj.name === 'periodicity'){
+                } else if(obj.name === 'loadingPeriodType'){
                     return {...obj, 'required': false, 'value': ''};
                 } else {
                    return obj;
@@ -214,7 +214,7 @@ export default function AddCar() {
             setData(data.map(obj => {
                 if(obj.name === 'frequency'){
                     return {...obj, 'value': inputVal};
-                } else if (obj.name === 'periodicity') {
+                } else if (obj.name === 'loadingPeriodType') {
                    return {...obj, 'required': true};
                 } else if(obj.name === 'date' || obj.name === 'days'){
                     return {...obj, 'required': false, 'value': ''};
@@ -272,7 +272,7 @@ export default function AddCar() {
 
     let deleteContacts = (i) => {
         setContacts(contacts.filter(obj => obj !== i));
-        setData(data.filter(obj => obj.name !== 'contact-phone-'+i || obj.name !== 'contact-name-'+i));
+        setData(data.filter(obj => obj.name !== 'contactPhone'+i || obj.name !== 'contactName'+i));
     };
 
     let addContacts = () => {
@@ -280,13 +280,13 @@ export default function AddCar() {
 
         let phone = {
             fieldset: 'contacts',
-            name: 'contact-phone-'+ newNum,
+            name: 'contactPhone'+ newNum,
             value: '',
             required: false
         };
         let userName = {
             fieldset: 'contacts',
-            name: 'contact-name-'+ newNum,
+            name: 'contactName'+ newNum,
             value: '',
             required: false
         };
@@ -304,7 +304,7 @@ export default function AddCar() {
                         <div className='mobile-indicators d-flex d-lg-none'>
                             <button type='button' className={(checkFieldset('route')) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
                             <button type='button' className={(checkFieldset('date')) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
-                            <button type='button' className={(checkFieldset('about-car')) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
+                            <button type='button' className={(checkFieldset('aboutCar')) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
                             <button type='button' className={(checkFieldset('payment')) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
                             <button type='button' className={(checkFieldset('contacts')) ? 'active' : ''} onClick={() => setActiveField(5)}>5</button>
                         </div>
@@ -342,12 +342,12 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label data-label='loading-radius' data-warning='false' className="title-font fs-12 fw-5">Радиус загрузки</label>
+                                        <label data-label='loadingRadius' data-warning='false' className="title-font fs-12 fw-5">Радиус загрузки</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' min="0.5" step="0.1" onChange={(e)=> fillDataList(e)} name='loading-radius' placeholder='0,5' className='w-100 fs-12 distance'/>
+                                                <input type='number' min="0.5" step="0.1" onChange={(e)=> fillDataList(e)} name='loadingRadius' placeholder='0,5' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -366,12 +366,12 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <label data-label='unloading-radius' data-warning='false' className="title-font fs-12 fw-5">Радиус разгрузки</label>
+                                        <label data-label='unloadingRadius' data-warning='false' className="title-font fs-12 fw-5">Радиус разгрузки</label>
                                     </div>
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-sm-6 col-xl-3">
-                                                <input type='number' min=".5" step="0.1" name='unloading-radius' onChange={(e)=> fillDataList(e)} placeholder='0,5' className='w-100 fs-12 distance'/>
+                                                <input type='number' min=".5" step="0.1" name='unloadingRadius' onChange={(e)=> fillDataList(e)} placeholder='0,5' className='w-100 fs-12 distance'/>
                                             </div>
                                         </div>
                                     </div>
@@ -444,7 +444,7 @@ export default function AddCar() {
                                                         <input type="radio" name="frequency" onChange={(e)=> changeFrequency(e)} value="Постоянно"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
-                                                    <div data-label='periodicity' data-warning='false' className={
+                                                    <div data-label='loadingPeriodType' data-warning='false' className={
                                                         data.filter(obj => obj.name === "frequency").map(obj => {
                                                             if(obj.value === 'Постоянно'){
                                                                 return ''
@@ -453,7 +453,7 @@ export default function AddCar() {
                                                             }
                                                         })
                                                     }>
-                                                        <CustomSelect className="inp w-100 fs-12" name="periodicity" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                        <CustomSelect className="inp w-100 fs-12" name="loadingPeriodType" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -500,31 +500,31 @@ export default function AddCar() {
                             </div>
                         </fieldset>
 
-                        <fieldset name="about-car" className='mt-lg-5' data-show={(activeField === 3) ? 'true' : 'false'}>
+                        <fieldset name="aboutCar" className='mt-lg-5' data-show={(activeField === 3) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mb-4 mb-lg-3">О Машине</h4>
                             <div className="box">
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='car-type' data-warning='false' className="title-font fs-12 fw-5">Тип машины*</div>
+                                        <div data-label='carType' data-warning='false' className="title-font fs-12 fw-5">Тип машины*</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="car-type" options={['Тягач', 'Фура', 'Рефрижератор']}/>
-                                        <div data-label='additional-configuration' data-warning='false' className='row row-cols-sm-3 mt-3'>
+                                        <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="carType" options={['Тягач', 'Фура', 'Рефрижератор']}/>
+                                        <div data-label='additionalConfiguration' data-warning='false' className='row row-cols-sm-3 mt-3'>
                                             <div className='mb-3 mb-sm-0'>
                                                 <label>
-                                                    <input type="radio" name="additional-configuration" value="Грузовик" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="radio" name="additionalConfiguration" value="Грузовик" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Грузовик</span>
                                                 </label>
                                             </div>
                                             <div className='mb-3 mb-sm-0'>
                                                 <label>
-                                                    <input type="radio" name="additional-configuration" value="Полуприцеп" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="radio" name="additionalConfiguration" value="Полуприцеп" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Полуприцеп</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="radio" name="additional-configuration" value="Сцепка" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="radio" name="additionalConfiguration" value="Сцепка" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Сцепка</span>
                                                 </label>
                                             </div>
@@ -679,7 +679,7 @@ export default function AddCar() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' disabled={(checkFieldset('about-car') ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset('aboutCar') ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -708,28 +708,28 @@ export default function AddCar() {
                                         </label>
                                     </div>
                                 </div>
-                                <div data-label='payment-type' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
+                                <div data-label='paymentType' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
                                     <div className='mb-2 mb-sm-0'>
                                         <label>
-                                            <input type="radio" name="payment-type" onChange={(e)=> fillDataList(e)} value="Наличный расчет"/>
+                                            <input type="radio" name="paymentType" onChange={(e)=> fillDataList(e)} value="Наличный расчет"/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Наличный расчет</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="payment-type" onChange={(e)=> fillDataList(e)} value="Перевод по карте"/>
+                                            <input type="radio" name="paymentType" onChange={(e)=> fillDataList(e)} value="Перевод по карте"/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Перевод по карте</span>
                                         </label>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div data-label='price-vat' data-warning='false' className="title-font fs-12 fw-5">С НДС</div>
+                                        <div data-label='priceVat' data-warning='false' className="title-font fs-12 fw-5">С НДС</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row gx-2 gx-sm-4'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='price-vat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
+                                                <input type="number" min="1" name='priceVat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
                                                     data.filter(obj => obj.name === "unit").map(obj => {
                                                         if(obj.value === '₽'){
                                                             return 'price w-100 fs-12'
@@ -747,12 +747,12 @@ export default function AddCar() {
                                 </div>
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div data-label='price-novat' data-warning='false' className="title-font fs-12 fw-5">без НДС</div>
+                                        <div data-label='priceNovat' data-warning='false' className="title-font fs-12 fw-5">без НДС</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='price-novat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
+                                                <input type="number" min="1" name='priceNovat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
                                                     data.filter(obj => obj.name === "unit").map(obj => {
                                                         if(obj.value === '₽'){
                                                             return 'price w-100 fs-12'
@@ -824,16 +824,16 @@ export default function AddCar() {
                                     <div className='col-md-9'>
                                         <div className="row align-items-center gy-2 gy-md-3">
                                             <div className="col-md-4">
-                                                <div data-label='contact-phone-0' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                                                <div data-label='contactPhone0' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="tel" name='contact-phone-0' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                <input type="tel" name='contactPhone0' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                             </div>
                                             <div className="col-md-4">
-                                                <div data-label='contact-name-0' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
+                                                <div data-label='contactName0' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="text" name='contact-name-0' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                <input type="text" name='contactName0' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -851,16 +851,16 @@ export default function AddCar() {
                                         <div className='col-md-9'>
                                             <div className="row align-items-center gy-2 gy-md-3">
                                                 <div className="col-md-4">
-                                                    <div data-label={'contact-phone-'+obj} data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
+                                                    <div data-label={'contactPhone'+obj} data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <input type="tel" name={'contact-phone-'+obj} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                    <input type="tel" name={'contactPhone'+obj} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <div data-label={'contact-name-'+obj} data-warning='false' className="title-font fs-12 fw-5">Имя</div>
+                                                    <div data-label={'contactName'+obj} data-warning='false' className="title-font fs-12 fw-5">Имя</div>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <input type="text" name={'contact-name-'+obj} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                    <input type="text" name={'contactName'+obj} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -925,16 +925,16 @@ export default function AddCar() {
                                                 <span className='me-1'>{findInState('loading')}</span>
                                             }
                                             {
-                                                (findInState('loading-radius')) &&
-                                                <span className='me-1'>+{findInState('loading-radius')}км</span>
+                                                (findInState('loadingRadius')) &&
+                                                <span className='me-1'>+{findInState('loadingRadius')}км</span>
                                             }
                                             {
                                                 (findInState('unloading')) &&
                                                 <span className='me-1'>— {findInState('unloading')}</span>
                                             }
                                             {
-                                                (findInState('unloading-radius')) &&
-                                                <span>+{findInState('unloading-radius')}км</span>
+                                                (findInState('unloadingRadius')) &&
+                                                <span>+{findInState('unloadingRadius')}км</span>
                                             }
                                         </div>
                                     </li>
@@ -954,21 +954,21 @@ export default function AddCar() {
                                                 <span>+ {findInState('days')}</span>
                                             }
                                             {
-                                                (findInState('periodicity')) &&
-                                                <span>{findInState('periodicity')}</span>
+                                                (findInState('loadingPeriodType')) &&
+                                                <span>{findInState('loadingPeriodType')}</span>
                                             }
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="about-car" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('about-car')?'filled':''}>Информация о машине</Link>
+                                        <Link activeClass="active" to="aboutCar" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('aboutCar')?'filled':''}>Информация о машине</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('car-type')) &&
-                                                <span className='me-1'>{findInState('car-type')}</span>
+                                                (findInState('carType')) &&
+                                                <span className='me-1'>{findInState('carType')}</span>
                                             }
                                             {
-                                                (findInState('additional-configuration')) &&
-                                                <span className='me-1'>, {findInState('additional-configuration')}</span>
+                                                (findInState('additionalConfiguration')) &&
+                                                <span className='me-1'>, {findInState('additionalConfiguration')}</span>
                                             }
                                             {
                                                 (findInState('carrying')) &&
@@ -1014,17 +1014,17 @@ export default function AddCar() {
                                                 <span className='me-1'>{findInState('bargain')}</span>
                                             }
                                             {
-                                                (findInState('payment-type')) &&
-                                                <span className='me-1'>, {findInState('payment-type')}</span>
+                                                (findInState('paymentType')) &&
+                                                <span className='me-1'>, {findInState('paymentType')}</span>
                                             }
                                             {
-                                                (findInState('price-vat')) &&
-                                                <span className='me-1'>, с&nbsp;НДС {findInState('price-vat')} {findInState('unit')}
+                                                (findInState('priceVat')) &&
+                                                <span className='me-1'>, с&nbsp;НДС {findInState('priceVat')} {findInState('unit')}
                                                 </span>
                                             }
                                             {
-                                                (findInState('price-novat')) &&
-                                                <span className='me-1'>, без&nbsp;НДС {findInState('price-novat')} {findInState('unit')}
+                                                (findInState('priceNovat')) &&
+                                                <span className='me-1'>, без&nbsp;НДС {findInState('priceNovat')} {findInState('unit')}
                                                 </span>
                                             }
                                             {
@@ -1037,12 +1037,12 @@ export default function AddCar() {
                                         <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('contacts')?'filled':''}>Контакты</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('contact-phone-0')) &&
-                                                <span className='me-1'>{findInState('contact-phone-0')}</span>
+                                                (findInState('contactPhone0')) &&
+                                                <span className='me-1'>{findInState('contactPhone0')}</span>
                                             }
                                             {
-                                                (findInState('contact-name-0')) &&
-                                                <span>, {findInState('contact-name-0')}</span>
+                                                (findInState('contactName0')) &&
+                                                <span>, {findInState('contactName0')}</span>
                                             }
                                         </div>
                                     </li>

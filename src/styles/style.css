@@ -979,6 +979,16 @@ h5 {
           flex: 1;
 }
 
+.min-150 {
+  min-width: 150px;
+}
+
+@media (max-width: 1399px) {
+  .min-150 {
+    min-width: 125px;
+  }
+}
+
 @media (min-width: 1660px) {
   .container {
     width: 1596px;

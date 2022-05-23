@@ -667,6 +667,12 @@ h5 {
 }
 .w-fit {width: fit-content;}
 .flex-1 {flex:1;}
+.min-150 {
+    min-width: 150px;
+    @media (max-width: 1399px){
+        min-width: 125px;
+    }
+}
 .container {
     @media (min-width: 1660px){
         width: 1596px;
