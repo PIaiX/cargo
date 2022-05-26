@@ -371,6 +371,38 @@ select {
     }
 }
 
+
+.react-select {
+    &__control {
+        border-radius: 8px !important;
+        border: 1px solid #E0E0E0 !important;
+        &--is-focused {
+            border: 1px solid $green !important;
+            box-shadow: none !important;
+        }
+    }
+    &__value-container {
+        padding: 0.5em 0.85em !important;
+    }
+    &__indicator {
+        color: $green !important;
+    }
+    &__option {
+        &:hover, &:focus, &:active, &--is-focused {
+            background-color: $light-green !important;
+            color: $gray-1;
+        }
+        &--is-selected {
+            background-color: $green !important;
+            color: #fff;
+        }
+    }
+    &__input-container {
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+}
+
 .password {
     position: relative;
     input {

@@ -4,8 +4,14 @@ import CustomSelect from './utilities/CustomSelect';
 import { IconContext  } from "react-icons";
 import { MdMenu } from 'react-icons/md';
 import { RiUserLine } from "react-icons/ri";
+import Select from 'react-select';
 
 export default function Header() {
+    const options = [
+        { value: 'Казань', label: 'Казань' },
+        { value: 'Москва', label: 'Москва' },
+        { value: 'Санкт-Петербург', label: 'Санкт-Петербург' }
+    ];
 
     return (
         <>
@@ -27,7 +33,8 @@ export default function Header() {
                             </IconContext.Provider>
                         </Link>
 
-                        <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt={1} options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/>
+                        {/* <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt={1} options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/> */}
+                        <Select className="select-simple order-1 order-lg-2 ms-lg-5" options={options} defaultValue={options[1]} name="town" />
 
                         <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
                             <IconContext.Provider value={{className: "icon", title: "меню" }}>

@@ -473,6 +473,40 @@ select {
   margin-bottom: .5em;
 }
 
+.react-select__control {
+  border-radius: 8px !important;
+  border: 1px solid #E0E0E0 !important;
+}
+
+.react-select__control--is-focused {
+  border: 1px solid #01BFC4 !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.react-select__value-container {
+  padding: 0.5em 0.85em !important;
+}
+
+.react-select__indicator {
+  color: #01BFC4 !important;
+}
+
+.react-select__option:hover, .react-select__option:focus, .react-select__option:active, .react-select__option--is-focused {
+  background-color: #D5F6EF !important;
+  color: #333333;
+}
+
+.react-select__option--is-selected {
+  background-color: #01BFC4 !important;
+  color: #fff;
+}
+
+.react-select__input-container {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
 .password {
   position: relative;
 }

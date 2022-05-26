@@ -5,6 +5,7 @@ import { Tooltip } from 'bootstrap';
 import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
+import Select from 'react-select';
 
 export default function AddCargo() {
     const ref = useRef(null); // Form
@@ -64,6 +65,18 @@ export default function AddCargo() {
             name: 'loadingAddress',
             value: '',
             required: true
+        },
+        {
+            fieldset: 'loading',
+            name: 'transportationType',
+            value: '',
+            required: false
+        },
+        {
+            fieldset: 'loading',
+            name: 'loadingType',
+            value: '',
+            required: false
         },
         {
             fieldset: 'unloading',
@@ -224,6 +237,7 @@ export default function AddCargo() {
     ]);
 
     let [contacts, setContacts] = useState([]);
+    let [loadings, setLoadings] = useState([]);
     
     let checkFieldset = (fieldName) => {
         let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
@@ -231,8 +245,20 @@ export default function AddCargo() {
         return result;
     };
 
+    let handleRSelect = (e, name) => {
+        let inputVal = e.value;
+        console.log(name + ": " + inputVal);
+        setData(data.map(obj => {
+            if (obj.name === name) {
+               return {...obj, 'value': inputVal};
+            } else {
+               return obj;
+            }
+        }));
+    };
+
     let fillDataList = (e) => {
-        console.log('target:' + e.target);
+        console.log('target:' + e);
         let inputName = e.target.name;
         let inputVal = e.target.value.trim();
 
@@ -399,6 +425,15 @@ export default function AddCargo() {
         //init tooltip
         Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         .forEach(tooltipNode => new Tooltip(tooltipNode))
+
+        // document.querySelectorAll('input[type="hidden"]').forEach(
+        //     item => item.addEventListener('change', handleHiddens, true)
+        // );
+        // return () => {
+        //     document.querySelectorAll('input[type="hidden"]').forEach(
+        //         item => item.removeEventListener('change', handleHiddens, true)
+        //     );
+        // };
     });
 
     let deleteContacts = (i) => {
@@ -425,6 +460,31 @@ export default function AddCargo() {
         
         setContacts([...contacts, newNum]);
     }
+
+    let addLoadings = () => {};
+
+    const optionsLoading = [
+        { value: 'верхняя', label: 'верхняя' },
+        { value: 'боковая', label: 'боковая' },
+        { value: 'задняя', label: 'задняя' },
+        { value: 'с полной растентовкой', label: 'с полной растентовкой' },
+        { value: 'со снятием поперечных перекладин', label: 'со снятием поперечных перекладин' },
+        { value: 'со снятием стоек', label: 'со снятием стоек' },
+        { value: 'без ворот', label: 'без ворот' },
+        { value: 'гидроборт', label: 'гидроборт' },
+        { value: 'аппарели', label: 'аппарели' },
+        { value: 'с обрешеткой', label: 'с обрешеткой' },
+        { value: 'с бортами', label: 'с бортами' },
+        { value: 'боковая с 2-х сторон', label: 'боковая с 2-х сторон' }
+    ];
+    const optionsLoadingPeriodType = [
+        { value: 'По рабочим дням', label: 'По рабочим дням' },
+        { value: 'По выходным', label: 'По выходным' },
+        { value: 'Ежедневно', label: 'Ежедневно' },
+        { value: 'Через день', label: 'Через день' },
+    ];
+
+    
 
     return (
         <main className="bg-gray">
@@ -506,7 +566,8 @@ export default function AddCargo() {
                                                             }
                                                         })
                                                     }>
-                                                        <CustomSelect className="inp w-100 fs-12" name="loadingPeriodType" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/>
+                                                        {/* <CustomSelect className="inp w-100 fs-12" name="loadingPeriodType" onChange={(e)=> fillDataList(e)} options={['По рабочим дням', 'По выходным', 'Ежедневно', 'Через день']}/> */}
+                                                        <Select className="fs-12" classNamePrefix="react-select" options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} onKeyDown={() => console.log('piss')}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -541,7 +602,7 @@ export default function AddCargo() {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="row" data-label='loadingTown' data-warning='false'>
+                                <div className="row mb-4" data-label='loadingTown' data-warning='false'>
                                     <div className="col-md-3 mb-3 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Место загрузки*</div>
                                     </div>
@@ -556,8 +617,31 @@ export default function AddCargo() {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="row mb-4">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div data-label='transportationType' data-warning='false' className="title-font fs-12 fw-5">Тип перевозки</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <label className="mb-2 mb-xl-3">
+                                            <input type="radio" name="transportationType" value="FTL" onChange={(e)=> fillDataList(e)}/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной (FTL)</span>
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="transportationType" value="FTL/LTL" onChange={(e)=> fillDataList(e)}/>
+                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной или догрузом (FTL или LTL)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-3 mb-3 mb-md-0">
+                                        <div data-label='loadingType' data-warning='false' className="title-font fs-12 fw-5">Тип загрузки</div>
+                                    </div>
+                                    <div className="col-md-9">
+                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingType')} options={optionsLoading} name="loadingType" isSearchable={true}/>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                            <button type="button" onClick={() => addLoadings()} className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
                                 </IconContext.Provider>
@@ -699,7 +783,7 @@ export default function AddCargo() {
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='cargoType' data-warning='false' className="title-font fs-12 fw-5">Тип груза</div>
+                                        <div data-label='cargoType' data-warning='false' className="title-font fs-12 fw-5">Название груза</div>
                                     </div>
                                     <div className="col-md-9">
                                         <CustomSelect className="inp w-100 fs-12" name="cargoType" onChange={(e)=> fillDataList(e)} options={['тип 1', 'тип 2']}/>
@@ -785,7 +869,7 @@ export default function AddCargo() {
                                         <div data-label='notes' data-warning='false' className="title-font fs-12 fw-5">Особые пометки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect className="inp w-100 fs-12" name="notes" onChange={(e)=> fillDataList(e)} options={['Нет', 'Холод', 'Хрупкое', 'Габаритное']}/>
+                                        <CustomSelect className="inp w-100 fs-12" name="notes" onChange={(e)=> fillDataList(e)} options={['Нет', 'Режим', 'Хрупкое', 'Негабаритные']}/>
                                     </div>
                                 </div>
                             </div>
@@ -1161,6 +1245,14 @@ export default function AddCargo() {
                                             {
                                                 (findInState('loadingAddress')) &&
                                                 <span>, {findInState('loadingAddress')}</span>
+                                            }
+                                            {
+                                                (findInState('transportationType')) &&
+                                                <span>, {findInState('transportationType')}</span>
+                                            }
+                                            {
+                                                (findInState('loadingType')) &&
+                                                <span>, {findInState('loadingType')}</span>
                                             }
                                         </div>
                                     </li>

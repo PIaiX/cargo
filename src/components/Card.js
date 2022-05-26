@@ -13,7 +13,7 @@ export default function Card(props) {
         },
         {
             name: 'cold',
-            text: 'Холод',
+            text: 'Режим',
             code: <IoSnow/>,
         },
         {
@@ -23,7 +23,7 @@ export default function Card(props) {
         },
         {
             name: 'dimensional',
-            text: 'Габаритное',
+            text: 'Негабаритные',
             code: <MdLocalShipping/>,
         }
     ];
