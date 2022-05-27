@@ -8,7 +8,7 @@ export const Footer = () => {
     return (
     <>
         <footer>
-            
+            <div></div>
         </footer>
         {/* Modal */}
         <div className="modal fade" id="report" tabIndex="-1" aria-hidden="true">
