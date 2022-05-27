@@ -293,6 +293,7 @@ select {
   width: fit-content;
   max-width: 100%;
   position: relative;
+  z-index: 0;
 }
 
 .custom-select > button {
@@ -490,6 +491,10 @@ select {
 
 .react-select__indicator {
   color: #01BFC4 !important;
+}
+
+.react-select__menu {
+  font-size: .9em;
 }
 
 .react-select__option:hover, .react-select__option:focus, .react-select__option:active, .react-select__option--is-focused {

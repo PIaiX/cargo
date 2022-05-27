@@ -240,6 +240,7 @@ select {
     width: fit-content;
     max-width: 100%;
     position: relative;
+    z-index: 0;
     >button {
         width: 100%;
         position: relative;
@@ -386,6 +387,9 @@ select {
     }
     &__indicator {
         color: $green !important;
+    }
+    &__menu {
+        font-size: .9em;
     }
     &__option {
         &:hover, &:focus, &:active, &--is-focused {

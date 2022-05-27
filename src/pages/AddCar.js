@@ -5,6 +5,8 @@ import { Tooltip } from 'bootstrap';
 import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoHelpCircleOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
+import Select from 'react-select';
+import { optionsCarType } from "../components/utilities/data";
 
 export default function AddCar() {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
@@ -132,12 +134,6 @@ export default function AddCar() {
         },
         {
             fieldset: 'payment',
-            name: 'unit',
-            value: '₽',
-            required: false
-        },
-        {
-            fieldset: 'payment',
             name: 'priceVat',
             value: '',
             required: false
@@ -179,6 +175,18 @@ export default function AddCar() {
         let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
         let result = newArr.every(elem => elem.value !== '');
         return result;
+    };
+
+    let handleRSelect = (e, name) => {
+        let inputVal = e.value;
+        console.log(name + ": " + inputVal);
+        setData(data.map(obj => {
+            if (obj.name === name) {
+               return {...obj, 'value': inputVal};
+            } else {
+               return obj;
+            }
+        }));
     };
 
     let fillDataList = (e) => {
@@ -501,14 +509,15 @@ export default function AddCar() {
                         </fieldset>
 
                         <fieldset name="aboutCar" className='mt-lg-5' data-show={(activeField === 3) ? 'true' : 'false'}>
-                            <h4 className="text-center text-lg-start mb-4 mb-lg-3">О Машине</h4>
+                            <h4 className="text-center text-lg-start mb-4 mb-lg-3">Транспорт</h4>
                             <div className="box">
                                 <div className="row mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
                                         <div data-label='carType' data-warning='false' className="title-font fs-12 fw-5">Тип машины*</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="carType" options={['Тягач', 'Фура', 'Рефрижератор']}/>
+                                        {/* <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="carType" options={['Тягач', 'Фура', 'Рефрижератор']}/> */}
+                                        <Select className="fs-12 w-100" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'carType')} options={optionsCarType} name="carType" isSearchable={true}/>
                                         <div data-label='additionalConfiguration' data-warning='false' className='row row-cols-sm-3 mt-3'>
                                             <div className='mb-3 mb-sm-0'>
                                                 <label>
@@ -598,7 +607,7 @@ export default function AddCar() {
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
                                             <span data-label='sts' data-warning='false'>СТС</span>
-                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Свидетельство о регистрации транспортного средства">
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="внесенные сведения ТС не подлежат разглашению третьим лицам">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
                                                 </IconContext.Provider>
@@ -617,7 +626,7 @@ export default function AddCar() {
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
                                             <span data-label='vin' data-warning='false'>VIN код</span>
-                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Индивидуальный шифр транспортного средства">
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="внесенные сведения ТС не подлежат разглашению третьим лицам">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
                                                 </IconContext.Provider>
@@ -636,7 +645,7 @@ export default function AddCar() {
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div className="title-font fs-12 fw-5 d-flex align-items-center">
                                             <span data-label='pts' data-warning='false'>ПТС</span>
-                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="Паспорт транспортного средства">
+                                            <button type="button" data-bs-toggle="tooltip" data-bs-placement="right" title="внесенные сведения ТС не подлежат разглашению третьим лицам">
                                                 <IconContext.Provider value={{className: "ms-2 blue icon-15"}}>
                                                     <IoHelpCircleOutline/>
                                                 </IconContext.Provider>
@@ -729,18 +738,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row gx-2 gx-sm-4'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='priceVat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
-                                                    data.filter(obj => obj.name === "unit").map(obj => {
-                                                        if(obj.value === '₽'){
-                                                            return 'price w-100 fs-12'
-                                                        } else {
-                                                            return 'price-per-km w-100 fs-12'
-                                                        }
-                                                    })
-                                                }/>
-                                            </div>
-                                            <div className='col-4 col-sm-4 col-xl-3'>
-                                                <CustomSelect className="inp w-100 fs-12" name="unit" onChange={(e)=> fillDataList(e)} checkedOpt={1} options={['₽', '₽/км']}/>
+                                                <input type="number" min="1" name='priceVat' placeholder='0' onChange={(e)=> fillDataList(e)} className='price-per-km w-100 fs-12'/>
                                             </div>
                                         </div>
                                     </div>
@@ -752,15 +750,7 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='priceNovat' placeholder='0' onChange={(e)=> fillDataList(e)} className={
-                                                    data.filter(obj => obj.name === "unit").map(obj => {
-                                                        if(obj.value === '₽'){
-                                                            return 'price w-100 fs-12'
-                                                        } else {
-                                                            return 'price-per-km w-100 fs-12'
-                                                        }
-                                                    })
-                                                }/>
+                                                <input type="number" min="1" name='priceNovat' placeholder='0' onChange={(e)=> fillDataList(e)} className='price-per-km w-100 fs-12'/>
                                             </div>
                                         </div>
                                     </div>
@@ -960,7 +950,7 @@ export default function AddCar() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="aboutCar" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('aboutCar')?'filled':''}>Информация о машине</Link>
+                                        <Link activeClass="active" to="aboutCar" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('aboutCar')?'filled':''}>Транспорт</Link>
                                         <div className='fs-09'>
                                             {
                                                 (findInState('carType')) &&
