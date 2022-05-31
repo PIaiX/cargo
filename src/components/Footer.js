@@ -1,6 +1,7 @@
 import React from 'react';
 import { IoCloseOutline, IoDocumentText, IoTrash } from 'react-icons/io5';
 import { MdPerson } from 'react-icons/md';
+import { ImVk, ImWhatsapp, ImTelegram } from "react-icons/im";
 import { IconContext  } from "react-icons";
 import { Link } from 'react-router-dom';
 
@@ -8,7 +9,50 @@ export const Footer = () => {
     return (
     <>
         <footer>
-            <div></div>
+            <div className='container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100'>
+                <div className='info d-lg-flex align-items-center'>
+                    <img src="/cargo/img/logo-light.png" alt="Название сайта" className="logo me-4 me-xl-5" />
+                    <div className='mt-2 mt-md-3 mt-lg-0'>
+                        <div>@ 2022 Грузоперевозки</div>
+                        <div className='mt-2 green'><a href="#">Политика конфиденциальности</a></div>
+                        <div className='mt-2 green'><a href="#">Публичная оферта</a></div>
+                    </div>
+                </div>
+                <div className='menu d-flex d-md-block d-lg-flex'>
+                    <ul className='list-unstyled text-uppercase fw-5 me-4 me-xl-5'>
+                        <li>Поиск</li>
+                        <li className='mt-2 mt-lg-3'>Форум</li>
+                    </ul>
+                    <ul className='list-unstyled text-uppercase fw-5'>
+                        <li className='mt-md-2 mt-lg-0'>Информация</li>
+                        <li className='mt-2 mt-lg-3'>Новости</li>
+                    </ul>
+                </div>
+                <div className='contacts fw-5'>
+                    <div><a href="tel:+79000000000">+7 900 000 00 00</a></div>
+                    <div className='mt-2 mt-md-3'><a href="mailto:mail@mail.ru">mail@mail.ru</a></div>
+                </div>
+                <div className='social'>
+                    <div className='text-end'>Наши социальные сети:</div>
+                    <div className='d-flex justify-content-end mt-3'>
+                        <Link to="https://vk.com/">
+                            <IconContext.Provider value={{className: "green icon-25"}}>
+                                <ImVk />
+                            </IconContext.Provider>
+                        </Link>
+                        <Link to="https://vk.com/" className='ms-3 ms-sm-4'>
+                            <IconContext.Provider value={{className: "green icon-25"}}>
+                                <ImWhatsapp />
+                            </IconContext.Provider>
+                        </Link>
+                        <Link to="https://vk.com/" className='ms-3 ms-sm-4'>
+                            <IconContext.Provider value={{className: "green icon-25"}}>
+                                <ImTelegram />
+                            </IconContext.Provider>
+                        </Link>
+                    </div>
+                </div>
+            </div>
         </footer>
         {/* Modal */}
         <div className="modal fade" id="report" tabIndex="-1" aria-hidden="true">

@@ -157,7 +157,6 @@ export const optionsCargoType = [
     { value: '117', label: '45 реф контейнер' },
     { value: '118', label: 'другой' }
 ];
-
 export const optionsCarType = [
     { value: '0', label: 'тентованный' },
     { value: '1', label: 'контейнер' },
@@ -217,4 +216,28 @@ export const optionsCarType = [
     { value: '55', label: '40 танк-контейнер' },
     { value: '56', label: 'мега фура' },
     { value: '57', label: 'допельшток' }
+];
+export const optionsDays = [
+    { value: '0', label: '0 дн.' },
+    { value: '1', label: '1 дн.' },
+    { value: '2', label: '2 дн.' },
+    { value: '3', label: '3 дн.' },
+    { value: '4', label: '4 дн.' },
+    { value: '5', label: '5 дн.' },
+    { value: '6', label: '6 дн.' },
+    { value: '7', label: '7 дн.' },
+    { value: '8', label: '8 дн.' },
+    { value: '9', label: '9 дн.' },
+    { value: '10', label: '10 дн.' },
+];
+export const optionsNotes = [
+    { value: '0', label: 'Нет' },
+    { value: '1', label: 'Режим' },
+    { value: '2', label: 'Хрупкое' },
+    { value: '3', label: 'Негабаритные' },
+];
+export const optionsTowns = [
+    { value: '0', label: 'Казань' },
+    { value: '1', label: 'Москва' },
+    { value: '2', label: 'Санкт-Петербург' }
 ];
