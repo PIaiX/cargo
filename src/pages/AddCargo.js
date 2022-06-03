@@ -1,7 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import CustomSelect from '../components/utilities/CustomSelect';
+import React, {useState, useRef, useEffect} from 'react';
 import { Link } from 'react-scroll';
-import { Tooltip } from 'bootstrap';
 import { IoAddCircle, IoCloseCircle, IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline } from 'react-icons/io5';
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
@@ -9,8 +7,315 @@ import Select from 'react-select';
 import { optionsLoading, optionsLoadingPeriodType, optionsPackageType, optionsCargoType, optionsDays, optionsNotes, optionsCarType, optionsTowns } from "../components/utilities/data";
 
 export default function AddCargo() {
-    const ref = useRef(null); // Form
+    const ref = useRef(null);
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
+
+    let [loading, setLoading] = useState(
+        [
+            {
+                name: 'frequency',
+                value: '',
+                required: true
+            },
+            {
+                name: 'loadingDate',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingDays',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingPeriodType',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingTimeFrom',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingTimeTo',
+                value: '',
+                required: false
+            },
+            {
+                name: 'isLoadingAllDay',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingTown',
+                value: optionsTowns[1].value,
+                required: true
+            },
+            {
+                name: 'loadingAddress',
+                value: '',
+                required: true
+            },
+            {
+                name: 'transportationType',
+                value: '',
+                required: false
+            },
+            {
+                name: 'loadingType',
+                value: '',
+                required: false
+            }
+        ]
+    );
+    let [unloading, setUnloading] = useState(
+        [
+            {
+                name: 'unloadingDateFrom',
+                value: '',
+                required: false
+            },
+            {
+                name: 'unloadingDateTo',
+                value: '',
+                required: false
+            },
+            {
+                name: 'unloadingTimeFrom',
+                value: '',
+                required: false
+            },
+            {
+                name: 'unloadingTimeTo',
+                value: '',
+                required: false
+            },
+            {
+                name: 'isUnloadingAllDay',
+                value: '',
+                required: false
+            },
+            {
+                name: 'unloadingTown',
+                value: '',
+                required: true
+            },
+            {
+                name: 'unloadingAddress',
+                value: '',
+                required: true
+            },
+            {
+                name: 'unloadingType',
+                value: '',
+                required: true
+            }
+        ]
+    );
+    let [cargo, setCargo] = useState(
+        [
+            {
+                name: 'cargoType',
+                value: '',
+                required: true
+            },
+            {
+                name: 'weight',
+                value: '',
+                required: true
+            },
+            {
+                name: 'capacity',
+                value: '',
+                required: true
+            },
+            {
+                name: 'length',
+                value: '',
+                required: true
+            },
+            {
+                name: 'width',
+                value: '',
+                required: true
+            },
+            {
+                name: 'height',
+                value: '',
+                required: true
+            },
+            {
+                name: 'packageType',
+                value: '',
+                required: false
+            },
+            {
+                name: 'packageCount',
+                value: '',
+                required: false
+            },
+            {
+                name: 'notes',
+                value: '',
+                required: false
+            },
+            {
+                name: 'ADR1',
+                value: true,
+                required: false
+            },
+            {
+                name: 'ADR2',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR3',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR4',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR5',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR6',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR7',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR8',
+                value: false,
+                required: false
+            },
+            {
+                name: 'ADR9',
+                value: false,
+                required: false
+            },
+            {
+                name: 'TIR',
+                value: false,
+                required: false
+            },
+            {
+                name: 'EKMT',
+                value: false,
+                required: false
+            }
+        ]
+    );
+    let [requirements, setRequirements] = useState(
+        [
+            {
+                name: 'carType',
+                value: optionsCarType[3].value,
+                required: false
+            },
+            {
+                name: 'tempFrom',
+                value: '',
+                required: false
+            },
+            {
+                name: 'tempTo',
+                value: '',
+                required: false
+            }
+        ]
+    );
+    let [payment, setPayment] = useState(
+        [
+            {
+                name: 'bargain',
+                value: '',
+                required: false
+            },
+            {
+                name: 'paymentType',
+                value: '',
+                required: false
+            },
+            {
+                name: 'cash',
+                value: '',
+                required: false
+            },
+            {
+                name: 'priceVat',
+                value: '',
+                required: false
+            },
+            {
+                name: 'priceNovat',
+                value: '',
+                required: false
+            },
+            {
+                name: 'prepay',
+                value: '',
+                required: true
+            }
+        ]
+    );
+    let [contactsField, setContactsField] = useState(
+        [
+            {
+                name: 'contactPhone0',
+                value: '',
+                required: true
+            },
+            {
+                name: 'contactName0',
+                value: '',
+                required: true
+            },
+            {
+                name: 'remark',
+                value: '',
+                required: false
+            }
+        ]
+    );
+
+    let [total, setTotal] = useState([
+        {
+            fieldname: 'loading',
+            value: loading,
+        },
+        {
+            fieldname: 'unloading',
+            value: unloading,
+        },
+        {
+            fieldname: 'cargo',
+            value: cargo,
+        },
+        {
+            fieldname: 'requirements',
+            value: requirements,
+        },
+        {
+            fieldname: 'payment',
+            value: payment,
+        },
+        {
+            fieldname: 'contacts',
+            value: contactsField,
+        }
+    ]);
 
     let [data, setData] = useState([
         {
@@ -58,7 +363,7 @@ export default function AddCargo() {
         {
             fieldset: 'loading',
             name: 'loadingTown',
-            value: '',
+            value: optionsTowns[1],
             required: true
         },
         {
@@ -183,8 +488,68 @@ export default function AddCargo() {
         },
         {
             fieldset: 'cargo',
-            name: 'permissions',
-            value: '',
+            name: 'ADR1',
+            value: true,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR2',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR3',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR4',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR5',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR6',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR7',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR8',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'ADR9',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'TIR',
+            value: false,
+            required: false
+        },
+        {
+            fieldset: 'cargo',
+            name: 'EKMT',
+            value: false,
             required: false
         },
         {
@@ -262,7 +627,6 @@ export default function AddCargo() {
     ]);
 
     let [contacts, setContacts] = useState([]);
-    let [loadings, setLoadings] = useState([]);
     
     //проверка fieldset на заполнение
     let checkFieldset = (fieldName) => {
@@ -271,12 +635,11 @@ export default function AddCargo() {
         return result;
     };
 
-    //запись в data значений селектов
-    let handleRSelect = (e, name) => {
-        let inputVal = e.value;
-        setData(data.map(obj => {
+    //запись в data значений селектов (React-Select)
+    let handleRSelect = (e, name, func, list) => {
+        func(list.map(obj => {
             if (obj.name === name) {
-               return {...obj, 'value': inputVal};
+               return {...obj, 'value': e.value};
             } else {
                return obj;
             }
@@ -286,9 +649,9 @@ export default function AddCargo() {
     //запись в data значений чекбоксов с множественным выбором
     let handleCheckboxes = (e) => {
         let inputName = e.target.name;
-        console.log('checkbox name = '+inputName);
+
         let form = ref.current;
-        console.log('form = '+form);
+
         // let form = document.forms.myForm;
         let checkList = form.querySelectorAll('[name='+inputName+']');
         let valueArr = [];
@@ -306,6 +669,39 @@ export default function AddCargo() {
                return obj;
             }
         }));
+    };
+
+    let fillData = (e, func, list) => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+        
+        if(e.target.type === 'checkbox'){
+            if(e.target.checked === true) {
+                func(data.map(obj => {
+                    if (obj.name === inputName) {
+                       return {...obj, 'value': true};
+                    } else {
+                       return obj;
+                    }
+                }));
+            } else {
+                func(data.map(obj => {
+                    if (obj.name === inputName) {
+                       return {...obj, 'value': false};
+                    } else {
+                       return obj;
+                    }
+                }));
+            }
+        } else {
+            func(list.map(obj => {
+                if (obj.name === inputName) {
+                   return {...obj, 'value': inputVal};
+                } else {
+                   return obj;
+                }
+            }));
+        }
     };
 
     //запись в data значений инпутов
@@ -382,6 +778,7 @@ export default function AddCargo() {
         }
     };
 
+    //переключение обязательных для заполнения полей через radiobutton
     let toggleParams = (e) => {
         //нужно прикрутить очистку инпутов и селекта
         let inputVal = e.target.value.trim();
@@ -418,9 +815,9 @@ export default function AddCargo() {
         return val;
     };
 
+    //финальная проверка на заполнение и отправка формы
     const onSubmit = e => {
         e.preventDefault();
-
         let requiredArr = data.filter(obj => obj.required===true);
         let verification = requiredArr.every(obj => obj.value!=='');
         let empty = requiredArr.filter(obj => obj.value==='');
@@ -443,6 +840,13 @@ export default function AddCargo() {
     //очищение data при событии reset
     const onReset = e => {
         setData(data.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        
+        setLoading(loading.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setRequirements(requirements.map(obj => {
             return {...obj, 'value': ''};
         }));
     };
@@ -475,6 +879,20 @@ export default function AddCargo() {
     }
 
     let addLoadings = () => {};
+
+    //поиск значения полей в массиве options
+    const getObj = (opt, state, param) => {
+        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
+            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
+        } else { return null;}
+    }
+    const getObjLabel = (opt, state, param) => {
+        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
+            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value).label;
+        } else { return null;}
+    }
+
+    // console.log('check = '+optionsCarType.find(obj=>obj.value==requirements.find(obj => obj.name =='carType').value).label)
 
     return (
         <main className="bg-gray">
@@ -598,11 +1016,10 @@ export default function AddCargo() {
                                     <div className="col-md-9">
                                         <div className="row fs-12">
                                             <div className="col-sm-5 mb-2 mb-sm-0">
-                                                {/* <input type="text" name="loadingTown" onChange={(e)=> fillDataList(e)} placeholder="Населеный пункт"/> */}
-                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingTown')} options={optionsTowns} name="loadingTown" isSearchable={true}/>
+                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingTown" value={getObj(optionsTowns, loading, 'loadingTown')} onChange={(e) => handleRSelect(e, 'loadingTown', setLoading, loading)} options={optionsTowns} isSearchable={true}/>
                                             </div>
                                             <div className="col-sm-7" data-label='loadingAddress' data-warning='false'>
-                                                <input type="text" name="loadingAddress" onChange={(e)=> fillDataList(e)} placeholder="Адрес"/>
+                                                <input type="text" name="loadingAddress" onChange={(e)=> fillData(e, setLoading, loading)} placeholder="Адрес"/>
                                             </div>
                                         </div>
                                     </div>
@@ -613,11 +1030,11 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9">
                                         <label className="mb-2 mb-xl-3">
-                                            <input type="radio" name="transportationType" value="FTL" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="radio" name="transportationType" value="FTL" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной (FTL)</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="transportationType" value="FTL/LTL" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="radio" name="transportationType" value="FTL/LTL" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной или догрузом (FTL или LTL)</span>
                                         </label>
                                     </div>
@@ -627,7 +1044,7 @@ export default function AddCargo() {
                                         <div data-label='loadingType' data-warning='false' className="title-font fs-12 fw-5">Тип загрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingType')} options={optionsLoading} name="loadingType" isSearchable={true}/>
+                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingType" value={getObj(optionsLoading, loading, 'loadingType')} onChange={(e) => handleRSelect(e, 'loadingType', setLoading, loading)} options={optionsLoading}  isSearchable={true}/>
                                     </div>
                                 </div>
                             </div>
@@ -714,7 +1131,6 @@ export default function AddCargo() {
                                     <div className="col-md-9">
                                         <div className="row fs-12">
                                             <div className="col-sm-5 mb-2 mb-sm-0">
-                                                {/* <input type="text" name="unloadingTown" onChange={(e)=> fillDataList(e)} placeholder="Населеный пункт"/> */}
                                                 <Select classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'unloadingTown')} options={optionsTowns} name="unloadingTown" isSearchable={true}/>
                                             </div>
                                             <div className="col-sm-7" data-label='unloadingAddress' data-warning='false'>
@@ -880,49 +1296,49 @@ export default function AddCargo() {
                                         <div className='row row-cols-3 g-3 mb-4'>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR1" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR1" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR1</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR2" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR2" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR2</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR3" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR3" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR3</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR4" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR4" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR4</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR5" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR5" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR5</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR6" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR6" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR6</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR7" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR7" value="ADR7" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR7</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR8" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR8" value="ADR8" onChange={(e)=> fillDataList(e)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR8</span>
                                                 </label>
                                             </div>
@@ -1003,7 +1419,7 @@ export default function AddCargo() {
                                         <div data-label='carType' data-warning='false' className="title-font fs-12 fw-5">Тип кузова</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select className="fs-12 w-100" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'carType')} options={optionsCarType} name="carType" isSearchable={true}/>
+                                        <Select className="fs-12 w-100" classNamePrefix="react-select" placeholder={'Выберите...'} name="carType" value={getObj(optionsCarType, requirements, 'carType')} onChange={(e) => handleRSelect(e, 'carType', setRequirements, requirements)} options={optionsCarType} isSearchable={true}/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center">
@@ -1012,11 +1428,11 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9 fs-12 d-flex align-items-center">
                                         <label data-label='tempFrom' data-warning='false'>
-                                            <input type="number" name="tempFrom" placeholder="0" className="temp" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="number" name="tempFrom" placeholder="0" className="temp" onChange={(e)=> fillData(e, setRequirements, requirements)}/>
                                         </label>
                                         <span className="mx-3">—</span>
                                         <label data-label='tempTo' data-warning='false'>
-                                            <input type="number" name="tempTo" placeholder="0" className="temp" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="number" name="tempTo" placeholder="0" className="temp" onChange={(e)=> fillData(e, setRequirements, requirements)}/>
                                         </label>
                                     </div>
                                 </div>
@@ -1316,20 +1732,20 @@ export default function AddCargo() {
                                         </div>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('loadingTown')) &&
-                                                <span className='me-1'>{optionsTowns.find(item => item.value === findInState('loadingTown')).label}</span>
+                                                (loading.find(obj=>obj.name==='loadingTown').value) &&
+                                                <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
                                             }
                                             {
-                                                (findInState('loadingAddress')) &&
-                                                <span>, {findInState('loadingAddress')}</span>
+                                                (loading.find(obj=>obj.name==='loadingAddress').value) &&
+                                                <span className='me-1'>, {loading.find(obj=>obj.name==='loadingAddress').value}</span>
                                             }
                                             {
-                                                (findInState('transportationType')) &&
-                                                <span>, {findInState('transportationType')}</span>
+                                                (loading.find(obj=>obj.name==='transportationType').value) &&
+                                                <span className='me-1'>, {loading.find(obj=>obj.name==='transportationType').value}</span>
                                             }
                                             {
-                                                (findInState('loadingType')) &&
-                                                <span>, {optionsLoading.find(item => item.value === findInState('loadingType')).label}</span>
+                                                (loading.find(obj=>obj.name==='loadingType').value) &&
+                                                <span>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
                                             }
                                         </div>
                                     </li>
@@ -1423,16 +1839,16 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('requirements')?'filled':''}>Требования к машине</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('carType')) &&
-                                                <span className='me-1'>{optionsCarType.find(item => item.value === findInState('carType')).label}</span>
+                                                (requirements.find(obj=>obj.name==='carType').value) &&
+                                                <span className='me-1'>{getObjLabel(optionsCarType, requirements, 'carType')}</span>
                                             }
                                             {
-                                                (findInState('tempFrom')) &&
-                                                <span className='me-1'>, {findInState('tempFrom')}</span>
+                                                (requirements.find(obj=>obj.name==='tempFrom').value) &&
+                                                <span className='me-1'>, {requirements.find(obj=>obj.name==='tempFrom').value}</span>
                                             }
                                             {
-                                                (findInState('tempTo')) &&
-                                                <span className='me-1'>- {findInState('tempTo')}°C</span>
+                                                (requirements.find(obj=>obj.name==='tempTo').value) &&
+                                                <span className='me-1'>- {requirements.find(obj=>obj.name==='tempTo').value}°C</span>
                                             }
                                         </div>
                                     </li>
