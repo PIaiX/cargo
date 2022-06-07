@@ -627,13 +627,6 @@ export default function AddCargo() {
     ]);
 
     let [contacts, setContacts] = useState([]);
-    
-    //проверка fieldset на заполнение
-    let checkFieldset = (fieldName) => {
-        let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
-        let result = newArr.every(elem => elem.value !== '');
-        return result;
-    };
 
     //запись в data значений селектов (React-Select)
     let handleRSelect = (e, name, func, list) => {
@@ -645,7 +638,133 @@ export default function AddCargo() {
             }
         }));
     };
+    //main input changes handler
+    let fillData = (e, func, list) => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+        let clearState = e.target.dataset.clear;
+        
+        if(e.target.type === 'checkbox'){
+            if(e.target.checked === true) {
+                if (clearState !== none){
+                    let clearStateArr = clearState.split(' ');
+                    console.log(clearStateArr);
+                    clearStateArr.forEach(item => clearInput(item));
 
+                    func(list.map(obj => {
+                        if (obj.name === inputName) {
+                           return {...obj, 'value': true};//write the value of the checkbox to the State
+                        } else if(clearStateArr.includes(obj.name)) {
+                            return {...obj, 'value': ''};//delete values of inputs from State
+                        } else {
+                           return obj; //skip the rest
+                        }
+                    }));
+                } else {
+                    func(list.map(obj => {
+                        if (obj.name === inputName) {
+                           return {...obj, 'value': true};
+                        } else {
+                           return obj;
+                        }
+                    }));
+                }
+            } else {
+                func(list.map(obj => {
+                    if (obj.name === inputName) {
+                       return {...obj, 'value': false};
+                    } else {
+                       return obj;
+                    }
+                }));
+            }
+        } else {
+            func(list.map(obj => {
+                if (obj.name === inputName) {
+                   return {...obj, 'value': inputVal};
+                } else {
+                   return obj;
+                }
+            }));
+        }
+    };
+    //очищение значений инпутов
+    let clearInput = (item) => {
+        let input = document.querySelector('[name="'+item+'"]'); //clear input's value by name
+        if(input.type === 'radio' || input.type === 'checkbox'){
+            input.checked = false;
+        } else {
+            input.value = '';
+        }
+    };
+    //переключение обязательных для заполнения полей через radiobutton
+    let toggleParams = (e, func, list) => {
+        //нужно прикрутить очистку инпутов и селекта
+        let inputVal = e.target.value;
+        let inputName = e.target.name;
+        let addParams = e.target.dataset.add.split(' ');
+        let delParams = e.target.dataset.del.split(' ');
+
+        func(
+            list.map(obj => {
+                if(obj.name === inputName){
+                    return {...obj, 'value': inputVal};
+                } else if (addParams.includes(obj.name)){
+                    return {...obj, 'required': true};
+                } else if (delParams.includes(obj.name)) {
+                    delParams.map(item => {
+                        clearInput(item);
+                    });
+                    return {...obj, 'required': false, 'value': ''};
+                } else {
+                    return obj; 
+                }
+            })
+        )
+    }
+
+    /* На изменение */
+    //проверка fieldset на заполнение
+    let checkFieldset = (fieldName) => {
+        let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
+        let result = newArr.every(elem => elem.value !== '');
+        return result;
+    };
+
+    /* DELETE */
+    //запись в data значений инпутов
+    function fillDataList(e) {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+
+        if (e.target.type === 'checkbox') {
+            if (e.target.checked === true) {
+                setData(data.map(obj => {
+                    if (obj.name === inputName) {
+                        return { ...obj, 'value': inputVal };
+                    } else {
+                        return obj;
+                    }
+                }));
+            } else {
+                setData(data.map(obj => {
+                    if (obj.name === inputName) {
+                        return { ...obj, 'value': '' };
+                    } else {
+                        return obj;
+                    }
+                }));
+            }
+        } else {
+            setData(data.map(obj => {
+                if (obj.name === inputName) {
+                    return { ...obj, 'value': inputVal };
+                } else {
+                    return obj;
+                }
+            }));
+        }
+    }
     //запись в data значений чекбоксов с множественным выбором
     let handleCheckboxes = (e) => {
         let inputName = e.target.name;
@@ -670,140 +789,6 @@ export default function AddCargo() {
             }
         }));
     };
-
-    let fillData = (e, func, list) => {
-        let inputName = e.target.name;
-        let inputVal = e.target.value.trim();
-        
-        if(e.target.type === 'checkbox'){
-            if(e.target.checked === true) {
-                func(data.map(obj => {
-                    if (obj.name === inputName) {
-                       return {...obj, 'value': true};
-                    } else {
-                       return obj;
-                    }
-                }));
-            } else {
-                func(data.map(obj => {
-                    if (obj.name === inputName) {
-                       return {...obj, 'value': false};
-                    } else {
-                       return obj;
-                    }
-                }));
-            }
-        } else {
-            func(list.map(obj => {
-                if (obj.name === inputName) {
-                   return {...obj, 'value': inputVal};
-                } else {
-                   return obj;
-                }
-            }));
-        }
-    };
-
-    //запись в data значений инпутов
-    let fillDataList = (e) => {
-        let inputName = e.target.name;
-        let inputVal = e.target.value.trim();
-
-        if(e.target.type === 'checkbox'){
-            if(e.target.checked === true) {
-                setData(data.map(obj => {
-                    if (obj.name === inputName) {
-                       return {...obj, 'value': inputVal};
-                    } else {
-                       return obj;
-                    }
-                }));
-            } else {
-                setData(data.map(obj => {
-                    if (obj.name === inputName) {
-                       return {...obj, 'value': ''};
-                    } else {
-                       return obj;
-                    }
-                }));
-            }
-        } else {
-            setData(data.map(obj => {
-                if (obj.name === inputName) {
-                   return {...obj, 'value': inputVal};
-                } else {
-                   return obj;
-                }
-            }));
-        }
-    };
-
-    //checkbox click handler
-    let handleCheck = (e) => {
-        let inputName = e.target.name;
-        let inputVal = e.target.value.trim();
-        let clearState = e.target.dataset.clear.split(' ');//inputs whose data should be removed
-
-        if(e.target.checked === true) {
-            setData(data.map(obj => {
-                if (obj.name === inputName) {
-                   return {...obj, 'value': inputVal};//write the value of the checkbox to the State
-                } else if(clearState.includes(obj.name)) {
-                    return {...obj, 'value': ''};//delete values of inputs from State
-                } else {
-                   return obj; //skip the rest
-                }
-            }));
-            clearState.forEach(item => {
-                clearInput(item)
-            })
-        } else {
-            setData(data.map(obj => {
-                if (obj.name === inputName) {
-                   return {...obj, 'value': ''};//delete the value of the checkbox from the State
-                } else {
-                   return obj;
-                }
-            }));
-        }
-    };
-
-    //очищение значений инпутов
-    let clearInput = (item) => {
-        let input = document.querySelector('[name="'+item+'"]'); //clear input's value by name
-        if(input.type === 'radio' || input.type === 'checkbox'){
-            input.checked = false;
-        } else {
-            input.value = '';
-        }
-    };
-
-    //переключение обязательных для заполнения полей через radiobutton
-    let toggleParams = (e) => {
-        //нужно прикрутить очистку инпутов и селекта
-        let inputVal = e.target.value.trim();
-        let inputName = e.target.name;
-        let addParams = e.target.dataset.add.split(' ');
-        let delParams = e.target.dataset.del.split(' ');
-
-        setData(
-            data.map(obj => {
-                if(obj.name === inputName){
-                    return {...obj, 'value': inputVal};
-                } else if (addParams.includes(obj.name)){
-                    return {...obj, 'required': true};
-                } else if (delParams.includes(obj.name)) {
-                    delParams.map(item => {
-                        clearInput(item);
-                    });
-                    return {...obj, 'required': false, 'value': ''};
-                } else {
-                    return obj; 
-                }
-            })
-        )
-    }
-
     //поиск значения полей в data 
     const findInState = (name) => {
         let val = '';
@@ -815,6 +800,7 @@ export default function AddCargo() {
         return val;
     };
 
+    /* На изменение */
     //финальная проверка на заполнение и отправка формы
     const onSubmit = e => {
         e.preventDefault();
@@ -837,7 +823,7 @@ export default function AddCargo() {
         }
     };
 
-    //очищение data при событии reset
+    //очищение data при событии reset - ПРОВЕРИТЬ
     const onReset = e => {
         setData(data.map(obj => {
             return {...obj, 'value': ''};
@@ -851,13 +837,13 @@ export default function AddCargo() {
         }));
     };
 
-    //удаление полей контактов и их стирание из data 
+    //удаление полей контактов и их стирание из data - ДОПИЛИТЬ
     let deleteContacts = (i) => {
         setContacts(contacts.filter(obj => obj !== i));
         setData(data.filter(obj => obj.name !== 'contactPhone'+i || obj.name !== 'contactName'+i));
     };
 
-    //добавление полей контактов и их запись в data 
+    //добавление полей контактов и их запись в data - ДОПИЛИТЬ
     let addContacts = () => {
         let newNum = Number(contacts)+1;
 
@@ -878,8 +864,6 @@ export default function AddCargo() {
         setContacts([...contacts, newNum]);
     }
 
-    let addLoadings = () => {};
-
     //поиск значения полей в массиве options
     const getObj = (opt, state, param) => {
         if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
@@ -891,8 +875,13 @@ export default function AddCargo() {
             return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value).label;
         } else { return null;}
     }
+    const getVal = (state, param) => {
+        if(state.find(obj => obj.name == param).value){
+            return state.find(obj => obj.name == param).value;
+        } else { return null;}
+    }
 
-    // console.log('check = '+optionsCarType.find(obj=>obj.value==requirements.find(obj => obj.name =='carType').value).label)
+    const none = null || undefined;
 
     return (
         <main className="bg-gray">
@@ -937,24 +926,16 @@ export default function AddCargo() {
                                             <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e)} value="Груз готов" data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={0} data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Груз готов</span>
                                                     </label>
-                                                    <div className={
-                                                        data.filter(obj => obj.name === "frequency").map(obj => {
-                                                            if(obj.value === 'Груз готов'){
-                                                                return 'd-flex fs-12 align-items-center'
-                                                            } else {
-                                                                return 'd-flex fs-12 align-items-center disabled'
-                                                            }
-                                                        })
-                                                    }>
+                                                    <div className={(loading.find(obj => obj.name === "frequency").value === '0') ? 'd-flex fs-12 align-items-center' : 'd-flex fs-12 align-items-center disabled'}>
                                                         <label data-label='loadingDate' data-warning='false' className='flex-1 min-150'>
-                                                            <input type="date" name='loadingDate' onChange={(e)=> fillDataList(e)}/>
+                                                            <input type="date" name='loadingDate' onChange={(e)=> fillData(e, setLoading, loading)}/>
                                                         </label>
                                                         <span className="mx-2 mx-xxl-3">+</span>
                                                         <label style={{maxWidth:'100px'}} data-label='loadingDays' data-warning='false'>
-                                                            <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingDays')} options={optionsDays} name="loadingDays" isSearchable={true}/>
+                                                            <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingDays', setLoading, loading)} options={optionsDays} name="loadingDays" isSearchable={true}/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -962,19 +943,11 @@ export default function AddCargo() {
                                             <div className="col-xl-5">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e)} value="Постоянно" data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={1} data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
-                                                    <div data-label='loadingPeriodType' data-warning='false' className={
-                                                        data.filter(obj => obj.name === "frequency").map(obj => {
-                                                            if(obj.value === 'Постоянно'){
-                                                                return ''
-                                                            } else {
-                                                                return 'disabled'
-                                                            }
-                                                        })
-                                                    }>
-                                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} onChange={(e) => handleRSelect(e, 'loadingPeriodType')}/>
+                                                    <div data-label='loadingPeriodType' data-warning='false' className={(loading.find(obj => obj.name === "frequency").value == '1') ? '' : 'disabled'}>
+                                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} onChange={(e) => handleRSelect(e, 'loadingPeriodType', setLoading, loading)}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -986,25 +959,17 @@ export default function AddCargo() {
                                         <div className="title-font fs-12 fw-5">Время загрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <div className={
-                                            data.filter(obj => obj.name === "isLoadingAllDay").map(obj => {
-                                                if(obj.value === 'Круглосуточно'){
-                                                    return 'd-flex fs-12 align-items-center disabled'
-                                                } else {
-                                                    return 'd-flex fs-12 align-items-center'
-                                                }
-                                            })
-                                        }>
+                                        <div className={(loading.find(obj => obj.name === "isLoadingAllDay").value) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
                                             <label className='flex-1' data-label='loadingTimeFrom' data-warning='false'>
-                                                <input type="time" name="loadingTimeFrom" onChange={(e)=> fillDataList(e)}/>
+                                                <input type="time" value={getVal(loading, 'loadingTimeFrom')} name="loadingTimeFrom" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             </label>
                                             <span className="mx-3">—</span>
                                             <label className='flex-1' data-label='loadingTimeTo' data-warning='false'>
-                                                <input type="time" name="loadingTimeTo" onChange={(e)=> fillDataList(e)}/>
+                                                <input type="time" value={getVal(loading, 'loadingTimeTo')} name="loadingTimeTo" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             </label>
                                         </div>
                                         <label data-label='loadingTimeTo' data-warning='false' className="mt-2">
-                                            <input type="checkbox" name="isLoadingAllDay" onChange={(e)=> handleCheck(e)} data-clear="loadingTimeFrom loadingTimeTo" value="Круглосуточно"/>
+                                            <input type="checkbox" value={getVal(loading, 'isLoadingAllDay')} name="isLoadingAllDay" onChange={(e)=> fillData(e, setLoading, loading)} data-clear="loadingTimeFrom loadingTimeTo"/>
                                             <span data-label='isLoadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1048,7 +1013,7 @@ export default function AddCargo() {
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" onClick={() => addLoadings()} className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
                                 </IconContext.Provider>
@@ -1102,7 +1067,7 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9">
                                         <div data-label='unloadingTimeFrom' data-warning='false' className={
-                                            data.filter(obj => obj.name === "isUnloadingAllDay").map(obj => {
+                                            loading.filter(obj => obj.name === "isUnloadingAllDay").map(obj => {
                                                 if(obj.value === 'Круглосуточно'){
                                                     return 'd-flex fs-12 align-items-center disabled'
                                                 } else {
@@ -1111,15 +1076,15 @@ export default function AddCargo() {
                                             })
                                         }>
                                             <label className='flex-1' data-label='unloadingTimeFrom' data-warning='false'>
-                                                <input type="time" name="unloadingTimeFrom" onChange={(e)=> fillDataList(e)}/>
+                                                <input type="time" name="unloadingTimeFrom" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             </label>
                                             <span className="mx-3">—</span>
                                             <label className='flex-1' data-label='unloadingTimeTo' data-warning='false'>
-                                                <input type="time" name="unloadingTimeTo" onChange={(e)=> fillDataList(e)}/>
+                                                <input type="time" name="unloadingTimeTo" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             </label>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" name="isUnloadingAllDay" onChange={(e)=> handleCheck(e)} data-clear="unloadingTimeFrom unloadingTimeTo" value="Круглосуточно"/>
+                                            <input type="checkbox" name="isUnloadingAllDay" onChange={(e)=> fillData(e, setLoading, loading)} data-clear="unloadingTimeFrom unloadingTimeTo" value="Круглосуточно"/>
                                             <span data-label='isUnloadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1702,32 +1667,44 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('loading')?'filled':''}>Загрузка</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('frequency')) &&
-                                                <span className='me-1'>{findInState('frequency')}:</span>
+                                                (loading.find(obj=>obj.name==='frequency').value) &&
+                                                <span className='me-1'>{(loading.find(obj=>obj.name==='frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
                                             }
                                             {
-                                                (findInState('loadingDate')) &&
-                                                <span className='me-1'>{findInState('loadingDate')}</span>
+                                                (loading.find(obj=>obj.name==='loadingDate').value) &&
+                                                <span className='me-1'>{loading.find(obj=>obj.name==='loadingDate').value}</span>
                                             }
                                             {
-                                                (findInState('loadingDays')) &&
-                                                <span>+ {optionsDays.find(item => item.value === findInState('loadingDays')).label}</span>
+                                                (loading.find(obj=>obj.name==='loadingDays').value) &&
+                                                <span className='me-1'>+ {loading.find(obj=>obj.name==='loadingDays').value} дня</span>
                                             }
                                             {
-                                                (findInState('loadingPeriodType')) &&
-                                                <span>{optionsLoadingPeriodType.find(item => item.value === findInState('loadingPeriodType')).label}</span>
+                                                (loading.find(obj=>obj.name==='loadingPeriodType').value) &&
+                                                <span>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
                                             }
-                                            {
+                                            {/* {
                                                 (findInState('loadingTimeFrom')) &&
                                                 <span>, {findInState('loadingTimeFrom')}</span>
-                                            }
+                                            } */}
                                             {
+                                                (loading.find(obj=>obj.name==='loadingTimeFrom').value) &&
+                                                <span className='me-1'>, {loading.find(obj=>obj.name==='loadingTimeFrom').value}</span>
+                                            }
+                                            {/* {
                                                 (findInState('loadingTimeTo')) &&
                                                 <span>– {findInState('loadingTimeTo')}</span>
-                                            }
+                                            } */}
                                             {
+                                                (loading.find(obj=>obj.name==='loadingTimeTo').value) &&
+                                                <span className='me-1'>– {loading.find(obj=>obj.name==='loadingTimeTo').value}</span>
+                                            }
+                                            {/* {
                                                 (findInState('isLoadingAllDay')) &&
                                                 <span>, {findInState('isLoadingAllDay')}</span>
+                                            } */}
+                                            {
+                                                (loading.find(obj=>obj.name==='isLoadingAllDay').value) &&
+                                                <span className='me-1'>, Круглосуточно</span>
                                             }
                                         </div>
                                         <div className='fs-09'>
