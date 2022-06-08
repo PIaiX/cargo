@@ -9,6 +9,7 @@ import { optionsLoading, optionsLoadingPeriodType, optionsPackageType, optionsCa
 export default function AddCargo() {
     const ref = useRef(null);
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
+    const none = null || undefined || '';
 
     let [loading, setLoading] = useState(
         [
@@ -722,12 +723,10 @@ export default function AddCargo() {
             })
         )
     }
-
-    /* На изменение */
     //проверка fieldset на заполнение
-    let checkFieldset = (fieldName) => {
-        let newArr = data.filter(item => item.fieldset === fieldName && item.required === true);
-        let result = newArr.every(elem => elem.value !== '');
+    let checkFieldset = (state) => {
+        let newArr = state.filter(item => item.required === true);
+        let result = newArr.every(elem => elem.value !== none);
         return result;
     };
 
@@ -832,7 +831,19 @@ export default function AddCargo() {
         setLoading(loading.map(obj => {
             return {...obj, 'value': ''};
         }));
+        setLoading(unloading.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setCargo(cargo.map(obj => {
+            return {...obj, 'value': ''};
+        }));
         setRequirements(requirements.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setPayment(payment.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setContactsField(contactsField.map(obj => {
             return {...obj, 'value': ''};
         }));
     };
@@ -864,24 +875,24 @@ export default function AddCargo() {
         setContacts([...contacts, newNum]);
     }
 
-    //поиск значения полей в массиве options
+    //поиск значения полей в массиве
     const getObj = (opt, state, param) => {
         if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
             return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
-        } else { return null;}
+        } else { return '';}
     }
     const getObjLabel = (opt, state, param) => {
         if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
             return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value).label;
-        } else { return null;}
+        } else { return '';}
     }
     const getVal = (state, param) => {
         if(state.find(obj => obj.name == param).value){
             return state.find(obj => obj.name == param).value;
-        } else { return null;}
+        } else { return '';}
     }
 
-    const none = null || undefined;
+    
 
     return (
         <main className="bg-gray">
@@ -890,12 +901,12 @@ export default function AddCargo() {
                 <form ref={ref} name='myForm' id='myForm' className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
-                            <button type='button' className={(checkFieldset('loading')) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
-                            <button type='button' className={(checkFieldset('unloading')) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
-                            <button type='button' className={(checkFieldset('cargo')) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
-                            <button type='button' className={(checkFieldset('requirements')) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
-                            <button type='button' className={(checkFieldset('payment')) ? 'active' : ''} onClick={() => setActiveField(4)}>5</button>
-                            <button type='button' className={(checkFieldset('contacts')) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
+                            <button type='button' className={(checkFieldset(loading)) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
+                            <button type='button' className={(checkFieldset(unloading)) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
+                            <button type='button' className={(checkFieldset(cargo)) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
+                            <button type='button' className={(checkFieldset(requirements)) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
+                            <button type='button' className={(checkFieldset(payment)) ? 'active' : ''} onClick={() => setActiveField(4)}>5</button>
+                            <button type='button' className={(checkFieldset(contactsField)) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
                         </div>
                         
                         <fieldset name="loading" data-show={(activeField === 1) ? 'true' : 'false'}>
@@ -926,16 +937,16 @@ export default function AddCargo() {
                                             <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={0} data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={0} checked={getVal(loading, "frequency") == '0'} data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Груз готов</span>
                                                     </label>
                                                     <div className={(loading.find(obj => obj.name === "frequency").value === '0') ? 'd-flex fs-12 align-items-center' : 'd-flex fs-12 align-items-center disabled'}>
                                                         <label data-label='loadingDate' data-warning='false' className='flex-1 min-150'>
-                                                            <input type="date" name='loadingDate' onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                                            <input type="date" name='loadingDate' value={getVal(loading, 'loadingDate')} onChange={(e)=> fillData(e, setLoading, loading)}/>
                                                         </label>
                                                         <span className="mx-2 mx-xxl-3">+</span>
                                                         <label style={{maxWidth:'100px'}} data-label='loadingDays' data-warning='false'>
-                                                            <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'loadingDays', setLoading, loading)} options={optionsDays} name="loadingDays" isSearchable={true}/>
+                                                            <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} value={getObj(optionsDays, loading, 'loadingDays')} onChange={(e) => handleRSelect(e, 'loadingDays', setLoading, loading)} options={optionsDays} name="loadingDays" isSearchable={true}/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -943,11 +954,11 @@ export default function AddCargo() {
                                             <div className="col-xl-5">
                                                 <div className="box p-lg-3">
                                                     <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={1} data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
+                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={1} checked={getVal(loading, "frequency") == '1'} data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
                                                     </label>
                                                     <div data-label='loadingPeriodType' data-warning='false' className={(loading.find(obj => obj.name === "frequency").value == '1') ? '' : 'disabled'}>
-                                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} onChange={(e) => handleRSelect(e, 'loadingPeriodType', setLoading, loading)}/>
+                                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} value={getObj(optionsLoadingPeriodType, loading, 'loadingPeriodType')} onChange={(e) => handleRSelect(e, 'loadingPeriodType', setLoading, loading)}/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -968,7 +979,7 @@ export default function AddCargo() {
                                                 <input type="time" value={getVal(loading, 'loadingTimeTo')} name="loadingTimeTo" onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             </label>
                                         </div>
-                                        <label data-label='loadingTimeTo' data-warning='false' className="mt-2">
+                                        <label className="mt-2">
                                             <input type="checkbox" value={getVal(loading, 'isLoadingAllDay')} name="isLoadingAllDay" onChange={(e)=> fillData(e, setLoading, loading)} data-clear="loadingTimeFrom loadingTimeTo"/>
                                             <span data-label='isLoadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
@@ -984,7 +995,7 @@ export default function AddCargo() {
                                                 <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingTown" value={getObj(optionsTowns, loading, 'loadingTown')} onChange={(e) => handleRSelect(e, 'loadingTown', setLoading, loading)} options={optionsTowns} isSearchable={true}/>
                                             </div>
                                             <div className="col-sm-7" data-label='loadingAddress' data-warning='false'>
-                                                <input type="text" name="loadingAddress" onChange={(e)=> fillData(e, setLoading, loading)} placeholder="Адрес"/>
+                                                <input type="text" name="loadingAddress" value={getVal(loading, 'loadingAddress')} onChange={(e)=> fillData(e, setLoading, loading)} placeholder="Адрес"/>
                                             </div>
                                         </div>
                                     </div>
@@ -995,11 +1006,11 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9">
                                         <label className="mb-2 mb-xl-3">
-                                            <input type="radio" name="transportationType" value="FTL" onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                            <input type="radio" name="transportationType" value="FTL" checked={getVal(loading, "transportationType") === 'FTL'} onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной (FTL)</span>
                                         </label>
                                         <label>
-                                            <input type="radio" name="transportationType" value="FTL/LTL" onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                            <input type="radio" name="transportationType" value="FTL/LTL" checked={getVal(loading, "transportationType") === 'FTL/LTL'} onChange={(e)=> fillData(e, setLoading, loading)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной или догрузом (FTL или LTL)</span>
                                         </label>
                                     </div>
@@ -1036,7 +1047,7 @@ export default function AddCargo() {
                                             <span className='ms-1'>Очистить форму</span>
                                         </button>
                                     </div>
-                                    <button type='button' disabled={(checkFieldset('loading') ? false : true)} onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
+                                    <button type='button' disabled={(checkFieldset(loading) ? false : true)} onClick={() => setActiveField(2)} className='btn btn-1 w-100 fs-11'>
                                         <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <IoChevronForwardOutline/>
@@ -1055,9 +1066,9 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9">
                                         <div className="d-flex fs-12 align-items-center">
-                                            <input type="date" name="unloadingDateFrom" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="date" name="unloadingDateFrom" value={getVal(unloading, 'unloadingDateFrom')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
                                             <span className="mx-3">—</span>
-                                            <input type="date" name="unloadingDateTo" onChange={(e)=> fillDataList(e)}/>
+                                            <input type="date" name="unloadingDateTo" value={getVal(unloading, 'unloadingDateTo')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1066,25 +1077,17 @@ export default function AddCargo() {
                                         <div className="title-font fs-12 fw-5">Время разгрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <div data-label='unloadingTimeFrom' data-warning='false' className={
-                                            loading.filter(obj => obj.name === "isUnloadingAllDay").map(obj => {
-                                                if(obj.value === 'Круглосуточно'){
-                                                    return 'd-flex fs-12 align-items-center disabled'
-                                                } else {
-                                                    return 'd-flex fs-12 align-items-center'
-                                                }
-                                            })
-                                        }>
+                                        <div className={(unloading.find(obj => obj.name === "isUnloadingAllDay").value) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
                                             <label className='flex-1' data-label='unloadingTimeFrom' data-warning='false'>
-                                                <input type="time" name="unloadingTimeFrom" onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                                <input type="time" name="unloadingTimeFrom" value={getVal(unloading, 'unloadingTimeFrom')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
                                             </label>
                                             <span className="mx-3">—</span>
                                             <label className='flex-1' data-label='unloadingTimeTo' data-warning='false'>
-                                                <input type="time" name="unloadingTimeTo" onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                                <input type="time" name="unloadingTimeTo" value={getVal(unloading, 'unloadingTimeTo')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
                                             </label>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" name="isUnloadingAllDay" onChange={(e)=> fillData(e, setLoading, loading)} data-clear="unloadingTimeFrom unloadingTimeTo" value="Круглосуточно"/>
+                                            <input type="checkbox" name="isUnloadingAllDay" value={getVal(unloading, 'isUnloadingAllDay')} onChange={(e)=> fillData(e, setUnloading, unloading)} data-clear="unloadingTimeFrom unloadingTimeTo"/>
                                             <span data-label='isUnloadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1096,10 +1099,10 @@ export default function AddCargo() {
                                     <div className="col-md-9">
                                         <div className="row fs-12">
                                             <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'unloadingTown')} options={optionsTowns} name="unloadingTown" isSearchable={true}/>
+                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingTown" value={getObj(optionsTowns, unloading, 'unloadingTown')} onChange={(e) => handleRSelect(e, 'unloadingTown', setUnloading, unloading)} options={optionsTowns} isSearchable={true}/>
                                             </div>
                                             <div className="col-sm-7" data-label='unloadingAddress' data-warning='false'>
-                                                <input type="text" name="unloadingAddress" onChange={(e)=> fillDataList(e)} placeholder="Адрес"/>
+                                                <input type="text" name="unloadingAddress" value={getVal(unloading, 'unloadingAddress')} onChange={(e)=> fillData(e, setUnloading, unloading)} placeholder="Адрес"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1109,7 +1112,7 @@ export default function AddCargo() {
                                         <div data-label='unloadingType' data-warning='false' className="title-font fs-12 fw-5">Тип разгрузки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'unloadingType')} options={optionsLoading} name="unloadingType" isSearchable={true}/>
+                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingType" value={getObj(optionsLoading, unloading, 'unloadingType')} onChange={(e) => handleRSelect(e, 'unloadingType', setUnloading, unloading)} options={optionsLoading} isSearchable={true}/>
                                     </div>
                                 </div>
                             </div>
@@ -1146,7 +1149,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' disabled={(checkFieldset('unloading') ? false : true)} onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset(unloading) ? false : true)} onClick={() => setActiveField(3)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -1364,7 +1367,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' disabled={(checkFieldset('cargo') ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset(cargo) ? false : true)} onClick={() => setActiveField(4)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -1429,7 +1432,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' disabled={(checkFieldset('requirements') ? false : true)} onClick={() => setActiveField(5)} className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset(requirements) ? false : true)} onClick={() => setActiveField(5)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -1551,7 +1554,7 @@ export default function AddCargo() {
                                             </button>
                                         </div>
                                         <div>
-                                            <button type='button' disabled={(checkFieldset('payment') ? false : true)} onClick={() => setActiveField(6)} className='btn btn-1 w-100 fs-11'>
+                                            <button type='button' disabled={(checkFieldset(payment) ? false : true)} onClick={() => setActiveField(6)} className='btn btn-1 w-100 fs-11'>
                                                 <span className='me-1 me-sm-3 text-uppercase'>Далее</span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
@@ -1563,7 +1566,7 @@ export default function AddCargo() {
                             </div>
                         </fieldset>
 
-                        <fieldset name="contacts" data-show={(activeField === 6) ? 'true' : 'false'}>
+                        <fieldset name="contactsField" data-show={(activeField === 6) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
                                 <div className='row gx-2 gx-sm-4 mb-4 mb-md-0'>
@@ -1664,7 +1667,7 @@ export default function AddCargo() {
                             <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('loading')?'filled':''}>Загрузка</Link>
+                                        <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(loading)?'filled':''}>Загрузка</Link>
                                         <div className='fs-09'>
                                             {
                                                 (loading.find(obj=>obj.name==='frequency').value) &&
@@ -1682,26 +1685,14 @@ export default function AddCargo() {
                                                 (loading.find(obj=>obj.name==='loadingPeriodType').value) &&
                                                 <span>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
                                             }
-                                            {/* {
-                                                (findInState('loadingTimeFrom')) &&
-                                                <span>, {findInState('loadingTimeFrom')}</span>
-                                            } */}
                                             {
                                                 (loading.find(obj=>obj.name==='loadingTimeFrom').value) &&
                                                 <span className='me-1'>, {loading.find(obj=>obj.name==='loadingTimeFrom').value}</span>
                                             }
-                                            {/* {
-                                                (findInState('loadingTimeTo')) &&
-                                                <span>– {findInState('loadingTimeTo')}</span>
-                                            } */}
                                             {
                                                 (loading.find(obj=>obj.name==='loadingTimeTo').value) &&
                                                 <span className='me-1'>– {loading.find(obj=>obj.name==='loadingTimeTo').value}</span>
                                             }
-                                            {/* {
-                                                (findInState('isLoadingAllDay')) &&
-                                                <span>, {findInState('isLoadingAllDay')}</span>
-                                            } */}
                                             {
                                                 (loading.find(obj=>obj.name==='isLoadingAllDay').value) &&
                                                 <span className='me-1'>, Круглосуточно</span>
@@ -1727,46 +1718,46 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('unloading')?'filled':''}>Разгрузка</Link>
+                                        <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(unloading)?'filled':''}>Разгрузка</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('unloadingDateFrom')) &&
-                                                <span className='me-1'>{findInState('unloadingDateFrom')}</span>
+                                                (getVal(unloading, 'unloadingDateFrom')) &&
+                                                <span className='me-1'>{getVal(unloading, 'unloadingDateFrom')}</span>
                                             }
                                             {
-                                                (findInState('unloadingDateTo')) &&
-                                                <span className='me-1'>— {findInState('unloadingDateTo')}</span>
+                                                (getVal(unloading, 'unloadingDateTo')) &&
+                                                <span className='me-1'>— {getVal(unloading, 'unloadingDateTo')}</span>
                                             }
                                             {
-                                                (findInState('unloadingTimeFrom')) &&
-                                                <span className='me-1'>, {findInState('unloadingTimeFrom')}</span>
+                                                (getVal(unloading, 'unloadingTimeFrom')) &&
+                                                <span className='me-1'>, {getVal(unloading, 'unloadingTimeFrom')}</span>
                                             }
                                             {
-                                                (findInState('unloadingTimeTo')) &&
-                                                <span>— {findInState('unloadingTimeTo')}</span>
+                                                (getVal(unloading, 'unloadingTimeTo')) &&
+                                                <span className='me-1'>— {getVal(unloading, 'unloadingTimeTo')}</span>
                                             }
                                             {
-                                                (findInState('isUnloadingAllDay')) &&
-                                                <span>, {findInState('isUnloadingAllDay')}</span>
+                                                (getVal(unloading, 'isUnloadingAllDay')) &&
+                                                <span className='me-1'>, Круглосуточно</span>
                                             }
                                         </div>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('unloadingTown')) &&
-                                                <span className='me-1'>{optionsTowns.find(item => item.value === findInState('unloadingTown')).label}</span>
+                                                (getVal(unloading, 'unloadingTown')) &&
+                                                <span className='me-1'>{getObjLabel(optionsTowns, unloading, 'unloadingTown')}</span>
                                             }
                                             {
-                                                (findInState('unloadingAddress')) &&
-                                                <span>, {findInState('unloadingAddress')}</span>
+                                                (getVal(unloading, 'unloadingAddress')) &&
+                                                <span className='me-1'>, {getVal(unloading, 'unloadingAddress')}</span>
                                             }
                                             {
-                                                (findInState('unloadingType')) &&
-                                                <span>, {optionsLoading.find(item => item.value === findInState('unloadingType')).label}</span>
+                                                (getVal(unloading, 'unloadingType')) &&
+                                                <span className='me-1'>, {getObjLabel(optionsLoading, unloading, 'unloadingType')}</span>
                                             }
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('cargo')?'filled':''}>Груз</Link>
+                                        <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(cargo)?'filled':''}>Груз</Link>
                                         <div className='fs-09'>
                                             {
                                                 (findInState('cargoType')) &&
@@ -1813,7 +1804,7 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('requirements')?'filled':''}>Требования к машине</Link>
+                                        <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(requirements)?'filled':''}>Требования к машине</Link>
                                         <div className='fs-09'>
                                             {
                                                 (requirements.find(obj=>obj.name==='carType').value) &&
@@ -1830,7 +1821,7 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="payment" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('payment')?'filled':''}>Оплата</Link>
+                                        <Link activeClass="active" to="payment" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(payment)?'filled':''}>Оплата</Link>
                                         <div className='fs-09'>
                                             {
                                                 (findInState('bargain')) &&
@@ -1859,7 +1850,7 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset('contacts')?'filled':''}>Контакты</Link>
+                                        <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(contactsField)?'filled':''}>Контакты</Link>
                                         <div className='fs-09'>
                                             {
                                                 (findInState('contactPhone0')) &&
