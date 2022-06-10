@@ -2,8 +2,9 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { MdLocalShipping } from 'react-icons/md';
-import { IoCube, IoDocumentTextSharp, IoExitSharp, IoNewspaperSharp, IoAddCircleSharp } from 'react-icons/io5';
-import { RiUserFill } from "react-icons/ri";
+import { IoCube, IoDocumentTextSharp, IoExitSharp, IoNewspaperSharp, IoAddCircleSharp, IoBriefcase } from 'react-icons/io5';
+import { RiUserFill, RiMoneyDollarBoxFill } from "react-icons/ri";
+import { BsFillHandIndexThumbFill } from "react-icons/bs";
 
 export default function AccountMenu() {
     return (
@@ -46,6 +47,30 @@ export default function AccountMenu() {
                                 <IoAddCircleSharp />
                             </IconContext.Provider>
                         </Link>
+                    </li>
+                    <li>
+                        <NavLink to="responses">
+                            <IconContext.Provider value={{className: "icon-15 green", title: "Мои отклики" }}>
+                                <BsFillHandIndexThumbFill />
+                            </IconContext.Provider>
+                            <span className='ms-2 ms-xl-3'>Мои отклики</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="">
+                            <IconContext.Provider value={{className: "icon-15 green", title: "В работе" }}>
+                                <IoBriefcase/>
+                            </IconContext.Provider>
+                            <span className='ms-2 ms-xl-3'>В работе</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="">
+                            <IconContext.Provider value={{className: "icon-15 green", title: "Тарифы" }}>
+                                <RiMoneyDollarBoxFill/>
+                            </IconContext.Provider>
+                            <span className='ms-2 ms-xl-3'>Тарифы</span>
+                        </NavLink>
                     </li>
                     <li>
                         <NavLink to="user-patterns">

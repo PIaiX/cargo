@@ -2350,7 +2350,31 @@ article {
         }
     }
 }
+.response {
+    border-radius: .5em;
+    background: #FFF;
+    box-shadow: 1px 4px 9px rgba($green, 0.34);
+    padding: 1em;
+    img {
+        width: 5em;
+        height: 5em;
+        object-fit: cover;
+        border-radius: 50%;
+        @media (max-width: 1659px){
+            width: 4em;
+            height: 4em;
+        }
+    }
+    .more {
+        color: $gray-4;
+        text-decoration: underline;
+    }
 
+    
+    // @media (max-width: 575px){
+    //     padding: .75em;
+    // }
+}
 .docs-list {
     list-style: none;
     padding-left: 0px;

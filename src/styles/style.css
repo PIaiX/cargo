@@ -3569,6 +3569,34 @@ article.full figure figcaption p {
   color: #01BFC4;
 }
 
+.response {
+  border-radius: .5em;
+  background: #FFF;
+  -webkit-box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
+          box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
+  padding: 1em;
+}
+
+.response img {
+  width: 5em;
+  height: 5em;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
+
+@media (max-width: 1659px) {
+  .response img {
+    width: 4em;
+    height: 4em;
+  }
+}
+
+.response .more {
+  color: #BDBDBD;
+  text-decoration: underline;
+}
+
 .docs-list {
   list-style: none;
   padding-left: 0px;
