@@ -57,7 +57,7 @@ export default function AccountMenu() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="">
+                        <NavLink to="in-work">
                             <IconContext.Provider value={{className: "icon-15 green", title: "В работе" }}>
                                 <IoBriefcase/>
                             </IconContext.Provider>

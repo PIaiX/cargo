@@ -3575,6 +3575,7 @@ article.full figure figcaption p {
   -webkit-box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
           box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
   padding: 1em;
+  position: relative;
 }
 
 .response img {
@@ -3595,6 +3596,12 @@ article.full figure figcaption p {
 .response .more {
   color: #BDBDBD;
   text-decoration: underline;
+}
+
+.response .dropdown {
+  position: absolute;
+  top: .5em;
+  right: .5em;
 }
 
 .docs-list {

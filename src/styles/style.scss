@@ -2355,6 +2355,7 @@ article {
     background: #FFF;
     box-shadow: 1px 4px 9px rgba($green, 0.34);
     padding: 1em;
+    position: relative;
     img {
         width: 5em;
         height: 5em;
@@ -2369,7 +2370,11 @@ article {
         color: $gray-4;
         text-decoration: underline;
     }
-
+    .dropdown {
+        position: absolute;
+        top: .5em;
+        right: .5em;
+    }
     
     // @media (max-width: 575px){
     //     padding: .75em;

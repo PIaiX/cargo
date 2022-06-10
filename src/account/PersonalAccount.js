@@ -9,6 +9,7 @@ import UserCargo from './UserCargo';
 import UserPatterns from './UserPatterns';
 import UserDocuments from './UserDocuments';
 import Responses from './Responses';
+import InWork from './InWork';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);
@@ -45,6 +46,7 @@ export default function PersonalAccount() {
                                 <Route path="user-cars" element={<UserCars />} />
                                 <Route path="user-cargo" element={<UserCargo />} />
                                 <Route path="responses" element={<Responses />} />
+                                <Route path="in-work" element={<InWork />} />
                                 <Route path="user-patterns" element={<UserPatterns />} />
                                 <Route path="user-documents" element={<UserDocuments />} />
                             </Routes>
@@ -60,6 +62,7 @@ export default function PersonalAccount() {
                         <Route path="user-cars" element={<UserCars />} />
                         <Route path="user-cargo" element={<UserCargo />} />
                         <Route path="responses" element={<Responses />} />
+                        <Route path="in-work" element={<InWork />} />
                         <Route path="user-patterns" element={<UserPatterns />} />
                         <Route path="user-documents" element={<UserDocuments />} />
                     </Routes>
