@@ -9,7 +9,6 @@ import { optionsLoading, optionsLoadingPeriodType, optionsPackageType, optionsCa
 export default function AddCargo() {
     const ref = useRef(null);
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
-    const none = null || undefined || '';
 
     let [loading, setLoading] = useState(
         [
@@ -271,16 +270,17 @@ export default function AddCargo() {
             }
         ]
     );
+    let [contacts, setContacts] = useState([
+        {
+            phone: '',
+            name: '',
+        }
+    ]);
     let [contactsField, setContactsField] = useState(
         [
             {
-                name: 'contactPhone0',
-                value: '',
-                required: true
-            },
-            {
-                name: 'contactName0',
-                value: '',
+                name: 'contactsData',
+                value: contacts,
                 required: true
             },
             {
@@ -290,6 +290,7 @@ export default function AddCargo() {
             }
         ]
     );
+    
 
     let [total, setTotal] = useState([
         {
@@ -627,7 +628,7 @@ export default function AddCargo() {
         },
     ]);
 
-    let [contacts, setContacts] = useState([]);
+    
 
     //запись в data значений селектов (React-Select)
     let handleRSelect = (e, name, func, list) => {
@@ -646,10 +647,12 @@ export default function AddCargo() {
         let clearState = e.target.dataset.clear;
         
         if(e.target.type === 'checkbox'){
-            if(e.target.checked === true) {
-                if (clearState !== none){
+            console.log(e.target.value);
+            if(e.target.checked == true) {
+                if (clearState!==null && clearState!==undefined && clearState!==''){
+                    
                     let clearStateArr = clearState.split(' ');
-                    console.log(clearStateArr);
+                    
                     clearStateArr.forEach(item => clearInput(item));
 
                     func(list.map(obj => {
@@ -726,68 +729,33 @@ export default function AddCargo() {
     //проверка fieldset на заполнение
     let checkFieldset = (state) => {
         let newArr = state.filter(item => item.required === true);
-        let result = newArr.every(elem => elem.value !== none);
+        let result = newArr.every(elem => elem.value!==null && elem.value!==undefined && elem.value!=='');
         return result;
     };
-
-    /* DELETE */
-    //запись в data значений инпутов
-    function fillDataList(e) {
-        let inputName = e.target.name;
-        let inputVal = e.target.value.trim();
-
-        if (e.target.type === 'checkbox') {
-            if (e.target.checked === true) {
-                setData(data.map(obj => {
-                    if (obj.name === inputName) {
-                        return { ...obj, 'value': inputVal };
-                    } else {
-                        return obj;
-                    }
-                }));
-            } else {
-                setData(data.map(obj => {
-                    if (obj.name === inputName) {
-                        return { ...obj, 'value': '' };
-                    } else {
-                        return obj;
-                    }
-                }));
-            }
-        } else {
-            setData(data.map(obj => {
-                if (obj.name === inputName) {
-                    return { ...obj, 'value': inputVal };
-                } else {
-                    return obj;
-                }
-            }));
-        }
-    }
-    //запись в data значений чекбоксов с множественным выбором
-    let handleCheckboxes = (e) => {
-        let inputName = e.target.name;
-
-        let form = ref.current;
-
-        // let form = document.forms.myForm;
-        let checkList = form.querySelectorAll('[name='+inputName+']');
-        let valueArr = [];
-
-        checkList.forEach(obj => {
-            if (obj.checked === true) {
-                valueArr.push(obj.value)
-            } 
-        })
-        let str = valueArr.join(', '); //в State записывается строка
-        setData(data.map(obj => {
-            if (obj.name === inputName) {
-               return {...obj, 'value': str};
-            } else {
-               return obj;
-            }
+    //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
+    const onReset = e => {
+        setLoading(loading.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setUnloading(unloading.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setCargo(cargo.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setRequirements(requirements.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setPayment(payment.map(obj => {
+            return {...obj, 'value': ''};
+        }));
+        setContactsField(contactsField.map(obj => {
+            return {...obj, 'value': ''};
         }));
     };
+
+
+    /* DELETE */
     //поиск значения полей в data 
     const findInState = (name) => {
         let val = '';
@@ -822,32 +790,7 @@ export default function AddCargo() {
         }
     };
 
-    //очищение data при событии reset - ПРОВЕРИТЬ
-    const onReset = e => {
-        setData(data.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        
-        setLoading(loading.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setLoading(unloading.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setCargo(cargo.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setRequirements(requirements.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setPayment(payment.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setContactsField(contactsField.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-    };
-
+    
     //удаление полей контактов и их стирание из data - ДОПИЛИТЬ
     let deleteContacts = (i) => {
         setContacts(contacts.filter(obj => obj !== i));
@@ -887,7 +830,8 @@ export default function AddCargo() {
         } else { return '';}
     }
     const getVal = (state, param) => {
-        if(state.find(obj => obj.name == param).value){
+        let val = state.find(obj => obj.name == param).value;
+        if(val!==null && val!==undefined && val!==''){
             return state.find(obj => obj.name == param).value;
         } else { return '';}
     }
@@ -980,7 +924,7 @@ export default function AddCargo() {
                                             </label>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" value={getVal(loading, 'isLoadingAllDay')} name="isLoadingAllDay" onChange={(e)=> fillData(e, setLoading, loading)} data-clear="loadingTimeFrom loadingTimeTo"/>
+                                            <input type="checkbox" value={getVal(loading, 'isLoadingAllDay')} name="isLoadingAllDay" checked={getVal(loading, "isLoadingAllDay")} onChange={(e)=> fillData(e, setLoading, loading)} data-clear="loadingTimeFrom loadingTimeTo"/>
                                             <span data-label='isLoadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1087,7 +1031,7 @@ export default function AddCargo() {
                                             </label>
                                         </div>
                                         <label className="mt-2">
-                                            <input type="checkbox" name="isUnloadingAllDay" value={getVal(unloading, 'isUnloadingAllDay')} onChange={(e)=> fillData(e, setUnloading, unloading)} data-clear="unloadingTimeFrom unloadingTimeTo"/>
+                                            <input type="checkbox" name="isUnloadingAllDay" value={getVal(unloading, 'isUnloadingAllDay')} checked={getVal(unloading, "isUnloadingAllDay")} onChange={(e)=> fillData(e, setUnloading, unloading)} data-clear="unloadingTimeFrom unloadingTimeTo"/>
                                             <span data-label='isUnloadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                         </label>
                                     </div>
@@ -1169,7 +1113,7 @@ export default function AddCargo() {
                                         <div data-label='cargoType' data-warning='false' className="title-font fw-5">Название груза</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select className='w-100' classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'cargoType')} options={optionsCargoType} name="cargoType" isSearchable={true}/>
+                                        <Select className='w-100' classNamePrefix="react-select" placeholder={'Выберите...'} name="cargoType" value={getObj(optionsCargoType, cargo, 'cargoType')} onChange={(e) => handleRSelect(e, 'cargoType', setCargo, cargo)} options={optionsCargoType} isSearchable={true}/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
@@ -1179,7 +1123,7 @@ export default function AddCargo() {
                                     <div className="col-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" name="weight" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="weight w-100 fs-12"/>
+                                                <input className="weight w-100 fs-12" type="number" name="weight" min="1" placeholder='0' value={getVal(cargo, 'weight')} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1191,7 +1135,7 @@ export default function AddCargo() {
                                     <div className="col-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <input type="number" name="capacity" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="size w-100 fs-12"/>
+                                                <input className="size w-100 fs-12" type="number" name="capacity" min="1" placeholder='0' value={getVal(cargo, 'capacity')} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1208,7 +1152,7 @@ export default function AddCargo() {
                                                         <label data-label='length' data-warning='false'>Длина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name="length" min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name="length" min="1" placeholder='0' value={getVal(cargo, 'length')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1218,7 +1162,7 @@ export default function AddCargo() {
                                                         <label data-label='width' data-warning='false'>Ширина:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='width' min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name='width' min="1" placeholder='0' value={getVal(cargo, 'width')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1228,7 +1172,7 @@ export default function AddCargo() {
                                                         <label data-label='height' data-warning='false'>Высота:</label>
                                                     </div>
                                                     <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='height' min="1" placeholder='0' onChange={(e)=> fillDataList(e)} className="length"/>
+                                                        <input type="number" name='height' min="1" placeholder='0' value={getVal(cargo, 'height')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1240,11 +1184,11 @@ export default function AddCargo() {
                                         <div data-label='packageType' data-warning='false' className="title-font fs-12 fw-5">Упаковка</div>
                                     </div>
                                     <div className="col-md-9 fs-12 d-flex align-items-center">
-                                        <Select classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'packageType')} options={optionsPackageType} name="packageType" isSearchable={true}/>
+                                        <Select classNamePrefix="react-select" name="packageType" placeholder={'Выберите...'} value={getObj(optionsPackageType, cargo, 'packageType')} onChange={(e) => handleRSelect(e, 'packageType', setCargo, cargo)} options={optionsPackageType} isSearchable={true}/>
                                         <IconContext.Provider value={{className: "icon-10 mx-3"}}>
                                             <VscChromeClose />
                                         </IconContext.Provider>
-                                        <input type="number" placeholder='0' min="0" name="packageCount" onChange={(e)=> fillDataList(e)} className="packageCount pcs"/>
+                                        <input type="number" placeholder='0' min="0" name="packageCount" value={getVal(cargo, 'packageCount')} onChange={(e)=> fillData(e, setCargo, cargo)} className="packageCount pcs"/>
                                     </div>
                                 </div>
                                 <div className="row align-items-center mb-4">
@@ -1252,7 +1196,7 @@ export default function AddCargo() {
                                         <div data-label='notes' data-warning='false' className="title-font fs-12 fw-5">Особые пометки</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select className="w-100 fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} onChange={(e) => handleRSelect(e, 'notes')} options={optionsNotes} name="notes" isSearchable={true}/>
+                                        <Select className="w-100 fs-12" classNamePrefix="react-select" name="notes" placeholder={'Выберите...'} value={getObj(optionsNotes, cargo, 'notes')} onChange={(e) => handleRSelect(e, 'notes', setCargo, cargo)} options={optionsNotes} isSearchable={true}/>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -1264,55 +1208,55 @@ export default function AddCargo() {
                                         <div className='row row-cols-3 g-3 mb-4'>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR1" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR1" value={getVal(cargo, 'ADR1')} checked={getVal(cargo, "ADR1")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR1</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR2" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR2" value={getVal(cargo, 'ADR2')} checked={getVal(cargo, "ADR2")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR2</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR3" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR3" value={getVal(cargo, 'ADR3')} checked={getVal(cargo, "ADR3")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR3</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR4" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR4" value={getVal(cargo, 'ADR4')} checked={getVal(cargo, "ADR4")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR4</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR5" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR5" value={getVal(cargo, 'ADR5')} checked={getVal(cargo, "ADR5")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR5</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR6" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR6" value={getVal(cargo, 'ADR6')} checked={getVal(cargo, "ADR6")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR6</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR7" value="ADR7" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR7" value={getVal(cargo, 'ADR7')} checked={getVal(cargo, "ADR7")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR7</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="ADR8" value="ADR8" onChange={(e)=> fillDataList(e)}/>
+                                                    <input type="checkbox" name="ADR8" value={getVal(cargo, 'ADR8')} checked={getVal(cargo, "ADR8")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR8</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="ADR9" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="ADR9" value={getVal(cargo, 'ADR9')} checked={getVal(cargo, "ADR9")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR9</span>
                                                 </label>
                                             </div>
@@ -1320,13 +1264,13 @@ export default function AddCargo() {
                                         <div className='row row-cols-2 g-3'>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="TIR" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="TIR" value={getVal(cargo, 'TIR')} checked={getVal(cargo, "TIR")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">TIR</span>
                                                 </label>
                                             </div>
                                             <div>
                                                 <label>
-                                                    <input type="checkbox" name="permissions" value="EKMT" onChange={(e)=> handleCheckboxes(e)}/>
+                                                    <input type="checkbox" name="EKMT" value={getVal(cargo, 'EKMT')} checked={getVal(cargo, "EKMT")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
                                                     <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">EKMT</span>
                                                 </label>
                                             </div>
@@ -1396,11 +1340,11 @@ export default function AddCargo() {
                                     </div>
                                     <div className="col-md-9 fs-12 d-flex align-items-center">
                                         <label data-label='tempFrom' data-warning='false'>
-                                            <input type="number" name="tempFrom" placeholder="0" className="temp" onChange={(e)=> fillData(e, setRequirements, requirements)}/>
+                                            <input type="number" name="tempFrom" placeholder="0" className="temp" value={getVal(requirements, 'tempFrom')} onChange={(e)=> fillData(e, setRequirements, requirements)}/>
                                         </label>
                                         <span className="mx-3">—</span>
                                         <label data-label='tempTo' data-warning='false'>
-                                            <input type="number" name="tempTo" placeholder="0" className="temp" onChange={(e)=> fillData(e, setRequirements, requirements)}/>
+                                            <input type="number" name="tempTo" placeholder="0" className="temp" value={getVal(requirements, 'tempTo')} onChange={(e)=> fillData(e, setRequirements, requirements)}/>
                                         </label>
                                     </div>
                                 </div>
@@ -1450,13 +1394,13 @@ export default function AddCargo() {
                                 <div data-label='bargain' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-3'>
                                     <div className='mb-2 mb-sm-0'>
                                         <label>
-                                            <input type="radio" name="bargain" onChange={(e)=> fillDataList(e)} value="Возможен торг"/>
+                                            <input type="radio" name="bargain" value={0} checked={getVal(payment, "bargain") == '0'} onChange={(e)=> fillData(e, setPayment, payment)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Возможен торг</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="bargain" onChange={(e)=> fillDataList(e)} value="Без торга"/>
+                                            <input type="radio" name="bargain" value={1} checked={getVal(payment, "bargain") == '1'} onChange={(e)=> fillData(e, setPayment, payment)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Без торга</span>
                                         </label>
                                     </div>
@@ -1464,19 +1408,19 @@ export default function AddCargo() {
                                 <div data-label='paymentType' data-warning='false' className='row row-cols-sm-2 row-cols-xxl-3 mb-4'>
                                     <div className='mb-2 mb-sm-0'>
                                         <label>
-                                            <input type="radio" name="paymentType" onChange={(e)=> fillDataList(e)} value="Наличный расчет"/>
+                                            <input type="radio" name="paymentType" value={0} checked={getVal(payment, "paymentType") == '0'} onChange={(e)=> fillData(e, setPayment, payment)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Наличный расчет</span>
                                         </label>
                                     </div>
                                     <div>
                                         <label>
-                                            <input type="radio" name="paymentType" onChange={(e)=> fillDataList(e)} value="Перевод по карте"/>
+                                            <input type="radio" name="paymentType" value={1} checked={getVal(payment, "paymentType") == '1'} onChange={(e)=> fillData(e, setPayment, payment)}/>
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Перевод по карте</span>
                                         </label>
                                     </div>
                                 </div>
                                 {
-                                    (findInState('paymentType') === 'Наличный расчет') &&
+                                    (getVal(payment, 'paymentType') == '0') &&
                                     <div className="row align-items-center mb-4">
                                         <div className="col-sm-3 mb-2 mb-sm-0">
                                             <div data-label='cash' data-warning='false' className="title-font fs-12 fw-5">Наличными</div>
@@ -1484,7 +1428,7 @@ export default function AddCargo() {
                                         <div className="col-sm-9">
                                             <div className='row gx-2 gx-sm-4'>
                                                 <div className='col-8 col-sm-5 col-xl-4'>
-                                                    <input type="number" min="1" name='cash' placeholder='0' onChange={(e)=> fillDataList(e)} className='price-per-km w-100 fs-12'/>
+                                                    <input type="number" min="1" name='cash' placeholder='0' value={getVal(payment, 'cash')} onChange={(e)=> fillData(e, setPayment, payment)} className='price-per-km w-100 fs-12'/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1497,7 +1441,7 @@ export default function AddCargo() {
                                     <div className="col-sm-9">
                                         <div className='row gx-2 gx-sm-4'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='priceVat' placeholder='0' onChange={(e)=> fillDataList(e)} className='price-per-km w-100 fs-12'/>
+                                                <input type="number" min="1" name='priceVat' placeholder='0' value={getVal(payment, 'priceVat')} onChange={(e)=> fillData(e, setPayment, payment)} className='price-per-km w-100 fs-12'/>
                                             </div>
                                         </div>
                                     </div>
@@ -1509,7 +1453,7 @@ export default function AddCargo() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="1" name='priceNovat' placeholder='0' onChange={(e)=> fillDataList(e)} className='price-per-km w-100 fs-12'/>
+                                                <input type="number" min="1" name='priceNovat' placeholder='0' value={getVal(payment, 'priceNovat')} onChange={(e)=> fillData(e, setPayment, payment)} className='price-per-km w-100 fs-12'/>
                                             </div>
                                         </div>
                                     </div>
@@ -1521,7 +1465,7 @@ export default function AddCargo() {
                                     <div className="col-sm-9">
                                         <div className='row'>
                                             <div className='col-8 col-sm-5 col-xl-4'>
-                                                <input type="number" min="0" max="100" name="prepay" placeholder='0' onChange={(e)=> fillDataList(e)} className="percent w-100 fs-12"/>
+                                                <input type="number" min="0" max="100" name="prepay" placeholder='0' value={getVal(payment, 'prepay')} onChange={(e)=> fillData(e, setPayment, payment)} className="percent w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1573,16 +1517,16 @@ export default function AddCargo() {
                                     <div className='col-md-9'>
                                         <div className="row align-items-center gy-2 gy-md-3">
                                             <div className="col-md-4">
-                                                <div data-label='contactPhone0' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                                                <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="tel" name='contactPhone0' onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                <input type="tel" name='phone' onChange={(e)=> fillData(e, setContacts, contacts)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                             </div>
                                             <div className="col-md-4">
-                                                <div data-label='contactName0' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
+                                                <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="text" name='contactName0' onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                <input type="text" name='name' onChange={(e)=> fillData(e, setContacts, contacts)} placeholder='Имя' className="w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
@@ -1603,13 +1547,13 @@ export default function AddCargo() {
                                                     <div data-label={'contactPhone'+obj} data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <input type="tel" name={'contactPhone'+obj} onChange={(e)=> fillDataList(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                    <input type="tel" name={'contactPhone'+obj} onChange={(e)=> fillData(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
                                                 </div>
                                                 <div className="col-md-4">
                                                     <div data-label={'contactName'+obj} data-warning='false' className="title-font fs-12 fw-5">Имя</div>
                                                 </div>
                                                 <div className="col-md-8">
-                                                    <input type="text" name={'contactName'+obj} onChange={(e)=> fillDataList(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                                    <input type="text" name={'contactName'+obj} onChange={(e)=> fillData(e)} placeholder='Имя' className="w-100 fs-12"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -1628,7 +1572,7 @@ export default function AddCargo() {
                                         <div className="title-font fs-12 fw-5">Примечание</div>
                                     </div>
                                     <div className="col-md-9">
-                                        <textarea rows={3} placeholder='Укажите здесь дополнительную информацию '></textarea>
+                                        <textarea rows={3} name='remark' placeholder='Укажите здесь дополнительную информацию' value={getVal(contactsField, 'remark')} onChange={(e)=> fillData(e, setContactsField, contactsField)}></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -1669,51 +1613,95 @@ export default function AddCargo() {
                                     <li>
                                         <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(loading)?'filled':''}>Загрузка</Link>
                                         <div className='fs-09'>
-                                            {
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='frequency').value) &&
                                                 <span className='me-1'>{(loading.find(obj=>obj.name==='frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'frequency')) &&
+                                                <span className='me-1'>{(getVal(loading, 'frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingDate').value) &&
                                                 <span className='me-1'>{loading.find(obj=>obj.name==='loadingDate').value}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingDate')) &&
+                                                <span className='me-1'>{getVal(loading, 'loadingDate')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingDays').value) &&
                                                 <span className='me-1'>+ {loading.find(obj=>obj.name==='loadingDays').value} дня</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingDays')) &&
+                                                <span className='me-1'>+ {getVal(loading, 'loadingDays')} дня</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingPeriodType').value) &&
                                                 <span>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingPeriodType')) &&
+                                                <span className='me-1'>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingTimeFrom').value) &&
                                                 <span className='me-1'>, {loading.find(obj=>obj.name==='loadingTimeFrom').value}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingTimeFrom')) &&
+                                                <span className='me-1'>, {getVal(loading, 'loadingTimeFrom')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingTimeTo').value) &&
                                                 <span className='me-1'>– {loading.find(obj=>obj.name==='loadingTimeTo').value}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingTimeTo')) &&
+                                                <span className='me-1'>– {getVal(loading, 'loadingTimeTo')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='isLoadingAllDay').value) &&
+                                                <span className='me-1'>, Круглосуточно</span>
+                                            } */}
+                                            {
+                                                (getVal(loading, 'isLoadingAllDay')) &&
                                                 <span className='me-1'>, Круглосуточно</span>
                                             }
                                         </div>
                                         <div className='fs-09'>
-                                            {
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingTown').value) &&
                                                 <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingTown')) &&
+                                                <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingAddress').value) &&
                                                 <span className='me-1'>, {loading.find(obj=>obj.name==='loadingAddress').value}</span>
-                                            }
+                                            } */}
                                             {
+                                                (getVal(loading, 'loadingAddress')) &&
+                                                <span className='me-1'>, {getVal(loading, 'loadingAddress')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='transportationType').value) &&
-                                                <span className='me-1'>, {loading.find(obj=>obj.name==='transportationType').value}</span>
-                                            }
+                                                <span className='me-1'>, {loading.find(obj=>obj.name==='transportationType').value}</span> 
+                                            } */}
                                             {
+                                                (getVal(loading, 'transportationType')) &&
+                                                <span className='me-1'>, {getVal(loading, 'transportationType')}</span>
+                                            }
+                                            {/* {
                                                 (loading.find(obj=>obj.name==='loadingType').value) &&
                                                 <span>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
+                                            } */}
+                                            {
+                                                (getVal(loading, 'loadingType')) &&
+                                                <span className='me-1'>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
                                             }
                                         </div>
                                     </li>
@@ -1760,46 +1748,86 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(cargo)?'filled':''}>Груз</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('cargoType')) &&
-                                                <span className='me-1'>{optionsCargoType.find(item => item.value === findInState('cargoType')).label}</span>
+                                                (getVal(cargo, 'cargoType')) &&
+                                                <span className='me-1'>{getObjLabel(optionsCargoType, cargo, 'cargoType')}</span>
                                             }
                                             {
-                                                (findInState('packageType')) &&
-                                                <span className='me-1'>, {optionsPackageType.find(item => item.value === findInState('packageType')).label}</span>
+                                                (getVal(cargo, 'packageType')) &&
+                                                <span className='me-1'>, {getObjLabel(optionsPackageType, cargo, 'packageType')}</span>
                                             }
                                             {
-                                                (findInState('packageCount')) &&
-                                                <span>{findInState('packageCount')} шт</span>
+                                                (getVal(cargo, 'packageCount')) &&
+                                                <span className='me-1'>{getVal(cargo, 'packageCount')} шт</span>
                                             }
                                             {
-                                                (findInState('weight')) &&
-                                                <span className='me-1'>, {findInState('weight')} т</span>
+                                                (getVal(cargo, 'weight')) &&
+                                                <span className='me-1'>, {getVal(cargo, 'weight')} т</span>
                                             }
                                             {
-                                                (findInState('capacity')) &&
-                                                <span className='me-1'>, {findInState('capacity')} м<sup>3</sup></span>
+                                                (getVal(cargo, 'capacity')) &&
+                                                <span className='me-1'>, {getVal(cargo, 'capacity')} м<sup>3</sup></span>
                                             }
                                         </div>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('length')) &&
-                                                <span className='me-1'>{findInState('length')}</span>
+                                                (getVal(cargo, 'length')) &&
+                                                <span className='me-1'>{getVal(cargo, 'length')}</span>
                                             }
                                             {
-                                                (findInState('width')) &&
-                                                <span className='me-1'>/ {findInState('width')}</span>
+                                                (getVal(cargo, 'width')) &&
+                                                <span className='me-1'>/ {getVal(cargo, 'width')}</span>
                                             }
                                             {
-                                                (findInState('height')) &&
-                                                <span className='me-1'>/ {findInState('height')} м</span>
+                                                (getVal(cargo, 'height')) &&
+                                                <span className='me-1'>/ {getVal(cargo, 'height')}</span>
                                             }
                                             {
-                                                (findInState('notes')) &&
-                                                <span className='me-1'>, {optionsNotes.find(item => item.value === findInState('notes')).label}</span>
+                                                (getVal(cargo, 'notes')) &&
+                                                <span className='me-1'>, {getObjLabel(optionsNotes, cargo, 'notes')}</span>
                                             }
                                             {
-                                                (findInState('permissions')) &&
-                                                <span className='me-1'>, {findInState('permissions')}</span>
+                                                (getVal(cargo, 'ADR1')) &&
+                                                <span className='me-1'>, ADR1</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR2')) &&
+                                                <span className='me-1'>, ADR2</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR3')) &&
+                                                <span className='me-1'>, ADR3</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR4')) &&
+                                                <span className='me-1'>, ADR4</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR5')) &&
+                                                <span className='me-1'>, ADR5</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR6')) &&
+                                                <span className='me-1'>, ADR6</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR7')) &&
+                                                <span className='me-1'>, ADR7</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR8')) &&
+                                                <span className='me-1'>, ADR8</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'ADR9')) &&
+                                                <span className='me-1'>, ADR9</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'TIR')) &&
+                                                <span className='me-1'>, TIR</span>
+                                            }
+                                            {
+                                                (getVal(cargo, 'EKMT')) &&
+                                                <span className='me-1'>, EKMT</span>
                                             }
                                         </div>
                                     </li>
@@ -1807,16 +1835,16 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(requirements)?'filled':''}>Требования к машине</Link>
                                         <div className='fs-09'>
                                             {
-                                                (requirements.find(obj=>obj.name==='carType').value) &&
+                                                (getVal(requirements, 'carType')) &&
                                                 <span className='me-1'>{getObjLabel(optionsCarType, requirements, 'carType')}</span>
                                             }
                                             {
-                                                (requirements.find(obj=>obj.name==='tempFrom').value) &&
-                                                <span className='me-1'>, {requirements.find(obj=>obj.name==='tempFrom').value}</span>
+                                                (getVal(requirements, 'tempFrom')) &&
+                                                <span className='me-1'>, {getVal(requirements, 'tempFrom')}</span>
                                             }
                                             {
-                                                (requirements.find(obj=>obj.name==='tempTo').value) &&
-                                                <span className='me-1'>- {requirements.find(obj=>obj.name==='tempTo').value}°C</span>
+                                                (getVal(requirements, 'tempTo')) &&
+                                                <span className='me-1'>- {getVal(requirements, 'tempTo')}°C</span>
                                             }
                                         </div>
                                     </li>
@@ -1824,28 +1852,28 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="payment" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(payment)?'filled':''}>Оплата</Link>
                                         <div className='fs-09'>
                                             {
-                                                (findInState('bargain')) &&
-                                                <span className='me-1'>{findInState('bargain')}</span>
+                                                (getVal(payment, 'bargain')) &&
+                                                <span className='me-1'>{(getVal(payment, 'bargain') == 0) ? 'Возможен торг' : 'Без торга'}</span>
                                             }
                                             {
-                                                (findInState('paymentType')) &&
-                                                <span className='me-1'>, {findInState('paymentType')}</span>
+                                                (getVal(payment, 'paymentType')) &&
+                                                <span className='me-1'>, {(getVal(payment, 'paymentType') == 0) ? 'Наличный расчет' : 'Перевод по карте'}</span>
                                             }
                                             {
-                                                (findInState('cash')) &&
-                                                <span className='me-1'>, наличными {findInState('cash')}&nbsp;р/км</span>
+                                                (getVal(payment, 'cash')) &&
+                                                <span className='me-1'>, наличными&nbsp;{getVal(payment, 'cash')}&nbsp;р/км</span>
                                             }
                                             {
-                                                (findInState('priceVat')) &&
-                                                <span className='me-1'>, с&nbsp;НДС {findInState('priceVat')}&nbsp;р/км</span>
+                                                (getVal(payment, 'priceVat')) &&
+                                                <span className='me-1'>, с&nbsp;НДС {getVal(payment, 'priceVat')}&nbsp;р/км</span>
                                             }
                                             {
-                                                (findInState('priceNovat')) &&
-                                                <span className='me-1'>, без&nbsp;НДС {findInState('priceNovat')}&nbsp;р/км</span>
+                                                (getVal(payment, 'priceNovat')) &&
+                                                <span className='me-1'>, без&nbsp;НДС {getVal(payment, 'priceNovat')}&nbsp;р/км</span>
                                             }
                                             {
-                                                (findInState('prepay')) &&
-                                                <span>, предоплата {findInState('prepay')}%</span>
+                                                (getVal(payment, 'prepay')) &&
+                                                <span className='me-1'>, предоплата&nbsp;{getVal(payment, 'prepay')}%</span>
                                             }
                                         </div>
                                     </li>
