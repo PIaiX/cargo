@@ -836,11 +836,11 @@ export default function AddCargo() {
         } else { return '';}
     }
 
-    
 
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
+                <Link to="/" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
                 <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
                 <form ref={ref} name='myForm' id='myForm' className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">

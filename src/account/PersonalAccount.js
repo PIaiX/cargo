@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import AccountMenu from './AccountMenu';
 import UserProfile from './UserProfile';
 import ViewAccount from './ViewAccount';
@@ -31,6 +32,7 @@ export default function PersonalAccount() {
     return (
         <main className="account bg-gray py-sm-3 py-md-4 py-lg-5">
             <section id="sec-12" className="container">
+                <Link to="/" className='fs-12 fw-5 d-none d-lg-block mb-5'><span className='green fs-15 me-2'>⟵</span> На главную</Link>
                 {
                     (mob === false) ?
                     <div className="row gx-4 gx-xl-5">

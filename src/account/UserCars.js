@@ -9,6 +9,7 @@ export default function UserCars() {
 
     return (
         <div className='box px-0 p-sm-4 p-xl-5'>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Мои машины</h1>
             <div className='d-md-flex flex-row-reverse justify-content-between align-items-center mb-4 mb-xl-5'>
                 <Link to="/add-car" className='btn btn-2 fs-12 px-4 mb-4 mb-md-0'>

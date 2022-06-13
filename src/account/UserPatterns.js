@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import Pattern from '../components/Pattern';
 
 export default function UserPatterns() {
@@ -6,6 +7,7 @@ export default function UserPatterns() {
 
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Шаблоны</h1>
             <div className='d-flex align-items-center fs-12 fw-5 title-font mb-4 mb-xl-5'>
                 <button type='button' className={(tab === 'cars') ? 'active tab-btn' : 'tab-btn'} onClick={()=>setTab('cars')}>Машины (3)</button>
