@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { IoWine, IoSnow, IoShieldCheckmarkSharp, IoEllipsisVertical } from 'react-icons/io5';
-import { MdLocalShipping } from "react-icons/md";
+import { IoEllipsisVertical } from 'react-icons/io5';
 import { IconContext  } from "react-icons";
 
 export default function ResponseCard(props) {
@@ -31,14 +29,21 @@ export default function ResponseCard(props) {
                 }
             </div>
             {
-                (props.type === 1) ?
+                (props.type === 1 && props.inWork === true) ?
+                <div className='px-4'>
+                    <button type='button' className="btn btn-1 w-100 mt-3">Выполнить</button>
+                    <button type='button' className="btn btn-2 w-100 mt-2">Отменить</button>
+                </div>
+                : (props.type === 1 && props.inWork === false) ?
                 <div className='px-4'>
                     <button type='button' className="btn btn-1 w-100 mt-3">Принять</button>
                     <button type='button' className="btn btn-2 w-100 mt-2">Отклонить</button>
                 </div>
-                : <div className='px-4'>
+                : (props.type === 2 && props.inWork === false) ?
+                <div className='px-4'>
                     <button type='button' className="btn btn-1 w-100 mt-3">Отменить</button>
                 </div>
+                : ''
             }
             
             {
@@ -54,8 +59,8 @@ export default function ResponseCard(props) {
                             (props.profileView === 'archive')&&
                             <li><button type='button'>Восстановить</button></li>
                         }
-                        <li><Link to="/add-car">Сформировать документ</Link></li>
-                        <li><button type='button' data-bs-toggle="modal" data-bs-target="#delete-ad">Удалить</button></li>
+                        <li><button type='button'>Сформировать документ</button></li>
+                        <li><button type='button'>Удалить</button></li>
                     </ul>
                 </div>
             }

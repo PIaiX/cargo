@@ -213,9 +213,6 @@ input {
 label {
     display: flex;
     align-items: center;
-    // input {
-    //     &:checked + span {color: $green;}
-    // }
     span {flex: 1;}
 }
 
@@ -734,6 +731,7 @@ h5 {
 .text-color {color: $text-color;}
 .red {color: $red;}
 .white {color: #fff;}
+.black {color: #000;}
 
 .rotate-180 {transform: rotate(180deg);}
 .bb-1 {border-bottom: 1px solid;}
@@ -919,7 +917,7 @@ header {
 }
 
 main {
-    min-height: calc(100vh - 70px - 160px);
+    min-height: calc(100vh - 70px - 150px);
     position: relative;
     &.bg-white {background-color: #fff;}
     &.bg-gray {background-color: #FAFAFA;}
@@ -934,10 +932,13 @@ main {
     //     }
     // }
     @media (max-width: 1199px) {
-        min-height: calc(100vh - 55px - 160px);
+        min-height: calc(100vh - 55px - 130px);
     }
     @media (max-width: 991px) {
-        min-height: calc(100vh - 50px - 50px);
+        min-height: calc(100vh - 50px - 140px);
+    }
+    @media (max-width: 767px) {
+        min-height: calc(100vh - 50px - 180px);
     }
 }
 
@@ -2369,6 +2370,8 @@ article {
     .more {
         color: $gray-4;
         text-decoration: underline;
+        cursor: pointer;
+        padding-left: 5px;
     }
     .dropdown {
         position: absolute;
@@ -2400,6 +2403,41 @@ article {
         }
     }
 }
+
+.tariffs {
+    &>div:nth-child(5n+1) .tariff {
+        border: 3px solid #A5CB80;
+        box-shadow: 1px 4px 9px rgba(#A5CB80, .25);
+    }
+    &>div:nth-child(5n+2) .tariff {
+        border: 3px solid #01BFC4;
+        box-shadow: 1px 4px 9px rgba(#01BFC4, .25);
+    }
+    &>div:nth-child(5n+3) .tariff {
+        border: 3px solid #038CB8;
+        box-shadow: 1px 4px 9px rgba(#038CB8, .25);
+    }
+    &>div:nth-child(5n+4) .tariff {
+        border: 3px solid #00496F;
+        box-shadow: 1px 4px 9px rgba(#00496F, .25);
+    }
+    &>div:nth-child(5n+5) .tariff {
+        border: 3px solid #7B61FF;
+        box-shadow: 1px 4px 9px rgba(#7B61FF, .25);
+    }
+}
+.tariff {
+    text-align: center;
+    padding: .75em;
+    border-radius: 8px;
+    color: #000;
+    background: #FFFFFF;
+    font-size: 1.4em;
+    @media (max-width: 1659px){
+        font-size: 1.2em;
+    }
+}
+
 
 
 footer {

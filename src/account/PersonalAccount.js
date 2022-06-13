@@ -10,6 +10,7 @@ import UserPatterns from './UserPatterns';
 import UserDocuments from './UserDocuments';
 import Responses from './Responses';
 import InWork from './InWork';
+import Tariffs from './Tariffs';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);
@@ -37,7 +38,6 @@ export default function PersonalAccount() {
                             <AccountMenu />
                         </div>
                         <div className="col-md-8 col-lg-9">
-                        
                             <Routes>
                                 <Route path="/" element={<UserProfile />} />
                                 <Route path="profile" element={<UserProfile />} />
@@ -47,10 +47,10 @@ export default function PersonalAccount() {
                                 <Route path="user-cargo" element={<UserCargo />} />
                                 <Route path="responses" element={<Responses />} />
                                 <Route path="in-work" element={<InWork />} />
+                                <Route path="tariffs" element={<Tariffs />} />
                                 <Route path="user-patterns" element={<UserPatterns />} />
                                 <Route path="user-documents" element={<UserDocuments />} />
                             </Routes>
-
                         </div>
                     </div>
                     : 
@@ -63,6 +63,7 @@ export default function PersonalAccount() {
                         <Route path="user-cargo" element={<UserCargo />} />
                         <Route path="responses" element={<Responses />} />
                         <Route path="in-work" element={<InWork />} />
+                        <Route path="tariffs" element={<Tariffs />} />
                         <Route path="user-patterns" element={<UserPatterns />} />
                         <Route path="user-documents" element={<UserDocuments />} />
                     </Routes>

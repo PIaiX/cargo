@@ -65,7 +65,7 @@ export default function AccountMenu() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="">
+                        <NavLink to="tariffs">
                             <IconContext.Provider value={{className: "icon-15 green", title: "Тарифы" }}>
                                 <RiMoneyDollarBoxFill/>
                             </IconContext.Provider>

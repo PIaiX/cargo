@@ -1046,6 +1046,10 @@ h5 {
   color: #fff;
 }
 
+.black {
+  color: #000;
+}
+
 .rotate-180 {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
@@ -1299,7 +1303,7 @@ header .icon {
 }
 
 main {
-  min-height: calc(100vh - 70px - 160px);
+  min-height: calc(100vh - 70px - 150px);
   position: relative;
 }
 
@@ -1313,13 +1317,19 @@ main.bg-gray {
 
 @media (max-width: 1199px) {
   main {
-    min-height: calc(100vh - 55px - 160px);
+    min-height: calc(100vh - 55px - 130px);
   }
 }
 
 @media (max-width: 991px) {
   main {
-    min-height: calc(100vh - 50px - 50px);
+    min-height: calc(100vh - 50px - 140px);
+  }
+}
+
+@media (max-width: 767px) {
+  main {
+    min-height: calc(100vh - 50px - 180px);
   }
 }
 
@@ -3596,6 +3606,8 @@ article.full figure figcaption p {
 .response .more {
   color: #BDBDBD;
   text-decoration: underline;
+  cursor: pointer;
+  padding-left: 5px;
 }
 
 .response .dropdown {
@@ -3631,6 +3643,51 @@ article.full figure figcaption p {
 
 .docs-list li a span {
   margin-left: 1em;
+}
+
+.tariffs > div:nth-child(5n+1) .tariff {
+  border: 3px solid #A5CB80;
+  -webkit-box-shadow: 1px 4px 9px rgba(165, 203, 128, 0.25);
+          box-shadow: 1px 4px 9px rgba(165, 203, 128, 0.25);
+}
+
+.tariffs > div:nth-child(5n+2) .tariff {
+  border: 3px solid #01BFC4;
+  -webkit-box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.25);
+          box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.25);
+}
+
+.tariffs > div:nth-child(5n+3) .tariff {
+  border: 3px solid #038CB8;
+  -webkit-box-shadow: 1px 4px 9px rgba(3, 140, 184, 0.25);
+          box-shadow: 1px 4px 9px rgba(3, 140, 184, 0.25);
+}
+
+.tariffs > div:nth-child(5n+4) .tariff {
+  border: 3px solid #00496F;
+  -webkit-box-shadow: 1px 4px 9px rgba(0, 73, 111, 0.25);
+          box-shadow: 1px 4px 9px rgba(0, 73, 111, 0.25);
+}
+
+.tariffs > div:nth-child(5n+5) .tariff {
+  border: 3px solid #7B61FF;
+  -webkit-box-shadow: 1px 4px 9px rgba(123, 97, 255, 0.25);
+          box-shadow: 1px 4px 9px rgba(123, 97, 255, 0.25);
+}
+
+.tariff {
+  text-align: center;
+  padding: .75em;
+  border-radius: 8px;
+  color: #000;
+  background: #FFFFFF;
+  font-size: 1.4em;
+}
+
+@media (max-width: 1659px) {
+  .tariff {
+    font-size: 1.2em;
+  }
 }
 
 footer {
