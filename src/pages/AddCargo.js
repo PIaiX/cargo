@@ -272,6 +272,7 @@ export default function AddCargo() {
     );
     let [contacts, setContacts] = useState([
         {
+            index: 0,
             phone: '',
             name: '',
         }
@@ -290,7 +291,6 @@ export default function AddCargo() {
             }
         ]
     );
-    
 
     let [total, setTotal] = useState([
         {
@@ -318,316 +318,6 @@ export default function AddCargo() {
             value: contactsField,
         }
     ]);
-
-    let [data, setData] = useState([
-        {
-            fieldset: 'loading',
-            name: 'frequency',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingDate',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingDays',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingPeriodType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingTimeFrom',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingTimeTo',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'isLoadingAllDay',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingTown',
-            value: optionsTowns[1],
-            required: true
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingAddress',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'loading',
-            name: 'transportationType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'loading',
-            name: 'loadingType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingDateFrom',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingDateTo',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingTimeFrom',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingTimeTo',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'isUnloadingAllDay',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingTown',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingAddress',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'unloading',
-            name: 'unloadingType',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'cargoType',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'weight',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'capacity',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'length',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'width',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'height',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'cargo',
-            name: 'packageType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'packageCount',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'notes',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR1',
-            value: true,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR2',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR3',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR4',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR5',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR6',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR7',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR8',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'ADR9',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'TIR',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'cargo',
-            name: 'EKMT',
-            value: false,
-            required: false
-        },
-        {
-            fieldset: 'requirements',
-            name: 'carType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'requirements',
-            name: 'tempFrom',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'requirements',
-            name: 'tempTo',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'bargain',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'paymentType',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'cash',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'priceVat',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'priceNovat',
-            value: '',
-            required: false
-        },
-        {
-            fieldset: 'payment',
-            name: 'prepay',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'contacts',
-            name: 'contactPhone0',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'contacts',
-            name: 'contactName0',
-            value: '',
-            required: true
-        },
-        {
-            fieldset: 'contacts',
-            name: 'remark',
-            value: '',
-            required: false
-        },
-    ]);
-
     
 
     //запись в data значений селектов (React-Select)
@@ -647,7 +337,6 @@ export default function AddCargo() {
         let clearState = e.target.dataset.clear;
         
         if(e.target.type === 'checkbox'){
-            console.log(e.target.value);
             if(e.target.checked == true) {
                 if (clearState!==null && clearState!==undefined && clearState!==''){
                     
@@ -726,6 +415,68 @@ export default function AddCargo() {
             })
         )
     }
+    
+    //поиск значения полей в массиве
+    const getObj = (opt, state, param) => {
+        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
+            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
+        } else { return '';}
+    }
+    const getObjLabel = (opt, state, param) => {
+        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
+            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value).label;
+        } else { return '';}
+    }
+    const getVal = (state, param) => {
+        let val = state.find(obj => obj.name == param).value;
+        if(val!==null && val!==undefined && val!==''){
+            return val;
+        } else { return '';}
+    }
+
+    let fillContacts = (e, i) => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+        setContacts(contacts.map(obj => {
+            if (obj.index === i) {
+                if(inputName === 'name') {
+                    return {...obj, 'name': inputVal};
+                } else {
+                    return {...obj, 'phone': inputVal};
+                }
+            } else {
+               return obj;
+            }
+        }));
+    };
+    //получение значений полей контактов из data
+    const getContact = (param, i) => {
+        let val;
+        if(param === 'name'){
+            val = contacts.find(obj => obj.index === i).name;
+        } else if(param === 'phone'){
+            val = contacts.find(obj => obj.index === i).phone;
+        } else {val=undefined}
+        if(val!==null && val!==undefined && val!==''){
+            return val;
+        } else { return '';}
+    }
+    //удаление полей контактов и их стирание из data
+    let deleteContacts = (i) => {
+        setContacts(contacts.filter(obj => obj.index !== i));
+    };
+    //добавление полей контактов и их запись в data
+    let addContacts = () => {
+        let newNum = Number(contacts.length);
+        let newObj = {
+            index: newNum,
+            phone: '',
+            name: '',
+        };
+        setContacts([...contacts, newObj]);
+    }
+
+
     //проверка fieldset на заполнение
     let checkFieldset = (state) => {
         let newArr = state.filter(item => item.required === true);
@@ -754,87 +505,29 @@ export default function AddCargo() {
         }));
     };
 
-
-    /* DELETE */
-    //поиск значения полей в data 
-    const findInState = (name) => {
-        let val = '';
-        data.forEach(obj => {
-            if (obj.name === name && obj.value !== '') {
-                val = obj.value
-            } 
-        })
-        return val;
-    };
-
     /* На изменение */
     //финальная проверка на заполнение и отправка формы
     const onSubmit = e => {
         e.preventDefault();
-        let requiredArr = data.filter(obj => obj.required===true);
-        let verification = requiredArr.every(obj => obj.value!=='');
-        let empty = requiredArr.filter(obj => obj.value==='');
+        console.log('total=' + total);
+        // let requiredArr = data.filter(obj => obj.required===true);
+        // let verification = requiredArr.every(obj => obj.value!=='');
+        // let empty = requiredArr.filter(obj => obj.value==='');
 
-        if(verification){
-            let formInfo = data.map(obj => {
-                return obj.name + ': ' + obj.value + '; ';
-            })
-            alert(formInfo);
-        } else {
-            alert('заполните форму!');
-            Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
-            empty.forEach(obj => {
-                let label = obj.name;
-                document.querySelector('[data-label='+label+']').dataset.warning = 'true';
-            })
-        }
+        // if(verification){
+        //     let formInfo = data.map(obj => {
+        //         return obj.name + ': ' + obj.value + '; ';
+        //     })
+        //     alert(formInfo);
+        // } else {
+        //     alert('заполните форму!');
+        //     Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
+        //     empty.forEach(obj => {
+        //         let label = obj.name;
+        //         document.querySelector('[data-label='+label+']').dataset.warning = 'true';
+        //     })
+        // }
     };
-
-    
-    //удаление полей контактов и их стирание из data - ДОПИЛИТЬ
-    let deleteContacts = (i) => {
-        setContacts(contacts.filter(obj => obj !== i));
-        setData(data.filter(obj => obj.name !== 'contactPhone'+i || obj.name !== 'contactName'+i));
-    };
-
-    //добавление полей контактов и их запись в data - ДОПИЛИТЬ
-    let addContacts = () => {
-        let newNum = Number(contacts)+1;
-
-        let phone = {
-            fieldset: 'contacts',
-            name: 'contactPhone'+ newNum,
-            value: '',
-            required: false
-        };
-        let userName = {
-            fieldset: 'contacts',
-            name: 'contactName'+ newNum,
-            value: '',
-            required: false
-        };
-        setData([...data, phone, userName]);
-        
-        setContacts([...contacts, newNum]);
-    }
-
-    //поиск значения полей в массиве
-    const getObj = (opt, state, param) => {
-        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
-            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
-        } else { return '';}
-    }
-    const getObjLabel = (opt, state, param) => {
-        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
-            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value).label;
-        } else { return '';}
-    }
-    const getVal = (state, param) => {
-        let val = state.find(obj => obj.name == param).value;
-        if(val!==null && val!==undefined && val!==''){
-            return state.find(obj => obj.name == param).value;
-        } else { return '';}
-    }
 
 
     return (
@@ -1513,59 +1206,88 @@ export default function AddCargo() {
                         <fieldset name="contactsField" data-show={(activeField === 6) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
-                                <div className='row gx-2 gx-sm-4 mb-4 mb-md-0'>
+                                {/* <div className='row gx-2 gx-sm-4'>
                                     <div className='col-md-9'>
                                         <div className="row align-items-center gy-2 gy-md-3">
                                             <div className="col-md-4">
                                                 <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="tel" name='phone' onChange={(e)=> fillData(e, setContacts, contacts)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
+                                                <input type="tel" name='phone' placeholder='+ 7 (962) 458 65 79' value={getContact('phone', 0)} onChange={(e)=> fillContacts(e, 0)} className="w-100 fs-12"/>
                                             </div>
                                             <div className="col-md-4">
                                                 <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="text" name='name' onChange={(e)=> fillData(e, setContacts, contacts)} placeholder='Имя' className="w-100 fs-12"/>
+                                                <input type="text" name='name' placeholder='Имя' value={getContact('name', 0)} onChange={(e)=> fillContacts(e, 0)} className="w-100 fs-12"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div className='col-md-3 mt-2 mt-md-0'>
-                                        <button type="button" onClick={() => addContacts()} className="green fs-11 fw-5 text-start">
+                                        <button type="button" className="green fs-11 fw-5 text-start">
                                             <IconContext.Provider value={{className: "green icon-15"}}>
                                                 <IoAddCircle />
                                             </IconContext.Provider>
                                             <span className="ms-2">Добавить контакт</span>
                                         </button>
                                     </div>
-                                </div>
+                                </div> */}
                                 {
-                                    contacts.map(obj => <div key={obj} className='row mt-3'>
-                                        <div className='col-md-9'>
-                                            <div className="row align-items-center gy-2 gy-md-3">
-                                                <div className="col-md-4">
-                                                    <div data-label={'contactPhone'+obj} data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <input type="tel" name={'contactPhone'+obj} onChange={(e)=> fillData(e)} placeholder='+ 7 (962) 458 65 79' className="w-100 fs-12"/>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <div data-label={'contactName'+obj} data-warning='false' className="title-font fs-12 fw-5">Имя</div>
-                                                </div>
-                                                <div className="col-md-8">
-                                                    <input type="text" name={'contactName'+obj} onChange={(e)=> fillData(e)} placeholder='Имя' className="w-100 fs-12"/>
+                                    contacts.map(obj => 
+                                        obj.index===0 ?
+                                        <div key={obj.index} className='row gx-2 gx-sm-4'>
+                                            <div className='col-md-9'>
+                                                <div className="row align-items-center gy-2 gy-md-3">
+                                                    <div className="col-md-4">
+                                                        <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <input type="tel" name='phone' placeholder='+ 7 (962) 458 65 79' value={getContact('phone', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <input type="text" name='name' placeholder='Имя' value={getContact('name', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div className='col-md-3 mt-2 mt-md-0'>
+                                                <button type="button" onClick={() => addContacts()} className="green fs-11 fw-5 text-start">
+                                                    <IconContext.Provider value={{className: "green icon-15"}}>
+                                                        <IoAddCircle />
+                                                    </IconContext.Provider>
+                                                    <span className="ms-2">Добавить контакт</span>
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div className='col-md-3 mt-2 mt-md-0'>
-                                            <button type="button" onClick={() => deleteContacts(obj)} className="red fs-11 fw-5">
-                                                <IconContext.Provider value={{className: "red icon-15"}}>
-                                                    <IoCloseCircle />
-                                                </IconContext.Provider>
-                                                <span className="ms-2">Удалить</span>
-                                            </button>
+                                        :<div key={obj.index} className='row mt-3'>
+                                            <div className='col-md-9'>
+                                                <div className="row align-items-center gy-2 gy-md-3">
+                                                    <div className="col-md-4">
+                                                        <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <input type="tel" name='phone' placeholder='+ 7 (962) 458 65 79' value={getContact('phone', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
+                                                    </div>
+                                                    <div className="col-md-4">
+                                                        <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя</div>
+                                                    </div>
+                                                    <div className="col-md-8">
+                                                        <input type="text" name='name' placeholder='Имя' value={getContact('name', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className='col-md-3 mt-2 mt-md-0'>
+                                                <button type="button" onClick={() => deleteContacts(obj.index)} className="red fs-11 fw-5">
+                                                    <IconContext.Provider value={{className: "red icon-15"}}>
+                                                        <IoCloseCircle />
+                                                    </IconContext.Provider>
+                                                    <span className="ms-2">Удалить</span>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>)
+                                    )
                                 }
                                 <div className="row mt-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
@@ -1878,17 +1600,21 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="contacts" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(contactsField)?'filled':''}>Контакты</Link>
-                                        <div className='fs-09'>
-                                            {
-                                                (findInState('contactPhone0')) &&
-                                                <span className='me-1'>{findInState('contactPhone0')}</span>
-                                            }
-                                            {
-                                                (findInState('contactName0')) &&
-                                                <span>, {findInState('contactName0')}</span>
-                                            }
-                                        </div>
+                                        <Link activeClass="active" to="contactsField" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(contactsField)?'filled':''}>Контакты</Link>
+                                        {
+                                            contacts.map(obj => 
+                                                <div className='fs-09'>
+                                                    {
+                                                        (obj.name)&&
+                                                        <span>{obj.name}: </span>
+                                                    }
+                                                    {
+                                                        (obj.phone)&&
+                                                        <span>{obj.phone}</span>
+                                                    }
+                                                </div>
+                                            )
+                                        }
                                     </li>
                                 </ol>
                             </nav>
