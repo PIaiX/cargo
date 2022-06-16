@@ -10,7 +10,7 @@ export default function AddCargo() {
     const ref = useRef(null);
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
-    let [loading, setLoading] = useState(
+    let [loading, setLoading] = useState([
         [
             {
                 name: 'frequency',
@@ -68,7 +68,7 @@ export default function AddCargo() {
                 required: false
             }
         ]
-    );
+    ]);
     let [unloading, setUnloading] = useState(
         [
             {
@@ -291,44 +291,32 @@ export default function AddCargo() {
             }
         ]
     );
-
-    let [total, setTotal] = useState([
-        {
-            fieldname: 'loading',
-            value: loading,
-        },
-        {
-            fieldname: 'unloading',
-            value: unloading,
-        },
-        {
-            fieldname: 'cargo',
-            value: cargo,
-        },
-        {
-            fieldname: 'requirements',
-            value: requirements,
-        },
-        {
-            fieldname: 'payment',
-            value: payment,
-        },
-        {
-            fieldname: 'contacts',
-            value: contactsField,
-        }
-    ]);
     
-
     //запись в data значений селектов (React-Select)
-    let handleRSelect = (e, name, func, list) => {
-        func(list.map(obj => {
-            if (obj.name === name) {
-               return {...obj, 'value': e.value};
-            } else {
-               return obj;
-            }
-        }));
+    let handleRSelect = (e, name, func, list, i) => {
+        if(i !== undefined){
+            func(list.map((arr, index)=> {
+                if(index === i){
+                    return arr.map(obj => {
+                        if(obj.name === name){
+                            return {...obj, 'value': e.value}
+                        } else {
+                            return obj;
+                        }
+                    })
+                } else {
+                    return arr;
+                }
+            }))
+        } else {
+            func(list.map(obj => {
+                if(obj.name === name){
+                    return {...obj, 'value': e.value}
+                } else {
+                    return obj;
+                }
+            }))
+        }
     };
     //main input changes handler
     let fillData = (e, func, list) => {
@@ -381,6 +369,78 @@ export default function AddCargo() {
             }));
         }
     };
+    let fillDataArr = (e, func, list, i) => {
+        let inputName = e.target.name;
+        let inputVal = e.target.value.trim();
+        let clearState = e.target.dataset.clear;
+        
+        if(e.target.type === 'checkbox'){
+            if(e.target.checked == true) {
+                if (clearState!==null && clearState!==undefined && clearState!==''){
+                    let clearStateArr = clearState.split(' ');
+                    clearStateArr.forEach(item => clearInput(item));
+                    func(list.map((arr, index)=> {
+                        if(index === i) {
+                            return arr.map(obj => {
+                                if (obj.name === inputName) {
+                                   return {...obj, 'value': true};//write the value of the checkbox to the State
+                                } else if(clearStateArr.includes(obj.name)) {
+                                    return {...obj, 'value': ''};//delete values of inputs from State
+                                } else {
+                                   return obj; //skip the rest
+                                }
+                            })
+                        }else {
+                            return arr;
+                        }
+                    }));
+                } else {
+                    func(list.map((arr, index)=> {
+                        if(index === i) {
+                            return arr.map(obj => {
+                                if (obj.name === inputName) {
+                                   return {...obj, 'value': true};
+                                } else {
+                                   return obj;
+                                }
+                            })
+                        }else {
+                            return arr;
+                        }
+                    }));
+                }
+            } else {
+                func(list.map((arr, index)=> {
+                    if(index === i) {
+                        return arr.map(obj => {
+                            if (obj.name === inputName) {
+                               return {...obj, 'value': false};
+                            } else {
+                               return obj;
+                            }
+                        })
+                    }else {
+                        return arr;
+                    }
+                }));
+            }
+        } else {
+            func(list.map((arr, index)=> {
+                if(index === i) {
+                    return arr.map(obj => {
+                        if (obj.name === inputName) {
+                           return {...obj, 'value': inputVal};
+                        } else {
+                           return obj;
+                        }
+                    })
+                }else {
+                    return arr;
+                }
+            }))
+        }
+    };
+    console.log(loading);
     //очищение значений инпутов
     let clearInput = (item) => {
         let input = document.querySelector('[name="'+item+'"]'); //clear input's value by name
@@ -391,7 +451,7 @@ export default function AddCargo() {
         }
     };
     //переключение обязательных для заполнения полей через radiobutton
-    let toggleParams = (e, func, list) => {
+    let toggleParams = (e, func, list, i) => {
         //нужно прикрутить очистку инпутов и селекта
         let inputVal = e.target.value;
         let inputName = e.target.name;
@@ -399,28 +459,40 @@ export default function AddCargo() {
         let delParams = e.target.dataset.del.split(' ');
 
         func(
-            list.map(obj => {
-                if(obj.name === inputName){
-                    return {...obj, 'value': inputVal};
-                } else if (addParams.includes(obj.name)){
-                    return {...obj, 'required': true};
-                } else if (delParams.includes(obj.name)) {
-                    delParams.map(item => {
-                        clearInput(item);
-                    });
-                    return {...obj, 'required': false, 'value': ''};
+            list.map((arr, index)=>{
+                if(index === i) {
+                    return arr.map(obj => {
+                        if(obj.name === inputName){
+                            return {...obj, 'value': inputVal};
+                        } else if (addParams.includes(obj.name)){
+                            return {...obj, 'required': true};
+                        } else if (delParams.includes(obj.name)) {
+                            delParams.map(item => {
+                                clearInput(item);
+                            });
+                            return {...obj, 'required': false, 'value': ''};
+                        } else {
+                            return obj; 
+                        }
+                    })
                 } else {
-                    return obj; 
+                    return arr;
                 }
             })
         )
     }
     
     //поиск значения полей в массиве
-    const getObj = (opt, state, param) => {
-        if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
-            return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
-        } else { return '';}
+    const getObj = (opt, state, param, i) => {
+        if(i !== undefined) {
+            if(opt.find(obj=>obj.value==state[i].find(obj => obj.name == param).value)){
+                return opt.find(obj=>obj.value==state[i].find(obj => obj.name == param).value);
+            } else { return '';}
+        } else {
+            if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
+                return opt.find(obj=>obj.value==state.find(obj => obj.name == param).value);
+            } else { return '';}
+        }
     }
     const getObjLabel = (opt, state, param) => {
         if(opt.find(obj=>obj.value==state.find(obj => obj.name == param).value)){
@@ -433,7 +505,12 @@ export default function AddCargo() {
             return val;
         } else { return '';}
     }
-
+    const getValArr = (state, i, param) => {
+        let val = state[i].find(obj => obj.name === param).value;
+        if(val!==null && val!==undefined && val!==''){
+            return val;
+        } else { return '';}
+    }
     let fillContacts = (e, i) => {
         let inputName = e.target.name;
         let inputVal = e.target.value.trim();
@@ -477,10 +554,28 @@ export default function AddCargo() {
     }
 
 
+    let addState = (state, func) => {
+        let arr = state[0];
+        let clearedArr = arr.map(obj => {
+            return {...obj, 'value': ''}
+        })
+        func([...state, clearedArr]);
+    }
+
+
     //проверка fieldset на заполнение
     let checkFieldset = (state) => {
         let newArr = state.filter(item => item.required === true);
         let result = newArr.every(elem => elem.value!==null && elem.value!==undefined && elem.value!=='');
+        return result;
+    };
+    //доделать
+    let checkFieldsetArr = (state) => {
+        let requiredArr = state.map( arr => 
+            arr.filter(item => item.required === true)
+        )
+        let newArr = state.filter(item => item.required === true);
+        let result = requiredArr.every(elem => elem.value!==null && elem.value!==undefined && elem.value!=='');
         return result;
     };
     //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
@@ -505,11 +600,84 @@ export default function AddCargo() {
         }));
     };
 
+   
     /* На изменение */
+    let Total = {
+        loading: [
+            {
+                frequency: '',
+                loadingDate: '',
+                loadingDays: '',
+                loadingPeriodType: '',
+                loadingTimeFrom: '',
+                loadingTimeTo: '',
+                isLoadingAllDay: '',
+                loadingTown: '',
+                loadingAddress: '',
+                transportationType: '',
+                loadingType: '',
+            },
+        ],
+        unloading: [
+            {
+                unloadingDateFrom: '',
+                unloadingDateTo: '',
+                unloadingTimeFrom: '',
+                unloadingTimeTo: '',
+                isUnloadingAllDay: '',
+                unloadingTown: '',
+                unloadingAddress: '',
+                unloadingType: '',
+            },
+        ],
+        cargo: [
+            {
+                cargoType: '',
+                weight: '',
+                capacity: '',
+                length: '',
+                width: '',
+                height: '',
+                packageType: '',
+                packageCount: '',
+                notes: '',
+                ADR1: false,
+                ADR2: false,
+                ADR3: false,
+                ADR4: false,
+                ADR5: false,
+                ADR6: false,
+                ADR7: false,
+                ADR8: false,
+                ADR9: false,
+                TIR: false,
+                EKMT: false,
+            },
+        ],
+        requirements: {
+            carType: '',
+            tempFrom: '',
+            tempTo: '',
+        },
+        payment: {
+            bargain: '',
+            paymentType: '',
+            cash: '',
+            priceVat: '',
+            priceNovat: '',
+            prepay: '',
+        },
+        contacts: {
+            contactsData: contacts,
+            remark: '',
+        }
+    };
+
+    
     //финальная проверка на заполнение и отправка формы
     const onSubmit = e => {
         e.preventDefault();
-        console.log('total=' + total);
+        console.log('loading = '+loading);
         // let requiredArr = data.filter(obj => obj.required===true);
         // let verification = requiredArr.every(obj => obj.value!=='');
         // let empty = requiredArr.filter(obj => obj.value==='');
@@ -534,7 +702,24 @@ export default function AddCargo() {
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <Link to="/" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
-                <h1 className="dark-blue text-center text-uppercase">Добавление Груза</h1>
+                <div className='d-flex justify-content-between align-items-center mb-5'>
+                    <h1 className="dark-blue text-center text-uppercase mb-0">Добавление Груза</h1>
+                    <div className='d-none d-lg-flex align-items-center fs-09'>
+                        <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
+                            <IconContext.Provider value={{className: "icon-15"}}>
+                                <IoNewspaperOutline/>
+                            </IconContext.Provider>
+                            <span className='ms-2'>Использовать шаблон</span>
+                        </button>
+                        <button type='reset' className='btn btn-4 p-2 ms-3'>
+                            <IconContext.Provider value={{className: "icon-15"}}>
+                                <VscChromeClose/>
+                            </IconContext.Provider>
+                            <span className='ms-2'>Очистить форму</span>
+                        </button>
+                    </div>
+                </div>
+
                 <form ref={ref} name='myForm' id='myForm' className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
@@ -545,123 +730,112 @@ export default function AddCargo() {
                             <button type='button' className={(checkFieldset(payment)) ? 'active' : ''} onClick={() => setActiveField(4)}>5</button>
                             <button type='button' className={(checkFieldset(contactsField)) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
                         </div>
-                        
+                       
                         <fieldset name="loading" data-show={(activeField === 1) ? 'true' : 'false'}>
-                            <div className='d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3'>
-                                <h4 className="text-center text-lg-start mb-0">Загрузка</h4>
-                                <div className='d-none d-lg-flex align-items-center fs-09'>
-                                    <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
-                                        <IconContext.Provider value={{className: "icon-15"}}>
-                                            <IoNewspaperOutline/>
-                                        </IconContext.Provider>
-                                        <span className='ms-2'>Использовать шаблон</span>
-                                    </button>
-                                    <button type='reset' className='btn btn-4 p-2 ms-3'>
-                                        <IconContext.Provider value={{className: "icon-15"}}>
-                                            <VscChromeClose/>
-                                        </IconContext.Provider>
-                                        <span className='ms-2'>Очистить форму</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="box">
-                                <div className="row mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='frequency' data-warning='false' className="title-font fs-12 fw-5">Дата*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="row">
-                                            <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
-                                                <div className="box p-lg-3">
-                                                    <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={0} checked={getVal(loading, "frequency") == '0'} data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
-                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Груз готов</span>
-                                                    </label>
-                                                    <div className={(loading.find(obj => obj.name === "frequency").value === '0') ? 'd-flex fs-12 align-items-center' : 'd-flex fs-12 align-items-center disabled'}>
-                                                        <label data-label='loadingDate' data-warning='false' className='flex-1 min-150'>
-                                                            <input type="date" name='loadingDate' value={getVal(loading, 'loadingDate')} onChange={(e)=> fillData(e, setLoading, loading)}/>
+                            <h4 className="text-center text-lg-start mb-4 mb-lg-3">Загрузка</h4>
+                            {
+                                loading.map( (arr, index) => 
+                                <div key={index} className="box mb-3">
+                                    <div className="row mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='frequency' data-warning='false' className="title-font fs-12 fw-5">Дата*</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className="row">
+                                                <div className="col-xl-7 mb-4 mb-lg-2 mb-xl-0">
+                                                    <div className="box p-lg-3">
+                                                        <label className="mb-2 mb-xl-3">
+                                                            <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading, index)} value={'0'} checked={getValArr(loading, index, "frequency") == '0'} data-add="loadingDate loadingDays" data-del="loadingPeriodType"/>
+                                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Груз готов</span>
                                                         </label>
-                                                        <span className="mx-2 mx-xxl-3">+</span>
-                                                        <label style={{maxWidth:'100px'}} data-label='loadingDays' data-warning='false'>
-                                                            <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} value={getObj(optionsDays, loading, 'loadingDays')} onChange={(e) => handleRSelect(e, 'loadingDays', setLoading, loading)} options={optionsDays} name="loadingDays" isSearchable={true}/>
-                                                        </label>
+                                                        <div className={(getValArr(loading, index, 'frequency') == '0') ? 'd-flex fs-12 align-items-center' : 'd-flex fs-12 align-items-center disabled'}>
+                                                            <label data-label='loadingDate' data-warning='false' className='flex-1 min-150'>
+                                                                <input type="date" name='loadingDate' value={getValArr(loading, index, 'loadingDate')} onChange={(e)=> fillDataArr(e, setLoading, loading, index)}/>
+                                                            </label>
+                                                            <span className="mx-2 mx-xxl-3">+</span>
+                                                            <label style={{maxWidth:'100px'}} data-label='loadingDays' data-warning='false'>
+                                                                <Select className="w-100" classNamePrefix="react-select" placeholder={'Выберите...'} value={getObj(optionsDays, loading, 'loadingDays', index)} onChange={(e) => handleRSelect(e, 'loadingDays', setLoading, loading, index)} options={optionsDays} name="loadingDays" isSearchable={true}/>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div className="col-xl-5">
-                                                <div className="box p-lg-3">
-                                                    <label className="mb-2 mb-xl-3">
-                                                        <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading)} value={1} checked={getVal(loading, "frequency") == '1'} data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
-                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
-                                                    </label>
-                                                    <div data-label='loadingPeriodType' data-warning='false' className={(loading.find(obj => obj.name === "frequency").value == '1') ? '' : 'disabled'}>
-                                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} value={getObj(optionsLoadingPeriodType, loading, 'loadingPeriodType')} onChange={(e) => handleRSelect(e, 'loadingPeriodType', setLoading, loading)}/>
+                                                <div className="col-xl-5">
+                                                    <div className="box p-lg-3">
+                                                        <label className="mb-2 mb-xl-3">
+                                                            <input type="radio" name="frequency" onChange={(e)=> toggleParams(e, setLoading, loading, index)} value={'1'} checked={getValArr(loading, index, "frequency") == '1'} data-add="loadingPeriodType" data-del="loadingDate loadingDays"/>
+                                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Постоянно</span>
+                                                        </label>
+                                                        <div data-label='loadingPeriodType' data-warning='false' className={(getValArr(loading, index, "frequency") == '1') ? '' : 'disabled'}>
+                                                            <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} options={optionsLoadingPeriodType} name="loadingPeriodType" isSearchable={true} value={getObj(optionsLoadingPeriodType, loading, 'loadingPeriodType', index)} onChange={(e) => handleRSelect(e, 'loadingPeriodType', setLoading, loading, index)}/>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время загрузки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className={(loading.find(obj => obj.name === "isLoadingAllDay").value) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
-                                            <label className='flex-1' data-label='loadingTimeFrom' data-warning='false'>
-                                                <input type="time" value={getVal(loading, 'loadingTimeFrom')} name="loadingTimeFrom" onChange={(e)=> fillData(e, setLoading, loading)}/>
-                                            </label>
-                                            <span className="mx-3">—</span>
-                                            <label className='flex-1' data-label='loadingTimeTo' data-warning='false'>
-                                                <input type="time" value={getVal(loading, 'loadingTimeTo')} name="loadingTimeTo" onChange={(e)=> fillData(e, setLoading, loading)}/>
+                                    <div className="row mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div className="title-font fs-12 fw-5">Время загрузки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className={(getValArr(loading, index, 'isLoadingAllDay')) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
+                                                <label className='flex-1' data-label='loadingTimeFrom' data-warning='false'>
+                                                    <input type="time" value={getValArr(loading, index, 'loadingTimeFrom')}  name="loadingTimeFrom" onChange={(e)=> fillDataArr(e, setLoading, loading, index)}/>
+                                                </label>
+                                                <span className="mx-3">—</span>
+                                                <label className='flex-1' data-label='loadingTimeTo' data-warning='false'>
+                                                    <input type="time" value={getValArr(loading, index, 'loadingTimeTo')} name="loadingTimeTo" onChange={(e)=> fillDataArr(e, setLoading, loading, index)} />
+                                                </label>
+                                            </div>
+                                            <label className="mt-2">
+                                                <input type="checkbox" value={getValArr(loading, index, 'isLoadingAllDay')} name="isLoadingAllDay" checked={getValArr(loading, index, 'isLoadingAllDay')} onChange={(e)=> fillDataArr(e, setLoading, loading, index)} data-clear="loadingTimeFrom loadingTimeTo"/>
+                                                <span data-label='isLoadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
                                             </label>
                                         </div>
-                                        <label className="mt-2">
-                                            <input type="checkbox" value={getVal(loading, 'isLoadingAllDay')} name="isLoadingAllDay" checked={getVal(loading, "isLoadingAllDay")} onChange={(e)=> fillData(e, setLoading, loading)} data-clear="loadingTimeFrom loadingTimeTo"/>
-                                            <span data-label='isLoadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
-                                        </label>
                                     </div>
-                                </div>
-                                <div className="row mb-4" data-label='loadingTown' data-warning='false'>
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место загрузки*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="row fs-12">
-                                            <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingTown" value={getObj(optionsTowns, loading, 'loadingTown')} onChange={(e) => handleRSelect(e, 'loadingTown', setLoading, loading)} options={optionsTowns} isSearchable={true}/>
-                                            </div>
-                                            <div className="col-sm-7" data-label='loadingAddress' data-warning='false'>
-                                                <input type="text" name="loadingAddress" value={getVal(loading, 'loadingAddress')} onChange={(e)=> fillData(e, setLoading, loading)} placeholder="Адрес"/>
+                                    <div className="row mb-4" data-label='loadingTown' data-warning='false'>
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div className="title-font fs-12 fw-5">Место загрузки*</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className="row fs-12">
+                                                <div className="col-sm-5 mb-2 mb-sm-0">
+                                                    <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingTown" value={getObj(optionsTowns, loading, 'loadingTown', index)} onChange={(e) => handleRSelect(e, 'loadingTown', setLoading, loading, index)} options={optionsTowns} isSearchable={true}/>
+                                                </div>
+                                                <div className="col-sm-7" data-label='loadingAddress' data-warning='false'>
+                                                    <input type="text" name="loadingAddress" value={getValArr(loading, index, 'loadingAddress')} onChange={(e)=> fillDataArr(e, setLoading, loading, index)} placeholder="Адрес"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div className="row mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='transportationType' data-warning='false' className="title-font fs-12 fw-5">Тип перевозки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <label className="mb-2 mb-xl-3">
+                                                <input type="radio" name="transportationType" value="FTL" checked={getValArr(loading, index, 'transportationType') === 'FTL'} onChange={(e)=> fillDataArr(e, setLoading, loading, index)}/>
+                                                <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной (FTL)</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="transportationType" value="FTL/LTL" checked={getValArr(loading, index, 'transportationType') === 'FTL/LTL'} onChange={(e)=> fillDataArr(e, setLoading, loading, index)}/>
+                                                <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной или догрузом (FTL или LTL)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='loadingType' data-warning='false' className="title-font fs-12 fw-5">Тип загрузки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingType" value={getObj(optionsLoading, loading, 'loadingType', index)} onChange={(e) => handleRSelect(e, 'loadingType', setLoading, loading, index)} options={optionsLoading}  isSearchable={true}/>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="row mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='transportationType' data-warning='false' className="title-font fs-12 fw-5">Тип перевозки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <label className="mb-2 mb-xl-3">
-                                            <input type="radio" name="transportationType" value="FTL" checked={getVal(loading, "transportationType") === 'FTL'} onChange={(e)=> fillData(e, setLoading, loading)}/>
-                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной (FTL)</span>
-                                        </label>
-                                        <label>
-                                            <input type="radio" name="transportationType" value="FTL/LTL" checked={getVal(loading, "transportationType") === 'FTL/LTL'} onChange={(e)=> fillData(e, setLoading, loading)}/>
-                                            <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">отдельной машиной или догрузом (FTL или LTL)</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='loadingType' data-warning='false' className="title-font fs-12 fw-5">Тип загрузки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="loadingType" value={getObj(optionsLoading, loading, 'loadingType')} onChange={(e) => handleRSelect(e, 'loadingType', setLoading, loading)} options={optionsLoading}  isSearchable={true}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                                )
+                            }
+                            
+                            <button type="button" onClick={() => addState(loading, setLoading)} className="green fs-11 fw-5 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
                                 </IconContext.Provider>
@@ -1333,99 +1507,106 @@ export default function AddCargo() {
                             <nav className='contents'>
                                 <ol>
                                     <li>
-                                        <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(loading)?'filled':''}>Загрузка</Link>
-                                        <div className='fs-09'>
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='frequency').value) &&
-                                                <span className='me-1'>{(loading.find(obj=>obj.name==='frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
-                                            } */}
+                                        <Link activeClass="active" to="loading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldsetArr(loading)?'filled':''}>Загрузка</Link>
+                                        {
+                                            loading.map((arr, index) => 
+                                                <div key={index} className='fs-09'>
+                                                    <span>Точка {index+1} - </span>
+                                                    {
+                                                        (getValArr(loading, index, 'frequency')) &&
+                                                        <span className='me-1'>{(getValArr(loading, index, 'frequency') === '0') ? 'Груз готов' : 'Постоянно'}:</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingDate')) &&
+                                                        <span className='me-1'>{getValArr(loading, index, 'loadingDate')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingDays')) &&
+                                                        <span className='me-1'>+ {getValArr(loading, index, 'loadingDays')} дня</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingPeriodType')) &&
+                                                        <span className='me-1'>{getObjLabel(optionsLoadingPeriodType, arr, 'loadingPeriodType')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingTimeFrom')) &&
+                                                        <span className='me-1'>, {getValArr(loading, index, 'loadingTimeFrom')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingTimeTo')) &&
+                                                        <span className='me-1'>– {getValArr(loading, index, 'loadingTimeTo')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'isLoadingAllDay')) &&
+                                                        <span className='me-1'>, Круглосуточно</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingTown')) &&
+                                                        <span className='me-1'>, {getObjLabel(optionsTowns, arr, 'loadingTown')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingAddress')) &&
+                                                        <span className='me-1'>, {getValArr(loading, index, 'loadingAddress')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'transportationType')) &&
+                                                        <span className='me-1'>, {getValArr(loading, index, 'transportationType')}</span>
+                                                    }
+                                                    {
+                                                        (getValArr(loading, index, 'loadingType')) &&
+                                                        <span className='me-1'>, {getObjLabel(optionsLoading, arr, 'loadingType')}</span>
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                        {/* <div className='fs-09'>
                                             {
                                                 (getVal(loading, 'frequency')) &&
                                                 <span className='me-1'>{(getVal(loading, 'frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingDate').value) &&
-                                                <span className='me-1'>{loading.find(obj=>obj.name==='loadingDate').value}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingDate')) &&
                                                 <span className='me-1'>{getVal(loading, 'loadingDate')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingDays').value) &&
-                                                <span className='me-1'>+ {loading.find(obj=>obj.name==='loadingDays').value} дня</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingDays')) &&
                                                 <span className='me-1'>+ {getVal(loading, 'loadingDays')} дня</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingPeriodType').value) &&
-                                                <span>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingPeriodType')) &&
                                                 <span className='me-1'>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingTimeFrom').value) &&
-                                                <span className='me-1'>, {loading.find(obj=>obj.name==='loadingTimeFrom').value}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingTimeFrom')) &&
                                                 <span className='me-1'>, {getVal(loading, 'loadingTimeFrom')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingTimeTo').value) &&
-                                                <span className='me-1'>– {loading.find(obj=>obj.name==='loadingTimeTo').value}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingTimeTo')) &&
                                                 <span className='me-1'>– {getVal(loading, 'loadingTimeTo')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='isLoadingAllDay').value) &&
-                                                <span className='me-1'>, Круглосуточно</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'isLoadingAllDay')) &&
                                                 <span className='me-1'>, Круглосуточно</span>
                                             }
-                                        </div>
-                                        <div className='fs-09'>
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingTown').value) &&
-                                                <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
-                                            } */}
+                                        </div> */}
+                                        {/* <div className='fs-09'>
                                             {
                                                 (getVal(loading, 'loadingTown')) &&
                                                 <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingAddress').value) &&
-                                                <span className='me-1'>, {loading.find(obj=>obj.name==='loadingAddress').value}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingAddress')) &&
                                                 <span className='me-1'>, {getVal(loading, 'loadingAddress')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='transportationType').value) &&
-                                                <span className='me-1'>, {loading.find(obj=>obj.name==='transportationType').value}</span> 
-                                            } */}
                                             {
                                                 (getVal(loading, 'transportationType')) &&
                                                 <span className='me-1'>, {getVal(loading, 'transportationType')}</span>
                                             }
-                                            {/* {
-                                                (loading.find(obj=>obj.name==='loadingType').value) &&
-                                                <span>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
-                                            } */}
                                             {
                                                 (getVal(loading, 'loadingType')) &&
                                                 <span className='me-1'>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
                                             }
-                                        </div>
+                                        </div> */}
                                     </li>
                                     <li>
                                         <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(unloading)?'filled':''}>Разгрузка</Link>
@@ -1603,7 +1784,7 @@ export default function AddCargo() {
                                         <Link activeClass="active" to="contactsField" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(contactsField)?'filled':''}>Контакты</Link>
                                         {
                                             contacts.map(obj => 
-                                                <div className='fs-09'>
+                                                <div key={obj.index} className='fs-09'>
                                                     {
                                                         (obj.name)&&
                                                         <span>{obj.name}: </span>
