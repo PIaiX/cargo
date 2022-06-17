@@ -10,7 +10,7 @@ export default function UserDocuments() {
 
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
-            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Документы</h1>
             <div className='d-md-flex flex-row-reverse justify-content-between align-items-center mb-4 mb-xl-5'>
                 <button type='button' data-bs-toggle="modal" data-bs-target="#docs-patterns" className='btn btn-2 fs-12 px-4 mb-4 mb-md-0'>

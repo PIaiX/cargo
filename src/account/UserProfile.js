@@ -6,7 +6,7 @@ import { MdModeEdit } from "react-icons/md";
 export default function UserProfile() {
     return (
         <div className='box p-4 p-xl-5'>
-            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Мой профиль</h1>
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>

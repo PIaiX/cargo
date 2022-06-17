@@ -32,7 +32,7 @@ export default function PersonalAccount() {
     return (
         <main className="account bg-gray py-sm-3 py-md-4 py-lg-5">
             <section id="sec-12" className="container">
-                <Link to="/" className='fs-12 fw-5 d-none d-lg-block mb-5'><span className='green fs-15 me-2'>⟵</span> На главную</Link>
+                <Link to="/" className='fs-12 fw-5 d-none d-lg-block d-lg-none mb-5'><span className='green fs-15 me-2'>⟵</span> На главную</Link>
                 {
                     (mob === false) ?
                     <div className="row gx-4 gx-xl-5">

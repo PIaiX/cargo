@@ -7,7 +7,7 @@ export default function Responses() {
 
     return (
         <div className='box px-0 p-sm-4 p-xl-5'>
-            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Мои отклики</h1>
             <div className='d-flex align-items-center fs-12 fw-5 title-font mb-4 mb-xl-5'>
                 <button type='button' className={(tab === 'active') ? 'active tab-btn' : 'tab-btn'} onClick={()=>setTab('active')}>Мне откликнулись (5)</button>

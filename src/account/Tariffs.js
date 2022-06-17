@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Tariffs() {
     return (
         <div className='box px-0 p-sm-4 p-xl-5'>
-            <Link to="/personal-account" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
 
             <h1 className='dark-blue text-center d-lg-none'>Тарифы</h1>
             <div className='fs-12 fw-5 black mb-3'>После выбора тарифа Вы получаете:</div>
