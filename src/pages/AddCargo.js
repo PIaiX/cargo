@@ -69,7 +69,7 @@ export default function AddCargo() {
             }
         ]
     ]);
-    let [unloading, setUnloading] = useState(
+    let [unloading, setUnloading] = useState([
         [
             {
                 name: 'unloadingDateFrom',
@@ -109,16 +109,16 @@ export default function AddCargo() {
             {
                 name: 'unloadingType',
                 value: '',
-                required: true
+                required: false
             }
         ]
-    );
-    let [cargo, setCargo] = useState(
+    ]);
+    let [cargo, setCargo] = useState([
         [
             {
                 name: 'cargoType',
                 value: '',
-                required: true
+                required: false
             },
             {
                 name: 'weight',
@@ -133,17 +133,17 @@ export default function AddCargo() {
             {
                 name: 'length',
                 value: '',
-                required: true
+                required: false
             },
             {
                 name: 'width',
                 value: '',
-                required: true
+                required: false
             },
             {
                 name: 'height',
                 value: '',
-                required: true
+                required: false
             },
             {
                 name: 'packageType',
@@ -216,13 +216,13 @@ export default function AddCargo() {
                 required: false
             }
         ]
-    );
+    ]);
     let [requirements, setRequirements] = useState(
         [
             {
                 name: 'carType',
-                value: optionsCarType[3].value,
-                required: false
+                value: '',
+                required: true
             },
             {
                 name: 'tempFrom',
@@ -275,7 +275,7 @@ export default function AddCargo() {
             index: 0,
             phone: '',
             name: '',
-        }
+        },
     ]);
     let [contactsField, setContactsField] = useState(
         [
@@ -291,7 +291,6 @@ export default function AddCargo() {
             }
         ]
     );
-    
     //запись в data значений селектов (React-Select)
     let handleRSelect = (e, name, func, list, i) => {
         if(i !== undefined){
@@ -440,7 +439,6 @@ export default function AddCargo() {
             }))
         }
     };
-    console.log(loading);
     //очищение значений инпутов
     let clearInput = (item) => {
         let input = document.querySelector('[name="'+item+'"]'); //clear input's value by name
@@ -511,6 +509,7 @@ export default function AddCargo() {
             return val;
         } else { return '';}
     }
+    //внесение значений полей контактов в data
     let fillContacts = (e, i) => {
         let inputName = e.target.name;
         let inputVal = e.target.value.trim();
@@ -553,7 +552,7 @@ export default function AddCargo() {
         setContacts([...contacts, newObj]);
     }
 
-
+    //добавление fieldset 
     let addState = (state, func) => {
         let arr = state[0];
         let clearedArr = arr.map(obj => {
@@ -561,43 +560,60 @@ export default function AddCargo() {
         })
         func([...state, clearedArr]);
     }
-
+    //удаление fieldset 
+    let delState = (state, func, index) => {
+        let arr = state.splice(index, 1);
+        func(state.filter(obj => obj !== arr));
+    }
 
     //проверка fieldset на заполнение
     let checkFieldset = (state) => {
-        let newArr = state.filter(item => item.required === true);
-        let result = newArr.every(elem => elem.value!==null && elem.value!==undefined && elem.value!=='');
+        let requiredArr = state.filter(item => item.required === true);
+        let result = requiredArr.every( elem => 
+            elem.value!==null && elem.value!==undefined && elem.value!==''
+        );
         return result;
     };
-    //доделать
     let checkFieldsetArr = (state) => {
-        let requiredArr = state.map( arr => 
+        let requiredArr = state.flatMap( arr => 
             arr.filter(item => item.required === true)
         )
-        let newArr = state.filter(item => item.required === true);
         let result = requiredArr.every(elem => elem.value!==null && elem.value!==undefined && elem.value!=='');
         return result;
     };
+    let checkAllProps = (state) => {
+        let requiredProps = state.flatMap( obj => {
+            let arr = [];
+            for(let key in obj){
+                if(key!='index'){arr.push(obj[key])}
+            }
+            return arr
+        })
+        let result = requiredProps.every(elem => elem!==null && elem!==undefined && elem!=='');
+        return result;
+    };
+
+    // ДОДЕЛАТЬ!!!
     //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
     const onReset = e => {
-        setLoading(loading.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setUnloading(unloading.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setCargo(cargo.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setRequirements(requirements.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setPayment(payment.map(obj => {
-            return {...obj, 'value': ''};
-        }));
-        setContactsField(contactsField.map(obj => {
-            return {...obj, 'value': ''};
-        }));
+        // setLoading(loading.map(arr => {
+        //     arr.map(obj => {return {...obj, 'value': ''}})
+        // }));
+        // setUnloading(unloading.map(arr => {
+        //     arr.map(obj => {return {...obj, 'value': ''}})
+        // }));
+        // setCargo(cargo.map(arr => {
+        //     arr.map(obj => {return {...obj, 'value': ''}})
+        // }));
+        // setRequirements(requirements.map(obj => {
+        //     return {...obj, 'value': ''};
+        // }));
+        // setPayment(payment.map(obj => {
+        //     return {...obj, 'value': ''};
+        // }));
+        // setContacts(contactsField.map(obj => {
+        //     return {...obj, 'phone': '', 'name': ''};
+        // }));
     };
 
    
@@ -672,63 +688,43 @@ export default function AddCargo() {
             remark: '',
         }
     };
-
     
     //финальная проверка на заполнение и отправка формы
     const onSubmit = e => {
         e.preventDefault();
-        console.log('loading = '+loading);
-        // let requiredArr = data.filter(obj => obj.required===true);
-        // let verification = requiredArr.every(obj => obj.value!=='');
-        // let empty = requiredArr.filter(obj => obj.value==='');
-
-        // if(verification){
-        //     let formInfo = data.map(obj => {
-        //         return obj.name + ': ' + obj.value + '; ';
-        //     })
-        //     alert(formInfo);
-        // } else {
-        //     alert('заполните форму!');
-        //     Array.from(document.querySelectorAll('[data-label]')).forEach( item => item.dataset.warning = 'false' );
-        //     empty.forEach(obj => {
-        //         let label = obj.name;
-        //         document.querySelector('[data-label='+label+']').dataset.warning = 'true';
-        //     })
-        // }
     };
-
 
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <Link to="/" className='fs-12 fw-5 d-block mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
-                <div className='d-flex justify-content-between align-items-center mb-5'>
-                    <h1 className="dark-blue text-center text-uppercase mb-0">Добавление Груза</h1>
-                    <div className='d-none d-lg-flex align-items-center fs-09'>
-                        <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
-                            <IconContext.Provider value={{className: "icon-15"}}>
-                                <IoNewspaperOutline/>
-                            </IconContext.Provider>
-                            <span className='ms-2'>Использовать шаблон</span>
-                        </button>
-                        <button type='reset' className='btn btn-4 p-2 ms-3'>
-                            <IconContext.Provider value={{className: "icon-15"}}>
-                                <VscChromeClose/>
-                            </IconContext.Provider>
-                            <span className='ms-2'>Очистить форму</span>
-                        </button>
-                    </div>
-                </div>
-
+                
                 <form ref={ref} name='myForm' id='myForm' className="row" onSubmit={(e) => onSubmit(e)} onReset={(e) => onReset(e)} noValidate>
+                    <div className='d-flex justify-content-between align-items-center mb-5'>
+                        <h1 className="dark-blue text-center text-uppercase mb-0">Добавление Груза</h1>
+                        <div className='d-none d-lg-flex align-items-center fs-09'>
+                            <button type='button' data-bs-toggle="modal" data-bs-target="#usePattern" className='btn btn-4 p-2'>
+                                <IconContext.Provider value={{className: "icon-15"}}>
+                                    <IoNewspaperOutline/>
+                                </IconContext.Provider>
+                                <span className='ms-2'>Использовать шаблон</span>
+                            </button>
+                            <button type='reset' className='btn btn-4 p-2 ms-3'>
+                                <IconContext.Provider value={{className: "icon-15"}}>
+                                    <VscChromeClose/>
+                                </IconContext.Provider>
+                                <span className='ms-2'>Очистить форму</span>
+                            </button>
+                        </div>
+                    </div>
                     <div className="col-lg-8">
                         <div className='mobile-indicators d-flex d-lg-none'>
-                            <button type='button' className={(checkFieldset(loading)) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
-                            <button type='button' className={(checkFieldset(unloading)) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
-                            <button type='button' className={(checkFieldset(cargo)) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
+                            <button type='button' className={(checkFieldsetArr(loading)) ? 'active' : ''} onClick={() => setActiveField(1)}>1</button>
+                            <button type='button' className={(checkFieldsetArr(unloading)) ? 'active' : ''} onClick={() => setActiveField(2)}>2</button>
+                            <button type='button' className={(checkFieldsetArr(cargo)) ? 'active' : ''} onClick={() => setActiveField(3)}>3</button>
                             <button type='button' className={(checkFieldset(requirements)) ? 'active' : ''} onClick={() => setActiveField(4)}>4</button>
                             <button type='button' className={(checkFieldset(payment)) ? 'active' : ''} onClick={() => setActiveField(4)}>5</button>
-                            <button type='button' className={(checkFieldset(contactsField)) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
+                            <button type='button' className={(checkAllProps(contacts)) ? 'active' : ''} onClick={() => setActiveField(5)}>6</button>
                         </div>
                        
                         <fieldset name="loading" data-show={(activeField === 1) ? 'true' : 'false'}>
@@ -736,6 +732,13 @@ export default function AddCargo() {
                             {
                                 loading.map( (arr, index) => 
                                 <div key={index} className="box mb-3">
+                                    {
+                                        (index !== 0) &&
+                                        <div className='d-flex justify-content-between align-items-center mb-4'>
+                                            <div className='black fw-5'>Точка загрузки № {index+1}</div>
+                                            <button type='button' onClick={() => delState(loading, setLoading, index)} className='red fw-5'>Удалить</button>
+                                        </div>
+                                    }
                                     <div className="row mb-4">
                                         <div className="col-md-3 mb-3 mb-md-0">
                                             <div data-label='frequency' data-warning='false' className="title-font fs-12 fw-5">Дата*</div>
@@ -834,7 +837,6 @@ export default function AddCargo() {
                                 </div>
                                 )
                             }
-                            
                             <button type="button" onClick={() => addState(loading, setLoading)} className="green fs-11 fw-5 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
@@ -870,64 +872,74 @@ export default function AddCargo() {
 
                         <fieldset name="unloading" data-show={(activeField === 2) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Разгрузка</h4>
-                            <div className="box">
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='unloadingDateFrom unloadingDateTo' data-warning='false' className="title-font fs-12 fw-5">Дата</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="d-flex fs-12 align-items-center">
-                                            <input type="date" name="unloadingDateFrom" value={getVal(unloading, 'unloadingDateFrom')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
-                                            <span className="mx-3">—</span>
-                                            <input type="date" name="unloadingDateTo" value={getVal(unloading, 'unloadingDateTo')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
+                            {
+                                unloading.map( (arr, index) => 
+                                <div key={index} className="box mb-3">
+                                    {
+                                        (index !== 0) &&
+                                        <div className='d-flex justify-content-between align-items-center mb-4'>
+                                            <div className='black fw-5'>Точка разгрузки № {index+1}</div>
+                                            <button type='button' onClick={() => delState(unloading, setUnloading, index)} className='red fw-5'>Удалить</button>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Время разгрузки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className={(unloading.find(obj => obj.name === "isUnloadingAllDay").value) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
-                                            <label className='flex-1' data-label='unloadingTimeFrom' data-warning='false'>
-                                                <input type="time" name="unloadingTimeFrom" value={getVal(unloading, 'unloadingTimeFrom')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
-                                            </label>
-                                            <span className="mx-3">—</span>
-                                            <label className='flex-1' data-label='unloadingTimeTo' data-warning='false'>
-                                                <input type="time" name="unloadingTimeTo" value={getVal(unloading, 'unloadingTimeTo')} onChange={(e)=> fillData(e, setUnloading, unloading)}/>
-                                            </label>
+                                    }
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='unloadingDateFrom unloadingDateTo' data-warning='false' className="title-font fs-12 fw-5">Дата</div>
                                         </div>
-                                        <label className="mt-2">
-                                            <input type="checkbox" name="isUnloadingAllDay" value={getVal(unloading, 'isUnloadingAllDay')} checked={getVal(unloading, "isUnloadingAllDay")} onChange={(e)=> fillData(e, setUnloading, unloading)} data-clear="unloadingTimeFrom unloadingTimeTo"/>
-                                            <span data-label='isUnloadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="row mb-4" data-label='unloadingTown' data-warning='false'>
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Место разгрузки*</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="row fs-12">
-                                            <div className="col-sm-5 mb-2 mb-sm-0">
-                                                <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingTown" value={getObj(optionsTowns, unloading, 'unloadingTown')} onChange={(e) => handleRSelect(e, 'unloadingTown', setUnloading, unloading)} options={optionsTowns} isSearchable={true}/>
-                                            </div>
-                                            <div className="col-sm-7" data-label='unloadingAddress' data-warning='false'>
-                                                <input type="text" name="unloadingAddress" value={getVal(unloading, 'unloadingAddress')} onChange={(e)=> fillData(e, setUnloading, unloading)} placeholder="Адрес"/>
+                                        <div className="col-md-9">
+                                            <div className="d-flex fs-12 align-items-center">
+                                                <input type="date" name="unloadingDateFrom" value={getValArr(unloading, index, 'unloadingDateFrom')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)}/>
+                                                <span className="mx-3">—</span>
+                                                <input type="date" name="unloadingDateTo" value={getValArr(unloading, index, 'unloadingDateTo')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)}/>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='unloadingType' data-warning='false' className="title-font fs-12 fw-5">Тип разгрузки</div>
+                                    <div className="row mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div className="title-font fs-12 fw-5">Время разгрузки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className={(getValArr(unloading, index, 'isUnloadingAllDay')) ? 'd-flex fs-12 align-items-center disabled' : 'd-flex fs-12 align-items-center'}>
+                                                <label className='flex-1' data-label='unloadingTimeFrom' data-warning='false'>
+                                                    <input type="time" name="unloadingTimeFrom" value={getValArr(unloading, index, 'unloadingTimeFrom')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)}/>
+                                                </label>
+                                                <span className="mx-3">—</span>
+                                                <label className='flex-1' data-label='unloadingTimeTo' data-warning='false'>
+                                                    <input type="time" name="unloadingTimeTo" value={getValArr(unloading, index, 'unloadingTimeTo')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)}/>
+                                                </label>
+                                            </div>
+                                            <label className="mt-2">
+                                                <input type="checkbox" name="isUnloadingAllDay" value={getValArr(unloading, index, 'isUnloadingAllDay')} checked={getValArr(unloading, index, 'isUnloadingAllDay')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)} data-clear="unloadingTimeFrom unloadingTimeTo"/>
+                                                <span data-label='isUnloadingAllDay' data-warning='false' className="ms-2 fs-09">Круглосуточно</span>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div className="col-md-9">
-                                        <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingType" value={getObj(optionsLoading, unloading, 'unloadingType')} onChange={(e) => handleRSelect(e, 'unloadingType', setUnloading, unloading)} options={optionsLoading} isSearchable={true}/>
+                                    <div className="row mb-4" data-label='unloadingTown' data-warning='false'>
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div className="title-font fs-12 fw-5">Место разгрузки*</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className="row fs-12">
+                                                <div className="col-sm-5 mb-2 mb-sm-0">
+                                                    <Select classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingTown" value={getObj(optionsTowns, unloading, 'unloadingTown', index)} onChange={(e) => handleRSelect(e, 'unloadingTown', setUnloading, unloading, index)} options={optionsTowns} isSearchable={true}/>
+                                                </div>
+                                                <div className="col-sm-7" data-label='unloadingAddress' data-warning='false'>
+                                                    <input type="text" name="unloadingAddress" value={getValArr(unloading, index, 'unloadingAddress')} onChange={(e)=> fillDataArr(e, setUnloading, unloading, index)} placeholder="Адрес"/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                                    <div className="row">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='unloadingType' data-warning='false' className="title-font fs-12 fw-5">Тип разгрузки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <Select className="fs-12" classNamePrefix="react-select" placeholder={'Выберите...'} name="unloadingType" value={getObj(optionsLoading, unloading, 'unloadingType', index)} onChange={(e) => handleRSelect(e, 'unloadingType', setUnloading, unloading, index)} options={optionsLoading} isSearchable={true}/>
+                                        </div>
+                                    </div>
+                                </div>)
+                            }
+                            <button type="button" onClick={() => addState(unloading, setUnloading)} className="green fs-11 fw-5 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
                                 </IconContext.Provider>
@@ -974,178 +986,188 @@ export default function AddCargo() {
 
                         <fieldset name="cargo" data-show={(activeField === 3) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Груз</h4>
-                            <div className="box">
-                                <div className="row align-items-center fs-12 mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='cargoType' data-warning='false' className="title-font fw-5">Название груза</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <Select className='w-100' classNamePrefix="react-select" placeholder={'Выберите...'} name="cargoType" value={getObj(optionsCargoType, cargo, 'cargoType')} onChange={(e) => handleRSelect(e, 'cargoType', setCargo, cargo)} options={optionsCargoType} isSearchable={true}/>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-3">
-                                        <div data-label='weight' data-warning='false' className="title-font fs-12 fw-5">Вес*</div>
-                                    </div>
-                                    <div className="col-9">
-                                        <div className="row">
-                                            <div className="col-md-4">
-                                                <input className="weight w-100 fs-12" type="number" name="weight" min="1" placeholder='0' value={getVal(cargo, 'weight')} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                            </div>
+                            {
+                                cargo.map( (arr, index) => 
+                                <div key={index} className="box mb-3">
+                                    {
+                                        (index !== 0) &&
+                                        <div className='d-flex justify-content-between align-items-center mb-4'>
+                                            <div className='black fw-5'>Груз № {index+1}</div>
+                                            <button type='button' onClick={() => delState(cargo, setCargo, index)} className='red fw-5'>Удалить</button>
+                                        </div>
+                                    }
+                                    <div className="row align-items-center fs-12 mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='cargoType' data-warning='false' className="title-font fw-5">Название груза</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <Select className='w-100' classNamePrefix="react-select" placeholder={'Выберите...'} name="cargoType" value={getObj(optionsCargoType, cargo, 'cargoType', index)} onChange={(e) => handleRSelect(e, 'cargoType', setCargo, cargo, index)} options={optionsCargoType} isSearchable={true}/>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-3">
-                                        <div data-label='capacity' data-warning='false' className="title-font fs-12 fw-5">Объем*</div>
-                                    </div>
-                                    <div className="col-9">
-                                        <div className="row">
-                                            <div className="col-md-4">
-                                                <input className="size w-100 fs-12" type="number" name="capacity" min="1" placeholder='0' value={getVal(cargo, 'capacity')} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                            </div>
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-3">
+                                            <div data-label='weight' data-warning='false' className="title-font fs-12 fw-5">Вес*</div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div className="title-font fs-12 fw-5">Габариты</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className="row row-cols-sm-3 gx-3 gx-xxl-4 fs-12">
-                                            <div className='mb-2 mb-sm-0'>
-                                                <div className='row gx-2 align-items-center'>
-                                                    <div className='col-3 col-sm-5'>
-                                                        <label data-label='length' data-warning='false'>Длина:</label>
-                                                    </div>
-                                                    <div className='col-9 col-sm-7'>
-                                                        <input type="number" name="length" min="1" placeholder='0' value={getVal(cargo, 'length')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='mb-2 mb-sm-0'>
-                                                <div className='row gx-2 align-items-center'>
-                                                    <div className='col-3 col-sm-5'>
-                                                        <label data-label='width' data-warning='false'>Ширина:</label>
-                                                    </div>
-                                                    <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='width' min="1" placeholder='0' value={getVal(cargo, 'width')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className='row gx-2 align-items-center'>
-                                                    <div className='col-3 col-sm-5'>
-                                                        <label data-label='height' data-warning='false'>Высота:</label>
-                                                    </div>
-                                                    <div className='col-9 col-sm-7'>
-                                                        <input type="number" name='height' min="1" placeholder='0' value={getVal(cargo, 'height')} onChange={(e)=> fillData(e, setCargo, cargo)} className="length"/>
-                                                    </div>
+                                        <div className="col-9">
+                                            <div className="row">
+                                                <div className="col-md-4">
+                                                    <input className="weight w-100 fs-12" type="number" name="weight" min="1" placeholder='0' value={getValArr(cargo, index, 'weight')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='packageType' data-warning='false' className="title-font fs-12 fw-5">Упаковка</div>
-                                    </div>
-                                    <div className="col-md-9 fs-12 d-flex align-items-center">
-                                        <Select classNamePrefix="react-select" name="packageType" placeholder={'Выберите...'} value={getObj(optionsPackageType, cargo, 'packageType')} onChange={(e) => handleRSelect(e, 'packageType', setCargo, cargo)} options={optionsPackageType} isSearchable={true}/>
-                                        <IconContext.Provider value={{className: "icon-10 mx-3"}}>
-                                            <VscChromeClose />
-                                        </IconContext.Provider>
-                                        <input type="number" placeholder='0' min="0" name="packageCount" value={getVal(cargo, 'packageCount')} onChange={(e)=> fillData(e, setCargo, cargo)} className="packageCount pcs"/>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='notes' data-warning='false' className="title-font fs-12 fw-5">Особые пометки</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <Select className="w-100 fs-12" classNamePrefix="react-select" name="notes" placeholder={'Выберите...'} value={getObj(optionsNotes, cargo, 'notes')} onChange={(e) => handleRSelect(e, 'notes', setCargo, cargo)} options={optionsNotes} isSearchable={true}/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='permissions' data-warning='false' className="title-font fs-12 fw-5">Разрешения</div>
-                                    </div>
-                                    <div className="col-md-9">
-                                        <div className='mb-2'>опасные грузы, ADR:</div>
-                                        <div className='row row-cols-3 g-3 mb-4'>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR1" value={getVal(cargo, 'ADR1')} checked={getVal(cargo, "ADR1")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR1</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR2" value={getVal(cargo, 'ADR2')} checked={getVal(cargo, "ADR2")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR2</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR3" value={getVal(cargo, 'ADR3')} checked={getVal(cargo, "ADR3")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR3</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR4" value={getVal(cargo, 'ADR4')} checked={getVal(cargo, "ADR4")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR4</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR5" value={getVal(cargo, 'ADR5')} checked={getVal(cargo, "ADR5")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR5</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR6" value={getVal(cargo, 'ADR6')} checked={getVal(cargo, "ADR6")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR6</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR7" value={getVal(cargo, 'ADR7')} checked={getVal(cargo, "ADR7")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR7</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR8" value={getVal(cargo, 'ADR8')} checked={getVal(cargo, "ADR8")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR8</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="ADR9" value={getVal(cargo, 'ADR9')} checked={getVal(cargo, "ADR9")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR9</span>
-                                                </label>
-                                            </div>
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-3">
+                                            <div data-label='capacity' data-warning='false' className="title-font fs-12 fw-5">Объем*</div>
                                         </div>
-                                        <div className='row row-cols-2 g-3'>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="TIR" value={getVal(cargo, 'TIR')} checked={getVal(cargo, "TIR")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">TIR</span>
-                                                </label>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <input type="checkbox" name="EKMT" value={getVal(cargo, 'EKMT')} checked={getVal(cargo, "EKMT")} onChange={(e)=> fillData(e, setCargo, cargo)}/>
-                                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">EKMT</span>
-                                                </label>
+                                        <div className="col-9">
+                                            <div className="row">
+                                                <div className="col-md-4">
+                                                    <input className="size w-100 fs-12" type="number" name="capacity" min="1" placeholder='0' value={getValArr(cargo, index, 'capacity')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <button type="button" className="green fs-11 fw-5 mt-3 mx-auto d-flex align-items-center">
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div className="title-font fs-12 fw-5">Габариты</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className="row row-cols-sm-3 gx-3 gx-xxl-4 fs-12">
+                                                <div className='mb-2 mb-sm-0'>
+                                                    <div className='row gx-2 align-items-center'>
+                                                        <div className='col-3 col-sm-5'>
+                                                            <label data-label='length' data-warning='false'>Длина:</label>
+                                                        </div>
+                                                        <div className='col-9 col-sm-7'>
+                                                            <input type="number" name="length" min="1" placeholder='0' value={getValArr(cargo, index, 'length')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="length"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='mb-2 mb-sm-0'>
+                                                    <div className='row gx-2 align-items-center'>
+                                                        <div className='col-3 col-sm-5'>
+                                                            <label data-label='width' data-warning='false'>Ширина:</label>
+                                                        </div>
+                                                        <div className='col-9 col-sm-7'>
+                                                            <input type="number" name='width' min="1" placeholder='0' value={getValArr(cargo, index, 'width')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="length"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className='row gx-2 align-items-center'>
+                                                        <div className='col-3 col-sm-5'>
+                                                            <label data-label='height' data-warning='false'>Высота:</label>
+                                                        </div>
+                                                        <div className='col-9 col-sm-7'>
+                                                            <input type="number" name='height' min="1" placeholder='0' value={getValArr(cargo, index, 'height')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="length"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='packageType' data-warning='false' className="title-font fs-12 fw-5">Упаковка</div>
+                                        </div>
+                                        <div className="col-md-9 fs-12 d-flex align-items-center">
+                                            <Select classNamePrefix="react-select" name="packageType" placeholder={'Выберите...'} value={getObj(optionsPackageType, cargo, 'packageType', index)} onChange={(e) => handleRSelect(e, 'packageType', setCargo, cargo, index)} options={optionsPackageType} isSearchable={true}/>
+                                            <IconContext.Provider value={{className: "icon-10 mx-3"}}>
+                                                <VscChromeClose />
+                                            </IconContext.Provider>
+                                            <input type="number" placeholder='0' min="0" name="packageCount" value={getValArr(cargo, index, 'packageCount')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="packageCount pcs"/>
+                                        </div>
+                                    </div>
+                                    <div className="row align-items-center mb-4">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='notes' data-warning='false' className="title-font fs-12 fw-5">Особые пометки</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <Select className="w-100 fs-12" classNamePrefix="react-select" name="notes" placeholder={'Выберите...'} value={getObj(optionsNotes, cargo, 'notes', index)} onChange={(e) => handleRSelect(e, 'notes', setCargo, cargo, index)} options={optionsNotes} isSearchable={true}/>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-3 mb-3 mb-md-0">
+                                            <div data-label='permissions' data-warning='false' className="title-font fs-12 fw-5">Разрешения</div>
+                                        </div>
+                                        <div className="col-md-9">
+                                            <div className='mb-2'>опасные грузы, ADR:</div>
+                                            <div className='row row-cols-3 g-3 mb-4'>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR1" value={getValArr(cargo, index, 'ADR1')} checked={getValArr(cargo, index, "ADR1")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR1</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR2" value={getValArr(cargo, index, 'ADR2')} checked={getValArr(cargo, index, "ADR2")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR2</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR3" value={getValArr(cargo, index, 'ADR3')} checked={getValArr(cargo, index, "ADR3")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR3</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR4" value={getValArr(cargo, index, 'ADR4')} checked={getValArr(cargo, index, "ADR4")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR4</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR5" value={getValArr(cargo, index, 'ADR5')} checked={getValArr(cargo, index, "ADR5")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR5</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR6" value={getValArr(cargo, index, 'ADR6')} checked={getValArr(cargo, index, "ADR6")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR6</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR7" value={getValArr(cargo, index, 'ADR7')} checked={getValArr(cargo, index, "ADR7")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR7</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR8" value={getValArr(cargo, index, 'ADR8')} checked={getValArr(cargo, index, "ADR8")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR8</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="ADR9" value={getValArr(cargo, index, 'ADR9')} checked={getValArr(cargo, index, "ADR9")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">ADR9</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div className='row row-cols-2 g-3'>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="TIR" value={getValArr(cargo, index, 'TIR')} checked={getValArr(cargo, index, "TIR")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">TIR</span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label>
+                                                        <input type="checkbox" name="EKMT" value={getValArr(cargo, index, 'EKMT')} checked={getValArr(cargo, index, "EKMT")} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)}/>
+                                                        <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">EKMT</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>)
+                            }
+                            <button type="button" onClick={() => addState(cargo, setCargo)} className="green fs-11 fw-5 mx-auto d-flex align-items-center">
                                 <IconContext.Provider value={{className: "green icon-15"}}>
                                     <IoAddCircle />
                                 </IconContext.Provider>
@@ -1195,7 +1217,7 @@ export default function AddCargo() {
                             <div className="box">
                                 <div className="row align-items-center mb-4">
                                     <div className="col-md-3 mb-3 mb-md-0">
-                                        <div data-label='carType' data-warning='false' className="title-font fs-12 fw-5">Тип кузова</div>
+                                        <div data-label='carType' data-warning='false' className="title-font fs-12 fw-5">Тип кузова*</div>
                                     </div>
                                     <div className="col-md-9">
                                         <Select className="fs-12 w-100" classNamePrefix="react-select" placeholder={'Выберите...'} name="carType" value={getObj(optionsCarType, requirements, 'carType')} onChange={(e) => handleRSelect(e, 'carType', setRequirements, requirements)} options={optionsCarType} isSearchable={true}/>
@@ -1327,7 +1349,7 @@ export default function AddCargo() {
                                 </div>
                                 <div className="row align-items-center">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div data-label='prepay' data-warning='false' className="title-font fs-12 fw-5">Предоплата:</div>
+                                        <div data-label='prepay' data-warning='false' className="title-font fs-12 fw-5">Предоплата*</div>
                                     </div>
                                     <div className="col-sm-9">
                                         <div className='row'>
@@ -1380,36 +1402,9 @@ export default function AddCargo() {
                         <fieldset name="contactsField" data-show={(activeField === 6) ? 'true' : 'false'}>
                             <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">Контакты</h4>
                             <div className="box">
-                                {/* <div className='row gx-2 gx-sm-4'>
-                                    <div className='col-md-9'>
-                                        <div className="row align-items-center gy-2 gy-md-3">
-                                            <div className="col-md-4">
-                                                <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон*</div>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <input type="tel" name='phone' placeholder='+ 7 (962) 458 65 79' value={getContact('phone', 0)} onChange={(e)=> fillContacts(e, 0)} className="w-100 fs-12"/>
-                                            </div>
-                                            <div className="col-md-4">
-                                                <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя*</div>
-                                            </div>
-                                            <div className="col-md-8">
-                                                <input type="text" name='name' placeholder='Имя' value={getContact('name', 0)} onChange={(e)=> fillContacts(e, 0)} className="w-100 fs-12"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className='col-md-3 mt-2 mt-md-0'>
-                                        <button type="button" className="green fs-11 fw-5 text-start">
-                                            <IconContext.Provider value={{className: "green icon-15"}}>
-                                                <IoAddCircle />
-                                            </IconContext.Provider>
-                                            <span className="ms-2">Добавить контакт</span>
-                                        </button>
-                                    </div>
-                                </div> */}
                                 {
                                     contacts.map(obj => 
-                                        obj.index===0 ?
-                                        <div key={obj.index} className='row gx-2 gx-sm-4'>
+                                        <div key={obj.index} className='row gx-2 gx-sm-4 mb-3'>
                                             <div className='col-md-9'>
                                                 <div className="row align-items-center gy-2 gy-md-3">
                                                     <div className="col-md-4">
@@ -1427,43 +1422,26 @@ export default function AddCargo() {
                                                 </div>
                                             </div>
                                             <div className='col-md-3 mt-2 mt-md-0'>
-                                                <button type="button" onClick={() => addContacts()} className="green fs-11 fw-5 text-start">
-                                                    <IconContext.Provider value={{className: "green icon-15"}}>
-                                                        <IoAddCircle />
-                                                    </IconContext.Provider>
-                                                    <span className="ms-2">Добавить контакт</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        :<div key={obj.index} className='row mt-3'>
-                                            <div className='col-md-9'>
-                                                <div className="row align-items-center gy-2 gy-md-3">
-                                                    <div className="col-md-4">
-                                                        <div data-label='phone' data-warning='false' className="title-font fs-12 fw-5">Телефон</div>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <input type="tel" name='phone' placeholder='+ 7 (962) 458 65 79' value={getContact('phone', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        <div data-label='name' data-warning='false' className="title-font fs-12 fw-5">Имя</div>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <input type="text" name='name' placeholder='Имя' value={getContact('name', obj.index)} onChange={(e)=> fillContacts(e, obj.index)} className="w-100 fs-12"/>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-md-3 mt-2 mt-md-0'>
-                                                <button type="button" onClick={() => deleteContacts(obj.index)} className="red fs-11 fw-5">
-                                                    <IconContext.Provider value={{className: "red icon-15"}}>
-                                                        <IoCloseCircle />
-                                                    </IconContext.Provider>
-                                                    <span className="ms-2">Удалить</span>
-                                                </button>
+                                                {
+                                                    obj.index===0 ?
+                                                    <button type="button" onClick={() => addContacts()} className="green fs-11 fw-5 text-start">
+                                                        <IconContext.Provider value={{className: "green icon-15"}}>
+                                                            <IoAddCircle />
+                                                        </IconContext.Provider>
+                                                        <span className="ms-2">Добавить контакт</span>
+                                                    </button>
+                                                    : <button type="button" onClick={() => deleteContacts(obj.index)} className="red fs-11 fw-5">
+                                                        <IconContext.Provider value={{className: "red icon-15"}}>
+                                                            <IoCloseCircle />
+                                                        </IconContext.Provider>
+                                                        <span className="ms-2">Удалить</span>
+                                                    </button>
+                                                }
                                             </div>
                                         </div>
                                     )
                                 }
-                                <div className="row mt-3">
+                                <div className="row">
                                     <div className="col-md-3 mb-2 mb-md-0">
                                         <div className="title-font fs-12 fw-5">Примечание</div>
                                     </div>
@@ -1559,180 +1537,136 @@ export default function AddCargo() {
                                                 </div>
                                             )
                                         }
-                                        {/* <div className='fs-09'>
-                                            {
-                                                (getVal(loading, 'frequency')) &&
-                                                <span className='me-1'>{(getVal(loading, 'frequency').value == 0) ? 'Груз готов' : 'Постоянно'}:</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingDate')) &&
-                                                <span className='me-1'>{getVal(loading, 'loadingDate')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingDays')) &&
-                                                <span className='me-1'>+ {getVal(loading, 'loadingDays')} дня</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingPeriodType')) &&
-                                                <span className='me-1'>{getObjLabel(optionsLoadingPeriodType, loading, 'loadingPeriodType')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingTimeFrom')) &&
-                                                <span className='me-1'>, {getVal(loading, 'loadingTimeFrom')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingTimeTo')) &&
-                                                <span className='me-1'>– {getVal(loading, 'loadingTimeTo')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'isLoadingAllDay')) &&
-                                                <span className='me-1'>, Круглосуточно</span>
-                                            }
-                                        </div> */}
-                                        {/* <div className='fs-09'>
-                                            {
-                                                (getVal(loading, 'loadingTown')) &&
-                                                <span className='me-1'>{getObjLabel(optionsTowns, loading, 'loadingTown')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingAddress')) &&
-                                                <span className='me-1'>, {getVal(loading, 'loadingAddress')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'transportationType')) &&
-                                                <span className='me-1'>, {getVal(loading, 'transportationType')}</span>
-                                            }
-                                            {
-                                                (getVal(loading, 'loadingType')) &&
-                                                <span className='me-1'>, {getObjLabel(optionsLoading, loading, 'loadingType')}</span>
-                                            }
-                                        </div> */}
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(unloading)?'filled':''}>Разгрузка</Link>
-                                        <div className='fs-09'>
-                                            {
-                                                (getVal(unloading, 'unloadingDateFrom')) &&
-                                                <span className='me-1'>{getVal(unloading, 'unloadingDateFrom')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'unloadingDateTo')) &&
-                                                <span className='me-1'>— {getVal(unloading, 'unloadingDateTo')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'unloadingTimeFrom')) &&
-                                                <span className='me-1'>, {getVal(unloading, 'unloadingTimeFrom')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'unloadingTimeTo')) &&
-                                                <span className='me-1'>— {getVal(unloading, 'unloadingTimeTo')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'isUnloadingAllDay')) &&
-                                                <span className='me-1'>, Круглосуточно</span>
-                                            }
-                                        </div>
-                                        <div className='fs-09'>
-                                            {
-                                                (getVal(unloading, 'unloadingTown')) &&
-                                                <span className='me-1'>{getObjLabel(optionsTowns, unloading, 'unloadingTown')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'unloadingAddress')) &&
-                                                <span className='me-1'>, {getVal(unloading, 'unloadingAddress')}</span>
-                                            }
-                                            {
-                                                (getVal(unloading, 'unloadingType')) &&
-                                                <span className='me-1'>, {getObjLabel(optionsLoading, unloading, 'unloadingType')}</span>
-                                            }
-                                        </div>
+                                        <Link activeClass="active" to="unloading" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldsetArr(unloading)?'filled':''}>Разгрузка</Link>
+                                        {
+                                            unloading.map((arr, index) => 
+                                            <div key={index} className='fs-09'>
+                                                <span>Точка {index+1} - </span>
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingDateFrom')) &&
+                                                    <span className='me-1'>{getValArr(unloading, index, 'unloadingDateFrom')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingDateTo')) &&
+                                                    <span className='me-1'>— {getValArr(unloading, index, 'unloadingDateTo')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingTimeFrom')) &&
+                                                    <span className='me-1'>, {getValArr(unloading, index, 'unloadingTimeFrom')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingTimeTo')) &&
+                                                    <span className='me-1'>— {getValArr(unloading, index, 'unloadingTimeTo')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'isUnloadingAllDay')) &&
+                                                    <span className='me-1'>, Круглосуточно</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingTown')) &&
+                                                    <span className='me-1'>{getObjLabel(optionsTowns, arr, 'unloadingTown')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingAddress')) &&
+                                                    <span className='me-1'>, {getValArr(unloading, index, 'unloadingAddress')}</span>
+                                                }
+                                                {
+                                                    (getValArr(unloading, index, 'unloadingType')) &&
+                                                    <span className='me-1'>, {getObjLabel(optionsLoading, arr, 'unloadingType')}</span>
+                                                }
+                                            </div>)
+                                        }
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(cargo)?'filled':''}>Груз</Link>
-                                        <div className='fs-09'>
-                                            {
-                                                (getVal(cargo, 'cargoType')) &&
-                                                <span className='me-1'>{getObjLabel(optionsCargoType, cargo, 'cargoType')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'packageType')) &&
-                                                <span className='me-1'>, {getObjLabel(optionsPackageType, cargo, 'packageType')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'packageCount')) &&
-                                                <span className='me-1'>{getVal(cargo, 'packageCount')} шт</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'weight')) &&
-                                                <span className='me-1'>, {getVal(cargo, 'weight')} т</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'capacity')) &&
-                                                <span className='me-1'>, {getVal(cargo, 'capacity')} м<sup>3</sup></span>
-                                            }
-                                        </div>
-                                        <div className='fs-09'>
-                                            {
-                                                (getVal(cargo, 'length')) &&
-                                                <span className='me-1'>{getVal(cargo, 'length')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'width')) &&
-                                                <span className='me-1'>/ {getVal(cargo, 'width')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'height')) &&
-                                                <span className='me-1'>/ {getVal(cargo, 'height')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'notes')) &&
-                                                <span className='me-1'>, {getObjLabel(optionsNotes, cargo, 'notes')}</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR1')) &&
-                                                <span className='me-1'>, ADR1</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR2')) &&
-                                                <span className='me-1'>, ADR2</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR3')) &&
-                                                <span className='me-1'>, ADR3</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR4')) &&
-                                                <span className='me-1'>, ADR4</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR5')) &&
-                                                <span className='me-1'>, ADR5</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR6')) &&
-                                                <span className='me-1'>, ADR6</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR7')) &&
-                                                <span className='me-1'>, ADR7</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR8')) &&
-                                                <span className='me-1'>, ADR8</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'ADR9')) &&
-                                                <span className='me-1'>, ADR9</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'TIR')) &&
-                                                <span className='me-1'>, TIR</span>
-                                            }
-                                            {
-                                                (getVal(cargo, 'EKMT')) &&
-                                                <span className='me-1'>, EKMT</span>
-                                            }
-                                        </div>
+                                        <Link activeClass="active" to="cargo" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldsetArr(cargo)?'filled':''}>Груз</Link>
+                                        {
+                                            cargo.map((arr, index) => 
+                                            <div key={index} className='fs-09'>
+                                                <span>Груз №{index+1} - </span>
+                                                {
+                                                    (getValArr(cargo, index, 'cargoType')) &&
+                                                    <span className='me-1'>{getObjLabel(optionsCargoType, arr, 'cargoType')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'packageType')) &&
+                                                    <span className='me-1'>, {getObjLabel(optionsPackageType, arr, 'packageType')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'packageCount')) &&
+                                                    <span className='me-1'>{getValArr(cargo, index, 'packageCount')} шт</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'weight')) &&
+                                                    <span className='me-1'>, {getValArr(cargo, index, 'weight')} т</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'capacity')) &&
+                                                    <span className='me-1'>, {getValArr(cargo, index, 'capacity')} м<sup>3</sup></span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'length')) &&
+                                                    <span className='me-1'>{getValArr(cargo, index, 'length')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'width')) &&
+                                                    <span className='me-1'>/ {getValArr(cargo, index, 'width')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'height')) &&
+                                                    <span className='me-1'>/ {getValArr(cargo, index, 'height')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'notes')) &&
+                                                    <span className='me-1'>, {getObjLabel(optionsNotes, arr, 'notes')}</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR1')) &&
+                                                    <span className='me-1'>, ADR1</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR2')) &&
+                                                    <span className='me-1'>, ADR2</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR3')) &&
+                                                    <span className='me-1'>, ADR3</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR4')) &&
+                                                    <span className='me-1'>, ADR4</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR5')) &&
+                                                    <span className='me-1'>, ADR5</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR6')) &&
+                                                    <span className='me-1'>, ADR6</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR7')) &&
+                                                    <span className='me-1'>, ADR7</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR8')) &&
+                                                    <span className='me-1'>, ADR8</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'ADR9')) &&
+                                                    <span className='me-1'>, ADR9</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'TIR')) &&
+                                                    <span className='me-1'>, TIR</span>
+                                                }
+                                                {
+                                                    (getValArr(cargo, index, 'EKMT')) &&
+                                                    <span className='me-1'>, EKMT</span>
+                                                }
+                                            </div>)
+                                        }
                                     </li>
                                     <li>
                                         <Link activeClass="active" to="requirements" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(requirements)?'filled':''}>Требования к машине</Link>
@@ -1781,7 +1715,7 @@ export default function AddCargo() {
                                         </div>
                                     </li>
                                     <li>
-                                        <Link activeClass="active" to="contactsField" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkFieldset(contactsField)?'filled':''}>Контакты</Link>
+                                        <Link activeClass="active" to="contactsField" spy={true} smooth={true} hashSpy={true} offset={-80} duration={300} isDynamic={true} className={checkAllProps(contacts)?'filled':''}>Контакты</Link>
                                         {
                                             contacts.map(obj => 
                                                 <div key={obj.index} className='fs-09'>
