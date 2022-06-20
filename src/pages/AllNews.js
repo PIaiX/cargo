@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import ArticleMini from "../components/ArticleMini";
 import ForumWidget from "../components/ForumWidget";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import Pagination from "../components/Pagination";
 import news from "./../dummyData/news.json";
 
-const articlesLimit = 12;
-const pageLimit = 6
+const articlesLimit = 6;
 
 export default function AllNews() {
   const [articles, setArticles] = useState([]);
@@ -41,7 +40,8 @@ export default function AllNews() {
                 ))}
               </div>
             )}
-            <nav className="mt-4">
+            <Pagination pageLimit={1} currentPage={currentPage} setCurrentPage={setCurrentPage} pagesDisplayedLimit={3} itemsAmount={articles.length}/>
+            {/* <nav className="mt-4">
               <ul className="pagination">
                 <li className="page-item">
                   <a className="page-link" href="/" aria-label="Previous">
@@ -75,7 +75,7 @@ export default function AllNews() {
                   </a>
                 </li>
               </ul>
-            </nav>
+            </nav> */}
           </div>
           <div className="d-none d-md-block col-4 col-lg-3">
             <ForumWidget />
