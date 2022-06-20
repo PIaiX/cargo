@@ -4,17 +4,18 @@ import ForumWidget from "../components/ForumWidget";
 import Pagination from "../components/Pagination";
 import news from "./../dummyData/news.json";
 
-const articlesLimit = 6;
+const pageLimit = 5;
 
 export default function AllNews() {
   const [articles, setArticles] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     //Make an API call later getting the first page of all the articles
-    const items = news.slice(0, articlesLimit);
-    setArticles(items);
-  }, []);
+    const items = news.slice(currentPage - 1, currentPage + (pageLimit - 1));
+      setArticles(items);
+    // window.scrollTo(0, 0)
+  }, [currentPage]);
 
   return (
     <main className="bg-white">
@@ -27,20 +28,26 @@ export default function AllNews() {
             {articles.length > 0 && (
               <div className="row row-cols-2 row-cols-lg-3 gx-2 gx-xl-3 gy-4 gy-lg-5">
                 {articles.map((item, idx) => (
-                  <div>
-                    <ArticleMini
-                      key={idx}
-                      url={`/news/${item.slug}`}
-                      title={item.title}
-                      img={`${item.img}`}
-                      text={item.body}
-                      date={item.date}
-                    />
-                  </div>
-                ))}
+                    <div>
+                      <ArticleMini
+                        key={idx}
+                        url={`/news/${item.slug}`}
+                        title={item.title}
+                        img={`${item.img}`}
+                        text={item.body}
+                        date={item.date}
+                      />
+                    </div>
+                  ))}
               </div>
             )}
-            <Pagination pageLimit={1} currentPage={currentPage} setCurrentPage={setCurrentPage} pagesDisplayedLimit={3} itemsAmount={articles.length}/>
+            <Pagination
+              pageLimit={pageLimit}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              pagesDisplayedLimit={3}
+              itemsAmount={news.length}
+            />
             {/* <nav className="mt-4">
               <ul className="pagination">
                 <li className="page-item">

@@ -15,7 +15,10 @@ export default function Pagination({
   const pagesAmount = Math.ceil(itemsAmount / pageLimit);
 
   const getPages = useCallback(() => {
-    const pages = _.range(startingPage, startingPage + pagesDisplayedLimit);
+    const pages =
+      (pagesAmount === 5) 
+        ? [1, 2, 3, 4, 5]
+        : _.range(startingPage, startingPage + pagesDisplayedLimit);
     return pages.filter((page) => page <= pagesAmount);
   }, [pagesAmount, startingPage]);
 
@@ -34,9 +37,9 @@ export default function Pagination({
     setCurrentPage(currentPage - 1);
     if (currentPage === pagesArrayDisplayed[0]) {
       const newStartingPage = startingPage - pagesDisplayedLimit;
-      if (newStartingPage < 1){
+      if (newStartingPage < 1) {
         setStartingPage(1);
-      }else{
+      } else {
         setStartingPage(newStartingPage);
       }
     }
@@ -57,6 +60,12 @@ export default function Pagination({
     setStartingPage(pagesAmount - (pagesDisplayedLimit - 1));
   };
 
+  const handleSelectFirstPage = () => {
+    //Make API call for a new page in the parent component
+    setCurrentPage(1);
+    setStartingPage(1);
+  };
+  console.log(startingPage)
   return (
     <nav className="mt-4">
       <ul className="pagination">
@@ -69,6 +78,16 @@ export default function Pagination({
             <IoChevronBack />
           </div>
         </li>
+        {startingPage > 2 && (
+          <>
+            <li className="page-item" onClick={() => handleSelectFirstPage()}>
+              <div style={{ cursor: "pointer" }} className="page-link">
+                {1}
+              </div>
+            </li>
+            <li className="page-item">...</li>
+          </>
+        )}
         {pagesArrayDisplayed.map((pageNumber, idx) => {
           return (
             <li
@@ -98,13 +117,6 @@ export default function Pagination({
             </li>
           </>
         )}
-        {/* 
-        <li className="page-item">...</li>
-        <li className="page-item">
-          <a className="page-link" href="/">
-            6
-          </a>
-        </li> */}
         <li className="page-item" onClick={handleSelectNextPage}>
           <div
             className="page-link"
