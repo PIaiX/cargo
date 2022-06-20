@@ -40,7 +40,7 @@ export default function AppRouter() {
             <Route path="/add-cargo" element={<AddCargo />} />
             <Route path="/add-car" element={<AddCar />} />
             <Route path="/all-news" element={<AllNews />} />
-            <Route path="/news" element={<ArticleFull />} />
+            <Route path="/news/:slug" element={<ArticleFull />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/forum-section" element={<ForumSublevel />} />
             <Route path="/my-topics" element={<ForumMyTopics />} />

@@ -7,9 +7,17 @@ import { IoChevronBackSharp, IoChevronForwardSharp } from 'react-icons/io5';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
+
+import {useSelector} from "react-redux"
+
 SwiperCore.use([Navigation, Pagination]);
 
+const homePageNewsLimit = 5
+
 export default function Home() {
+
+    const news = useSelector((state) => state.news)
+
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
@@ -483,20 +491,20 @@ export default function Home() {
                         <div className="text">
                             <div className="title mb-0"><span>Все готово для перевозки</span></div>
                         </div>
-                        <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
+                        <div className="ribbon ribbon-left">ПЕРЕВОЗЧИК</div>
                     </div>
                 </div>
             </section>
 
             <section id="sec-6" className="container mb-5">
                 <h2>Новости ПОРТАЛА</h2>
+                {news.loading && "Идет загрузка новостей..."}
+                {!news.loading && news.data.length > 0 && 
                 <div className="news-grid">
-                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                    <ArticleCard url="/news" title="Название новости" img="/cargo/img/img2.png" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud"/>
-                </div>
+                    {news.data.slice(0, homePageNewsLimit).map((item, idx) => {
+                    return (<ArticleCard key={idx} url={`/news/${item.slug}`} title={item.title} img={item.img} text={item.body}/>)
+                    })}
+                </div>}
                 <Link to="all-news" className='btn btn-2 mx-auto mt-5 fs-12 text-uppercase'>К другим новостям</Link>
             </section>
         </main>
