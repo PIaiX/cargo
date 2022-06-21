@@ -4,7 +4,7 @@ import ForumWidget from "../components/ForumWidget";
 import Pagination from "../components/Pagination";
 import news from "./../dummyData/news.json";
 
-const pageLimit = 5;
+const pageLimit = 12;
 
 export default function AllNews() {
   const [articles, setArticles] = useState([]);
