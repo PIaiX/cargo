@@ -2,7 +2,7 @@
   "name": "cargo",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ngf93.github.io/cargo/",
+  "homepage": "https://ngf93.github.io/cargo",
   "dependencies": {
     "@popperjs/core": "^2.11.4",
     "@reduxjs/toolkit": "^1.8.2",

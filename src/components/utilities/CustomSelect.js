@@ -12,7 +12,7 @@ export default function CustomSelect(props) {
   const [checkedVal, setCheckedVal] = useState(props.checkedOpt);
   
   useEffect(() => {
-    props.onSelectChange(checkedVal);
+    props.onSelectChange(checkedVal, props.name);
   }, [checkedVal]);
 
   const options = props.options;
