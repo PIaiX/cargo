@@ -8,6 +8,9 @@ import {
   IoChevronForward,
 } from "react-icons/io5";
 import { IconContext } from "react-icons";
+import Pagination from "../components/Pagination";
+import cargo from "./../dummyData/cargo.json";
+import cars from "./../dummyData/car.json";
 
 const formValuesDefault = {
   from: "",
@@ -24,11 +27,37 @@ const formValuesDefault = {
   specialNotes: "",
 };
 
+const pageLimit = 12;
+
 export default function Search() {
   const [search, setSearch] = useState("cargo"); // cargo & car
+  const [filteredCargo, setFilteredCargo] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [cargoPage, setCargoPage] = useState(1);
+  const [carsPage, setCarsPage] = useState(1);
   const [advSearch, setAdvSearch] = useState(true);
 
   const [formValues, setFormValues] = useState(formValuesDefault);
+
+  useEffect(() => {
+    //Make an API call later getting the first page of all the cargo
+    const startIdx = (cargoPage - 1) * pageLimit;
+    const endIdx = startIdx + pageLimit;
+    const paginated = cargo.slice(startIdx, endIdx);
+
+    setFilteredCargo(paginated);
+    window.scrollTo(0, 0);
+  }, [cargoPage]);
+
+  useEffect(() => {
+    //Make an API call later getting the first page of all the cars
+    const startIdx = (carsPage - 1) * pageLimit;
+    const endIdx = startIdx + pageLimit;
+    const paginated = cars.slice(startIdx, endIdx);
+
+    setFilteredCars(paginated);
+    window.scrollTo(0, 0);
+  }, [carsPage]);
 
   useEffect(() => {
     function collapseForm() {
@@ -45,8 +74,8 @@ export default function Search() {
 
   const handleSelectChange = (value, fieldName) => {
     setFormValues((prev) => {
-      return {...prev, [fieldName]: value}
-    })
+      return { ...prev, [fieldName]: value };
+    });
   };
 
   const handleFormChange = (e) => {
@@ -130,7 +159,13 @@ export default function Search() {
               </div>
               <div className="col-md-5 col-lg-4">
                 <label className="title-font mb-2 mb-xl-3">Дата</label>
-                <input type="date" placeholder="С сегодняшнего дня" value={formValues.date} name="date" onChange={handleFormChange}/>
+                <input
+                  type="date"
+                  placeholder="С сегодняшнего дня"
+                  value={formValues.date}
+                  name="date"
+                  onChange={handleFormChange}
+                />
               </div>
               {advSearch && (
                 <>
@@ -141,9 +176,21 @@ export default function Search() {
                           Объем, м3
                         </label>
                         <div className="d-flex align-items-center">
-                          <input type="number" placeholder="От" name="minVolume" value={formValues.minVolume} onChange={handleFormChange}/>
+                          <input
+                            type="number"
+                            placeholder="От"
+                            name="minVolume"
+                            value={formValues.minVolume}
+                            onChange={handleFormChange}
+                          />
                           <span className="fs-15 mx-1 mx-xl-2">—</span>
-                          <input type="number" placeholder="До" name="maxVolume" value={formValues.maxVolume} onChange={handleFormChange}/>
+                          <input
+                            type="number"
+                            placeholder="До"
+                            name="maxVolume"
+                            value={formValues.maxVolume}
+                            onChange={handleFormChange}
+                          />
                         </div>
                       </div>
                       <div>
@@ -151,9 +198,21 @@ export default function Search() {
                           Вес, т
                         </label>
                         <div className="d-flex align-items-center">
-                          <input type="number" placeholder="От" name="minWeight" value={formValues.minWeight} onChange={handleFormChange}/>
+                          <input
+                            type="number"
+                            placeholder="От"
+                            name="minWeight"
+                            value={formValues.minWeight}
+                            onChange={handleFormChange}
+                          />
                           <span className="fs-15 mx-1 mx-xl-2">—</span>
-                          <input type="number" placeholder="До" name="maxWeight" value={formValues.maxWeight} onChange={handleFormChange}/>
+                          <input
+                            type="number"
+                            placeholder="До"
+                            name="maxWeight"
+                            value={formValues.maxWeight}
+                            onChange={handleFormChange}
+                          />
                         </div>
                       </div>
                     </div>
@@ -165,15 +224,33 @@ export default function Search() {
                     <div className="d-sm-flex align-items-center">
                       <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
                         <label className="me-2">Длина:</label>
-                        <input type="number" placeholder="0" name="length" value={formValues.length} onChange={handleFormChange}/>
+                        <input
+                          type="number"
+                          placeholder="0"
+                          name="length"
+                          value={formValues.length}
+                          onChange={handleFormChange}
+                        />
                       </div>
                       <div className="d-flex align-items-center mb-3 mb-sm-0 me-sm-4 me-xl-5">
                         <label className="me-2">Ширина:</label>
-                        <input type="number" placeholder="0" name="width" value={formValues.width} onChange={handleFormChange}/>
+                        <input
+                          type="number"
+                          placeholder="0"
+                          name="width"
+                          value={formValues.width}
+                          onChange={handleFormChange}
+                        />
                       </div>
                       <div className="d-flex align-items-center">
                         <label className="me-2">Высота:</label>
-                        <input type="number" placeholder="0" name="height" value={formValues.height} onChange={handleFormChange}/>
+                        <input
+                          type="number"
+                          placeholder="0"
+                          name="height"
+                          value={formValues.height}
+                          onChange={handleFormChange}
+                        />
                       </div>
                     </div>
                   </div>
@@ -384,7 +461,11 @@ export default function Search() {
 
       <section className="container pb-4 pb-sm-5 my-sm-4">
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-          <div className="fs-15 fw-5 mb-2 mb-md-0">Найденно 421 грузов</div>
+          <div className="fs-15 fw-5 mb-2 mb-md-0">
+            {search === "cargo"
+              ? `Найдено ${cargo.length} грузов`
+              : `Найдено ${cars.length} машин`}
+          </div>
           <div className="fs-12 ms-md-5 d-flex align-items-center">
             <span className="me-2">Сортировать:</span>
             <CustomSelect
@@ -398,324 +479,41 @@ export default function Search() {
             />
           </div>
         </div>
-
         {search === "cargo" ? (
           <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Продукты питания"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="cold"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Оборудование"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="fragile"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Стройматериалы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="none"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Трубы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="dimensional"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Продукты питания"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="cold"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Оборудование"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="fragile"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Стройматериалы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="none"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Трубы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="dimensional"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Продукты питания"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="cold"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Оборудование"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="fragile"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Стройматериалы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="none"
-                url="/cargo-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="cargo"
-                className=""
-                title="Трубы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="dimensional"
-                url="/cargo-page"
-              />
-            </div>
+            {filteredCargo.map((item, idx) => (
+              <div key={idx}>
+                <Card
+                  type={item.type}
+                  className=""
+                  title={item.title}
+                  route={item.route}
+                  size={item.size}
+                  weight={item.weight}
+                  notes={item.notes}
+                  url="/cargo-page"
+                />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Тягач"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Рефрижератор"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Тягач"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Рефрижератор"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Тягач"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Рефрижератор"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
-            <div>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/car-page"
-              />
-            </div>
+            {filteredCars.map((item, idx) => (
+              <div key={idx}>
+                <Card
+                  type={item.type}
+                  className=""
+                  route={item.route}
+                  carType={item.carType}
+                  verified={item.verified}
+                  date={item.date}
+                  carrying={item.carrying}
+                  size={item.size}
+                  dimensions={item.dimensions}
+                  url="/car-page"
+                />
+              </div>
+            ))}
           </div>
         )}
         <button
@@ -724,41 +522,24 @@ export default function Search() {
         >
           Показать еще
         </button>
-        <nav className="mt-4">
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link" href="/" aria-label="Previous">
-                <IoChevronBack />
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link active" href="/">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/">
-                3
-              </a>
-            </li>
-            <li className="page-item">...</li>
-            <li className="page-item">
-              <a className="page-link" href="/">
-                6
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="/" aria-label="Next">
-                <IoChevronForward />
-              </a>
-            </li>
-          </ul>
-        </nav>
+        {search === "cargo" && (
+          <Pagination
+            pageLimit={pageLimit}
+            currentPage={cargoPage}
+            setCurrentPage={setCargoPage}
+            pagesDisplayedLimit={3}
+            itemsAmount={cargo.length}
+          />
+        )}
+        {search !== "cargo" && (
+          <Pagination
+            pageLimit={pageLimit}
+            currentPage={carsPage}
+            setCurrentPage={setCarsPage}
+            pagesDisplayedLimit={3}
+            itemsAmount={cars.length}
+          />
+        )}
       </section>
     </main>
   );

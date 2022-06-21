@@ -1,0 +1,1252 @@
+[
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Урывкино-Томь",
+    "carType": "Фура",
+    "verified": false,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Саратов-Волгоград",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Гомель-Омск",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Город-Деревня",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежедневно",
+    "carrying": "22",
+    "size": "302",
+    "dimensions": "13/2,45/2,45"
+  },
+  {
+    "type": "car",
+    "route": "Посёлок-Мегаполис",
+    "carType": "Тягач",
+    "verified": true,
+    "date": "Ежегодно",
+    "carrying": "22",
+    "size": "392",
+    "dimensions": "13/2,45/2,45"
+  }
+]

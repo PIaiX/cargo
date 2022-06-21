@@ -48,41 +48,6 @@ export default function AllNews() {
               pagesDisplayedLimit={3}
               itemsAmount={news.length}
             />
-            {/* <nav className="mt-4">
-              <ul className="pagination">
-                <li className="page-item">
-                  <a className="page-link" href="/" aria-label="Previous">
-                    <IoChevronBack />
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link active" href="/">
-                    1
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/">
-                    2
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/">
-                    3
-                  </a>
-                </li>
-                <li className="page-item">...</li>
-                <li className="page-item">
-                  <a className="page-link" href="/">
-                    6
-                  </a>
-                </li>
-                <li className="page-item">
-                  <a className="page-link" href="/" aria-label="Next">
-                    <IoChevronForward />
-                  </a>
-                </li>
-              </ul>
-            </nav> */}
           </div>
           <div className="d-none d-md-block col-4 col-lg-3">
             <ForumWidget />
