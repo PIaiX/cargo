@@ -20,7 +20,7 @@ export default function Header() {
                         <a href="/">Задать вопрос</a>
                     </nav>
                     <div className="d-flex align-items-center ms-5">
-                        <Link to="entrance" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
+                        <Link to="login" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
                             <span className="d-none d-xxl-inline fw-5 fs-12 me-2">Личный кабинет</span>
                             <IconContext.Provider value={{className: "icon", title: "аккаунт" }}>
                                 <RiUserLine />

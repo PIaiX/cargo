@@ -14,7 +14,7 @@ export default function AllNews() {
     //Make an API call later getting the first page of all the articles
     const items = news.slice(currentPage - 1, currentPage + (pageLimit - 1));
       setArticles(items);
-    // window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
   }, [currentPage]);
 
   return (

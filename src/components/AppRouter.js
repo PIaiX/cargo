@@ -10,7 +10,7 @@ import Home from '../pages/Home';
 import Search from '../pages/Search';
 import AllNews from '../pages/AllNews';
 import ArticleFull from '../pages/ArticleFull';
-import Entrance from '../pages/Entrance';
+import Login from '../pages/Login';
 import Registration from '../pages/Registration';
 import ResetPassword from '../pages/ResetPassword';
 import ResetPassword2 from '../pages/ResetPassword2';
@@ -45,7 +45,7 @@ export default function AppRouter() {
             <Route path="/forum-section" element={<ForumSublevel />} />
             <Route path="/my-topics" element={<ForumMyTopics />} />
             <Route path="/forum-topic" element={<ForumTopicChat />} />
-            <Route path="/entrance" element={<Entrance />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/reset-password-2" element={<ResetPassword2 />} />

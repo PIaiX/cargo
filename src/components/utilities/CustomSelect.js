@@ -11,8 +11,6 @@ export default function CustomSelect(props) {
   const [visible, setVisibility] = useState(false);
   const [checkedVal, setCheckedVal] = useState(props.checkedOpt);
   
-  console.log(checkedVal);
-  
   useEffect(() => {
     props.onSelectChange(checkedVal);
   }, [checkedVal]);
@@ -64,11 +62,6 @@ export default function CustomSelect(props) {
       document.removeEventListener("reset", onReset, true);
     };
   });
-
-  //This part is technically not necessary
-  useEffect(() => {
-    if(!props.reset) onReset()
-  }, [props.reset])
 
   return multy ? (
     <div ref={ref} className={"custom-select " + props.className}>
