@@ -118,7 +118,6 @@ input {
         background-size: auto;
         background-position: calc(100% - 0.5em) center;
         padding: .5em .5em .5em .5em;
-        width: 100px;
         max-width: 100%;
         -moz-appearance: textfield; //Firefox 
         &::-webkit-outer-spin-button,
@@ -126,6 +125,7 @@ input {
             -webkit-appearance: none; //Chrome, Safari, Edge, Opera
             margin: 0;
         }
+        &.w-100px {width: 100px;}
         &.price, &.size, &.length, &.weight, &.pcs, &.temp, &.percent {padding: .5em 1.5em .5em .5em;}
         &.price {
             background-image: url(bg-imgs/rub.svg);
@@ -237,7 +237,7 @@ select {
     width: fit-content;
     max-width: 100%;
     position: relative;
-    z-index: 0;
+    z-index: 1;
     >button {
         width: 100%;
         position: relative;

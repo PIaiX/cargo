@@ -1,0 +1,110 @@
+[
+  {
+    "type": "topic",
+    "fixedTopic": true,
+    "id": 1,
+    "title": "Название закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 3233,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": false,
+    "id": 2,
+    "title": "Тоже самое закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 3433,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": false,
+    "id": 3,
+    "title": "Не то же самое закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 733,
+    "latest": "10.04.2022"
+  },
+  {
+   "type": "topic",
+   "fixedTopic": true,
+    "id": 4,
+    "title": "Другое закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 633,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": true,
+    "id": 5,
+    "title": "Похожее закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 533,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": true,
+    "id": 6,
+    "title": "Название закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 433,
+    "latest": "10.04.2022"
+  },
+  {
+   "type": "topic",
+   "fixedTopic": false,
+    "id": 7,
+    "title": "Не знаю закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 233,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": false,
+    "id": 8,
+    "title": "Не совсем закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 333,
+    "latest": "10.04.2022"
+  },
+  {
+    "type": "topic",
+    "fixedTopic": true,
+    "id": 9,
+    "title": "Почти закрепленной темы",
+    "author": {
+        "name": "User name",
+        "url": "/personal-account/view-profile"
+    },
+    "messages": 233,
+    "latest": "10.04.2022"
+  }
+]

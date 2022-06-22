@@ -1076,7 +1076,7 @@ export default function AddCargo() {
                                             <IconContext.Provider value={{className: "icon-10 mx-3"}}>
                                                 <VscChromeClose />
                                             </IconContext.Provider>
-                                            <input type="number" placeholder='0' min="0" name="packageCount" value={getValArr(cargo, index, 'packageCount')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="packageCount pcs"/>
+                                            <input type="number" placeholder='0' min="0" name="packageCount" value={getValArr(cargo, index, 'packageCount')} onChange={(e)=> fillDataArr(e, setCargo, cargo, index)} className="packageCount pcs w-100px"/>
                                         </div>
                                     </div>
                                     <div className="row align-items-center mb-4">

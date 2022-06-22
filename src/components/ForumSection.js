@@ -12,7 +12,7 @@ export default function ForumSection(props) {
                 </IconContext.Provider>
             </div>
             <div className='text'>
-                <Link to="/forum-section" className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
+                <Link to={`/forum-section/${props.id}`} className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
                 {
                     (props.subsections) &&
                     <div className="dropdown">

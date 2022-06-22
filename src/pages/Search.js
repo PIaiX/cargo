@@ -516,12 +516,12 @@ export default function Search() {
             ))}
           </div>
         )}
-        <button
+        {/* <button
           type="button"
           className="fs-11 dark-blue mx-auto mt-4 mt-sm-5 bb-1"
         >
           Показать еще
-        </button>
+        </button> */}
         {search === "cargo" && (
           <Pagination
             pageLimit={pageLimit}

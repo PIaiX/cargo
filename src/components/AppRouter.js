@@ -42,7 +42,7 @@ export default function AppRouter() {
             <Route path="/all-news" element={<AllNews />} />
             <Route path="/news/:slug" element={<ArticleFull />} />
             <Route path="/forum" element={<Forum />} />
-            <Route path="/forum-section" element={<ForumSublevel />} />
+            <Route path="/forum-section/:id" element={<ForumSublevel />} />
             <Route path="/my-topics" element={<ForumMyTopics />} />
             <Route path="/forum-topic" element={<ForumTopicChat />} />
             <Route path="/login" element={<Login />} />
