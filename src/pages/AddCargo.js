@@ -20,286 +20,332 @@ import {
   optionsCarType,
   optionsTowns,
 } from "../components/utilities/data";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormData } from "../store/reducers/savedCargoTemplates";
+
+const initialLoading = [
+  [
+    {
+      name: "frequency",
+      value: "",
+      required: true,
+    },
+    {
+      name: "loadingDate",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingDays",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingPeriodType",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingTimeFrom",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingTimeTo",
+      value: "",
+      required: false,
+    },
+    {
+      name: "isLoadingAllDay",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingTown",
+      value: optionsTowns[1].value,
+      required: true,
+    },
+    {
+      name: "loadingAddress",
+      value: "",
+      required: true,
+    },
+    {
+      name: "transportationType",
+      value: "",
+      required: false,
+    },
+    {
+      name: "loadingType",
+      value: "",
+      required: false,
+    },
+  ],
+];
+
+const initialUnloading = [
+  [
+    {
+      name: "unloadingDateFrom",
+      value: "",
+      required: false,
+    },
+    {
+      name: "unloadingDateTo",
+      value: "",
+      required: false,
+    },
+    {
+      name: "unloadingTimeFrom",
+      value: "",
+      required: false,
+    },
+    {
+      name: "unloadingTimeTo",
+      value: "",
+      required: false,
+    },
+    {
+      name: "isUnloadingAllDay",
+      value: "",
+      required: false,
+    },
+    {
+      name: "unloadingTown",
+      value: "",
+      required: true,
+    },
+    {
+      name: "unloadingAddress",
+      value: "",
+      required: true,
+    },
+    {
+      name: "unloadingType",
+      value: "",
+      required: false,
+    },
+  ],
+];
+
+const initialCargo = [
+  [
+    {
+      name: "cargoType",
+      value: "",
+      required: false,
+    },
+    {
+      name: "weight",
+      value: "",
+      required: true,
+    },
+    {
+      name: "capacity",
+      value: "",
+      required: true,
+    },
+    {
+      name: "length",
+      value: "",
+      required: false,
+    },
+    {
+      name: "width",
+      value: "",
+      required: false,
+    },
+    {
+      name: "height",
+      value: "",
+      required: false,
+    },
+    {
+      name: "packageType",
+      value: "",
+      required: false,
+    },
+    {
+      name: "packageCount",
+      value: "",
+      required: false,
+    },
+    {
+      name: "notes",
+      value: "",
+      required: false,
+    },
+    {
+      name: "ADR1",
+      value: true,
+      required: false,
+    },
+    {
+      name: "ADR2",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR3",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR4",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR5",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR6",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR7",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR8",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ADR9",
+      value: false,
+      required: false,
+    },
+    {
+      name: "TIR",
+      value: false,
+      required: false,
+    },
+    {
+      name: "EKMT",
+      value: false,
+      required: false,
+    },
+  ],
+];
+
+const initialRequirements = [
+  {
+    name: "carType",
+    value: "",
+    required: true,
+  },
+  {
+    name: "tempFrom",
+    value: "",
+    required: false,
+  },
+  {
+    name: "tempTo",
+    value: "",
+    required: false,
+  },
+];
+
+const initialPayment = [
+  {
+    name: "bargain",
+    value: "",
+    required: false,
+  },
+  {
+    name: "paymentType",
+    value: "",
+    required: false,
+  },
+  {
+    name: "cash",
+    value: "",
+    required: false,
+  },
+  {
+    name: "priceVat",
+    value: "",
+    required: false,
+  },
+  {
+    name: "priceNovat",
+    value: "",
+    required: false,
+  },
+  {
+    name: "prepay",
+    value: "",
+    required: true,
+  },
+];
+
+const initialContacts = [
+  {
+    index: 0,
+    phone: "",
+    name: "",
+  },
+];
+
+const initialContactsField = [
+  {
+    name: "contactsData",
+    value: initialContacts,
+    required: true,
+  },
+  {
+    name: "remark",
+    value: "",
+    required: false,
+  },
+];
 
 export default function AddCargo() {
   const ref = useRef(null);
+  const dispatch = useDispatch()
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
-  let [loading, setLoading] = useState([
-    [
-      {
-        name: "frequency",
-        value: "",
-        required: true,
-      },
-      {
-        name: "loadingDate",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingDays",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingPeriodType",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingTimeFrom",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingTimeTo",
-        value: "",
-        required: false,
-      },
-      {
-        name: "isLoadingAllDay",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingTown",
-        value: optionsTowns[1].value,
-        required: true,
-      },
-      {
-        name: "loadingAddress",
-        value: "",
-        required: true,
-      },
-      {
-        name: "transportationType",
-        value: "",
-        required: false,
-      },
-      {
-        name: "loadingType",
-        value: "",
-        required: false,
-      },
-    ],
-  ]);
-  let [unloading, setUnloading] = useState([
-    [
-      {
-        name: "unloadingDateFrom",
-        value: "",
-        required: false,
-      },
-      {
-        name: "unloadingDateTo",
-        value: "",
-        required: false,
-      },
-      {
-        name: "unloadingTimeFrom",
-        value: "",
-        required: false,
-      },
-      {
-        name: "unloadingTimeTo",
-        value: "",
-        required: false,
-      },
-      {
-        name: "isUnloadingAllDay",
-        value: "",
-        required: false,
-      },
-      {
-        name: "unloadingTown",
-        value: "",
-        required: true,
-      },
-      {
-        name: "unloadingAddress",
-        value: "",
-        required: true,
-      },
-      {
-        name: "unloadingType",
-        value: "",
-        required: false,
-      },
-    ],
-  ]);
-  let [cargo, setCargo] = useState([
-    [
-      {
-        name: "cargoType",
-        value: "",
-        required: false,
-      },
-      {
-        name: "weight",
-        value: "",
-        required: true,
-      },
-      {
-        name: "capacity",
-        value: "",
-        required: true,
-      },
-      {
-        name: "length",
-        value: "",
-        required: false,
-      },
-      {
-        name: "width",
-        value: "",
-        required: false,
-      },
-      {
-        name: "height",
-        value: "",
-        required: false,
-      },
-      {
-        name: "packageType",
-        value: "",
-        required: false,
-      },
-      {
-        name: "packageCount",
-        value: "",
-        required: false,
-      },
-      {
-        name: "notes",
-        value: "",
-        required: false,
-      },
-      {
-        name: "ADR1",
-        value: true,
-        required: false,
-      },
-      {
-        name: "ADR2",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR3",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR4",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR5",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR6",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR7",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR8",
-        value: false,
-        required: false,
-      },
-      {
-        name: "ADR9",
-        value: false,
-        required: false,
-      },
-      {
-        name: "TIR",
-        value: false,
-        required: false,
-      },
-      {
-        name: "EKMT",
-        value: false,
-        required: false,
-      },
-    ],
-  ]);
-  let [requirements, setRequirements] = useState([
-    {
-      name: "carType",
-      value: "",
-      required: true,
-    },
-    {
-      name: "tempFrom",
-      value: "",
-      required: false,
-    },
-    {
-      name: "tempTo",
-      value: "",
-      required: false,
-    },
-  ]);
-  let [payment, setPayment] = useState([
-    {
-      name: "bargain",
-      value: "",
-      required: false,
-    },
-    {
-      name: "paymentType",
-      value: "",
-      required: false,
-    },
-    {
-      name: "cash",
-      value: "",
-      required: false,
-    },
-    {
-      name: "priceVat",
-      value: "",
-      required: false,
-    },
-    {
-      name: "priceNovat",
-      value: "",
-      required: false,
-    },
-    {
-      name: "prepay",
-      value: "",
-      required: true,
-    },
-  ]);
-  let [contacts, setContacts] = useState([
-    {
-      index: 0,
-      phone: "",
-      name: "",
-    },
-  ]);
-  let [contactsField, setContactsField] = useState([
-    {
-      name: "contactsData",
-      value: contacts,
-      required: true,
-    },
-    {
-      name: "remark",
-      value: "",
-      required: false,
-    },
-  ]);
+  const [loading, setLoading] = useState(initialLoading);
+  const [unloading, setUnloading] = useState(initialUnloading);
+  const [cargo, setCargo] = useState(initialCargo);
+  const [requirements, setRequirements] = useState(initialRequirements);
+  const [payment, setPayment] = useState(initialPayment);
+  const [contacts, setContacts] = useState(initialContacts);
+  const [contactsField, setContactsField] = useState(initialContactsField);
+
+  const currentTemplate = useSelector((state) => state.savedCargoTemplates.currentTemplate)
+
+  const getEntireFormValue = () => {
+    return {
+      loading,
+      unloading,
+      cargo,
+      requirements,
+      payment,
+      contacts,
+      contactsField
+    }
+  }
+
+  useEffect(() => {
+    if(currentTemplate){
+      setLoading(currentTemplate.data.loading)
+      setUnloading(currentTemplate.data.unloading)
+      setCargo(currentTemplate.data.cargo)
+      setRequirements(currentTemplate.data.requirements)
+      setPayment(currentTemplate.data.payment)
+      setContacts(currentTemplate.data.contacts)
+      
+      //TODO: this is totally weird. Check it out later.
+      // setContactsField(currentTemplate.data.contactsFields)
+    }
+  }, [currentTemplate])
+
   //запись в data значений селектов (React-Select)
   let handleRSelect = (e, name, func, list, i) => {
     if (i !== undefined) {
@@ -692,84 +738,33 @@ export default function AddCargo() {
     // setContacts(contactsField.map(obj => {
     //     return {...obj, 'phone': '', 'name': ''};
     // }));
-  };
 
-  /* На изменение */
-  let Total = {
-    loading: [
-      {
-        frequency: "",
-        loadingDate: "",
-        loadingDays: "",
-        loadingPeriodType: "",
-        loadingTimeFrom: "",
-        loadingTimeTo: "",
-        isLoadingAllDay: "",
-        loadingTown: "",
-        loadingAddress: "",
-        transportationType: "",
-        loadingType: "",
-      },
-    ],
-    unloading: [
-      {
-        unloadingDateFrom: "",
-        unloadingDateTo: "",
-        unloadingTimeFrom: "",
-        unloadingTimeTo: "",
-        isUnloadingAllDay: "",
-        unloadingTown: "",
-        unloadingAddress: "",
-        unloadingType: "",
-      },
-    ],
-    cargo: [
-      {
-        cargoType: "",
-        weight: "",
-        capacity: "",
-        length: "",
-        width: "",
-        height: "",
-        packageType: "",
-        packageCount: "",
-        notes: "",
-        ADR1: false,
-        ADR2: false,
-        ADR3: false,
-        ADR4: false,
-        ADR5: false,
-        ADR6: false,
-        ADR7: false,
-        ADR8: false,
-        ADR9: false,
-        TIR: false,
-        EKMT: false,
-      },
-    ],
-    requirements: {
-      carType: "",
-      tempFrom: "",
-      tempTo: "",
-    },
-    payment: {
-      bargain: "",
-      paymentType: "",
-      cash: "",
-      priceVat: "",
-      priceNovat: "",
-      prepay: "",
-    },
-    contacts: {
-      contactsData: contacts,
-      remark: "",
-    },
+    setLoading(initialLoading)
+    setUnloading(initialUnloading)
+    setCargo(initialCargo)
+    setRequirements(initialRequirements)
+    setPayment(initialPayment)
+    setContacts(initialContacts)
+    setContactsField(initialContactsField)
+
+    console.log("form reset");
+    console.log(getEntireFormValue())
   };
 
   //финальная проверка на заполнение и отправка формы
   const onSubmit = (e) => {
     e.preventDefault();
+
+    //Make an API call in the future sending the data to the server
+    const entireFormValue = getEntireFormValue();
+
+    console.log(entireFormValue)
   };
+
+  const handleSaveTemplate = () => {
+    const data = getEntireFormValue()
+    dispatch(setFormData(data))
+  }
 
   return (
     <main className="bg-gray">
@@ -795,7 +790,7 @@ export default function AddCargo() {
               <button
                 type="button"
                 data-bs-toggle="modal"
-                data-bs-target="#usePattern"
+                data-bs-target="#usePatternCargo"
                 className="btn btn-4 p-2"
               >
                 <IconContext.Provider value={{ className: "icon-15" }}>
@@ -2952,8 +2947,9 @@ export default function AddCargo() {
               <button
                 type="button"
                 data-bs-toggle="modal"
-                data-bs-target="#savePattern"
+                data-bs-target="#savePatternCargo"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
+                onClick={handleSaveTemplate}
               >
                 Сохранить шаблон
               </button>

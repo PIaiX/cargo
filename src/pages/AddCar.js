@@ -1653,7 +1653,7 @@ export default function AddCar() {
               <button
                 type="button"
                 data-bs-toggle="modal"
-                data-bs-target="#savePattern"
+                data-bs-target="#savePatternCar"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
               >
                 Сохранить шаблон
