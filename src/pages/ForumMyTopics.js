@@ -12,11 +12,11 @@ export default function ForumMyTopics() {
         <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li className="breadcrumb-item">
                             <Link to="/my-topics">Мои темы</Link>
                         </li>
                     </ol>
@@ -41,7 +41,7 @@ export default function ForumMyTopics() {
                                 </IconContext.Provider>
                             </button>
                         </form>
-                        <h5 class="d-none d-lg-block mb-1">Статистика портала</h5>
+                        <h5 className="d-none d-lg-block mb-1">Статистика портала</h5>
                         <div className='stat d-none d-lg-block title-font p-3 mb-4'>
                             <div className='d-flex justify-content-between mb-2 mb-xl-3'>
                                 <div className='gray-3 fw-4 me-4'>Темы:</div>

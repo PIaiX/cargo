@@ -1,4 +1,4 @@
-import {getAllNews, getAllNewsSuccess, getOneNews, getOneNewsSuccess} from "./../reducers/newsSlice"
+import {getAllNews, getAllNewsSuccess} from "./../reducers/newsSlice"
 import dummyNews from "./../../dummyData/news.json"
 
 export const fetchAllNews = () => {

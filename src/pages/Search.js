@@ -4,8 +4,6 @@ import Card from "../components/Card";
 import {
   IoChevronDownSharp,
   IoSwapHorizontalSharp,
-  IoChevronBack,
-  IoChevronForward,
 } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import Pagination from "../components/Pagination";

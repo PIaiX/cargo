@@ -18,7 +18,7 @@ import fakeForumSections from "../dummyData/forumSections.json";
 const initialPageLimit = 10;
 
 export default function ForumSublevel() {
-  const [initialData, setInitialData] = useState([
+  const [initialData] = useState([
     ...fakeForumSubsections,
     ...fakeForumTopics,
   ]);
@@ -36,7 +36,7 @@ export default function ForumSublevel() {
       (item) => item.id === parseInt(params.id)
     );
     setForumSection(result);
-  }, []);
+  }, [params.id]);
 
   useEffect(() => {
     const startIdx = (currentPage - 1) * pageLimit;
@@ -44,7 +44,7 @@ export default function ForumSublevel() {
     const paginated = initialData.slice(startIdx, endIdx);
 
     setForumItems(paginated);
-  }, [currentPage, pageLimit]);
+  }, [currentPage, pageLimit, initialData]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -52,7 +52,7 @@ export default function ForumSublevel() {
   }, [pageLimit]);
 
   const handleCustomSelect = (value) => {
-    if (value === 1) setPageLimit(4);
+    if (value === 1) setPageLimit(10);
     if (value === 2) setPageLimit(15);
     if (value === 3) setPageLimit(20);
   };
@@ -61,11 +61,11 @@ export default function ForumSublevel() {
     <main className="bg-white py-4 py-sm-5">
       <section className="container" id="sec-11">
         <nav aria-label="breadcrumb" className="mb-3">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
               <Link to="/forum">Разделы форума</Link>
             </li>
-            <li class="breadcrumb-item">
+            <li className="breadcrumb-item">
               <Link to="/forum-section">{forumSection.title}</Link>
             </li>
           </ol>
@@ -110,7 +110,7 @@ export default function ForumSublevel() {
                 </IconContext.Provider>
               </button>
             </form>
-            <h5 class="d-none d-lg-block mb-1">Статистика портала</h5>
+            <h5 className="d-none d-lg-block mb-1">Статистика портала</h5>
             <div className="stat d-none d-lg-block title-font p-3 mb-4">
               <div className="d-flex justify-content-between mb-2 mb-xl-3">
                 <div className="gray-3 fw-4 me-4">Темы:</div>

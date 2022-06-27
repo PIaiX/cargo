@@ -7,5 +7,5 @@ export const useInitialData = () => {
 
     useEffect(() => {
     dispatch(fetchAllNews())
-    }, [])
+    }, [dispatch])
 }

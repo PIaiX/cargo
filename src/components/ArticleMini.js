@@ -10,7 +10,7 @@ export default function ArticleMini(props) {
       </figure>
       <time
         className="gray-3 fs-11 d-block mb-2 mb-xl-3"
-        datetime="2021-12-13 19:00"
+        dateTime="2021-12-13 19:00"
       >
         {props.date}
       </time>

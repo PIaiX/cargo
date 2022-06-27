@@ -16,14 +16,14 @@ export default function ForumTopicChat() {
         <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li className="breadcrumb-item">
                             <Link to="/forum-section">Недобросовестные партнеры</Link>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li className="breadcrumb-item">
                             <Link to="/forum-topic">Название темы</Link>
                         </li>
                     </ol>

@@ -21,7 +21,7 @@ export default function Pagination({
         ? [1, 2, 3, 4, 5]
         : _.range(startingPage, startingPage + pagesDisplayedLimit);
     return pages.filter((page) => page <= pagesAmount);
-  }, [pagesAmount, startingPage]);
+  }, [pagesAmount, startingPage, pagesDisplayedLimit]);
 
   useEffect(() => {
     setPagesArrayDisplayed(getPages());
