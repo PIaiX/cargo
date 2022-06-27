@@ -8,8 +8,9 @@ export default function Pagination({
   pagesDisplayedLimit,
   itemsAmount,
   setCurrentPage,
+  startingPage,
+  setStartingPage
 }) {
-  const [startingPage, setStartingPage] = useState(1);
   const [pagesArrayDisplayed, setPagesArrayDisplayed] = useState([]);
 
   const pagesAmount = Math.ceil(itemsAmount / pageLimit);

@@ -34,7 +34,9 @@ export default function Search() {
   const [filteredCargo, setFilteredCargo] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
   const [cargoPage, setCargoPage] = useState(1);
+  const [cargoStartingPage, setCargoStartingPage] = useState(1)
   const [carsPage, setCarsPage] = useState(1);
+  const [carsStartingPage, setCarsStartingPage] = useState(1)
   const [advSearch, setAdvSearch] = useState(true);
 
   const [formValues, setFormValues] = useState(formValuesDefault);
@@ -522,24 +524,28 @@ export default function Search() {
         >
           Показать еще
         </button> */}
-        {search === "cargo" && (
+        <div hidden={search !== "cargo"}>
           <Pagination
             pageLimit={pageLimit}
             currentPage={cargoPage}
             setCurrentPage={setCargoPage}
             pagesDisplayedLimit={3}
             itemsAmount={cargo.length}
+            startingPage={cargoStartingPage}
+            setStartingPage={setCargoStartingPage}
           />
-        )}
-        {search !== "cargo" && (
+        </div>
+        <div hidden={search === "cargo"}>
           <Pagination
             pageLimit={pageLimit}
             currentPage={carsPage}
             setCurrentPage={setCarsPage}
             pagesDisplayedLimit={3}
             itemsAmount={cars.length}
+            startingPage={carsStartingPage}
+            setStartingPage={setCarsStartingPage}
           />
-        )}
+        </div>
       </section>
     </main>
   );

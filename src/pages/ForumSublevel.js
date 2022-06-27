@@ -1,58 +1,61 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import ForumWidget from "../components/ForumWidget";
 import CustomSelect from "../components/utilities/CustomSelect";
 import { Link, useParams } from "react-router-dom";
 import { IconContext } from "react-icons";
 import {
   IoSearch,
-  IoChevronBack,
-  IoChevronForward,
   IoAddCircleSharp,
 } from "react-icons/io5";
 import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
 import ForumSubsection from "../components/ForumSubsection";
 import ForumTopic from "../components/ForumTopic";
 import Pagination from "../components/Pagination";
-import fakeForumSubsections from "../dummyData/forumSubsections.json"
-import fakeForumTopics from "../dummyData/forumTopics.json"
-import fakeForumSections from "../dummyData/forumSections.json"
+import fakeForumSubsections from "../dummyData/forumSubsections.json";
+import fakeForumTopics from "../dummyData/forumTopics.json";
+import fakeForumSections from "../dummyData/forumSections.json";
 
 const initialPageLimit = 10;
 
 export default function ForumSublevel() {
-    const [initialData, setInitialData] = useState([...fakeForumSubsections, ...fakeForumTopics])
-    const [forumSection, setForumSection] = useState({})
-    const [forumItems, setForumItems] = useState([])
-    const [pageLimit, setPageLimit] = useState(initialPageLimit)
-    const [currentPage, setCurrentPage] = useState(1)
+  const [initialData, setInitialData] = useState([
+    ...fakeForumSubsections,
+    ...fakeForumTopics,
+  ]);
+  const [forumSection, setForumSection] = useState({});
+  const [forumItems, setForumItems] = useState([]);
+  const [pageLimit, setPageLimit] = useState(initialPageLimit);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const params = useParams()
-    //Make an API call in the future, fetching actual data from the server
+  const params = useParams();
+  //Make an API call in the future, fetching actual data from the server
 
   useEffect(() => {
-    const result = fakeForumSections.find((item) => item.id === parseInt(params.id))
-    setForumSection(result)
-  }, [])
+    const result = fakeForumSections.find(
+      (item) => item.id === parseInt(params.id)
+    );
+    setForumSection(result);
+  }, []);
 
-    useEffect(() => {
-        const startIdx = (currentPage - 1) * pageLimit;
-        const endIdx = startIdx + pageLimit;
-        const paginated = initialData.slice(startIdx, endIdx);
-    
-        setForumItems(paginated);
-      }, [currentPage, pageLimit]);
-    
-      useEffect(() => {
-        setCurrentPage(1)
-      }, [pageLimit])
-    
-      const handleCustomSelect = (value) => {
-        if (value === 1) setPageLimit(10);
-        if (value === 2) setPageLimit(15);
-        if (value === 3) setPageLimit(20);
-      };
+  useEffect(() => {
+    const startIdx = (currentPage - 1) * pageLimit;
+    const endIdx = startIdx + pageLimit;
+    const paginated = initialData.slice(startIdx, endIdx);
 
-    return (
+    setForumItems(paginated);
+  }, [currentPage, pageLimit]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [pageLimit]);
+
+  const handleCustomSelect = (value) => {
+    if (value === 1) setPageLimit(10);
+    if (value === 2) setPageLimit(15);
+    if (value === 3) setPageLimit(20);
+  };
+
+  return (
     <main className="bg-white py-4 py-sm-5">
       <section className="container" id="sec-11">
         <nav aria-label="breadcrumb" className="mb-3">
@@ -130,7 +133,7 @@ export default function ForumSublevel() {
           </div>
           <div className="col-lg-9">
             <div className="d-flex justify-content-end mb-3">
-            <Pagination
+              <Pagination
                 pageLimit={pageLimit}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
@@ -144,25 +147,29 @@ export default function ForumSublevel() {
               <div className="messages">Сообщений</div>
               <div className="latest">Последнее сообщение</div>
             </div>
-            {forumItems.map((item) => (
-                item.type === "subsection" ? <ForumSubsection
-                key={item.id}
-                title={item.title}
-                subsections={item.subsections}
-                info={item.info}
-                messages={item.messages}
-                latest={item.latest}
-              /> : <ForumTopic
-              key={item.id}
-              fixedTopic={item.fixedTopic}
-              title={item.title}
-              author={item.author}
-              messages={item.messages}
-              latest={item.latest}
-            />
-            ))}
+            {forumItems.map((item) =>
+              item.type === "subsection" ? (
+                <ForumSubsection
+                  key={item.id}
+                  title={item.title}
+                  subsections={item.subsections}
+                  info={item.info}
+                  messages={item.messages}
+                  latest={item.latest}
+                />
+              ) : (
+                <ForumTopic
+                  key={item.id}
+                  fixedTopic={item.fixedTopic}
+                  title={item.title}
+                  author={item.author}
+                  messages={item.messages}
+                  latest={item.latest}
+                />
+              )
+            )}
             <div className="d-flex align-items-center justify-content-between mt-4">
-            <Pagination
+              <Pagination
                 pageLimit={pageLimit}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}

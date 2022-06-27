@@ -17,7 +17,7 @@
     "id": 2,
     "title": "Тоже самое закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 2",
         "url": "/personal-account/view-profile"
     },
     "messages": 3433,
@@ -29,7 +29,7 @@
     "id": 3,
     "title": "Не то же самое закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 3",
         "url": "/personal-account/view-profile"
     },
     "messages": 733,
@@ -41,7 +41,7 @@
     "id": 4,
     "title": "Другое закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 4",
         "url": "/personal-account/view-profile"
     },
     "messages": 633,
@@ -53,7 +53,7 @@
     "id": 5,
     "title": "Похожее закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 5",
         "url": "/personal-account/view-profile"
     },
     "messages": 533,
@@ -65,7 +65,7 @@
     "id": 6,
     "title": "Название закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 6",
         "url": "/personal-account/view-profile"
     },
     "messages": 433,
@@ -77,7 +77,7 @@
     "id": 7,
     "title": "Не знаю закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 7",
         "url": "/personal-account/view-profile"
     },
     "messages": 233,
@@ -89,7 +89,7 @@
     "id": 8,
     "title": "Не совсем закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 8",
         "url": "/personal-account/view-profile"
     },
     "messages": 333,
@@ -101,7 +101,7 @@
     "id": 9,
     "title": "Почти закрепленной темы",
     "author": {
-        "name": "User name",
+        "name": "User name 9",
         "url": "/personal-account/view-profile"
     },
     "messages": 233,

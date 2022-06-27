@@ -20,6 +20,8 @@ export default function Forum() {
   const [pageLimit, setPageLimit] = useState(initialPageLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const [forumSections, setForumSections] = useState([]);
+  const [startingPage, setStartingPage] = useState(1);
+
   //Make API call in the future, fetching actual forum data
 
   useEffect(() => {
@@ -119,6 +121,8 @@ export default function Forum() {
                 setCurrentPage={setCurrentPage}
                 pagesDisplayedLimit={3}
                 itemsAmount={fakeForumSections.length}
+                startingPage={startingPage}
+                setStartingPage={setStartingPage}
               />
             </div>
             <div className="forum-header">
@@ -147,6 +151,8 @@ export default function Forum() {
                 setCurrentPage={setCurrentPage}
                 pagesDisplayedLimit={3}
                 itemsAmount={fakeForumSections.length}
+                startingPage={startingPage}
+                setStartingPage={setStartingPage}
               />
               <div className="d-flex align-items-center">
                 <span className="d-none d-sm-block me-2">показать</span>
