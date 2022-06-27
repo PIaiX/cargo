@@ -13,6 +13,7 @@ import {
 import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
 import fakeForumSections from "../dummyData/forumSections.json";
 import Pagination from "../components/Pagination";
+import { set } from "lodash";
 
 const initialPageLimit = 10;
 
@@ -34,6 +35,7 @@ export default function Forum() {
 
   useEffect(() => {
     setCurrentPage(1)
+    setStartingPage(1)
   }, [pageLimit])
 
   const handleCustomSelect = (value) => {

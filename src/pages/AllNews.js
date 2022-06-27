@@ -9,6 +9,7 @@ const pageLimit = 12;
 export default function AllNews() {
   const [articles, setArticles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [startingPage, setStartingPage] = useState(1)
 
   useEffect(() => {
     //Make an API call later getting the first page of all the articles
@@ -47,6 +48,8 @@ export default function AllNews() {
               setCurrentPage={setCurrentPage}
               pagesDisplayedLimit={3}
               itemsAmount={news.length}
+              startingPage={startingPage}
+              setStartingPage={setStartingPage}
             />
           </div>
           <div className="d-none d-md-block col-4 col-lg-3">

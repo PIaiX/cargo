@@ -66,7 +66,7 @@ export default function Pagination({
     setCurrentPage(1);
     setStartingPage(1);
   };
-
+  
   return (
     <nav className="mt-4">
       <ul className="pagination">

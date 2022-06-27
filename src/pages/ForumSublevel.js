@@ -26,6 +26,7 @@ export default function ForumSublevel() {
   const [forumItems, setForumItems] = useState([]);
   const [pageLimit, setPageLimit] = useState(initialPageLimit);
   const [currentPage, setCurrentPage] = useState(1);
+  const [startingPage, setStartingPage] = useState(1)
 
   const params = useParams();
   //Make an API call in the future, fetching actual data from the server
@@ -47,10 +48,11 @@ export default function ForumSublevel() {
 
   useEffect(() => {
     setCurrentPage(1);
+    setStartingPage(1)
   }, [pageLimit]);
 
   const handleCustomSelect = (value) => {
-    if (value === 1) setPageLimit(10);
+    if (value === 1) setPageLimit(4);
     if (value === 2) setPageLimit(15);
     if (value === 3) setPageLimit(20);
   };
@@ -139,6 +141,8 @@ export default function ForumSublevel() {
                 setCurrentPage={setCurrentPage}
                 pagesDisplayedLimit={3}
                 itemsAmount={fakeForumSubsections.length}
+                startingPage={startingPage}
+                setStartingPage={setStartingPage}
               />
             </div>
             <div className="forum-header">
@@ -175,6 +179,8 @@ export default function ForumSublevel() {
                 setCurrentPage={setCurrentPage}
                 pagesDisplayedLimit={3}
                 itemsAmount={fakeForumSubsections.length}
+                startingPage={startingPage}
+                setStartingPage={setStartingPage}
               />
               <div className="d-flex align-items-center">
                 <span className="d-none d-sm-block me-2">показать</span>
