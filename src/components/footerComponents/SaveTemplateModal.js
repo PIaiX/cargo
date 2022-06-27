@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux/es/exports";
 import { saveTemplate } from "../../store/reducers/savedCargoTemplates";
+import FormErrorMessage from "./../utilities/FormErrorMessage";
 
 const initialFormValue = {
   name: "",
@@ -10,20 +11,27 @@ const initialFormValue = {
 
 export default function SaveTemplateModal({ type }) {
   const [formValue, setFormValue] = useState(initialFormValue);
+  const [formError, setFormError] = useState("");
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleFormChange = (e) => {
+    setFormError("");
     setFormValue((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
 
   const handleFormSubmit = () => {
-    setFormValue(initialFormValue)
-    dispatch(saveTemplate(formValue))
-  }
-  
+    if (!formValue.name.trim()) {
+      setFormError("Название шаблона не может быть пустым");
+      return;
+    }
+    setFormValue(initialFormValue);
+    setFormError("")
+    dispatch(saveTemplate(formValue));
+  };
+
   return (
     <div
       className="modal fade"
@@ -34,7 +42,7 @@ export default function SaveTemplateModal({ type }) {
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-body">
-            <button type="button" className="btn-close" data-bs-dismiss="modal">
+            <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={() => setFormError("")}>
               <IoCloseOutline />
             </button>
             <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "машины"}</h2>
@@ -61,19 +69,31 @@ export default function SaveTemplateModal({ type }) {
                 value={formValue.remark}
                 onChange={handleFormChange}
               />
+              {formError && (
+                <div className="mb-3">
+                  <FormErrorMessage>{formError}</FormErrorMessage>
+                </div>
+              )}
               <div className="row row-cols-sm-2">
                 <div className="mb-3 mb-sm-0">
                   <button
                     type="reset"
                     data-bs-dismiss="modal"
                     className="btn btn-1 w-100"
-                    onClick={() => setFormValue(initialFormValue)}
+                    onClick={() => {
+                      setFormValue(initialFormValue);
+                      setFormError("");
+                    }}
                   >
                     Отмена
                   </button>
                 </div>
                 <div>
-                  <button type="button" className="btn btn-2 w-100" onClick={handleFormSubmit}>
+                  <button
+                    type="button"
+                    className="btn btn-2 w-100"
+                    onClick={handleFormSubmit}
+                  >
                     Сохранить
                   </button>
                 </div>

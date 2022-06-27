@@ -21,7 +21,7 @@ import {
   optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
-import { setFormData } from "../store/reducers/savedCargoTemplates";
+import { setCurrentTemplate, setFormData } from "../store/reducers/savedCargoTemplates";
 
 const initialLoading = [
   [
@@ -340,7 +340,7 @@ export default function AddCargo() {
       setRequirements(currentTemplate.data.requirements)
       setPayment(currentTemplate.data.payment)
       setContacts(currentTemplate.data.contacts)
-      
+
       //TODO: this is totally weird. Check it out later.
       // setContactsField(currentTemplate.data.contactsFields)
     }
@@ -720,21 +720,6 @@ export default function AddCargo() {
   // ДОДЕЛАТЬ!!!
   //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
   const onReset = (e) => {
-    // setLoading(loading.map(arr => {
-    //     arr.map(obj => {return {...obj, 'value': ''}})
-    // }));
-    // setUnloading(unloading.map(arr => {
-    //     arr.map(obj => {return {...obj, 'value': ''}})
-    // }));
-    // setCargo(cargo.map(arr => {
-    //     arr.map(obj => {return {...obj, 'value': ''}})
-    // }));
-    // setRequirements(requirements.map(obj => {
-    //     return {...obj, 'value': ''};
-    // }));
-    // setPayment(payment.map(obj => {
-    //     return {...obj, 'value': ''};
-    // }));
     // setContacts(contactsField.map(obj => {
     //     return {...obj, 'phone': '', 'name': ''};
     // }));
@@ -747,8 +732,7 @@ export default function AddCargo() {
     setContacts(initialContacts)
     setContactsField(initialContactsField)
 
-    console.log("form reset");
-    console.log(getEntireFormValue())
+    dispatch(setCurrentTemplate(null))
   };
 
   //финальная проверка на заполнение и отправка формы
