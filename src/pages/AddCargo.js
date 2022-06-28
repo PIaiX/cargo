@@ -289,6 +289,7 @@ const initialContacts = [
     index: 0,
     phone: "",
     name: "",
+    required: true
   },
 ];
 
@@ -296,7 +297,6 @@ const initialContactsField = [
   {
     name: "contactsData",
     value: initialContacts,
-    required: true,
   },
   {
     name: "remark",
@@ -321,6 +321,12 @@ export default function AddCargo() {
   const currentTemplate = useSelector((state) => state.savedCargoTemplates.currentTemplate)
 
   const getEntireFormValue = () => {
+    const newContactsField = [{
+      name: "contactsData",
+      value: contacts
+    }, {
+      ...contactsField[1]
+    }]
     return {
       loading,
       unloading,
@@ -328,7 +334,7 @@ export default function AddCargo() {
       requirements,
       payment,
       contacts,
-      contactsField
+      contactsField: newContactsField
     }
   }
 
@@ -624,8 +630,8 @@ export default function AddCargo() {
     let inputName = e.target.name;
     let inputVal = e.target.value.trim();
     setContacts(
-      contacts.map((obj) => {
-        if (obj.index === i) {
+      contacts.map((obj, idx) => {
+        if (idx === i) {
           if (inputName === "name") {
             return { ...obj, name: inputVal };
           } else {
@@ -739,15 +745,33 @@ export default function AddCargo() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    //Make an API call in the future sending the data to the server
-    const entireFormValue = getEntireFormValue();
+    const isValidForm = checkAllRequiredFields()
+    if(!isValidForm) return alert("Заполните все обязательные поля")
 
-    console.log(entireFormValue)
+    //Make an API call in the future sending the data to the server
+    console.log(getEntireFormValue())
   };
 
   const handleSaveTemplate = () => {
     const data = getEntireFormValue()
     dispatch(setFormData(data))
+  }
+
+  //This works, but the code needs refactoring
+  const checkAllRequiredFields = () => {
+    let isValid = undefined;
+    isValid = checkFieldsetArr(loading)
+    if(!isValid) return false
+    isValid = checkFieldsetArr(unloading)
+    if(!isValid) return false
+    isValid = checkFieldsetArr(cargo)
+    if(!isValid) return false
+    isValid = checkFieldset(requirements)
+    if(!isValid) return false
+    isValid = checkFieldset(payment)
+    if(!isValid) return false
+    isValid = checkAllProps(contacts)
+    return isValid
   }
 
   return (
@@ -2432,8 +2456,8 @@ export default function AddCargo() {
                 Контакты
               </h4>
               <div className="box">
-                {contacts.map((obj) => (
-                  <div key={obj.index} className="row gx-2 gx-sm-4 mb-3">
+                {contacts.map((obj, idx) => (
+                  <div key={idx} className="row gx-2 gx-sm-4 mb-3">
                     <div className="col-md-9">
                       <div className="row align-items-center gy-2 gy-md-3">
                         <div className="col-md-4">
@@ -2450,8 +2474,8 @@ export default function AddCargo() {
                             type="tel"
                             name="phone"
                             placeholder="+ 7 (962) 458 65 79"
-                            value={getContact("phone", obj.index)}
-                            onChange={(e) => fillContacts(e, obj.index)}
+                            value={getContact("phone", idx)}
+                            onChange={(e) => fillContacts(e, idx)}
                             className="w-100 fs-12"
                           />
                         </div>
