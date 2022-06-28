@@ -395,7 +395,7 @@ export default function AddCargo() {
   //main input changes handler
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
-    let inputVal = e.target.value.trim();
+    let inputVal = e.target.name === "remark" ? e.target.value : e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
     if (e.target.type === "checkbox") {
@@ -657,9 +657,11 @@ export default function AddCargo() {
   const getContact = (param, i) => {
     let val;
     if (param === "name") {
-      val = contacts.find((obj) => obj.index === i).name;
+      const result = contacts.find((obj) => obj.index === i) 
+      if(result) val = result.name
     } else if (param === "phone") {
-      val = contacts.find((obj) => obj.index === i).phone;
+      const result = contacts.find((obj) => obj.index === i) 
+      if(result) val = result.phone
     } else {
       val = undefined;
     }
@@ -669,6 +671,7 @@ export default function AddCargo() {
       return "";
     }
   };
+
   //удаление полей контактов и их стирание из data
   let deleteContacts = (i) => {
     setContacts(contacts.filter((obj) => obj.index !== i));
@@ -713,7 +716,7 @@ export default function AddCargo() {
       arr.filter((item) => item.required === true)
     );
     let result = requiredArr.every(
-      (elem) =>
+      (elem) => 
         elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
     return result;
@@ -2957,7 +2960,7 @@ export default function AddCargo() {
                 type="submit"
                 className="btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5"
               >
-                разместить груз
+                Разместить груз
               </button>
               <button
                 type="button"
