@@ -21,7 +21,10 @@ import {
   optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentTemplate, setFormData } from "../store/reducers/savedCargoTemplates";
+import {
+  setCurrentTemplate,
+  setFormData,
+} from "../store/reducers/savedCargoTemplates";
 
 const initialLoading = [
   [
@@ -289,7 +292,7 @@ const initialContacts = [
     index: 0,
     phone: "",
     name: "",
-    required: true
+    required: true,
   },
 ];
 
@@ -307,7 +310,7 @@ const initialContactsField = [
 
 export default function AddCargo() {
   const ref = useRef(null);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
   const [loading, setLoading] = useState(initialLoading);
@@ -318,15 +321,20 @@ export default function AddCargo() {
   const [contacts, setContacts] = useState(initialContacts);
   const [contactsField, setContactsField] = useState(initialContactsField);
 
-  const currentTemplate = useSelector((state) => state.savedCargoTemplates.currentTemplate)
+  const currentTemplate = useSelector(
+    (state) => state.savedCargoTemplates.currentTemplate
+  );
 
   const getEntireFormValue = () => {
-    const newContactsField = [{
-      name: "contactsData",
-      value: contacts
-    }, {
-      ...contactsField[1]
-    }]
+    const newContactsField = [
+      {
+        name: "contactsData",
+        value: contacts,
+      },
+      {
+        ...contactsField[1],
+      },
+    ];
     return {
       loading,
       unloading,
@@ -334,23 +342,25 @@ export default function AddCargo() {
       requirements,
       payment,
       contacts,
-      contactsField: newContactsField
-    }
-  }
+      contactsField: newContactsField,
+    };
+  };
 
   useEffect(() => {
-    if(currentTemplate){
-      setLoading(currentTemplate.data.loading)
-      setUnloading(currentTemplate.data.unloading)
-      setCargo(currentTemplate.data.cargo)
-      setRequirements(currentTemplate.data.requirements)
-      setPayment(currentTemplate.data.payment)
-      setContacts(currentTemplate.data.contacts)
+    if (currentTemplate) {
+      setLoading(currentTemplate.data.loading);
+      setUnloading(currentTemplate.data.unloading);
+      setCargo(currentTemplate.data.cargo);
+      setRequirements(currentTemplate.data.requirements);
+      setPayment(currentTemplate.data.payment);
+      setContacts(currentTemplate.data.contacts);
+
+      console.log(currentTemplate.data);
 
       //TODO: this is totally weird. Check it out later.
       // setContactsField(currentTemplate.data.contactsFields)
     }
-  }, [currentTemplate])
+  }, [currentTemplate]);
 
   //запись в data значений селектов (React-Select)
   let handleRSelect = (e, name, func, list, i) => {
@@ -684,8 +694,9 @@ export default function AddCargo() {
   };
   //удаление fieldset
   let delState = (state, func, index) => {
-    let arr = state.splice(index, 1);
-    func(state.filter((obj) => obj !== arr));
+    const newArray = [...state]
+    let arr = newArray.splice(index, 1);
+    func(newArray.filter((obj) => obj !== arr));
   };
 
   //проверка fieldset на заполнение
@@ -726,53 +737,49 @@ export default function AddCargo() {
   // ДОДЕЛАТЬ!!!
   //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
   const onReset = (e) => {
-    // setContacts(contactsField.map(obj => {
-    //     return {...obj, 'phone': '', 'name': ''};
-    // }));
+    setLoading(initialLoading);
+    setUnloading(initialUnloading);
+    setCargo(initialCargo);
+    setRequirements(initialRequirements);
+    setPayment(initialPayment);
+    setContacts(initialContacts);
+    setContactsField(initialContactsField);
 
-    setLoading(initialLoading)
-    setUnloading(initialUnloading)
-    setCargo(initialCargo)
-    setRequirements(initialRequirements)
-    setPayment(initialPayment)
-    setContacts(initialContacts)
-    setContactsField(initialContactsField)
-
-    dispatch(setCurrentTemplate(null))
+    dispatch(setCurrentTemplate(null));
   };
 
   //финальная проверка на заполнение и отправка формы
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const isValidForm = checkAllRequiredFields()
-    if(!isValidForm) return alert("Заполните все обязательные поля")
+    const isValidForm = checkAllRequiredFields();
+    if (!isValidForm) return alert("Заполните все обязательные поля");
 
     //Make an API call in the future sending the data to the server
-    console.log(getEntireFormValue())
+    console.log(getEntireFormValue());
   };
 
   const handleSaveTemplate = () => {
-    const data = getEntireFormValue()
-    dispatch(setFormData(data))
-  }
+    const data = getEntireFormValue();
+    dispatch(setFormData(data));
+  };
 
   //This works, but the code needs refactoring
   const checkAllRequiredFields = () => {
     let isValid = undefined;
-    isValid = checkFieldsetArr(loading)
-    if(!isValid) return false
-    isValid = checkFieldsetArr(unloading)
-    if(!isValid) return false
-    isValid = checkFieldsetArr(cargo)
-    if(!isValid) return false
-    isValid = checkFieldset(requirements)
-    if(!isValid) return false
-    isValid = checkFieldset(payment)
-    if(!isValid) return false
-    isValid = checkAllProps(contacts)
-    return isValid
-  }
+    isValid = checkFieldsetArr(loading);
+    if (!isValid) return false;
+    isValid = checkFieldsetArr(unloading);
+    if (!isValid) return false;
+    isValid = checkFieldsetArr(cargo);
+    if (!isValid) return false;
+    isValid = checkFieldset(requirements);
+    if (!isValid) return false;
+    isValid = checkFieldset(payment);
+    if (!isValid) return false;
+    isValid = checkAllProps(contacts);
+    return isValid;
+  };
 
   return (
     <main className="bg-gray">
