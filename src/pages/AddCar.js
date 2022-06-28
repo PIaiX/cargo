@@ -395,7 +395,7 @@ export default function AddCar() {
                   <button
                     type="button"
                     data-bs-toggle="modal"
-                    data-bs-target="#usePattern"
+                    data-bs-target="#usePatternCar"
                     className="btn btn-4 p-2"
                   >
                     <IconContext.Provider value={{ className: "icon-15" }}>

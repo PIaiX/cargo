@@ -5,8 +5,10 @@ import SavedTemplate from "./SavedTemplate";
 
 export default function ChooseTemplateModal({ type }) {
   const dispatch = useDispatch();
-  const templates = useSelector(
-    (state) => state.savedCargoTemplates.allTemplates
+  const templates = useSelector((state) =>
+    type === "Cargo"
+      ? state.savedCargoTemplates.allTemplates
+      : state.savedCarTemplates.allTemplates
   );
   return (
     <div
@@ -23,7 +25,13 @@ export default function ChooseTemplateModal({ type }) {
             </button>
             {templates.length > 0 && <h2>Выберите шаблон</h2>}
             {templates.map((item) => (
-              <SavedTemplate name={item.name} remark={item.remark} key={item.id} id={item.id}/>
+              <SavedTemplate
+                name={item.name}
+                remark={item.remark}
+                key={item.id}
+                id={item.id}
+                type={type}
+              />
             ))}
             {!templates.length && (
               <h5 className="text-center">У Вас нет сохраненных шаблонов</h5>

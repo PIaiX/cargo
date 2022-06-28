@@ -22,8 +22,8 @@ import {
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setCurrentTemplate,
-  setFormData,
+  setCurrentCargoTemplate,
+  setCargoFormData,
 } from "../store/reducers/savedCargoTemplates";
 
 const initialLoading = [
@@ -748,7 +748,7 @@ export default function AddCargo() {
     setContacts(initialContacts);
     setContactsField(initialContactsField);
 
-    dispatch(setCurrentTemplate(null));
+    dispatch(setCurrentCargoTemplate(null));
   };
 
   //финальная проверка на заполнение и отправка формы
@@ -764,7 +764,7 @@ export default function AddCargo() {
 
   const handleSaveTemplate = () => {
     const data = getEntireFormValue();
-    dispatch(setFormData(data));
+    dispatch(setCargoFormData(data));
   };
 
   //This works, but the code needs refactoring

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux/es/exports";
-import { saveTemplate } from "../../store/reducers/savedCargoTemplates";
+import { saveCargoTemplate } from "../../store/reducers/savedCargoTemplates";
+import { saveCarTemplate } from "../../store/reducers/savedCarTemplates";
 import FormErrorMessage from "./../utilities/FormErrorMessage";
 
 const initialFormValue = {
@@ -29,7 +30,12 @@ export default function SaveTemplateModal({ type }) {
     }
     setFormValue(initialFormValue);
     setFormError("")
-    dispatch(saveTemplate(formValue));
+    if(type === "Cargo") {
+      dispatch(saveCargoTemplate(formValue));
+    }
+    if(type === "Car") {
+      dispatch(saveCarTemplate(formValue))
+    }
   };
 
   return (

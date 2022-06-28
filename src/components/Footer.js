@@ -480,6 +480,7 @@ export const Footer = () => {
       </div>
 
       <ChooseTemplateModal type="Cargo" />
+      <ChooseTemplateModal type="Car" />
       <SaveTemplateModal type="Cargo"/>
       <SaveTemplateModal type="Car"/>
 

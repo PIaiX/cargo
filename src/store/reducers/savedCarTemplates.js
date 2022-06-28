@@ -7,11 +7,11 @@ const initialState = {
 }
 
 //Change the logic in the future. Make API calls to store templates on the server
-const savedCargoTemplatesSlice = createSlice({
-  name: "savedCargoTemplates",
+const savedCarTemplatesSlice = createSlice({
+  name: "savedCarTemplates",
   initialState,
   reducers: {
-    saveCargoTemplate: (state, action) => {
+    saveCarTemplate: (state, action) => {
       const template = {
         id: state.allTemplates.length + 1,
         name: action.payload.name,
@@ -20,17 +20,17 @@ const savedCargoTemplatesSlice = createSlice({
       }
       state.allTemplates.push(template);
     },
-    deleteCargoTemplate: (state, action) => {
+    deleteCarTemplate: (state, action) => {
       state.allTemplates = state.allTemplates.filter((item) => item.id !== action.payload)
     },
-    setCurrentCargoTemplate: (state, action) => {
+    setCurrentCarTemplate: (state, action) => {
       state.currentTemplate = state.allTemplates.find((item) => item.id === action.payload)
     },
-    setCargoFormData: (state, action) => {
+    setCarFormData: (state, action) => {
       state.formData = action.payload
     }
   },
 });
 
-export const { saveCargoTemplate, deleteCargoTemplate, setCurrentCargoTemplate, setCargoFormData } = savedCargoTemplatesSlice.actions;
-export default savedCargoTemplatesSlice.reducer;
+export const { saveCarTemplate, deleteCarTemplate, setCurrentCarTemplate, setCarFormData } = savedCarTemplatesSlice.actions;
+export default savedCarTemplatesSlice.reducer;
