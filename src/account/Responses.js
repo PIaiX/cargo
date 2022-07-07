@@ -17,33 +17,33 @@ export default function Responses() {
                 (tab === 'active')?
                 <div className='row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4'>
                     <div>
-                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={1} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                 </div>
                 : <div className='row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4'>
                     <div>
-                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                     <div>
-                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/cargo/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
+                        <ResponseCard inWork={false} type={2} name={'Мария Викторова'} company={'ООО «Название компании»'} img={'/img/users/photo.jpg'} text={'Несколько строчек про объявление, в которых написан'}/>
                     </div>
                 </div>
             }

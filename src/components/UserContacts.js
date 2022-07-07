@@ -10,7 +10,7 @@ export default function UserContacts(props) {
                 {
                     (visible)?
                     <img src={props.img} alt={props.title} className="logo"/>
-                    : <img src="/cargo/img/bg/cargo.png" alt="перевозка грузов" className="sample"/>
+                    : <img src="/img/bg/cargo.png" alt="перевозка грузов" className="sample"/>
                 }
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">

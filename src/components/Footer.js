@@ -14,7 +14,7 @@ export const Footer = () => {
         <div className="container py-4 py-sm-5">
           <div className="row mb-4 mb-md-5">
             <div className="d-none d-sm-block col-sm-3 col-md-4">
-              <img src="/cargo/img/logo.png" alt="Грузоперевозки" className="logo" />
+              <img src="/img/logo.png" alt="Грузоперевозки" className="logo" />
             </div>
             <div className="col-sm-9 col-md-8">
               <div className="fs-12 fw-7 mb-4 mb-md-5">КАРТА САЙТА</div>
@@ -31,18 +31,18 @@ export const Footer = () => {
           </div>
           <hr />
           <div className="payment-methods mt-3 mt-md-4">
-            <img src="/cargo/img/payment/visa.png" alt="visa"/>
-            <img src="/cargo/img/payment/mastercard.png" alt="mastercard"/>
-            <img src="/cargo/img/payment/tinkoff.png" alt="tinkoff"/>
-            <img src="/cargo/img/payment/mir.png" alt="mir"/>
-            <img src="/cargo/img/payment/sbp.png" alt="sbp"/>
+            <img src="/img/payment/visa.png" alt="visa"/>
+            <img src="/img/payment/mastercard.png" alt="mastercard"/>
+            <img src="/img/payment/tinkoff.png" alt="tinkoff"/>
+            <img src="/img/payment/mir.png" alt="mir"/>
+            <img src="/img/payment/sbp.png" alt="sbp"/>
           </div>
           <div className="d-flex justify-content-center align-items-center mt-3 fs-09 fw-7"><MdCopyright/> <span className="ms-2">ВСЕ ПРАВА ЗАЩИЩЕНЫ · ГРУЗОПЕРЕВОЗКИ&nbsp;·&nbsp;2022</span></div>
         </div>
         {/* <div className="container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100">
           <div className="info d-lg-flex align-items-center">
             <img
-              src="/cargo/img/logo-light.png"
+              src="/img/logo-light.png"
               alt="Название сайта"
               className="logo me-4 me-xl-5"
             />

@@ -53,21 +53,21 @@ export default function Home() {
                 <div className="carousel-inner">
                   <div className="carousel-item active">
                     <img
-                      src="/cargo/img/img-slider.png"
+                      src="/img/img-slider.png"
                       className="img"
                       alt="слайд 1"
                     />
                   </div>
                   <div className="carousel-item">
                     <img
-                      src="/cargo/img/img-slider.png"
+                      src="/img/img-slider.png"
                       className="img"
                       alt="слайд 2"
                     />
                   </div>
                   <div className="carousel-item">
                     <img
-                      src="/cargo/img/img-slider.png"
+                      src="/img/img-slider.png"
                       className="img"
                       alt="слайд 3"
                     />
@@ -460,7 +460,7 @@ export default function Home() {
               </div>
             </div>
             <div className="col-md-6">
-              <img src="/cargo/img/img1.png" alt="" className="img-fluid" />
+              <img src="/img/img1.png" alt="" className="img-fluid" />
             </div>
           </div>
         </div>
@@ -505,7 +505,7 @@ export default function Home() {
             </div>
           </div>
           <div className="col-4">
-            <img src="/cargo/img/scheme.png" alt="Схема" className="scheme" />
+            <img src="/img/scheme.png" alt="Схема" className="scheme" />
           </div>
           <div className="col-3 d-flex flex-column justify-content-between py-4">
             <div>
@@ -542,7 +542,7 @@ export default function Home() {
           <div className="point">
             <div className="icon">
               <img
-                src="/cargo/img/icons/icon-1.svg"
+                src="/img/icons/icon-1.svg"
                 alt="Размещает груз на площадке"
               />
             </div>
@@ -560,7 +560,7 @@ export default function Home() {
           </div>
           <div className="point">
             <div className="icon">
-              <img src="/cargo/img/icons/icon-2.svg" alt="Берет груз" />
+              <img src="/img/icons/icon-2.svg" alt="Берет груз" />
             </div>
             <div className="text">
               <div className="title">
@@ -576,7 +576,7 @@ export default function Home() {
           </div>
           <div className="point">
             <div className="icon">
-              <img src="/cargo/img/icons/icon-3.svg" alt="Готовит заявку" />
+              <img src="/img/icons/icon-3.svg" alt="Готовит заявку" />
             </div>
             <div className="text">
               <div className="title">
@@ -592,7 +592,7 @@ export default function Home() {
           </div>
           <div className="point">
             <div className="icon">
-              <img src="/cargo/img/icons/icon-4.svg" alt="Одобряет заявку" />
+              <img src="/img/icons/icon-4.svg" alt="Одобряет заявку" />
             </div>
             <div className="text">
               <div className="title">
@@ -608,7 +608,7 @@ export default function Home() {
           </div>
           <div className="point">
             <div className="icon">
-              <img src="/cargo/img/icons/icon-5.svg" alt="Закрытие сделки" />
+              <img src="/img/icons/icon-5.svg" alt="Закрытие сделки" />
             </div>
             <div className="text">
               <div className="title">
@@ -625,7 +625,7 @@ export default function Home() {
           <div className="point">
             <div className="icon">
               <img
-                src="/cargo/img/icons/icon-6.svg"
+                src="/img/icons/icon-6.svg"
                 alt="Все готово для перевозки"
               />
             </div>

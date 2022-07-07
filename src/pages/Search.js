@@ -112,7 +112,7 @@ export default function Search() {
             onClick={() => setSearch("cargo")}
             className={search === "cargo" && "active"}
           >
-            <img src="/cargo/img/bg/cargo.png" alt="грузы" />
+            <img src="/img/bg/cargo.png" alt="грузы" />
             <span>Найти груз</span>
           </button>
           <button
@@ -120,7 +120,7 @@ export default function Search() {
             onClick={() => setSearch("car")}
             className={search === "car" && "active"}
           >
-            <img src="/cargo/img/bg/car.png" alt="машина" />
+            <img src="/img/bg/car.png" alt="машина" />
             <span>Найти машину</span>
           </button>
         </div>

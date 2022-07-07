@@ -58,7 +58,7 @@ export default function CargoPage() {
                                 </div>
                             </div>
                         </div>
-                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/cargo/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
+                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
                         <button type="button" data-bs-toggle="modal" data-bs-target="#report" className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
                             <IconContext.Provider value={{className: "gray-4 icon"}}>
                                 <IoWarning />

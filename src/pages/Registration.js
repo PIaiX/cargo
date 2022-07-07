@@ -125,7 +125,7 @@ export default function Registration() {
   return (
     <main className="bg-white position-relative">
       <img
-        src="/cargo/img/bg/bg-entrance.jpg"
+        src="/img/bg/bg-entrance.jpg"
         className="entrance-bg"
         alt="грузоперевозки"
       />

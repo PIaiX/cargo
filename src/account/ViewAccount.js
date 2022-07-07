@@ -27,7 +27,7 @@ export default function ViewAccount() {
                 <div className='row flex-md-row-reverse'>
                     <div className='col-md-4'>
                         <div className='profile-picture mx-auto mb-4 mb-sm-5'>
-                            <img src="/cargo/img/users/no-photo.png" alt="ООО НТК"/>
+                            <img src="/img/users/no-photo.png" alt="ООО НТК"/>
                         </div>
                     </div>
                     <div className='col-md-8'>

@@ -36,7 +36,7 @@ export default function ForumTopicChat() {
 
                 <div className='fixed-comment'>
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
@@ -83,7 +83,7 @@ export default function ForumTopicChat() {
 
                 <div className='answers-box'>
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Модератор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Модератор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         citation = {{name: 'Имя пользователя', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.'}}
@@ -92,7 +92,7 @@ export default function ForumTopicChat() {
                         dislikes={3}
                     />
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus." 
@@ -100,7 +100,7 @@ export default function ForumTopicChat() {
                         dislikes={1}
                     />
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
