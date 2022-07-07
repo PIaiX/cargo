@@ -1,6 +1,6 @@
 import React from "react";
 import { IoCloseOutline, IoDocumentText, IoTrash } from "react-icons/io5";
-import { MdPerson } from "react-icons/md";
+import { MdPerson, MdCopyright } from "react-icons/md";
 import { ImVk, ImWhatsapp, ImTelegram } from "react-icons/im";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
@@ -11,7 +11,35 @@ export const Footer = () => {
   return (
     <>
       <footer>
-        <div className="container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100">
+        <div className="container py-4 py-sm-5">
+          <div className="row mb-4 mb-md-5">
+            <div className="d-none d-sm-block col-sm-3 col-md-4">
+              <img src="/cargo/img/logo.png" alt="Грузоперевозки" className="logo" />
+            </div>
+            <div className="col-sm-9 col-md-8">
+              <div className="fs-12 fw-7 mb-4 mb-md-5">КАРТА САЙТА</div>
+              <hr />
+              <ul className="list-unstyled row row-cols-sm-2 g-3 g-md-4 mt-1 mt-sm-3">
+                <li><Link to="/">ГЛАВНАЯ</Link></li>
+                <li><Link to="/">ИНФОРМАЦИЯ</Link></li>
+                <li><Link to="/search">ПОИСК</Link></li>
+                <li><Link to="/">ЗАДАТЬ ВОПРОС</Link></li>
+                <li><Link to="/forum">ФОРУМ</Link></li>
+                <li><Link to="/">ЛИЧНЫЙ КАБИНЕТ</Link></li>
+              </ul>
+            </div>
+          </div>
+          <hr />
+          <div className="payment-methods mt-3 mt-md-4">
+            <img src="/cargo/img/payment/visa.png" alt="visa"/>
+            <img src="/cargo/img/payment/mastercard.png" alt="mastercard"/>
+            <img src="/cargo/img/payment/tinkoff.png" alt="tinkoff"/>
+            <img src="/cargo/img/payment/mir.png" alt="mir"/>
+            <img src="/cargo/img/payment/sbp.png" alt="sbp"/>
+          </div>
+          <div className="d-flex justify-content-center align-items-center mt-3 fs-09 fw-7"><MdCopyright/> <span className="ms-2">ВСЕ ПРАВА ЗАЩИЩЕНЫ · ГРУЗОПЕРЕВОЗКИ&nbsp;·&nbsp;2022</span></div>
+        </div>
+        {/* <div className="container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100">
           <div className="info d-lg-flex align-items-center">
             <img
               src="/cargo/img/logo-light.png"
@@ -66,7 +94,7 @@ export const Footer = () => {
               </Link>
             </div>
           </div>
-        </div>
+        </div> */}
       </footer>
       {/* Modal */}
       <div className="modal fade" id="report" tabIndex="-1" aria-hidden="true">
