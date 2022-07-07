@@ -14,168 +14,186 @@ import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
 import { optionsCarType } from "../components/utilities/data";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCurrentCarTemplate,
+  setCarFormData,
+} from "../store/reducers/savedCarTemplates";
+
+const initialData = [
+  {
+    fieldset: "route",
+    name: "loading",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "route",
+    name: "loadingRadius",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "route",
+    name: "unloading",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "route",
+    name: "unloadingRadius",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "date",
+    name: "frequency",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "date",
+    name: "date",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "date",
+    name: "days",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "date",
+    name: "loadingPeriodType",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "carType",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "additionalConfiguration",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "carrying",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "capacity",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "length",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "width",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "height",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "sts",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "vin",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "aboutCar",
+    name: "pts",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "payment",
+    name: "bargain",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "payment",
+    name: "paymentType",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "payment",
+    name: "priceVat",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "payment",
+    name: "priceNovat",
+    value: "",
+    required: false,
+  },
+  {
+    fieldset: "payment",
+    name: "prepay",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "contacts",
+    name: "contactPhone0",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "contacts",
+    name: "contactName0",
+    value: "",
+    required: true,
+  },
+  {
+    fieldset: "contacts",
+    name: "remark",
+    value: "",
+    required: false,
+  },
+];
 
 export default function AddCar() {
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
+  const dispatch = useDispatch();
 
-  let [data, setData] = useState([
-    {
-      fieldset: "route",
-      name: "loading",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "route",
-      name: "loadingRadius",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "route",
-      name: "unloading",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "route",
-      name: "unloadingRadius",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "date",
-      name: "frequency",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "date",
-      name: "date",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "date",
-      name: "days",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "date",
-      name: "loadingPeriodType",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "carType",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "additionalConfiguration",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "carrying",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "capacity",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "length",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "width",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "height",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "sts",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "vin",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "aboutCar",
-      name: "pts",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "payment",
-      name: "bargain",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "payment",
-      name: "paymentType",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "payment",
-      name: "priceVat",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "payment",
-      name: "priceNovat",
-      value: "",
-      required: false,
-    },
-    {
-      fieldset: "payment",
-      name: "prepay",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "contacts",
-      name: "contactPhone0",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "contacts",
-      name: "contactName0",
-      value: "",
-      required: true,
-    },
-    {
-      fieldset: "contacts",
-      name: "remark",
-      value: "",
-      required: false,
-    },
-  ]);
+  const currentTemplate = useSelector(
+    (state) => state.savedCarTemplates.currentTemplate
+  );
+
+  useEffect(() => {
+    if (currentTemplate) {
+      setData(currentTemplate.data)
+    }
+  }, [currentTemplate]);
+
+  let [data, setData] = useState(initialData);
   let [contacts, setContacts] = useState([]);
 
   let checkFieldset = (fieldName) => {
@@ -201,7 +219,7 @@ export default function AddCar() {
   };
 
   let fillDataList = (e) => {
-    console.log("target:" + e.target);
+    // console.log("target:" + e.target);
     let inputName = e.target.name;
     let inputVal = e.target.value.trim();
 
@@ -249,16 +267,20 @@ export default function AddCar() {
       );
     }
   };
-
   const findInState = (name) => {
     let val = "";
     data.forEach((obj) => {
-      if (obj.name === name && obj.value !== "") {
+      if (obj.name === name) {
         val = obj.value;
         //  <span key={obj.name} className='me-1'>{obj.value}</span>;
       }
     });
     return val;
+  };
+
+  const handleSaveTemplate = () => {
+    // const data = getEntireFormValue();
+    dispatch(setCarFormData(data));
   };
 
   const onSubmit = (e) => {
@@ -273,6 +295,7 @@ export default function AddCar() {
         return obj.name + ": " + obj.value + "; ";
       });
       alert(formInfo);
+      console.log(data);
     } else {
       alert("заполните форму!");
       Array.from(document.querySelectorAll("[data-label]")).forEach(
@@ -287,6 +310,7 @@ export default function AddCar() {
   };
 
   const onReset = (e) => {
+    dispatch(setCurrentCarTemplate(null));
     setData(
       data.map((obj) => {
         return { ...obj, value: "" };
@@ -330,6 +354,8 @@ export default function AddCar() {
 
     setContacts([...contacts, newNum]);
   };
+
+  console.log(data)
 
   return (
     <main className="bg-gray">
@@ -428,6 +454,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="loading"
+                          value={findInState("loading")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="Населенный пункт"
                           className="fs-12"
@@ -453,6 +480,7 @@ export default function AddCar() {
                           type="number"
                           min="0.5"
                           step="0.1"
+                          value={findInState("loadingRadius")}
                           onChange={(e) => fillDataList(e)}
                           name="loadingRadius"
                           placeholder="0,5"
@@ -478,6 +506,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="unloading"
+                          value={findInState("unloading")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="Населенный пункт"
                           className="fs-12"
@@ -504,6 +533,7 @@ export default function AddCar() {
                           min=".5"
                           step="0.1"
                           name="unloadingRadius"
+                          value={findInState("unloadingRadius")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="0,5"
                           className="w-100 fs-12 distance"
@@ -808,6 +838,7 @@ export default function AddCar() {
                           min="1"
                           name="carrying"
                           placeholder="0"
+                          value={findInState("carrying")}
                           onChange={(e) => fillDataList(e)}
                           className="weight w-100 fs-12"
                         />
@@ -833,6 +864,7 @@ export default function AddCar() {
                           min="1"
                           name="capacity"
                           placeholder="0"
+                          value={findInState("capacity")}
                           onChange={(e) => fillDataList(e)}
                           className="size w-100 fs-12"
                         />
@@ -860,6 +892,7 @@ export default function AddCar() {
                               step="0.1"
                               name="length"
                               placeholder="0"
+                              value={findInState("length")}
                               onChange={(e) => fillDataList(e)}
                               className="length"
                             />
@@ -880,6 +913,7 @@ export default function AddCar() {
                               step="0.1"
                               name="width"
                               placeholder="0"
+                              value={findInState("width")}
                               onChange={(e) => fillDataList(e)}
                               className="length"
                             />
@@ -900,6 +934,7 @@ export default function AddCar() {
                               step="0.1"
                               name="height"
                               placeholder="0"
+                              value={findInState("height")}
                               onChange={(e) => fillDataList(e)}
                               className="length"
                             />
@@ -935,6 +970,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="sts"
+                          value={findInState("sts")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="СТС"
                           className="w-100 fs-12"
@@ -969,6 +1005,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="vin"
+                          value={findInState("vin")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="VIN код"
                           className="w-100 fs-12"
@@ -1003,6 +1040,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="pts"
+                          value={findInState("pts")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="ПТС"
                           className="w-100 fs-12"
@@ -1153,6 +1191,7 @@ export default function AddCar() {
                           min="1"
                           name="priceVat"
                           placeholder="0"
+                          value={findInState("priceVat")}
                           onChange={(e) => fillDataList(e)}
                           className="price-per-km w-100 fs-12"
                         />
@@ -1178,6 +1217,7 @@ export default function AddCar() {
                           min="1"
                           name="priceNovat"
                           placeholder="0"
+                          value={findInState("priceNovat")}
                           onChange={(e) => fillDataList(e)}
                           className="price-per-km w-100 fs-12"
                         />
@@ -1204,6 +1244,7 @@ export default function AddCar() {
                           max="100"
                           name="prepay"
                           placeholder="0"
+                          value={findInState("prepay")}
                           onChange={(e) => fillDataList(e)}
                           className="percent w-100 fs-12"
                         />
@@ -1289,6 +1330,7 @@ export default function AddCar() {
                         <input
                           type="tel"
                           name="contactPhone0"
+                          value={findInState("contactPhone0")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="+ 7 (962) 458 65 79"
                           className="w-100 fs-12"
@@ -1307,6 +1349,7 @@ export default function AddCar() {
                         <input
                           type="text"
                           name="contactName0"
+                          value={findInState("contactName0")}
                           onChange={(e) => fillDataList(e)}
                           placeholder="Имя"
                           className="w-100 fs-12"
@@ -1346,6 +1389,7 @@ export default function AddCar() {
                           <input
                             type="tel"
                             name={"contactPhone" + obj}
+                            value={findInState("contactPhone" + obj)} 
                             onChange={(e) => fillDataList(e)}
                             placeholder="+ 7 (962) 458 65 79"
                             className="w-100 fs-12"
@@ -1364,6 +1408,7 @@ export default function AddCar() {
                           <input
                             type="text"
                             name={"contactName" + obj}
+                            value={findInState("contactName" + obj)} 
                             onChange={(e) => fillDataList(e)}
                             placeholder="Имя"
                             className="w-100 fs-12"
@@ -1401,6 +1446,7 @@ export default function AddCar() {
                     <textarea
                       rows={3}
                       name="remark"
+                      value={findInState("remark")}
                       onChange={(e) => fillDataList(e)}
                       placeholder="Укажите здесь дополнительную информацию "
                     ></textarea>
@@ -1655,6 +1701,7 @@ export default function AddCar() {
                 data-bs-toggle="modal"
                 data-bs-target="#savePatternCar"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
+                onClick={handleSaveTemplate}
               >
                 Сохранить шаблон
               </button>

@@ -354,11 +354,6 @@ export default function AddCargo() {
       setRequirements(currentTemplate.data.requirements);
       setPayment(currentTemplate.data.payment);
       setContacts(currentTemplate.data.contacts);
-
-      console.log(currentTemplate.data);
-
-      //TODO: this is totally weird. Check it out later.
-      // setContactsField(currentTemplate.data.contactsFields)
     }
   }, [currentTemplate]);
 
@@ -2279,7 +2274,7 @@ export default function AddCargo() {
                         onChange={(e) => fillData(e, setPayment, payment)}
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                        Наличный расчет
+                        Наличными/Картой
                       </span>
                     </label>
                   </div>
@@ -2293,12 +2288,12 @@ export default function AddCargo() {
                         onChange={(e) => fillData(e, setPayment, payment)}
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                        Перевод по карте
+                        Банковский перевод
                       </span>
                     </label>
                   </div>
                 </div>
-                {getVal(payment, "paymentType") === "0" && (
+                {/* {getVal(payment, "paymentType") === "0" && (
                   <div className="row align-items-center mb-4">
                     <div className="col-sm-3 mb-2 mb-sm-0">
                       <div
@@ -2325,7 +2320,7 @@ export default function AddCargo() {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
