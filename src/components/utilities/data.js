@@ -18,6 +18,10 @@ export const optionsLoadingPeriodType = [
     { value: '2', label: 'Ежедневно' },
     { value: '3', label: 'Через день' },
 ];
+export const optionsLoadingDays = [
+    { value: '0', label: '0 дн.' },
+    { value: '1', label: '1 дн.' }
+];
 export const optionsPackageType = [
     { value: '1', label: 'не указано' },
     { value: '2', label: 'навалом' },
@@ -36,6 +40,17 @@ export const optionsPackageType = [
     { value: '15', label: 'барабаны' },
     { value: '16', label: 'бочки' },
     { value: '17', label: 'канистры' },
+];
+export const optionsCarName = [
+    { value: '1', label: 'Камаз синий' },
+    { value: '2', label: 'Камаз красный' },
+    { value: '3', label: 'Шишига желтая' },
+    { value: '4', label: 'Нива тёщи' },
+    { value: '5', label: 'Велик' },
+    { value: '6', label: 'Другой велик' },
+    { value: '7', label: 'На этом не доедешь' },
+    { value: '8', label: 'Не заводится' },
+    { value: '9', label: 'Единственный рабочий вариант' }
 ];
 export const optionsCargoType = [
     { value: '1', label: 'Автомобиль' },

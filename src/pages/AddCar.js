@@ -9,6 +9,11 @@ import { useNavigate } from "react-router-dom";
 
 const initialData = [
   {
+    name: "name",
+    value: "",
+    required: true
+  },
+  {
     name: "carType",
     value: "",
     label: "",
@@ -96,7 +101,7 @@ export default function AddCar() {
 
   let fillDataList = (e) => {
     let inputName = e.target.name;
-    let inputVal = e.target.value.trim();
+    let inputVal = e.target.value
 
     setData(
       data.map((obj) => {
@@ -125,7 +130,6 @@ export default function AddCar() {
 
     let requiredArr = data.filter((obj) => obj.required === true);
     let verification = requiredArr.every((obj) => obj.value !== "");
-    let empty = requiredArr.filter((obj) => obj.value === "");
 
     if (verification) {
       let formInfo = data.map((obj) => {
@@ -187,6 +191,30 @@ export default function AddCar() {
                 </div>
               </div>
               <div className="box">
+              <div className="row align-items-center mb-4">
+                  <div className="col-sm-5 col-md-3">
+                    <div
+                      data-label="name"
+                      data-warning="false"
+                      className="title-font fs-12 fw-5 mb-2 mb-sm-0"
+                    >
+                      Марка машины*
+                    </div>
+                  </div>
+                  <div className="col-sm-7 col-md-9">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <input
+                          name="name"
+                          placeholder="Укажите марку машины..."
+                          value={findInState("name")}
+                          onChange={(e) => fillDataList(e)}
+                          className="weight w-100 fs-12"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div className="row mb-4">
                   <div className="col-md-3 mb-3 mb-md-0">
                     <div

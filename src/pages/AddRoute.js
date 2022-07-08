@@ -7,13 +7,17 @@ import {
   IoCloseCircle,
   IoChevronBackOutline,
   IoChevronForwardOutline,
-  IoHelpCircleOutline,
   IoNewspaperOutline,
 } from "react-icons/io5";
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
-import { optionsCarType } from "../components/utilities/data";
+
+import {
+  optionsCarName,
+  optionsLoadingPeriodType,
+  optionsLoadingDays
+} from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -68,67 +72,15 @@ const initialData = [
     fieldset: "date",
     name: "loadingPeriodType",
     value: "",
+    label: "",
     required: false,
   },
   {
     fieldset: "aboutCar",
-    name: "carType",
+    name: "carName",
     value: "",
+    lavel: "",
     required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "additionalConfiguration",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "carrying",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "capacity",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "length",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "width",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "height",
-    value: "",
-    required: true,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "sts",
-    value: "",
-    required: false,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "vin",
-    value: "",
-    required: false,
-  },
-  {
-    fieldset: "aboutCar",
-    name: "pts",
-    value: "",
-    required: false,
   },
   {
     fieldset: "payment",
@@ -209,11 +161,11 @@ export default function AddRoute() {
 
   let handleRSelect = (e, name) => {
     let inputVal = e.value;
-    console.log(name + ": " + inputVal);
+    let inputLabel = e.label;
     setData(
       data.map((obj) => {
         if (obj.name === name) {
-          return { ...obj, value: inputVal };
+          return { ...obj, value: inputVal, label: inputLabel };
         } else {
           return obj;
         }
@@ -222,7 +174,6 @@ export default function AddRoute() {
   };
 
   let fillDataList = (e) => {
-    // console.log("target:" + e.target);
     let inputName = e.target.name;
     let inputVal = e.target.value.trim();
 
@@ -275,14 +226,13 @@ export default function AddRoute() {
     data.forEach((obj) => {
       if (obj.name === name) {
         val = obj.value;
-        //  <span key={obj.name} className='me-1'>{obj.value}</span>;
+        if (obj.label) val = obj.label;
       }
     });
     return val;
   };
 
   const handleSaveTemplate = () => {
-    // const data = getEntireFormValue();
     dispatch(setCarFormData(data));
   };
 
@@ -316,9 +266,17 @@ export default function AddRoute() {
     dispatch(setCurrentCarTemplate(null));
     setData(
       data.map((obj) => {
-        return { ...obj, value: "" };
+        const newObj = { ...obj, value: "" };
+        if (obj.label) newObj.label = "";
+        return newObj;
       })
     );
+  };
+
+  const getSelectValue = (name) => {
+    const object = data.find((obj) => obj.name === name);
+    if (!object.value) return null;
+    return { value: object.value, label: object.label };
   };
 
   useEffect(() => {
@@ -606,6 +564,12 @@ export default function AddRoute() {
                               name="frequency"
                               onChange={(e) => changeFrequency(e)}
                               value="Единожды"
+                              checked={
+                                data.find((obj) => obj.name === "frequency")
+                                  .value === "Единожды"
+                                  ? true
+                                  : false
+                              }
                             />
                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
                               Единожды
@@ -631,6 +595,9 @@ export default function AddRoute() {
                                 type="date"
                                 name="date"
                                 onChange={(e) => fillDataList(e)}
+                                value={
+                                  data.find((obj) => obj.name === "date").value
+                                }
                               />
                             </label>
                             <span className="mx-2 mx-xxl-3">+</span>
@@ -639,12 +606,24 @@ export default function AddRoute() {
                               data-label="days"
                               data-warning="false"
                             >
-                              <CustomSelect
+                              {/* <CustomSelect
                                 className="inp"
                                 name="days"
                                 onChange={(e) => fillDataList(e)}
                                 options={["0 дн.", "1 дн."]}
                                 onSelectChange={() => {}}
+                              /> */}
+                              <Select
+                                className="fs-12"
+                                classNamePrefix="react-select"
+                                placeholder="Выберите..."
+                                options={optionsLoadingDays}
+                                name="days"
+                                isSearchable={false}
+                                value={getSelectValue("days")}
+                                onChange={(e) =>
+                                  handleRSelect(e, "days")
+                                }
                               />
                             </label>
                           </div>
@@ -658,6 +637,12 @@ export default function AddRoute() {
                               name="frequency"
                               onChange={(e) => changeFrequency(e)}
                               value="Постоянно"
+                              checked={
+                                data.find((obj) => obj.name === "frequency")
+                                  .value === "Постоянно"
+                                  ? true
+                                  : false
+                              }
                             />
                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
                               Постоянно
@@ -676,17 +661,24 @@ export default function AddRoute() {
                                 }
                               })}
                           >
-                            <CustomSelect
+                            {/* <CustomSelect
                               className="inp w-100 fs-12"
                               name="loadingPeriodType"
                               onChange={(e) => fillDataList(e)}
-                              options={[
-                                "По рабочим дням",
-                                "По выходным",
-                                "Ежедневно",
-                                "Через день",
-                              ]}
-                              onSelectChange={() => {}}
+                              options={optionsLoadingPeriodType}
+                              onSelectChange={handleCustomSelect}
+                            /> */}
+                            <Select
+                              className="fs-12"
+                              classNamePrefix="react-select"
+                              placeholder="Выберите..."
+                              options={optionsLoadingPeriodType}
+                              name="loadingPeriodType"
+                              isSearchable={false}
+                              value={getSelectValue("loadingPeriodType")}
+                              onChange={(e) =>
+                                handleRSelect(e, "loadingPeriodType")
+                              }
                             />
                           </div>
                         </div>
@@ -746,311 +738,35 @@ export default function AddRoute() {
                 </div>
               </div>
             </fieldset>
-
             <fieldset
               name="aboutCar"
-              className="mt-lg-5"
               data-show={activeField === 3 ? "true" : "false"}
             >
-              <h4 className="text-center text-lg-start mb-4 mb-lg-3">
-                Транспорт
+              <h4 className="text-center text-lg-start mt-lg-5 mb-4 mb-lg-3">
+                Машина
               </h4>
               <div className="box">
-                <div className="row mb-4">
+                <div className="row align-items-center mb-4">
                   <div className="col-md-3 mb-3 mb-md-0">
                     <div
-                      data-label="carType"
+                      data-label="carName"
                       data-warning="false"
                       className="title-font fs-12 fw-5"
                     >
-                      Тип машины*
+                      Выбор машины*
                     </div>
                   </div>
                   <div className="col-md-9">
-                    {/* <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="carType" options={['Тягач', 'Фура', 'Рефрижератор']}/> */}
                     <Select
                       className="fs-12 w-100"
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
-                      onChange={(e) => handleRSelect(e, "carType")}
-                      options={optionsCarType}
-                      name="carType"
+                      onChange={(e) => handleRSelect(e, "carName")}
+                      options={optionsCarName}
+                      name="carName"
                       isSearchable={true}
+                      value={getSelectValue("carName")}
                     />
-                    <div
-                      data-label="additionalConfiguration"
-                      data-warning="false"
-                      className="row row-cols-sm-3 mt-3"
-                    >
-                      <div className="mb-3 mb-sm-0">
-                        <label>
-                          <input
-                            type="radio"
-                            name="additionalConfiguration"
-                            value="Грузовик"
-                            onChange={(e) => fillDataList(e)}
-                          />
-                          <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                            Грузовик
-                          </span>
-                        </label>
-                      </div>
-                      <div className="mb-3 mb-sm-0">
-                        <label>
-                          <input
-                            type="radio"
-                            name="additionalConfiguration"
-                            value="Полуприцеп"
-                            onChange={(e) => fillDataList(e)}
-                          />
-                          <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                            Полуприцеп
-                          </span>
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <input
-                            type="radio"
-                            name="additionalConfiguration"
-                            value="Сцепка"
-                            onChange={(e) => fillDataList(e)}
-                          />
-                          <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                            Сцепка
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center mb-4">
-                  <div className="col-sm-5 col-md-3">
-                    <div
-                      data-label="carrying"
-                      data-warning="false"
-                      className="title-font fs-12 fw-5 mb-2 mb-sm-0"
-                    >
-                      Грузоподъемность*
-                    </div>
-                  </div>
-                  <div className="col-sm-7 col-md-9">
-                    <div className="row">
-                      <div className="col-md-4">
-                        <input
-                          type="number"
-                          min="1"
-                          name="carrying"
-                          placeholder="0"
-                          value={findInState("carrying")}
-                          onChange={(e) => fillDataList(e)}
-                          className="weight w-100 fs-12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center mb-4">
-                  <div className="col-sm-5 col-md-3">
-                    <div
-                      data-label="capacity"
-                      data-warning="false"
-                      className="title-font fs-12 fw-5 mb-2 mb-sm-0"
-                    >
-                      Объем*
-                    </div>
-                  </div>
-                  <div className="col-sm-7 col-md-9">
-                    <div className="row">
-                      <div className="col-md-4">
-                        <input
-                          type="number"
-                          min="1"
-                          name="capacity"
-                          placeholder="0"
-                          value={findInState("capacity")}
-                          onChange={(e) => fillDataList(e)}
-                          className="size w-100 fs-12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center mb-4">
-                  <div className="col-md-3 mb-3 mb-md-0">
-                    <div className="title-font fs-12 fw-5">Габариты*</div>
-                  </div>
-                  <div className="col-md-9">
-                    <div className="row row-cols-sm-3 gx-3 gx-xxl-4 fs-12">
-                      <div className="mb-2 mb-sm-0">
-                        <div className="row gx-2 align-items-center">
-                          <div className="col-3 col-sm-5">
-                            <label data-label="length" data-warning="false">
-                              Длина:
-                            </label>
-                          </div>
-                          <div className="col-9 col-sm-7">
-                            <input
-                              type="number"
-                              min="1"
-                              step="0.1"
-                              name="length"
-                              placeholder="0"
-                              value={findInState("length")}
-                              onChange={(e) => fillDataList(e)}
-                              className="length"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mb-2 mb-sm-0">
-                        <div className="row gx-2 align-items-center">
-                          <div className="col-3 col-sm-5">
-                            <label data-label="width" data-warning="false">
-                              Ширина:
-                            </label>
-                          </div>
-                          <div className="col-9 col-sm-7">
-                            <input
-                              type="number"
-                              min="1"
-                              step="0.1"
-                              name="width"
-                              placeholder="0"
-                              value={findInState("width")}
-                              onChange={(e) => fillDataList(e)}
-                              className="length"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <div className="row gx-2 align-items-center">
-                          <div className="col-3 col-sm-5">
-                            <label data-label="height" data-warning="false">
-                              Высота:
-                            </label>
-                          </div>
-                          <div className="col-9 col-sm-7">
-                            <input
-                              type="number"
-                              min="1"
-                              step="0.1"
-                              name="height"
-                              placeholder="0"
-                              value={findInState("height")}
-                              onChange={(e) => fillDataList(e)}
-                              className="length"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center mb-4">
-                  <div className="col-sm-3 mb-2 mb-sm-0">
-                    <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                      <span data-label="sts" data-warning="false">
-                        СТС
-                      </span>
-                      <button
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="внесенные сведения ТС не подлежат разглашению третьим лицам"
-                      >
-                        <IconContext.Provider
-                          value={{ className: "ms-2 blue icon-15" }}
-                        >
-                          <IoHelpCircleOutline />
-                        </IconContext.Provider>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-sm-9">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <input
-                          type="text"
-                          name="sts"
-                          value={findInState("sts")}
-                          onChange={(e) => fillDataList(e)}
-                          placeholder="СТС"
-                          className="w-100 fs-12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center mb-4">
-                  <div className="col-sm-3 mb-2 mb-sm-0">
-                    <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                      <span data-label="vin" data-warning="false">
-                        VIN код
-                      </span>
-                      <button
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="внесенные сведения ТС не подлежат разглашению третьим лицам"
-                      >
-                        <IconContext.Provider
-                          value={{ className: "ms-2 blue icon-15" }}
-                        >
-                          <IoHelpCircleOutline />
-                        </IconContext.Provider>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-sm-9">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <input
-                          type="text"
-                          name="vin"
-                          value={findInState("vin")}
-                          onChange={(e) => fillDataList(e)}
-                          placeholder="VIN код"
-                          className="w-100 fs-12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center">
-                  <div className="col-sm-3 mb-2 mb-sm-0">
-                    <div className="title-font fs-12 fw-5 d-flex align-items-center">
-                      <span data-label="pts" data-warning="false">
-                        ПТС
-                      </span>
-                      <button
-                        type="button"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        title="внесенные сведения ТС не подлежат разглашению третьим лицам"
-                      >
-                        <IconContext.Provider
-                          value={{ className: "ms-2 blue icon-15" }}
-                        >
-                          <IoHelpCircleOutline />
-                        </IconContext.Provider>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="col-sm-9">
-                    <div className="row">
-                      <div className="col-md-6">
-                        <input
-                          type="text"
-                          name="pts"
-                          value={findInState("pts")}
-                          onChange={(e) => fillDataList(e)}
-                          placeholder="ПТС"
-                          className="w-100 fs-12"
-                        />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -1075,7 +791,7 @@ export default function AddRoute() {
                     <div>
                       <button
                         type="button"
-                        onClick={() => setActiveField(2)}
+                        onClick={() => setActiveField(3)}
                         className="btn btn-1 w-100 fs-11"
                       >
                         <IconContext.Provider value={{ className: "icon-15" }}>
@@ -1090,7 +806,7 @@ export default function AddRoute() {
                       <button
                         type="button"
                         disabled={checkFieldset("aboutCar") ? false : true}
-                        onClick={() => setActiveField(4)}
+                        onClick={() => setActiveField(5)}
                         className="btn btn-1 w-100 fs-11"
                       >
                         <span className="me-1 me-sm-3 text-uppercase">
@@ -1580,35 +1296,11 @@ export default function AddRoute() {
                       isDynamic={true}
                       className={checkFieldset("aboutCar") ? "filled" : ""}
                     >
-                      Транспорт
+                      Информация о машине
                     </Link>
                     <div className="fs-09">
-                      {findInState("carType") && (
-                        <span className="me-1">{findInState("carType")}</span>
-                      )}
-                      {findInState("additionalConfiguration") && (
-                        <span className="me-1">
-                          , {findInState("additionalConfiguration")}
-                        </span>
-                      )}
-                      {findInState("carrying") && (
-                        <span className="me-1">
-                          , {findInState("carrying")}т
-                        </span>
-                      )}
-                      {findInState("capacity") && (
-                        <span className="me-1">
-                          , {findInState("capacity")}м<sup>3</sup>
-                        </span>
-                      )}
-                      {findInState("length") && (
-                        <span className="me-1">, {findInState("length")}</span>
-                      )}
-                      {findInState("width") && (
-                        <span className="me-1">/ {findInState("width")}</span>
-                      )}
-                      {findInState("height") && (
-                        <span className="me-1">/ {findInState("height")}</span>
+                      {findInState("carName") && (
+                        <span className="me-1">{findInState("carName")}</span>
                       )}
                     </div>
                     <div className="fs-09">
