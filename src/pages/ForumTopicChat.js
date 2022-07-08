@@ -132,7 +132,7 @@ export default function ForumTopicChat() {
 
                     <div className='d-flex align-items-center'>
                         <span className='d-none d-sm-block me-2'>показать</span>
-                        <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right"/>
+                        <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right" onSelectChange={() => {}}/>
                         <span className='ms-2 d-none d-md-block'>тем на странице</span>
                     </div>
                 </div>

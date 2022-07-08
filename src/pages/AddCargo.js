@@ -21,6 +21,7 @@ import {
   optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   setCurrentCargoTemplate,
   setCargoFormData,
@@ -325,6 +326,8 @@ export default function AddCargo() {
     (state) => state.savedCargoTemplates.currentTemplate
   );
 
+  const navigate = useNavigate();
+
   const getEntireFormValue = () => {
     const newContactsField = [
       {
@@ -338,7 +341,7 @@ export default function AddCargo() {
     return {
       loading,
       unloading,
-      cargo,
+      cargoItems: cargo,
       requirements,
       payment,
       contacts,
@@ -390,7 +393,8 @@ export default function AddCargo() {
   //main input changes handler
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
-    let inputVal = e.target.name === "remark" ? e.target.value : e.target.value.trim();
+    let inputVal =
+      e.target.name === "remark" ? e.target.value : e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
     if (e.target.type === "checkbox") {
@@ -652,11 +656,11 @@ export default function AddCargo() {
   const getContact = (param, i) => {
     let val;
     if (param === "name") {
-      const result = contacts.find((obj) => obj.index === i) 
-      if(result) val = result.name
+      const result = contacts.find((obj) => obj.index === i);
+      if (result) val = result.name;
     } else if (param === "phone") {
-      const result = contacts.find((obj) => obj.index === i) 
-      if(result) val = result.phone
+      const result = contacts.find((obj) => obj.index === i);
+      if (result) val = result.phone;
     } else {
       val = undefined;
     }
@@ -692,7 +696,7 @@ export default function AddCargo() {
   };
   //удаление fieldset
   let delState = (state, func, index) => {
-    const newArray = [...state]
+    const newArray = [...state];
     let arr = newArray.splice(index, 1);
     func(newArray.filter((obj) => obj !== arr));
   };
@@ -711,7 +715,7 @@ export default function AddCargo() {
       arr.filter((item) => item.required === true)
     );
     let result = requiredArr.every(
-      (elem) => 
+      (elem) =>
         elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
     return result;
@@ -782,9 +786,12 @@ export default function AddCargo() {
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-        <Link to="/" className="fs-12 fw-5 d-block mb-3 mb-sm-5">
+        <button
+          onClick={() => navigate("/")}
+          className="fs-12 fw-5 d-block mb-3 mb-sm-5"
+        >
           <span className="green fs-15 me-2">⟵</span> Назад
-        </Link>
+        </button>
 
         <form
           ref={ref}
