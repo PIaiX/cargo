@@ -3,8 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { MdMenu } from 'react-icons/md';
 import { RiUserLine } from "react-icons/ri";
-import Select from 'react-select';
-import { optionsTowns } from "../components/utilities/data";
+import CityContainer from './CityContainer';
 
 export default function Header() {
     return (
@@ -27,8 +26,7 @@ export default function Header() {
                             </IconContext.Provider>
                         </Link>
 
-                        {/* <CustomSelect className="order-1 order-lg-2 ms-lg-5" name="town" checkedOpt={1} options={['Казань', 'Москва', 'Санкт-Петербург']} alignment="right"/> */}
-                        <Select classNamePrefix="react-select-simple" className="right-alignment select order-1 order-lg-2 ms-lg-5" options={optionsTowns} defaultValue={optionsTowns[0]} name="town" />
+                        <CityContainer />
 
                         <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu" className="order-3 d-block d-lg-none ms-4">
                             <IconContext.Provider value={{className: "icon", title: "меню" }}>

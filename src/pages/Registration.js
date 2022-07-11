@@ -143,14 +143,14 @@ export default function Registration() {
               <CustomSelect
                 name="account-type"
                 className="inp w-100 mt-2"
-                multy={false}
-                onSelectChange={handleSelectChange}
                 options={[
                   "Грузовладелец",
                   "Перевозчик",
                   "Перевозчик-Грузовладелец",
                 ]}
-                alignment="left"
+                checkedOptions={[formValue.accountType]}
+                callback={({title}) => handleSelectChange(title)}
+                align="left"
               />
               <FormErrorMessage>{formErrors.accountType}</FormErrorMessage>
               <label className="mt-3">Email</label>

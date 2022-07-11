@@ -1,7 +1,6 @@
 import React from "react";
-import { IoCloseOutline, IoDocumentText, IoTrash } from "react-icons/io5";
+import { IoCloseOutline, IoDocumentText } from "react-icons/io5";
 import { MdPerson, MdCopyright } from "react-icons/md";
-import { ImVk, ImWhatsapp, ImTelegram } from "react-icons/im";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import SaveTemplateModal from "./footerComponents/SaveTemplateModal";
