@@ -13,7 +13,7 @@ export default function CustomSelect(props) {
   
   useEffect(() => {
     props.onSelectChange && props.onSelectChange(checkedVal, props.name);
-  }, [checkedVal]);
+  }, [checkedVal, props]);
 
   const options = props.options;
   let checkedValText = options[checkedVal - 1];

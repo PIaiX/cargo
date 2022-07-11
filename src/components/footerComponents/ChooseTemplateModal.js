@@ -1,10 +1,9 @@
 import React from "react";
 import { IoCloseOutline } from "react-icons/io5";
-import { useSelector, useDispatch } from "react-redux/es/exports";
+import { useSelector } from "react-redux/es/exports";
 import SavedTemplate from "./SavedTemplate";
 
 export default function ChooseTemplateModal({ type }) {
-  const dispatch = useDispatch();
   const templates = useSelector((state) =>
     type === "Cargo"
       ? state.savedCargoTemplates.allTemplates

@@ -94,7 +94,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 
@@ -125,7 +124,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 
@@ -156,7 +154,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место разгрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 

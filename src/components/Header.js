@@ -11,7 +11,7 @@ export default function Header() {
         <>
             <header>
                 <div className="container">
-                    <img src="/img/logo.png" alt="Название сайта" className="logo me-lg-auto" />
+                    <NavLink to="/" className="logo me-lg-auto" ><img src="/img/logo.png" alt="Название сайта"  className="logo me-lg-auto" /></NavLink>
                     <nav className="d-none d-lg-flex">
                         <NavLink to="/">Главная</NavLink>
                         <NavLink to="/search">Поиск</NavLink>
