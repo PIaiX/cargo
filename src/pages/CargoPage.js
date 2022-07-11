@@ -209,12 +209,6 @@ export default function CargoPage() {
 
                         <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
                             <button type="button" data-bs-toggle="offcanvas" data-bs-target="#warning" className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ</button>
-                            <button type="button" className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3">
-                                <IconContext.Provider value={{className: "icon me-1 me-lg-3"}}>
-                                    <IoRepeat />
-                                </IconContext.Provider>
-                                <span>Поиск грузов в обратном направлении</span>
-                            </button>
                         </div>
                     </div>
                 </div>
