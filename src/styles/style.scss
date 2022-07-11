@@ -2764,3 +2764,31 @@ footer {
         padding: 0;
     }
 }
+
+.email-registration {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    .button-registration {
+        position: absolute;
+        font-size: 0.6em;
+        top: 3.4em;
+        right: 5px;
+        background-color: #038CB8;
+        border: 1px solid #038CB8;
+        padding: 0.5em 1.5em;
+        transition: 0.5s;
+        border-radius: 8px;
+        color: #fff;
+        @media (max-width: 575px){
+            top: 3.8em;
+        }
+        &:hover {
+            color: #fff;
+            background-color: #02537D;
+            border: 1px solid #02537D;
+        }
+    }
+
+}
