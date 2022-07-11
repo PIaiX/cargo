@@ -17,7 +17,7 @@ export default function Pagination({
 
   const getPages = useCallback(() => {
     const pages =
-      (pagesAmount <= 5) 
+      (pagesAmount <= 5)
         ? [1, 2, 3, 4, 5]
         : _.range(startingPage, startingPage + pagesDisplayedLimit);
     return pages.filter((page) => page <= pagesAmount);
@@ -66,7 +66,7 @@ export default function Pagination({
     setCurrentPage(1);
     setStartingPage(1);
   };
-  
+
   return (
     <nav className="mt-4">
       <ul className="pagination">

@@ -1881,18 +1881,21 @@ article {
             }
         }
         .text {
-            width: 411px;
+            width: 591px;
             @media (max-width: 1659px){
-                width: 360px;
+                width: 490px;
+            }
+            @media (max-width: 1399px){
+                width: 430px;
             }
             @media (max-width: 1199px){
-                width: 350px;
+                width: 410px;
             }
             @media (max-width: 767px){
-                width: 305px;
+                width: 360px;
             }
             @media (max-width: 575px){
-                width: calc(100vw - 94px - 1em);
+                width: calc(100vw - 54px - 1em);
             }
             .info {
                 display: -webkit-box;
@@ -1919,27 +1922,12 @@ article {
                 }
             }
         }
-        .topics, .messages, .latest {
+        .messages, .latest {
             margin-left: 30px;
             text-align: center;
             @media (max-width: 1659px){margin-left: 20px;}
             @media (max-width: 767px){margin-left: 15px;}
             @media (max-width: 575px){margin-left: 10px;}
-        }
-        .topics {
-            width: 150px;
-            @media (max-width: 1659px){
-                width: 110px;
-            }
-            @media (max-width: 1399px){
-                width: 50px;
-            }
-            @media (max-width: 1199px){
-                width: 40px;
-            }
-            @media (max-width: 575px){
-                width: 30px;
-            }
         }
         .messages {
             width: 160px;
