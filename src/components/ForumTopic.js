@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { BsFillChatRightTextFill, BsFillExclamationOctagonFill } from "react-icons/bs";
 
@@ -18,7 +18,7 @@ export default function ForumTopic(props) {
                 }
             </div>
             <div className='text-topic'>
-                <Link to="/forum-topic" className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</Link>
+                <NavLink to={`/forum-section/${props.id}`} className='fs-11 fw-5 title-font text-truncate d-block'>{props.title}</NavLink>
                 {
                     (props.author)&&
                     <div className='info mt-2'>Автор: <Link className='blue text-decoration-underline' to={props.author.url}>{props.author.name}</Link></div>
