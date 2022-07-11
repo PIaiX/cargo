@@ -137,6 +137,7 @@ export default function ForumMyTopics() {
                         </div>
                         {forumSections.map(section => (
                             <ForumTopic
+                                key={section.id}
                                 fixedTopic={false}
                                 id={section.id}
                                 title={section.title}
