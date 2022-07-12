@@ -29,16 +29,17 @@ export default function Forum() {
     const debouncedSearchValue = useDebounce(searchValue, 300)
     const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
 
-
     //Make API call in the future, fetching actual forum data
 
     useEffect(() => {
+
         const startIdx = (currentPage - 1) * pageLimit;
         const endIdx = startIdx + pageLimit;
         const paginated = foundForumSections.slice(startIdx, endIdx);
 
         setForumSections(paginated);
         setItemsAmount(foundForumSections.length)
+
     }, [currentPage, pageLimit, foundForumSections]);
 
     useEffect(() => {
@@ -47,6 +48,7 @@ export default function Forum() {
         fakeForumSections.length && debouncedSearchValue
             ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
             : setFoundForumSections(fakeForumSections)
+
     }, [debouncedSearchValue])
 
     useEffect(() => {
@@ -59,6 +61,10 @@ export default function Forum() {
         if (value === 2) setPageLimit(15);
         if (value === 3) setPageLimit(20);
     };
+
+    const callback = (am) => {
+        !(am.includes(currentPage)) && setCurrentPage(startingPage)
+    }
 
     return (
         <main className="bg-white py-4 py-sm-5">
@@ -138,11 +144,17 @@ export default function Forum() {
                     <div className="col-lg-9">
                         <div className="d-flex justify-content-end mb-3">
                             <Pagination
+                                callback={callback}
+                                // Количество тем на странице
                                 pageLimit={pageLimit}
+                                // Текущая страница
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}
+                                // Лимит отображаемых страниц при 3 будет 123...6 при 6 будет 123456
                                 pagesDisplayedLimit={3}
+                                // Длинна массива тем
                                 itemsAmount={itemsAmount}
+                                // Стартовая страница
                                 startingPage={startingPage}
                                 setStartingPage={setStartingPage}
                             />
@@ -153,19 +165,22 @@ export default function Forum() {
                             <div className="messages">Сообщений</div>
                             <div className="latest">Последнее сообщение</div>
                         </div>
-                        {forumSections.map((section) => (
-                            <ForumSection
-                                key={section.id}
-                                id={section.id}
-                                title={section.title}
-                                info={section.info}
-                                topics={section.topics}
-                                messages={section.messages}
-                                latest={section.latest}
-                            />
-                        ))}
+                        {
+                            forumSections.map((section) => (
+                                <ForumSection
+                                    key={section.id}
+                                    id={section.id}
+                                    title={section.title}
+                                    info={section.info}
+                                    topics={section.topics}
+                                    messages={section.messages}
+                                    latest={section.latest}
+                                />
+                            ))
+                        }
                         <div className="d-flex align-items-center justify-content-between mt-4">
                             <Pagination
+                                callback={callback}
                                 pageLimit={pageLimit}
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}
