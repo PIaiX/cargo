@@ -28,11 +28,18 @@ const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedVa
     }, [isShow, inputRef])
 
     useEffect(() => {
-        (options.length) && fetchData();
-    }, [options]);
+        if (!isShow) {
+            setOptionsSearch('')
+            setListItems([])
+        }
+    }, [isShow])
+
+    useEffect(() => {
+        (options.length && listItems.length === 0) && fetchData();
+    }, [options, listItems]);
 
     const onScrollList = (event) => {
-        const scrollBottom = event.target.scrollTop + event.target.offsetHeight === event.target.scrollHeight;
+        const scrollBottom = event.target.scrollTop + event.target.offsetHeight + 100 >= event.target.scrollHeight;
 
         if (!debouncedOptionsSearch && scrollBottom) {
             setIsFetching(true);

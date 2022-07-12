@@ -26,7 +26,7 @@ export default function Header() {
                         <NavLink to="/search">Поиск</NavLink>
                         <NavLink to="/forum">Форум</NavLink>
                         <a href="/">Информация</a>
-                        <NavLink to="" onClick={() => setIsShow(true)}>Задать вопрос</NavLink>
+                        <button className="header__button" type="button" onClick={() => setIsShow(true)}>Задать вопрос</button>
                     </nav>
                     <div className="d-flex align-items-center ms-5">
                         <Link to="login" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
@@ -52,10 +52,9 @@ export default function Header() {
                     title={true}
                     titleHead={'Задать вопрос'}
                     titleBody={'Задайте интересующий вопрос и мы ответим Вам в течение часа.'}
-                    classNameHeader="questions-header"
-                    classNameBody="quest"
+                    className='modal__header'
                 >
-                    <form className="form-questions">
+                    <form>
                         <label>Ваше имя</label>
                         <input
                             type="text"
