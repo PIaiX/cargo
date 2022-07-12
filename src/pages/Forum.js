@@ -47,7 +47,7 @@ export default function Forum() {
         fakeForumSections.length && debouncedSearchValue
             ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
             : setFoundForumSections(fakeForumSections)
-    }, [fakeForumSections, debouncedSearchValue])
+    }, [debouncedSearchValue])
 
     useEffect(() => {
         setCurrentPage(1)

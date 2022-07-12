@@ -117,7 +117,7 @@ textarea {
   &:not(:placeholder-shown) {border: 1px solid $gray-5;}
   &:hover {border: 1px solid $gray-4;}
   &:focus {border: 1px solid $green;}
-  &:-moz-placeholde {color: $gray-4;}
+  &:-moz-placeholder {color: $gray-4;}
   &::-moz-placeholder {color: $gray-4;}
   &::-webkit-input-placeholder {color: $gray-4;}
   &:-ms-input-placeholder {color: $gray-4;}
@@ -262,143 +262,6 @@ select {
     background-size: 1em .5em;
 
 }
-/* custom select */
-//.custom-select {
-//    width: fit-content;
-//    max-width: 100%;
-//    position: relative;
-//    z-index: 1;
-//    >button {
-//        width: 100%;
-//        position: relative;
-//        z-index: 1;
-//        text-align: left;
-//        display: flex;
-//        flex-wrap: nowrap;
-//        align-items: center;
-//        div {
-//            white-space: nowrap;
-//            overflow: hidden;
-//            text-overflow: ellipsis;
-//            flex: 1;
-//            span:not(:empty):before{
-//                content: ":";
-//            }
-//        }
-//        svg {
-//            width: 1em;
-//            height: 1em;
-//            margin-left: 0.3em;
-//            line {
-//                stroke: $gray-2;
-//                stroke-width: 2px;
-//                @media (max-width: 575px){
-//                    stroke-width: 3px;
-//                }
-//            }
-//        }
-//        &.btn {
-//            svg {
-//                line {stroke: #fff;}
-//            }
-//        }
-//    }
-//    .options {
-//        list-style: none;
-//        padding: 0px;
-//        position: absolute;
-//        top: calc(100% + 5px);
-//        left: 0;
-//        min-width: 100%;
-//        max-width: 500px;
-//        max-height: 400px;
-//        overflow-y: auto;
-//        background: #FFFFFF;
-//        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-//        border-radius: $radius;
-//        z-index: 2;
-//        &[data-alignment="right"]{
-//            left: unset;
-//            right: 0;
-//        }
-//        label.line {
-//            display: block;
-//            position: relative;
-//            z-index: 1;
-//            text-align: left;
-//            justify-content: flex-start;
-//            color: $text-color;
-//            padding: 0.5em 2em;
-//            cursor: pointer;
-//            white-space: nowrap;
-//            @media (max-width: 991px){
-//                padding: 0.5em 1em;
-//            }
-//            &:hover {
-//                input {background: rgba($green, .22);}
-//            }
-//            input {
-//                position: absolute;
-//                top: 0;
-//                left: 0;
-//                width: 100%;
-//                height: 100%;
-//                z-index: -1;
-//                cursor: pointer;
-//                background: transparent;
-//                border-radius: 0px;
-//                transition: .2s;
-//                border: none;
-//                &:checked {
-//                    background: rgba($green, .22);
-//                    &::before {content: unset;}
-//                }
-//            }
-//        }
-//    }
-//    &.dual {
-//        .options {
-//            max-width: calc(100vw - 24px);
-//        }
-//        .nav-tabs {
-//            display: flex;
-//            flex-wrap: nowrap;
-//            border-bottom: 1px solid $gray-5;
-//            .nav-item {
-//                display: flex;
-//                .nav-link {
-//                    border: none;
-//                    margin-bottom: 0px;
-//                    font-family: $title-font;
-//                    color: $blue;
-//                    font-weight: 500;
-//                    padding: .25em 1em;
-//                    &.active {
-//                        color: $green;
-//                        font-weight: 700;
-//                    }
-//                }
-//            }
-//        }
-//        .tab-content {
-//            .tab-pane {
-//                padding: 1em 1em .75em;
-//                column-count: 2;
-//                column-gap: 1.5em;
-//                break-inside: avoid;
-//                @media (max-width: 575px){column-count: 1;}
-//                label {
-//                    display: inline-flex;
-//                    &:not(:last-child){
-//                        margin-bottom: .5em;
-//                    }
-//                }
-//            }
-//
-//        }
-//    }
-//}
-
 
 .react-select {
     &__control {
@@ -2770,7 +2633,6 @@ footer {
     }
 }
 
-
 .city-container {
     position: relative;
 }
@@ -2908,6 +2770,7 @@ footer {
                 input {
                     background-color: $blue;
                 }
+
                 div {
                     color: #FFF;
                 }
@@ -2971,5 +2834,58 @@ footer {
 
     &.show .dropdown-list {
         display: block;
+    }
+
+    .email-registration {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .button-registration {
+            position: absolute;
+            font-size: 0.6em;
+            top: 3.4em;
+            right: 5px;
+            background-color: #038CB8;
+            border: 1px solid #038CB8;
+            padding: 0.5em 1.5em;
+            transition: 0.5s;
+            border-radius: 8px;
+            color: #fff;
+            @media (max-width: 575px) {
+                top: 3.8em;
+            }
+
+            &:hover {
+                color: #fff;
+                background-color: #02537D;
+                border: 1px solid #02537D;
+            }
+        }
+    }
+
+    .modal-header {
+        border: none;
+    }
+
+    .questions-header {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .form-questions {
+        font-weight: 400;
+        font-size: 1.2em;
+    }
+
+    .quest {
+        padding: 0 2.5em 2.5em 2.5em;
+    }
+
+    .form-questions label {
+        margin: 1em 0 0.5em 0;
     }
 }
