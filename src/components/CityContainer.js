@@ -4,6 +4,7 @@ import {getCities} from '../API/cities';
 import SearchDropdown from './utilities/SearchDropdown';
 import CityPopup from './CityPopup';
 import useSelectedCity from '../hooks/selectedCity';
+import Loader from './Loader';
 
 const CityContainer = () => {
     const [isShowCities, setIsShowCities] = useState(false)
