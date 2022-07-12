@@ -1,136 +1,164 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import React, {useEffect, useState, useCallback} from "react";
+import {IoChevronBack, IoChevronForward} from "react-icons/io5";
 import * as _ from "lodash";
+import {logDOM} from "@testing-library/react";
 
-export default function Pagination({
-  pageLimit,
-  currentPage,
-  pagesDisplayedLimit,
-  itemsAmount,
-  setCurrentPage,
-  startingPage,
-  setStartingPage
-}) {
-  const [pagesArrayDisplayed, setPagesArrayDisplayed] = useState([]);
+export default function Pagination(
+    {
+        pageLimit,
+        currentPage,
+        pagesDisplayedLimit,
+        itemsAmount,
+        setCurrentPage,
+        startingPage,
+        setStartingPage,
+        callback
+    }) {
 
-  const pagesAmount = Math.ceil(itemsAmount / pageLimit);
+    // Страницы до ... при большом количестве общего числа страниц
+    const [pagesArrayDisplayed, setPagesArrayDisplayed] = useState([]);
 
-  const getPages = useCallback(() => {
-    const pages =
-      (pagesAmount <= 5)
-        ? [1, 2, 3, 4, 5]
-        : _.range(startingPage, startingPage + pagesDisplayedLimit);
-    return pages.filter((page) => page <= pagesAmount);
-  }, [pagesAmount, startingPage, pagesDisplayedLimit]);
+    // Конечное количество страниц  = окргление(количество всех тем / лимит на странице)
+    const pagesAmount = Math.ceil(itemsAmount / pageLimit);
 
-  useEffect(() => {
-    setPagesArrayDisplayed(getPages());
-  }, [currentPage, getPages]);
+    const getPages = useCallback(() => {
+        const pages =
+            (pagesAmount <= 5)
+                ? [1, 2, 3, 4, 5]
+                : _.range(startingPage, startingPage + pagesDisplayedLimit);
+        return pages.filter((page) => page <= pagesAmount);
+    }, [pagesAmount, startingPage, pagesDisplayedLimit]);
 
-  const handlePageSelect = (pageNum) => {
-    //Make API call for a new page in the parent component
-    setCurrentPage(pageNum);
-  };
+    useEffect(() => {
+        callback && callback(getPages())
+    }, [pagesAmount, callback])
 
-  const handleSelectPrevPage = () => {
-    if (currentPage === 1) return;
-    //Make API call for a new page in the parent component
-    setCurrentPage(currentPage - 1);
-    if (currentPage === pagesArrayDisplayed[0]) {
-      const newStartingPage = startingPage - pagesDisplayedLimit;
-      if (newStartingPage < 1) {
+    useEffect(() => {
+        setPagesArrayDisplayed(getPages());
+    }, [currentPage, getPages]);
+
+    const handlePageSelect = (pageNum) => {
+        //Make API call for a new page in the parent component
+        setCurrentPage(pageNum);
+    };
+
+    const handleSelectPrevPage = () => {
+        if (currentPage === 1) return;
+        //Make API call for a new page in the parent component
+        setCurrentPage(currentPage - 1);
+        if (currentPage === pagesArrayDisplayed[0]) {
+            const newStartingPage = startingPage - pagesDisplayedLimit;
+            if (newStartingPage < 1) {
+                setStartingPage(1);
+            } else {
+                setStartingPage(newStartingPage);
+            }
+        }
+    };
+
+    const handleSelectNextPage = () => {
+        if (currentPage === pagesAmount) return;
+        //Make API call for a new page in the parent component
+        setCurrentPage(currentPage + 1);
+        if (currentPage === pagesArrayDisplayed[pagesArrayDisplayed.length - 1]) {
+            setStartingPage((prev) => prev + pagesDisplayedLimit);
+        }
+    };
+
+    const handleSelectLastPage = () => {
+        //Make API call for a new page in the parent component
+        setCurrentPage(pagesAmount);
+        setStartingPage(pagesAmount - (pagesDisplayedLimit - 1));
+    };
+
+    const handleSelectFirstPage = () => {
+        //Make API call for a new page in the parent component
+        setCurrentPage(1);
         setStartingPage(1);
-      } else {
-        setStartingPage(newStartingPage);
-      }
-    }
-  };
+    };
 
-  const handleSelectNextPage = () => {
-    if (currentPage === pagesAmount) return;
-    //Make API call for a new page in the parent component
-    setCurrentPage(currentPage + 1);
-    if (currentPage === pagesArrayDisplayed[pagesArrayDisplayed.length - 1]) {
-      setStartingPage((prev) => prev + pagesDisplayedLimit);
-    }
-  };
-
-  const handleSelectLastPage = () => {
-    //Make API call for a new page in the parent component
-    setCurrentPage(pagesAmount);
-    setStartingPage(pagesAmount - (pagesDisplayedLimit - 1));
-  };
-
-  const handleSelectFirstPage = () => {
-    //Make API call for a new page in the parent component
-    setCurrentPage(1);
-    setStartingPage(1);
-  };
-
-  return (
-    <nav className="mt-4">
-      <ul className="pagination">
-        <li className="page-item" onClick={handleSelectPrevPage}>
-          <div
-            className="page-link"
-            style={{ cursor: currentPage === 1 ? "not-allowed" : "pointer" }}
-            aria-label="Previous"
-          >
-            <IoChevronBack />
-          </div>
-        </li>
-        {startingPage > 2 && (
-          <>
-            <li className="page-item" onClick={() => handleSelectFirstPage()}>
-              <div style={{ cursor: "pointer" }} className="page-link">
-                {1}
-              </div>
-            </li>
-            <li className="page-item">...</li>
-          </>
-        )}
-        {pagesArrayDisplayed.map((pageNumber, idx) => {
-          return (
-            <li
-              className="page-item"
-              onClick={() => handlePageSelect(pageNumber)}
-              key={pageNumber}
-            >
-              <div
-                style={{ cursor: "pointer" }}
-                className={`page-link ${
-                  pageNumber === currentPage && "active"
-                }`}
-              >
-                {pageNumber}
-              </div>
-            </li>
-          );
-        })}
-        {pagesArrayDisplayed[pagesArrayDisplayed.length - 1] !==
-          pagesAmount && (
-          <>
-            <li className="page-item">...</li>
-            <li className="page-item" onClick={() => handleSelectLastPage()}>
-              <div style={{ cursor: "pointer" }} className="page-link">
-                {pagesAmount}
-              </div>
-            </li>
-          </>
-        )}
-        <li className="page-item" onClick={handleSelectNextPage}>
-          <div
-            className="page-link"
-            style={{
-              cursor: currentPage === pagesAmount ? "not-allowed" : "pointer",
-            }}
-            href="/"
-            aria-label="Next"
-          >
-            <IoChevronForward />
-          </div>
-        </li>
-      </ul>
-    </nav>
-  );
+    return (
+        <nav className="mt-4">
+            <ul className="pagination">
+                <li className="page-item" onClick={handleSelectPrevPage}>
+                    <div
+                        className="page-link"
+                        style={{cursor: currentPage === 1 ? "not-allowed" : "pointer"}}
+                        aria-label="Previous"
+                    >
+                        <IoChevronBack/>
+                    </div>
+                </li>
+                {/*Первая страница*/}
+                {startingPage > 2 && (
+                    <>
+                        <li className="page-item" onClick={() => handleSelectFirstPage()}>
+                            <div style={{cursor: "pointer"}} className="page-link">
+                                {1}
+                            </div>
+                        </li>
+                        <li className="page-item">...</li>
+                    </>
+                )}
+                {/*Отрисовка страниц*/}
+                {pagesArrayDisplayed.map((pageNumber, idx) => {
+                    return (
+                        <li
+                            className="page-item"
+                            onClick={() => {
+                                handlePageSelect(pageNumber)
+                            }}
+                            key={pageNumber}
+                        >
+                            <div
+                                style={{cursor: "pointer"}}
+                                className={`page-link ${
+                                    pageNumber === currentPage && "active"
+                                }`}
+                            >
+                                {pageNumber}
+                            </div>
+                        </li>
+                    );
+                })}
+                {/*Отрисовка ... перед последней страницей*/}
+                {(pagesArrayDisplayed.length !== 0)
+                    ?
+                    (pagesArrayDisplayed[pagesArrayDisplayed.length - 1] !== pagesAmount) &&
+                    (
+                        <>
+                            <li className="page-item">...</li>
+                            <li className="page-item" onClick={() => handleSelectLastPage()}>
+                                <div style={{cursor: "pointer"}} className="page-link">
+                                    {pagesAmount}
+                                </div>
+                            </li>
+                        </>
+                    )
+                    :
+                    (
+                        <>
+                            <li className="page-item" onClick={() => handleSelectLastPage()}>
+                                <div style={{cursor: "pointer"}} className="page-link">
+                                    {pagesAmount}
+                                </div>
+                            </li>
+                        </>
+                    )
+                }
+                <li className="page-item" onClick={handleSelectNextPage}>
+                    <div
+                        className="page-link"
+                        style={{
+                            cursor: currentPage === pagesAmount ? "not-allowed" : "pointer",
+                        }}
+                        href="/"
+                        aria-label="Next"
+                    >
+                        <IoChevronForward/>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    );
 }
