@@ -3071,6 +3071,9 @@ footer .payment-methods img:not(:first-child) {
 }
 
 /* MODAL WINDOWS */
+.modal-header {
+  border: none;
+}
 .modal-content {
   background-color: #fff;
   border-radius: 0px;
@@ -3083,6 +3086,22 @@ footer .payment-methods img:not(:first-child) {
   .modal-body {
     padding: 1.5em;
   }
+}
+.modal__header .modal-header {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.modal__header .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
+.modal__header .modal-body form {
+  font-weight: 400;
+  font-size: 1.2em;
+}
+.modal__header .modal-body form label {
+  margin: 1em 0 0.5em 0;
 }
 
 .offcanvas {
@@ -3118,11 +3137,8 @@ footer .payment-methods img:not(:first-child) {
 }
 .offcanvas-body nav ul li a {
   font-size: 1.3em;
-  color: #038CB8;
-  text-align: center;
-}
-.offcanvas-body nav ul li a.active {
   color: #01BFC4;
+  text-align: center;
 }
 .offcanvas-footer {
   padding: 1em;
@@ -3376,25 +3392,6 @@ footer .payment-methods img:not(:first-child) {
   background-color: #02537D;
   border: 1px solid #02537D;
 }
-.custom-select .modal-header {
-  border: none;
-}
-.custom-select .questions-header {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-}
-.custom-select .form-questions {
-  font-weight: 400;
-  font-size: 1.2em;
-}
-.custom-select .quest {
-  padding: 0 2.5em 2.5em 2.5em;
-}
-.custom-select .form-questions label {
-  margin: 1em 0 0.5em 0;
-}
 .custom-select .lds-ellipsis {
   display: inline-block;
   position: relative;
@@ -3447,6 +3444,34 @@ footer .payment-methods img:not(:first-child) {
   }
   100% {
     transform: translate(24px, 0);
+  }
+}
+
+.header__button {
+  font-family: "Gotham Pro";
+  color: #545454;
+  padding: 0.5em 0 0;
+  margin: 0 1em;
+  font-size: 1.2em;
+  font-weight: 500;
+  transition: 0.2s;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 8px solid transparent;
+}
+.header__button.active, .header__button:hover {
+  border-bottom: 8px solid #01BFC4;
+}
+@media (max-width: 1199px) {
+  .header__button.active, .header__button:hover {
+    border-bottom: 5px solid #01BFC4;
+  }
+}
+@media (max-width: 1199px) {
+  .header__button {
+    border-bottom: 5px solid transparent;
+    margin: 0 0.75em;
   }
 }
 
