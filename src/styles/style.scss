@@ -3170,6 +3170,14 @@ footer {
       }
     }
   }
+  &__rename-template {
+    .modal-header {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+  }
 }
 
 .offcanvas {
