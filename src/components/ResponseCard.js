@@ -17,13 +17,13 @@ export default function ResponseCard(props) {
             <div className='fw-5'>Краткое описание:</div>
             <div>
                 {
-                    (more || props.text && props.text.length <= 50) ?
+                    (more || (props.text && props.text.length <= 50)) ?
                         <>
-                            <span>{props.text != undefined && props.text}</span>
+                            <span>{props.text !== undefined && props.text}</span>
                             <span className="more" onClick={() => setMore(false)}>скрыть</span>
                         </>
                         : <>
-                            <span>{props.text != undefined && props.text.slice(0, 50) + '...'}</span>
+                            <span>{props.text !== undefined && props.text.slice(0, 50) + '...'}</span>
                             <span className="more" onClick={() => setMore(true)}>полностью</span>
                         </>
                 }

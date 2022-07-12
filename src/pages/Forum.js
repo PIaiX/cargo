@@ -12,7 +12,7 @@ import {BsFillInfoSquareFill, BsFillChatRightTextFill} from "react-icons/bs";
 import fakeForumSections from "../dummyData/forumSections.json";
 import Pagination from "../components/Pagination";
 import CustomModal from '../components/utilities/CustomModal';
-import useDebounce from '../hooks/useDebounce';
+import useDebounce from '../hooks/debounce';
 
 const initialPageLimit = 10;
 
@@ -45,11 +45,10 @@ export default function Forum() {
     useEffect(() => {
         const value = debouncedSearchValue.toLowerCase().trim()
 
-        if (fakeForumSections.length && debouncedSearchValue) {
-            setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
-        } else {
-            setFoundForumSections(fakeForumSections)
-        }
+        fakeForumSections.length && debouncedSearchValue
+            ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
+            : setFoundForumSections(fakeForumSections)
+
     }, [debouncedSearchValue])
 
     useEffect(() => {
@@ -195,10 +194,10 @@ export default function Forum() {
                                 <CustomSelect
                                     className="inp"
                                     name="items-count"
-                                    checkedOpt={1}
-                                    options={["10", "15", "20"]}
-                                    alignment="right"
-                                    onSelectChange={handleCustomSelect}
+                                    options={['10', '15', '20']}
+                                    checkedOptions={[`${pageLimit}`]}
+                                    callback={({title}) => setPageLimit(+title)}
+                                    align="right"
                                 />
                                 <span className="ms-2 d-none d-md-block">тем на странице</span>
                             </div>

@@ -9,6 +9,10 @@ import { BsFillInfoSquareFill } from "react-icons/bs";
 import { IoChevronBack, IoChevronForward, IoCloseOutline } from 'react-icons/io5';
 
 export default function ForumTopicChat() {
+    // pagination data
+    const initialPageLimit = 10;
+    const [pageLimit, setPageLimit] = useState(initialPageLimit);
+
     const [answer, setAnswer] = useState(false);
 
     return (
@@ -132,7 +136,14 @@ export default function ForumTopicChat() {
 
                     <div className='d-flex align-items-center'>
                         <span className='d-none d-sm-block me-2'>показать</span>
-                        <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right" />
+                        <CustomSelect
+                            className="inp"
+                            name="items-count"
+                            options={['10', '15', '20']}
+                            checkedOptions={[`${pageLimit}`]}
+                            callback={({title}) => setPageLimit(+title)}
+                            align="right"
+                        />
                         <span className='ms-2 d-none d-md-block'>тем на странице</span>
                     </div>
                 </div>

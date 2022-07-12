@@ -7,7 +7,7 @@ import { IoSearch, IoAddCircleSharp } from 'react-icons/io5';
 import { BsFillInfoSquareFill } from "react-icons/bs";
 import ForumTopic from '../components/ForumTopic';
 import fakeForumSections from '../dummyData/forumSections.json';
-import useDebounce from '../hooks/useDebounce';
+import debounce from '../hooks/debounce';
 import CustomModal from '../components/utilities/CustomModal';
 import Pagination from '../components/Pagination';
 
@@ -22,7 +22,7 @@ export default function ForumMyTopics() {
     const [foundForumSections, setFoundForumSections] = useState(fakeForumSections || []);
     const [forumSections, setForumSections] = useState([]);
     const [searchValue, setSearchValue] = useState('')
-    const debouncedSearchValue = useDebounce(searchValue, 300)
+    const debouncedSearchValue = debounce(searchValue, 300)
     const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
 
     useEffect(() => {
@@ -40,18 +40,12 @@ export default function ForumMyTopics() {
         fakeForumSections.length && debouncedSearchValue
             ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
             : setFoundForumSections(fakeForumSections)
-    }, [fakeForumSections, debouncedSearchValue])
+    }, [debouncedSearchValue])
 
     useEffect(() => {
         setCurrentPage(1)
         setStartingPage(1)
     }, [pageLimit])
-
-    const handleCustomSelect = (value) => {
-        if (value === 1) setPageLimit(10);
-        if (value === 2) setPageLimit(15);
-        if (value === 3) setPageLimit(20);
-    };
     
     return (
         <main className='bg-white py-4 py-sm-5'>
@@ -137,6 +131,7 @@ export default function ForumMyTopics() {
                         </div>
                         {forumSections.map(section => (
                             <ForumTopic
+                                key={section.id}
                                 fixedTopic={false}
                                 id={section.id}
                                 title={section.title}
@@ -161,10 +156,10 @@ export default function ForumMyTopics() {
                                 <CustomSelect
                                     className="inp"
                                     name="items-count"
-                                    checkedOpt={1}
                                     options={['10', '15', '20']}
-                                    alignment="right"
-                                    onSelectChange={handleCustomSelect}
+                                    checkedOptions={[`${pageLimit}`]}
+                                    callback={({title}) => setPageLimit(+title)}
+                                    align="right"
                                 />
                                 <span className='ms-2 d-none d-md-block'>тем на странице</span>
                             </div>
