@@ -112,7 +112,7 @@ textarea {
   &:not(:placeholder-shown) {border: 1px solid $gray-5;}
   &:hover {border: 1px solid $gray-4;}
   &:focus {border: 1px solid $green;}
-  &:-moz-placeholde {color: $gray-4;}
+  &:-moz-placeholder {color: $gray-4;}
   &::-moz-placeholder {color: $gray-4;}
   &::-webkit-input-placeholder {color: $gray-4;}
   &:-ms-input-placeholder {color: $gray-4;}

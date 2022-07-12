@@ -95,8 +95,8 @@ input:focus,
 textarea:focus {
   border: 1px solid #01BFC4;
 }
-input:-moz-placeholde,
-textarea:-moz-placeholde {
+input:-moz-placeholder,
+textarea:-moz-placeholder {
   color: #BDBDBD;
 }
 input::-moz-placeholder,
