@@ -42,7 +42,14 @@ export default function ProfileEdit() {
                                 <div className='gray-2 title-font fw-5 fs-12'>Тип аккаунта:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <CustomSelect className="inp w-100 fs-12" name="account-type" checkedOpt={1} options={['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']} alignment="left"/>
+                                <CustomSelect
+                                    className="inp w-100 fs-12"
+                                    name="account-type"
+                                    checkedOptions={[0]}
+                                    mode='values'
+                                    options={['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']}
+                                    align="left"
+                                />
                             </div>
                         </fieldset>
                         {

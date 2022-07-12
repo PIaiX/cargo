@@ -100,7 +100,6 @@ export default function Registration() {
         if (hasError) return
 
         // TODO: Make an API call in the future
-
         // try {
         //   const response = await axios.post(`${baseUrl}/api/auth/register`, {
         //     ...formValue
