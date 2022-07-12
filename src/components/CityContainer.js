@@ -44,6 +44,7 @@ const CityContainer = () => {
                 child={SearchDropdown}
                 placeholder='Введите свой город'
                 align='right'
+                initialCount='100'
             />
             <CityPopup
                 city={city}

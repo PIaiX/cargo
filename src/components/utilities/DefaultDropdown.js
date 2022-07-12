@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import Loader from '../Loader';
 
-const DefaultDropdown = ({options, onSelectItem, closeDropdown, onScroll, isFetching}) => {
+const DefaultDropdown = ({options, onSelectItem, closeDropdown, onScroll, isFetching, isShow}) => {
+    const ref = useRef(null)
 
     const DropdownItem = ({item}) => (
         <label className="radio-line">
@@ -15,11 +16,17 @@ const DefaultDropdown = ({options, onSelectItem, closeDropdown, onScroll, isFetc
         </label>
     )
 
+    useEffect(() => {
+        if (isShow && ref) {
+            ref.current.scrollTop = 0
+        }
+    }, [isShow, ref])
+
     return (
-        <div className="dropdown-list__inner" onScroll={onScroll}>
+        <div className="dropdown-list__inner" onScroll={onScroll} ref={ref}>
             {
                 options?.length
-                    ? options.map(item => <DropdownItem key={item.value} item={item}/>)
+                    ? options.map((item, index) => <DropdownItem key={index} item={item}/>)
                     : <div className='p-2'>Нет доступных значений</div>
 
             }
