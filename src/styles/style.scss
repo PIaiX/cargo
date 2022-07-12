@@ -2790,5 +2790,32 @@ footer {
             border: 1px solid #02537D;
         }
     }
+}
 
+.modal-header {
+    border: none
+}
+
+.questions-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.form-questions {
+    font-weight: 400;
+    font-size: 1.2em;
+}
+
+.modal-body {
+
+}
+
+.quest{
+    padding: 0 2.5em 2.5em 2.5em;
+}
+
+.form-questions label {
+    margin: 1em 0 0.5em 0;
 }
