@@ -232,6 +232,7 @@ export default function Forum() {
             <CustomModal
                 isShow={isShowCreateTheme}
                 setIsShow={setIsShowCreateTheme}
+                closeButton={true}
                 size='lg'
             >
                 <h3>Новая тема</h3>

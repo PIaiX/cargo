@@ -3071,8 +3071,8 @@ footer .payment-methods img:not(:first-child) {
 }
 
 /* MODAL WINDOWS */
-.modal-header {
-  border: none;
+.modal {
+  z-index: 2000;
 }
 .modal-content {
   background-color: #fff;
@@ -3086,6 +3086,12 @@ footer .payment-methods img:not(:first-child) {
   .modal-body {
     padding: 1.5em;
   }
+}
+.modal-header {
+  border: none;
+}
+.modal-backdrop {
+  z-index: 1999;
 }
 .modal__header .modal-header {
   display: flex;
@@ -3137,8 +3143,11 @@ footer .payment-methods img:not(:first-child) {
 }
 .offcanvas-body nav ul li a {
   font-size: 1.3em;
-  color: #01BFC4;
+  color: #038CB8;
   text-align: center;
+}
+.offcanvas-body nav ul li a.active {
+  color: #01BFC4;
 }
 .offcanvas-footer {
   padding: 1em;
@@ -3212,7 +3221,7 @@ footer .payment-methods img:not(:first-child) {
 }
 .city-popup::before {
   content: "\a";
-  border-color: transparent transparent #ddd;
+  border-color: transparent transparent #848484;
   border-style: solid;
   border-width: 10px 15px;
   position: absolute;
@@ -3228,6 +3237,22 @@ footer .payment-methods img:not(:first-child) {
 .city-popup__footer {
   display: flex;
   justify-content: space-between;
+}
+@media (max-width: 576px) {
+  .city-popup__footer button {
+    flex: 0 1 auto;
+  }
+}
+@media (max-width: 576px) {
+  .city-popup {
+    width: 325px;
+    right: -50%;
+    transform: translateX(20%);
+  }
+  .city-popup::before {
+    right: 125px;
+    top: -20px;
+  }
 }
 
 .custom-select {
@@ -3364,13 +3389,14 @@ footer .payment-methods img:not(:first-child) {
 .custom-select.show .dropdown-list {
   display: block;
 }
-.custom-select .email-registration {
+
+.email-registration {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.custom-select .email-registration .button-registration {
+.email-registration .button-registration {
   position: absolute;
   font-size: 0.6em;
   top: 3.4em;
@@ -3383,22 +3409,24 @@ footer .payment-methods img:not(:first-child) {
   color: #fff;
 }
 @media (max-width: 575px) {
-  .custom-select .email-registration .button-registration {
+  .email-registration .button-registration {
     top: 3.8em;
   }
 }
-.custom-select .email-registration .button-registration:hover {
+.email-registration .button-registration:hover {
   color: #fff;
   background-color: #02537D;
   border: 1px solid #02537D;
 }
-.custom-select .lds-ellipsis {
+
+.lds-ellipsis {
   display: inline-block;
   position: relative;
   width: 80px;
   height: 80px;
 }
-.custom-select .lds-ellipsis div {
+
+.lds-ellipsis div {
   position: absolute;
   top: 33px;
   width: 13px;
@@ -3406,22 +3434,27 @@ footer .payment-methods img:not(:first-child) {
   border-radius: 50%;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
-.custom-select .lds-ellipsis div:nth-child(1) {
+
+.lds-ellipsis div:nth-child(1) {
   left: 8px;
   animation: lds-ellipsis1 0.6s infinite;
 }
-.custom-select .lds-ellipsis div:nth-child(2) {
+
+.lds-ellipsis div:nth-child(2) {
   left: 8px;
   animation: lds-ellipsis2 0.6s infinite;
 }
-.custom-select .lds-ellipsis div:nth-child(3) {
+
+.lds-ellipsis div:nth-child(3) {
   left: 32px;
   animation: lds-ellipsis2 0.6s infinite;
 }
-.custom-select .lds-ellipsis div:nth-child(4) {
+
+.lds-ellipsis div:nth-child(4) {
   left: 56px;
   animation: lds-ellipsis3 0.6s infinite;
 }
+
 @keyframes lds-ellipsis1 {
   0% {
     transform: scale(0);
@@ -3446,7 +3479,6 @@ footer .payment-methods img:not(:first-child) {
     transform: translate(24px, 0);
   }
 }
-
 .header__button {
   font-family: "Gotham Pro";
   color: #545454;
