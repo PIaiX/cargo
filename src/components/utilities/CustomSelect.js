@@ -1,161 +1,82 @@
-import React, { useState, useEffect, useRef } from "react";
-import { IconContext } from "react-icons";
-import { IoCaretDown } from "react-icons/io5";
+import React, {useEffect, useRef, useState} from 'react';
+import DefaultDropdown from './DefaultDropdown';
+import useCustomSelect from '../../hooks/customSelect';
 
-// required props / обязательные свойства:
-// multy = true / false
-// options = array
-// checkedOpt = num / array {[]} (if multy)
+// mode = titles(default) -> если в checkedOptions передаются titles(значения отображаемые в dropdown items)
+// mode = values -> если в checkedOptions передаются values(значения которые нужны для вычислений и логики, прикрепляются к dropdown items, но не отображаются в UI)
+// child -> принимает что будет использовано в качестве дочерней компоненты dropdown
+// callback -> сработает в случает события клика по dropdown item, возвращает объект с title и value кликнутого элемента
+const CustomSelect = React.memo(({mode = 'titles', options = [], checkedOptions, btnClass, className, title, isShow, modificator, callback, child, placeholder, align, initialCount}) => {
+  const [dropdownItems, setDropdownItems] = useState([])
+  const [checkedValue, setCheckedValue] = useState(null)
+  const [checkedTitle, setCheckedTitle] = useState(null)
+  const {current: DropdownChild} = useRef(child ?? DefaultDropdown)
+  const {isShowDropdown, toggleDropdown, closeDropdown, ref} = useCustomSelect(isShow)
 
-export default function CustomSelect(props) {
-  const [visible, setVisibility] = useState(false);
-  const [checkedVal, setCheckedVal] = useState(props.checkedOpt);
-  
+  const onSelectItem = (title, value) => {
+    callback && callback({title, value})
+  }
+
   useEffect(() => {
-    props.onSelectChange && props.onSelectChange(checkedVal, props.name);
-  }, [checkedVal]);
+    options.length && setDropdownItems(options.map((option, index) => option.value ? option : ({
+      title: option,
+      value: index
+    })))
+  }, [options])
 
-  const options = props.options;
-  let checkedValText = options[checkedVal - 1];
-
-  const multy = props.multy; // true or false
-
-  const ref = useRef(null);
-
-  let func = props.onChange;
-
-  const handleChange = (e) => {
-    let val = e.target.value;
-    if (multy) {
-      if (e.target.checked === true) {
-        setCheckedVal([...checkedVal, options.indexOf(val) + 1]);
+  useEffect(() => {
+    if (dropdownItems?.length && checkedOptions?.length === 1) {
+      if (mode === 'titles') {
+        const title = checkedOptions[0]
+        setCheckedTitle(title)
+        const foundValue = dropdownItems.find(item => item.title === title)
+        foundValue && setCheckedValue(foundValue.value)
       } else {
-        setCheckedVal(
-          checkedVal.filter((obj) => obj !== options.indexOf(val) + 1)
-        );
+        const value = checkedOptions[0]
+        setCheckedValue(value)
+        const foundTitle = dropdownItems.find(item => item.value === value)
+        foundTitle && setCheckedTitle(foundTitle.title)
       }
-    } else {
-      setCheckedVal(options.indexOf(val) + 1);
     }
-    setVisibility(false);
-  };
+  }, [dropdownItems, checkedOptions])
 
-  //collapse on click outside of select (сворачивание при клике вне селекта)
-  const handleClickOutside = (event) => {
-    if (ref.current && !ref.current.contains(event.target)) {
-      setVisibility(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  });
+  return (
+      <div
+          className={`custom-select ${modificator ? 'custom-select_' + modificator : ''} ${className ?? ''} ${isShowDropdown ? 'show' : ''}`}
+          ref={ref}
+      >
+        <button
+            type="button"
+            className={`custom-select__toggle ${modificator ? 'custom-select__toggle_' + modificator : ''} ${btnClass ? btnClass : ''}`}
+            onClick={() => toggleDropdown()}
+        >
+          {
+            dropdownItems.length
+                ? <div>{title || checkedTitle || 'Выберите значение'}</div>
+                : <div>Пусто</div>
+          }
+          <svg className="ms-2" viewBox="0 0 23 12" xmlns="http://www.w3.org/2000/svg">
+            <line x1="21.6832" y1="0.730271" x2="10.7468" y2="10.961"/>
+            <line y1="-1" x2="14.9757" y2="-1" transform="matrix(0.730271 0.683157 0.683157 -0.730271 2 0)"/>
+          </svg>
+        </button>
+        <div
+            className={`dropdown-list ${modificator ? 'dropdown-list_' + modificator : ''} options`}
+            data-alignment={align}
+        >
+          <DropdownChild
+              isShow={isShowDropdown}
+              options={dropdownItems}
+              onSelectItem={onSelectItem}
+              closeDropdown={closeDropdown}
+              checkedOptions={checkedOptions}
+              mode={mode}
+              placeholder={placeholder}
+              initialCount={initialCount}
+          />
+        </div>
+      </div>
+  )
+})
 
-  const onReset = () => {
-    setCheckedVal(props.checkedOpt);
-  };
-  useEffect(() => {
-    document.addEventListener("reset", onReset, true);
-    return () => {
-      document.removeEventListener("reset", onReset, true);
-    };
-  });
-
-  return multy ? (
-    <div ref={ref} className={"custom-select " + props.className}>
-      <button
-        type="button"
-        className={props.btnClass}
-        onClick={() => setVisibility(visible === false ? true : false)}
-      >
-        {checkedVal ? (
-          <div>
-            {checkedVal.length === 1
-              ? checkedValText
-              : "Выбрано: " + checkedVal.length}
-          </div>
-        ) : (
-          <div className="gray-4">Не выбранно</div>
-        )}
-        <IconContext.Provider value={{ color: "#575E62" }}>
-          <IoCaretDown />
-        </IconContext.Provider>
-      </button>
-      <ul
-        className={visible ? "options py-2" : "options d-none py-2"}
-        data-alignment={props.alignment}
-      >
-        {options.map(function (item, index) {
-          return checkedVal ? (
-            <li key={index}>
-              <label className="line">
-                <input
-                  type="checkbox"
-                  name={props.name}
-                  value={item}
-                  checked={checkedVal.includes(index + 1) ? true : false}
-                  onChange={(e) => handleChange(e)}
-                />
-                <div>{item}</div>
-              </label>
-            </li>
-          ) : (
-            <li key={index}>
-              <label className="line">
-                <input
-                  type="checkbox"
-                  name={props.name}
-                  value={item}
-                  checked={false}
-                  onChange={(e) => handleChange(e)}
-                />
-                <div>{item}</div>
-              </label>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  ) : (
-    <div ref={ref} className={"custom-select " + props.className}>
-      <button
-        type="button"
-        className={props.btnClass}
-        onClick={() => setVisibility(visible === false ? true : false)}
-      >
-        {checkedVal ? (
-          <div>{checkedValText}</div>
-        ) : (
-          <div className="gray-4">Не выбранно</div>
-        )}
-        <IconContext.Provider value={{ color: "#575E62" }}>
-          <IoCaretDown />
-        </IconContext.Provider>
-      </button>
-      <ul
-        className={visible ? "options py-2" : "options d-none py-2"}
-        data-alignment={props.alignment}
-      >
-        {options.map(function (item, index) {
-          return (
-            <li key={index}>
-              <label className="line">
-                <input
-                  type="radio"
-                  name={props.name}
-                  value={item}
-                  checked={index === checkedVal - 1 ? true : false}
-                  onChange={(e) => handleChange(e)}
-                  onInput={func}
-                />
-                <div>{item}</div>
-              </label>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
+export default CustomSelect;

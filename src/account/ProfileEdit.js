@@ -4,9 +4,13 @@ import CustomSelect from '../components/utilities/CustomSelect';
 import ImageUploading from "react-images-uploading";
 import NumberFormat from "react-number-format";
 
+const accountType = ['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']
+
 export default function ProfileEdit() {
 
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
+    const [accTypeText, setAccTypeText] = useState('')
+    const [accTypeValue, setAccTypeValue] = useState('')
     const [entity, setEntity] = useState('entity');
     const [formInfo, setFormInfo] = useState({
         INN: '',
@@ -15,7 +19,8 @@ export default function ProfileEdit() {
         firstName: '',
         lastName: '',
         nameOfCompany: '',
-        phone: ''
+        phone: '',
+        accTypeValue: accTypeValue || '213'
     })
     const maxNumber = 1;
 
@@ -25,13 +30,8 @@ export default function ProfileEdit() {
     };
 
     const onChange = (imageList, addUpdateIndex) => {
-        console.log(imageList, addUpdateIndex);
         setImages(imageList);
     };
-
-    useEffect(() => {
-        console.log(formInfo)
-    }, [formInfo])
 
     const submitForm = () => {
         const formData = new FormData()
@@ -142,9 +142,22 @@ export default function ProfileEdit() {
                                 <div className='gray-2 title-font fw-5 fs-12'>Тип аккаунта:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <CustomSelect className="inp w-100 fs-12" name="account-type" checkedOpt={1}
-                                              options={['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']}
-                                              alignment="left"/>
+                                <CustomSelect
+                                    className="inp w-100 fs-12"
+                                    name="account-type"
+                                    checkedOptions={[formInfo.accTypeText]}
+                                    options={accountType}
+                                    align="left"
+                                    callback={({title, value}) => {
+                                        setFormInfo(prevState => {
+                                            return {
+                                                ...prevState,
+                                                'accTypeText': title,
+                                                'accTypeValue': value
+                                            }
+                                        })
+                                    }}
+                                />
                             </div>
                         </fieldset>
                         {
@@ -255,7 +268,6 @@ export default function ProfileEdit() {
                                 <div className='gray-2 title-font fw-5 fs-12'>Телефон:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-
                                 <NumberFormat
                                     placeholder="Телефон"
                                     format="+ 7 ### ### ## ## "

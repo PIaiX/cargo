@@ -12,13 +12,13 @@ import {
 } from "react-icons/io5";
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
-import Select from "react-select";
 import { optionsCarType } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentCarTemplate,
   setCarFormData,
 } from "../store/reducers/savedCarTemplates";
+import SearchDropdown from '../components/utilities/SearchDropdown';
 
 const initialData = [
   {
@@ -219,7 +219,6 @@ export default function AddCar() {
   };
 
   let fillDataList = (e) => {
-    // console.log("target:" + e.target);
     let inputName = e.target.name;
     let inputVal = e.target.value.trim();
 
@@ -354,8 +353,6 @@ export default function AddCar() {
 
     setContacts([...contacts, newNum]);
   };
-
-  console.log(data)
 
   return (
     <main className="bg-gray">
@@ -637,10 +634,10 @@ export default function AddCar() {
                             >
                               <CustomSelect
                                 className="inp"
-                                name="days"
-                                onChange={(e) => fillDataList(e)}
                                 options={["0 дн.", "1 дн."]}
-                                onSelectChange={() => {}}
+                                mode='values'
+                                checkedOptions={[data.find(item => item.name === 'days').value]}
+                                callback={({value}) => setData(prevData => prevData.map(obj => obj.name === 'days' ? {...obj, value} : obj))}
                               />
                             </label>
                           </div>
@@ -674,15 +671,14 @@ export default function AddCar() {
                           >
                             <CustomSelect
                               className="inp w-100 fs-12"
-                              name="loadingPeriodType"
-                              onChange={(e) => fillDataList(e)}
+                              checkedOptions={[data.find(item => item.name === 'loadingPeriodType').value]}
+                              callback={({title}) => setData(prevData => prevData.map(obj => obj.name === 'loadingPeriodType' ? {...obj, value: title} : obj))}
                               options={[
                                 "По рабочим дням",
                                 "По выходным",
                                 "Ежедневно",
                                 "Через день",
                               ]}
-                              onSelectChange={() => {}}
                             />
                           </div>
                         </div>
@@ -764,14 +760,13 @@ export default function AddCar() {
                   </div>
                   <div className="col-md-9">
                     {/* <CustomSelect onChange={(e)=> fillDataList(e)} className="inp w-100 fs-12" name="carType" options={['Тягач', 'Фура', 'Рефрижератор']}/> */}
-                    <Select
-                      className="fs-12 w-100"
-                      classNamePrefix="react-select"
-                      placeholder={"Выберите..."}
-                      onChange={(e) => handleRSelect(e, "carType")}
-                      options={optionsCarType}
-                      name="carType"
-                      isSearchable={true}
+                    <CustomSelect
+                        className="fs-12 w-100"
+                        options={(optionsCarType.length && optionsCarType.map(item => ({title: item.label, value: item.value})))}
+                        checkedOptions={[data.find(item => item.name === 'carType').value]}
+                        callback={({title}) => setData(prevData => prevData.map(obj => obj.name === 'carType' ? {...obj, value: title} : obj))}
+                        placeholder={'Введите тип машины'}
+                        child={SearchDropdown}
                     />
                     <div
                       data-label="additionalConfiguration"
@@ -1389,7 +1384,7 @@ export default function AddCar() {
                           <input
                             type="tel"
                             name={"contactPhone" + obj}
-                            value={findInState("contactPhone" + obj)} 
+                            value={findInState("contactPhone" + obj)}
                             onChange={(e) => fillDataList(e)}
                             placeholder="+ 7 (962) 458 65 79"
                             className="w-100 fs-12"
@@ -1408,7 +1403,7 @@ export default function AddCar() {
                           <input
                             type="text"
                             name={"contactName" + obj}
-                            value={findInState("contactName" + obj)} 
+                            value={findInState("contactName" + obj)}
                             onChange={(e) => fillDataList(e)}
                             placeholder="Имя"
                             className="w-100 fs-12"
