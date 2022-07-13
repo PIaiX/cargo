@@ -9,8 +9,6 @@ const accountType = ['Грузовладелец', 'Перевозчик', 'Пе
 export default function ProfileEdit() {
 
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
-    const [accTypeText, setAccTypeText] = useState('')
-    const [accTypeValue, setAccTypeValue] = useState('')
     const [entity, setEntity] = useState('entity');
     const [formInfo, setFormInfo] = useState({
         INN: '',
@@ -20,7 +18,7 @@ export default function ProfileEdit() {
         lastName: '',
         nameOfCompany: '',
         phone: '',
-        accTypeValue: accTypeValue || '213'
+        accTypeValue: ''
     })
     const maxNumber = 1;
 
