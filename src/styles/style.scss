@@ -2729,6 +2729,7 @@ article {
     background-color: #fff;
     border-radius: $radius;
     border: 1px solid $gray-4;
+    cursor: pointer;
 
     &:hover, &:focus {
       border: 1px solid $green;

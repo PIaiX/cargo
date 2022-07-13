@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { IconContext  } from "react-icons";
 import { IoAddCircleSharp } from 'react-icons/io5';
-import Card from '../components/Card';
+import Card from '../../components/Card';
 import { Link } from 'react-router-dom';
 
 export default function UserCars() {

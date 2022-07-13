@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import CustomSelect from '../components/utilities/CustomSelect';
+import CustomSelect from '../../components/utilities/CustomSelect';
 
 export default function ProfileEdit() {
     const [entity, setEntity] = useState('entity');

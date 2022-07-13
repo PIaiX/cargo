@@ -15,8 +15,8 @@ import Registration from '../pages/Registration';
 import ResetPassword from '../pages/ResetPassword';
 import ResetPassword2 from '../pages/ResetPassword2';
 import Forum from '../pages/Forum';
-import PersonalAccount from '../account/PersonalAccount';
-import Document from '../account/Document';
+import PersonalAccount from '../pages/account/PersonalAccount';
+import Document from '../pages/account/Document';
 import ForumMyTopics from '../pages/ForumMyTopics';
 import ForumTopicChat from '../pages/ForumTopicChat';
 import Layout from '../components/Layout';
@@ -34,7 +34,7 @@ export default function AppRouter() {
     return (
         <Wrapper>
         <Routes>
-            <Route exact path="/" element={<Layout />} >
+            <Route path="/" element={<Layout />} >
                 <Route index element={<Home />} />
                 <Route path="search" element={<Search />} />
                 <Route path="cargo-page" element={<CargoPage />} />
@@ -51,7 +51,7 @@ export default function AppRouter() {
                 <Route path="reset-password" element={<ResetPassword />} />
                 <Route path="reset-password-2" element={<ResetPassword2 />} />
                 <Route path="personal-account/*" element={<PersonalAccount />} />
-                <Route path="document" element={<Document />} />
+                <Route path="document/:docID" element={<Document/>}/>
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>

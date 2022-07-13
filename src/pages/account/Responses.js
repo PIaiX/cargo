@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import ResponseCard from '../components/ResponseCard';
+import ResponseCard from '../../components/ResponseCard';
 
 export default function Responses() {
     const [tab, setTab] = useState('active');

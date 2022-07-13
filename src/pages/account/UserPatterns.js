@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import Pattern from '../components/Pattern';
+import Pattern from '../../components/Pattern';
 
 export default function UserPatterns() {
     const [tab, setTab] = useState('cars');

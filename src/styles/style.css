@@ -2716,6 +2716,7 @@ article.full figure figcaption p {
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #BDBDBD;
+  cursor: pointer;
 }
 #sec-12 .docs-preview:hover, #sec-12 .docs-preview:focus {
   border: 1px solid #01BFC4;

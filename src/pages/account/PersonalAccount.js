@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import AccountMenu from './AccountMenu';
-import PersonalAccountRouter from '../routes/PersonalAccountRouter';
+import PersonalAccountRouter from '../../routes/PersonalAccountRouter';
 
 export default function PersonalAccount() {
     const [mob, setMob] = useState(false);
@@ -23,19 +23,11 @@ export default function PersonalAccount() {
     return (
         <main className="account bg-gray py-sm-3 py-md-4 py-lg-5">
             <section id="sec-12" className="container">
-                <Link to="/" className='fs-12 fw-5 d-none d-lg-block d-lg-none mb-5'><span
-                    className='green fs-15 me-2'>⟵</span> На главную</Link>
-                {mob
-                    ? <PersonalAccountRouter isMobile={mob}/>
-                    : <div className="row gx-4 gx-xl-5">
-                        <div className="col-md-4 col-lg-3">
-                            <AccountMenu/>
-                        </div>
-                        <div className="col-md-8 col-lg-9">
-                            <PersonalAccountRouter isMobile={mob}/>
-                        </div>
-                    </div>
-                }
+                <Link to="/" className='fs-12 fw-5 d-none d-lg-block d-lg-none mb-5'>
+                    <span className='green fs-15 me-2'>⟵</span>
+                    На главную
+                </Link>
+                <PersonalAccountRouter isMobile={mob}/>
             </section>
         </main>
     )
