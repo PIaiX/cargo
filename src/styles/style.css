@@ -3509,11 +3509,12 @@ footer .payment-methods img:not(:first-child) {
 
 .inputCity {
   position: relative;
+  width: auto;
 }
 
 .mainCity {
   position: absolute;
-  width: -webkit-fill-available;
+  width: 100%;
   height: auto;
   background-color: #FFF;
   max-height: 300px;

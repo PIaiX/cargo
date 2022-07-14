@@ -6,6 +6,7 @@ import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import {useSelector} from "react-redux";
+import SearchCity from "../components/utilities/SearchCity";
 import {getCities} from "../API/cities";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -15,25 +16,17 @@ const homePageNewsLimit = 5;
 export default function Home() {
 
     const news = useSelector((state) => state.news);
-
-    const [cities, setCities] = useState([])
-    const [startCity, setStartCity] = useState('')
-    const [endCity, setEndCity] = useState('')
-    const [listStartCityShow, setListStartCityShow] = useState(false)
-    const [listEndCityShow, setEndListCityShow] = useState(false)
+    const [data, setData] = useState([])
+    const [selectFirstCity, setSelectFirstCity] = useState('')
+    const [selectSecondCity, setSelectSecondCity] = useState('')
 
     useEffect(() => {
         getCities().then(res => {
             if (res.status === 200) {
-                setCities(res.body)
+                setData(res.body)
             }
         })
     }, [])
-
-    const findCity = (value) => {
-        const filvalue = value.trim()
-        return cities.filter(x => x.startsWith(filvalue)).slice(0, 5)
-    }
 
     return (
         <main>
@@ -123,66 +116,23 @@ export default function Home() {
                         <div className="row g-3 g-sm-4 justify-content-center">
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
-                                <div className="inputCity">
-                                    <input
-                                        list="startCity"
-                                        type="text"
-                                        placeholder="Город отправления"
-                                        className="fs-15"
-                                        value={startCity}
-                                        onFocus={() => setListStartCityShow(true)}
-                                        onBlur={() => setTimeout(() => setListStartCityShow(false), 200)}
-                                        onChange={(e) => {
-                                            setStartCity(e.target.value)
-                                            findCity(e.target.value)
-                                        }}
-                                    />
-                                    <div className={`mainCity ${listStartCityShow ? '' : 'd-none'}`}>
-                                        {findCity(startCity).map((i, index) => (
-                                            <div
-                                                key={index}
-                                                className="personalCity"
-                                                onClick={() => {
-                                                    setStartCity(i)
-                                                    setListStartCityShow(false)
-                                                }}
-                                            >
-                                                <p>{i}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <SearchCity
+                                    callback={(inputValue) => {
+                                        setSelectFirstCity(inputValue)
+                                    }}
+                                    placeHolder={'Город отправления'}
+                                    data={data}
+                                />
                             </div>
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
-                                <div className="inputCity">
-                                    <input
-                                        type="text"
-                                        placeholder="Город назначения"
-                                        className="fs-15"
-                                        value={endCity}
-                                        onChange={(e) => {
-                                            setEndCity(e.target.value)
-                                            findCity(endCity)
-                                        }}
-                                        onFocus={() => setEndListCityShow(true)}
-                                        onBlur={() => setTimeout(() => setEndListCityShow(false), 200)}
-                                    />
-                                    <div className={`mainCity ${listEndCityShow ? '' : 'd-none'}`}>
-                                        {findCity(endCity).map((i, index) => (
-                                            <div
-                                                key={index}
-                                                className="personalCity"
-                                                onClick={() => {
-                                                    setEndCity(i)
-                                                    setEndListCityShow(false)
-                                                }}
-                                            >
-                                                <p>{i}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <SearchCity
+                                    callback={(inputValue) => {
+                                        setSelectSecondCity(inputValue)
+                                    }}
+                                    placeHolder={'Город назначения'}
+                                    data={data}
+                                />
                             </div>
                             <div className="col-md-4 col-xl-3 col-xxl-2">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Дата</div>
