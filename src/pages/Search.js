@@ -9,6 +9,8 @@ import { IconContext } from "react-icons";
 import Pagination from "../components/Pagination";
 import cargo from "./../dummyData/cargo.json";
 import cars from "./../dummyData/car.json";
+import {getCities} from "../API/cities";
+import SearchInput from "../components/utilities/SearchInput";
 
 const formValuesDefault = {
   from: "",
@@ -36,8 +38,16 @@ export default function Search() {
   const [carsPage, setCarsPage] = useState(1);
   const [carsStartingPage, setCarsStartingPage] = useState(1)
   const [advSearch, setAdvSearch] = useState(true);
-
+  const [data, setData] = useState([])
   const [formValues, setFormValues] = useState(formValuesDefault);
+
+  useEffect(() => {
+    getCities().then(res => {
+      if (res.status === 200) {
+        setData(res.body)
+      }
+    })
+  }, [])
 
   useEffect(() => {
     //Make an API call later getting the first page of all the cargo
@@ -130,12 +140,14 @@ export default function Search() {
               <div className="col-lg-8 d-sm-flex align-items-end">
                 <div className="flex-1 mb-3 mb-sm-0">
                   <label className="title-font mb-2 mb-xl-3">Откуда</label>
-                  <input
-                    type="text"
-                    placeholder="Город отправления"
-                    name="from"
-                    value={formValues.from}
-                    onChange={handleFormChange}
+                  <SearchInput
+                      data={data}
+                      placeHolder={'Город отправления'}
+                      callback={(inputValue) => setFormValues(prevState => {
+                        return {
+                          ...prevState, 'from': inputValue
+                        }
+                      })}
                   />
                 </div>
                 <IconContext.Provider
@@ -148,12 +160,14 @@ export default function Search() {
                 </IconContext.Provider>
                 <div className="flex-1">
                   <label className="title-font mb-2 mb-xl-3">Куда</label>
-                  <input
-                    type="text"
-                    placeholder="Город назначения"
-                    name="to"
-                    value={formValues.to}
-                    onChange={handleFormChange}
+                  <SearchInput
+                      data={data}
+                      placeHolder={'Город назначения'}
+                      callback={(inputValue) => setFormValues(prevState => {
+                        return {
+                          ...prevState, 'to': inputValue
+                        }
+                      })}
                   />
                 </div>
               </div>

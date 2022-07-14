@@ -1,13 +1,15 @@
 import React, {memo, useState} from 'react';
 
-const SearchCity = memo(({data, placeHolder, callback}) => {
+const SearchInput = memo(({data, placeHolder, callback}) => {
 
         const [inputValue, setInputValue] = useState('')
         const [inputValueShow, setInputValueShow] = useState(false)
 
         const findValue = (value) => {
             const filteredValue = value.toLowerCase().trim()
-            return data.filter(x => x.toLowerCase().startsWith(filteredValue)).slice(0, 5)
+            if (data) {
+                return data.filter(x => x.toLowerCase().startsWith(filteredValue)).slice(0, 5)
+            }
         }
 
         const onChange = (inputValue) => {
@@ -31,7 +33,7 @@ const SearchCity = memo(({data, placeHolder, callback}) => {
                         }}
                     />
                     <div className={`mainCity ${inputValueShow ? '' : 'd-none'}`}>
-                        {findValue(inputValue).map((i, index) => (
+                        {data && findValue(inputValue).map((i, index) => (
                             <div
                                 key={index}
                                 className="personalCity"
@@ -51,4 +53,4 @@ const SearchCity = memo(({data, placeHolder, callback}) => {
     }
 );
 
-export default SearchCity;
+export default SearchInput;

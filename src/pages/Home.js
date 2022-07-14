@@ -6,7 +6,7 @@ import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import {useSelector} from "react-redux";
-import SearchCity from "../components/utilities/SearchCity";
+import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -116,7 +116,7 @@ export default function Home() {
                         <div className="row g-3 g-sm-4 justify-content-center">
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
-                                <SearchCity
+                                <SearchInput
                                     callback={(inputValue) => {
                                         setSelectFirstCity(inputValue)
                                     }}
@@ -126,7 +126,7 @@ export default function Home() {
                             </div>
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
-                                <SearchCity
+                                <SearchInput
                                     callback={(inputValue) => {
                                         setSelectSecondCity(inputValue)
                                     }}
