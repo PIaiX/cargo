@@ -3173,6 +3173,7 @@ footer {
 }
 
 .offcanvas {
+  z-index: $offcanvas-z-index;
   width: 300px;
 
   &#warning {
@@ -3223,6 +3224,10 @@ footer {
     padding: 1em;
     background: #FFFFFF;
     box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &-backdrop {
+    z-index: $offcanvas-z-index - 1;
   }
 }
 
