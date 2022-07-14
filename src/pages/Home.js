@@ -89,9 +89,9 @@ export default function Home() {
                 <div className="title-font dark-blue fw-9 fs-25 mb-2">
                   12 359
                 </div>
-                <div className="fs-12 mb-3">Машин на сайте</div>
-                <Link to="add-car" className="btn btn-1 fs-12 w-100 px-2">
-                  Добавить машину
+                <div className="fs-12 mb-3">Маршрутов на сайте</div>
+                <Link to="add-route" className="btn btn-1 fs-12 w-100 px-2">
+                  Добавить маршрут
                 </Link>
               </div>
             </div>
