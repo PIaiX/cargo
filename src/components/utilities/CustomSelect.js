@@ -72,7 +72,7 @@ const CustomSelect = React.memo(({mode = 'titles', options = [], checkedOptions,
               checkedOptions={checkedOptions}
               mode={mode}
               placeholder={placeholder}
-              initialCount={initialCount}
+              initialCount={+initialCount}
           />
         </div>
       </div>

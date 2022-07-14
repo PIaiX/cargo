@@ -28,9 +28,9 @@ const SearchDropdown = ({initialCount, isShow, options, onSelectItem, closeDropd
     }, [isShow, inputRef])
 
     useEffect(() => {
-        if (!isShow) {
+        if (isShow) {
             setOptionsSearch('')
-            setTotal(+initialCount)
+            setTotal(initialCount + initialCount)
             setListItems(options.slice(0, initialCount))
         }
     }, [isShow])
