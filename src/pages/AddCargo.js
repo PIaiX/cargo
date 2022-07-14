@@ -1,30 +1,29 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-scroll";
 import {
   IoAddCircle,
-  IoCloseCircle,
   IoChevronBackOutline,
   IoChevronForwardOutline,
+  IoCloseCircle,
   IoNewspaperOutline,
 } from "react-icons/io5";
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
 import {
+  optionsCargoType,
+  optionsCarType,
+  optionsDays,
   optionsLoading,
   optionsLoadingPeriodType,
-  optionsPackageType,
-  optionsCargoType,
-  optionsDays,
   optionsNotes,
-  optionsCarType,
+  optionsPackageType,
   optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
-  setCurrentCargoTemplate,
   setCargoFormData,
+  setCurrentCargoTemplate,
 } from "../store/reducers/savedCargoTemplates";
 
 const initialLoading = [
@@ -326,8 +325,6 @@ export default function AddCargo() {
     (state) => state.savedCargoTemplates.currentTemplate
   );
 
-  const navigate = useNavigate();
-
   const getEntireFormValue = () => {
     const newContactsField = [
       {
@@ -341,7 +338,7 @@ export default function AddCargo() {
     return {
       loading,
       unloading,
-      cargoItems: cargo,
+      cargo,
       requirements,
       payment,
       contacts,
@@ -562,9 +559,7 @@ export default function AddCargo() {
             } else if (addParams.includes(obj.name)) {
               return { ...obj, required: true };
             } else if (delParams.includes(obj.name)) {
-              delParams.map((item) => {
-                clearInput(item);
-              });
+              delParams.map((item) => clearInput(item));
               return { ...obj, required: false, value: "" };
             } else {
               return obj;
@@ -582,11 +577,13 @@ export default function AddCargo() {
     if (i !== undefined) {
       if (
         opt.find(
-          (obj) => obj.value == state[i].find((obj) => obj.name === param).value
+          (obj) =>
+            obj.value === state[i].find((obj) => obj.name === param).value
         )
       ) {
         return opt.find(
-          (obj) => obj.value == state[i].find((obj) => obj.name === param).value
+          (obj) =>
+            obj.value === state[i].find((obj) => obj.name === param).value
         );
       } else {
         return "";
@@ -594,11 +591,11 @@ export default function AddCargo() {
     } else {
       if (
         opt.find(
-          (obj) => obj.value == state.find((obj) => obj.name === param).value
+          (obj) => obj.value === state.find((obj) => obj.name === param).value
         )
       ) {
         return opt.find(
-          (obj) => obj.value == state.find((obj) => obj.name === param).value
+          (obj) => obj.value === state.find((obj) => obj.name === param).value
         );
       } else {
         return "";
@@ -608,11 +605,11 @@ export default function AddCargo() {
   const getObjLabel = (opt, state, param) => {
     if (
       opt.find(
-        (obj) => obj.value == state.find((obj) => obj.name === param).value
+        (obj) => obj.value === state.find((obj) => obj.name === param).value
       )
     ) {
       return opt.find(
-        (obj) => obj.value == state.find((obj) => obj.name === param).value
+        (obj) => obj.value === state.find((obj) => obj.name === param).value
       ).label;
     } else {
       return "";
@@ -704,36 +701,33 @@ export default function AddCargo() {
   //проверка fieldset на заполнение
   let checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
-    let result = requiredArr.every(
+    return requiredArr.every(
       (elem) =>
         elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
-    return result;
   };
   let checkFieldsetArr = (state) => {
     let requiredArr = state.flatMap((arr) =>
       arr.filter((item) => item.required === true)
     );
-    let result = requiredArr.every(
+    return requiredArr.every(
       (elem) =>
         elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
-    return result;
   };
   let checkAllProps = (state) => {
     let requiredProps = state.flatMap((obj) => {
       let arr = [];
       for (let key in obj) {
-        if (key != "index") {
+        if (key !== "index") {
           arr.push(obj[key]);
         }
       }
       return arr;
     });
-    let result = requiredProps.every(
+    return requiredProps.every(
       (elem) => elem !== null && elem !== undefined && elem !== ""
     );
-    return result;
   };
 
   // ДОДЕЛАТЬ!!!
@@ -786,12 +780,9 @@ export default function AddCargo() {
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-        <button
-          onClick={() => navigate("/")}
-          className="fs-12 fw-5 d-block mb-3 mb-sm-5"
-        >
+        <Link to="/" className="fs-12 fw-5 d-block mb-3 mb-sm-5">
           <span className="green fs-15 me-2">⟵</span> Назад
-        </button>
+        </Link>
 
         <form
           ref={ref}
