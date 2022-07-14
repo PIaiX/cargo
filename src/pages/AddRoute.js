@@ -12,18 +12,19 @@ import {
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
+import * as _ from "lodash";
 
 import {
   optionsCarName,
   optionsLoadingPeriodType,
-  optionsLoadingDays
+  optionsLoadingDays,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  setCurrentCarTemplate,
-  setCarFormData,
-} from "../store/reducers/savedCarTemplates";
+  setCurrentRouteTemplate,
+  setRouteFormData,
+} from "../store/reducers/savedRouteTemplates";
 
 const initialData = [
   {
@@ -137,13 +138,15 @@ export default function AddRoute() {
   const dispatch = useDispatch();
 
   const currentTemplate = useSelector(
-    (state) => state.savedCarTemplates.currentTemplate
+    (state) => state.savedRouteTemplates.currentTemplate
   );
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (currentTemplate) {
+      const newContacts = getContactsLengthArray(currentTemplate.data)
+      setContacts(newContacts)
       setData(currentTemplate.data);
     }
   }, [currentTemplate]);
@@ -233,7 +236,7 @@ export default function AddRoute() {
   };
 
   const handleSaveTemplate = () => {
-    dispatch(setCarFormData(data));
+    dispatch(setRouteFormData(data));
   };
 
   const onSubmit = (e) => {
@@ -263,7 +266,7 @@ export default function AddRoute() {
   };
 
   const onReset = (e) => {
-    dispatch(setCurrentCarTemplate(null));
+    dispatch(setCurrentRouteTemplate(null));
     setData(
       data.map((obj) => {
         const newObj = { ...obj, value: "" };
@@ -271,6 +274,7 @@ export default function AddRoute() {
         return newObj;
       })
     );
+    setContacts([])
   };
 
   const getSelectValue = (name) => {
@@ -297,7 +301,7 @@ export default function AddRoute() {
   };
 
   let addContacts = () => {
-    let newNum = Number(contacts) + 1;
+    let newNum = Number(contacts.length) + 1;
 
     let phone = {
       fieldset: "contacts",
@@ -315,6 +319,15 @@ export default function AddRoute() {
 
     setContacts([...contacts, newNum]);
   };
+
+  const getContactsLengthArray = (data) => {
+    const array = data.filter((obj) => obj.name.includes("contactName") && obj.name !== "contactName0")
+    let numArray = []
+    if(array.length > 1) {
+      numArray = _.range(1, array.length)
+    }
+    return numArray
+  }
 
   return (
     <main className="bg-gray">
@@ -621,9 +634,7 @@ export default function AddRoute() {
                                 name="days"
                                 isSearchable={false}
                                 value={getSelectValue("days")}
-                                onChange={(e) =>
-                                  handleRSelect(e, "days")
-                                }
+                                onChange={(e) => handleRSelect(e, "days")}
                               />
                             </label>
                           </div>
@@ -840,6 +851,12 @@ export default function AddRoute() {
                         type="radio"
                         name="bargain"
                         onChange={(e) => fillDataList(e)}
+                        checked={
+                          data.find((obj) => obj.name === "bargain").value ===
+                          "Возможен торг"
+                            ? true
+                            : false
+                        }
                         value="Возможен торг"
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
@@ -853,6 +870,12 @@ export default function AddRoute() {
                         type="radio"
                         name="bargain"
                         onChange={(e) => fillDataList(e)}
+                        checked={
+                          data.find((obj) => obj.name === "bargain").value ===
+                          "Без торга"
+                            ? true
+                            : false
+                        }
                         value="Без торга"
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
@@ -872,6 +895,12 @@ export default function AddRoute() {
                         type="radio"
                         name="paymentType"
                         onChange={(e) => fillDataList(e)}
+                        checked={
+                          data.find((obj) => obj.name === "paymentType").value ===
+                          "Наличный расчет"
+                            ? true
+                            : false
+                        }
                         value="Наличный расчет"
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
@@ -885,6 +914,12 @@ export default function AddRoute() {
                         type="radio"
                         name="paymentType"
                         onChange={(e) => fillDataList(e)}
+                        checked={
+                          data.find((obj) => obj.name === "paymentType").value ===
+                          "Перевод по карте"
+                            ? true
+                            : false
+                        }
                         value="Перевод по карте"
                       />
                       <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
@@ -1092,8 +1127,8 @@ export default function AddRoute() {
                     </button>
                   </div>
                 </div>
-                {contacts.map((obj) => (
-                  <div key={obj} className="row mt-3">
+                {contacts.map((obj, idx) => (
+                  <div key={idx} className="row mt-3">
                     <div className="col-md-9">
                       <div className="row align-items-center gy-2 gy-md-3">
                         <div className="col-md-4">
