@@ -35,7 +35,6 @@ export default function ForumWidget(props) {
                     <h5>Тема сообщения</h5>
                     <div className='text'><span className='author'>Имя пользователя</span> Lorem ipsum dolor sit amet, sconsectetur adipiscing elit. Auctor feugiat pharetra augue viverra potenti gravida in</div>
                 </div>
-                <button type='button' className='btn btn-1 fs-12 my-4 mx-auto px-3 px-xl-4'>Перейти на форум</button>
             </div>
         </aside>
     )

@@ -37,11 +37,22 @@ export default function UserDocuments() {
                 <div className='d-flex justify-content-between justify-content-md-start align-items-center mt-3 mt-md-0 ms-md-5'>
                     <div className='d-flex align-items-center'>
                         <span className='d-none d-sm-block me-1'>Тип&nbsp;документов:</span>
-                        <CustomSelect name="docs-type" checkedOpt={1} options={['Все', 'тип 1', 'тип 2']} alignment="left"/>
+                        <CustomSelect
+                            name="docs-type"
+                            checkedOptions={[0]}
+                            mode='values'
+                            options={['Все', 'тип 1', 'тип 2']}
+                            align="left"
+                        />
                     </div>
                     <div className='d-flex align-items-center ms-md-5'>
                         <span className='d-none d-sm-block me-1'>Дата:</span>
-                        <CustomSelect name="date-sort" options={['сначала новые', 'сначала старые']} alignment="left"/>
+                        <CustomSelect
+                            name="date-sort"
+                            checkedOptions={[0]}
+                            mode='values'
+                            options={['сначала новые', 'сначала старые']}
+                            align="left"/>
                     </div>
                 </div>
             </div>

@@ -110,7 +110,7 @@ export default function Search() {
           <button
             type="button"
             onClick={() => setSearch("cargo")}
-            className={search === "cargo" && "active"}
+            className={search === "cargo" ? "active" : ""}
           >
             <img src="/img/bg/cargo.png" alt="грузы" />
             <span>Найти груз</span>
@@ -118,7 +118,7 @@ export default function Search() {
           <button
             type="button"
             onClick={() => setSearch("car")}
-            className={search === "car" && "active"}
+            className={search === "car" ? "active" : ""}
           >
             <img src="/img/bg/car.png" alt="машина" />
             <span>Найти машину</span>
@@ -260,9 +260,10 @@ export default function Search() {
                       name="cargoType"
                       className="w-100"
                       btnClass="inp fs-15"
-                      checkedOpt={1}
+                      checkedOptions={[formValues.cargoType]}
+                      mode="values"
                       options={["Не важно", "Тип 1", "Тип 2"]}
-                      onSelectChange={handleSelectChange}
+                      callback={({value}) => handleSelectChange(value, 'cargoType')}
                     />
                   </div>
                   <div className="col-sm-6 col-md-4">
@@ -273,9 +274,10 @@ export default function Search() {
                       name="specialNotes"
                       className="w-100"
                       btnClass="inp fs-15"
-                      checkedOpt={1}
-                      options={["Нет", "Пометка 1", "Пометка 2"]}
-                      onSelectChange={handleSelectChange}
+                      checkedOptions={[formValues.specialNotes]}
+                      mode="values"
+                      options={["Не важно", "Тип 1", "Тип 2"]}
+                      callback={({value}) => handleSelectChange(value, 'specialNotes')}
                     />
                   </div>
                 </>
@@ -396,9 +398,10 @@ export default function Search() {
                       name="cargoType"
                       className="w-100"
                       btnClass="inp fs-15"
-                      checkedOpt={1}
+                      checkedOptions={[formValues.cargoType]}
+                      mode="values"
                       options={["Не важно", "Тип 1", "Тип 2"]}
-                      onSelectChange={handleSelectChange}
+                      callback={({value}) => handleSelectChange(value, 'cargoType')}
                     />
                   </div>
                   <div className="col-sm-6 col-md-4">
@@ -409,9 +412,10 @@ export default function Search() {
                       name="specialNotes"
                       className="w-100"
                       btnClass="inp fs-15"
-                      checkedOpt={1}
+                      checkedOptions={[formValues.specialNotes]}
+                      mode="values"
                       options={["Нет", "Пометка 1", "Пометка 2"]}
-                      onSelectChange={handleSelectChange}
+                      callback={({value}) => handleSelectChange(value, 'specialNotes')}
                     />
                   </div>
                 </>
@@ -471,11 +475,11 @@ export default function Search() {
             <CustomSelect
               name="sort"
               className="w-100"
-              alignment="right"
-              checkedOpt={1}
+              align="right"
+              checkedOptions={[formValues.sort]}
+              mode="values"
               options={["По времени добавления", "По другому признаку"]}
-              onSelectChange={() => {}}
-              //fix that later
+              callback={({value}) => handleSelectChange(value, 'sort')}
             />
           </div>
         </div>

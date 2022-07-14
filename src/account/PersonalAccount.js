@@ -1,17 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Routes, Route} from 'react-router-dom';
 import {Link} from 'react-router-dom';
 import AccountMenu from './AccountMenu';
-import UserProfile from './UserProfile';
-import ViewAccount from './ViewAccount';
-import ProfileEdit from './ProfileEdit';
-import UserCars from './UserCars';
-import UserCargo from './UserCargo';
-import UserPatterns from './UserPatterns';
-import UserDocuments from './UserDocuments';
-import Responses from './Responses';
-import InWork from './InWork';
-import Tariffs from './Tariffs';
 import PersonalAccountRouter from '../routes/PersonalAccountRouter';
 
 export default function PersonalAccount() {

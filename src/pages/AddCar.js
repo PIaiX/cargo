@@ -3,9 +3,10 @@ import { Tooltip } from "bootstrap";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
-import Select from "react-select";
 import { optionsCarType } from "../components/utilities/data";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+
 
 const initialData = [
   {

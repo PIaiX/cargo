@@ -1,13 +1,52 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ForumWidget from '../components/ForumWidget';
 import CustomSelect from '../components/utilities/CustomSelect';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
-import { IoSearch, IoChevronBack, IoChevronForward, IoAddCircleSharp } from 'react-icons/io5';
+import { IoSearch, IoAddCircleSharp } from 'react-icons/io5';
 import { BsFillInfoSquareFill } from "react-icons/bs";
 import ForumTopic from '../components/ForumTopic';
+import fakeForumSections from '../dummyData/forumSections.json';
+import debounce from '../hooks/debounce';
+import CustomModal from '../components/utilities/CustomModal';
+import Pagination from '../components/Pagination';
 
 export default function ForumMyTopics() {
+    // pagination data
+    const initialPageLimit = 10;
+    const [pageLimit, setPageLimit] = useState(initialPageLimit);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [startingPage, setStartingPage] = useState(1);
+    const [itemsAmount, setItemsAmount] = useState(fakeForumSections.length || 0)
+
+    const [foundForumSections, setFoundForumSections] = useState(fakeForumSections || []);
+    const [forumSections, setForumSections] = useState([]);
+    const [searchValue, setSearchValue] = useState('')
+    const debouncedSearchValue = debounce(searchValue, 300)
+    const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
+
+    useEffect(() => {
+        const startIdx = (currentPage - 1) * pageLimit;
+        const endIdx = startIdx + pageLimit;
+        const paginated = foundForumSections.slice(startIdx, endIdx);
+
+        setForumSections(paginated);
+        setItemsAmount(foundForumSections.length)
+    }, [currentPage, pageLimit, foundForumSections]);
+
+    useEffect(() => {
+        const value = debouncedSearchValue.toLowerCase().trim()
+
+        fakeForumSections.length && debouncedSearchValue
+            ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
+            : setFoundForumSections(fakeForumSections)
+    }, [debouncedSearchValue])
+
+    useEffect(() => {
+        setCurrentPage(1)
+        setStartingPage(1)
+    }, [pageLimit])
+    
     return (
         <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
@@ -26,7 +65,11 @@ export default function ForumMyTopics() {
 
                 <div className='row flex-lg-row-reverse'>
                     <div className='col-lg-3'>
-                        <button type='button' data-bs-toggle="modal" data-bs-target="#new-topic" className='btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex'>
+                        <button
+                            type='button'
+                            className='btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex'
+                            onClick={() => setIsShowCreateTheme(prevState => !prevState)}
+                        >
                             <IconContext.Provider value={{className: "icon-15 white", title: "Создать тему" }}>
                                 <IoAddCircleSharp />
                             </IconContext.Provider>
@@ -34,7 +77,12 @@ export default function ForumMyTopics() {
                         </button>
 
                         <form className='form-search mb-4'>
-                            <input type="search" placeholder='Поиск по форуму'/>
+                            <input
+                                type="search"
+                                placeholder='Поиск по форуму'
+                                value={searchValue}
+                                onChange={e => setSearchValue(e.target.value)}
+                            />
                             <button>
                                 <IconContext.Provider value={{className: "icon-15 green", title: "Поиск" }}>
                                     <IoSearch />
@@ -64,75 +112,55 @@ export default function ForumMyTopics() {
                     </div>
                     <div className='col-lg-9'>
                         <div className='d-flex justify-content-end mb-3'>
-                            <nav>
-                                <ul className="pagination">
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Previous">
-                                            <IoChevronBack />
-                                        </a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link active" href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                                    <li className="page-item">...</li>
-                                    <li className="page-item"><a className="page-link" href="/">6</a></li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Next">
-                                            <IoChevronForward />
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <Pagination
+                                pageLimit={pageLimit}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                pagesDisplayedLimit={3}
+                                itemsAmount={itemsAmount}
+                                startingPage={startingPage}
+                                setStartingPage={setStartingPage}
+                            />
                         </div>
 
                         <div className='forum-header'>
-                            <div className='icon'></div>
+                            <div className='icon' />
                             <div className='text-topic'>Тема</div>
                             <div className='messages'>Сообщений</div>
                             <div className='latest'>Последнее сообщение</div>
                         </div>
-
-                        <ForumTopic
-                            blocked={true}
-                            fixedTopic={false}
-                            title="Название закрепленной темы" 
-                            author={{name: 'Имя пользователя', url: '/personal-account/view-profile'}}
-                            messages={205} 
-                            latest="10.04.2022"
-                        />
-                        <ForumTopic
-                            fixedTopic={false}
-                            title="Название закрепленной темы"
-                            author={{name: 'Имя пользователя', url: '/personal-account/view-profile'}}
-                            messages={205} 
-                            latest="9.04.2022"
-                        />
-                        
-
+                        {forumSections.map(section => (
+                            <ForumTopic
+                                key={section.id}
+                                fixedTopic={false}
+                                id={section.id}
+                                title={section.title}
+                                author={{name: 'Имя пользователя', url: '/personal-account/view-profile'}}
+                                messages={section.messages}
+                                latest={section.latest}
+                            />
+                        ))}
                         <div className='d-flex align-items-center justify-content-between mt-4'>
-                            <nav>
-                                <ul className="pagination">
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Previous">
-                                            <IoChevronBack />
-                                        </a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link active" href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                                    <li className="page-item">...</li>
-                                    <li className="page-item"><a className="page-link" href="/">6</a></li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Next">
-                                            <IoChevronForward />
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                            <Pagination
+                                pageLimit={pageLimit}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                pagesDisplayedLimit={3}
+                                itemsAmount={itemsAmount}
+                                startingPage={startingPage}
+                                setStartingPage={setStartingPage}
+                            />
 
                             <div className='d-flex align-items-center'>
                                 <span className='d-none d-sm-block me-2'>показать</span>
-                                {/* <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right"/> */}
+                                <CustomSelect
+                                    className="inp"
+                                    name="items-count"
+                                    options={['10', '15', '20']}
+                                    checkedOptions={[`${pageLimit}`]}
+                                    callback={({title}) => setPageLimit(+title)}
+                                    align="right"
+                                />
                                 <span className='ms-2 d-none d-md-block'>тем на странице</span>
                             </div>
                         </div>
@@ -151,6 +179,38 @@ export default function ForumMyTopics() {
                     </div>
                 </div>
             </section>
+            <CustomModal
+                isShow={isShowCreateTheme}
+                setIsShow={setIsShowCreateTheme}
+                size='lg'
+            >
+                <h3>Новая тема</h3>
+                <form className="fs-12">
+                    <label className="mb-2">Название темы</label>
+                    <input
+                        type="text"
+                        className="mb-4"
+                        placeholder="Придумайте название темы"
+                    />
+                    <label className="mb-2">Текст темы</label>
+                    <textarea rows="5" placeholder="Ваша история или вопрос"/>
+                    <div className="row flex-sm-row-reverse mt-4">
+                        <div className="col-sm-5">
+                            <button type="submit" className="btn btn-2 w-100">
+                                Сохранить
+                            </button>
+                        </div>
+                        <div className="col-sm-7 mt-2 mt-sm-0">
+                            <div className="fs-09 text-center">
+                                Нажимая на кнопку “Создать тему”, вы соглашаетесь с{" "}
+                                <a className="blue" href="/">
+                                    правилами публикации
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </CustomModal>
         </main>
     )
 }

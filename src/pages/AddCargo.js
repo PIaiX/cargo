@@ -7,8 +7,8 @@ import {
   IoCloseCircle,
   IoNewspaperOutline,
 } from "react-icons/io5";
-import { VscChromeClose } from "react-icons/vsc";
-import { IconContext } from "react-icons";
+import {VscChromeClose} from "react-icons/vsc";
+import {IconContext} from "react-icons";
 import Select from "react-select";
 import {
   optionsCargoType,
