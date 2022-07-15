@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ResponseCard from "../components/ResponseCard";
-import Pagination from "../components/Pagination";
-import usePagination from "../hooks/pagination";
-import userResponses from "../dummyData/userResponses.json";
+import ResponseCard from "../../components/ResponseCard";
+import Pagination from "../../components/Pagination";
+import usePagination from "../../hooks/pagination";
+import userResponses from "../../dummyData/userResponses.json";
 
 const initialPageLimit = 6;
 

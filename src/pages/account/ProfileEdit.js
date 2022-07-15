@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Link, NavLink} from 'react-router-dom';
-import CustomSelect from '../components/utilities/CustomSelect';
+import CustomSelect from '../../components/utilities/CustomSelect';
 import ImageUploading from "react-images-uploading";
 import NumberFormat from "react-number-format";
 

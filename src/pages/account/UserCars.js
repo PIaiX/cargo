@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { IoAddCircleSharp } from "react-icons/io5";
-import Card from "../components/Card";
+import Card from "../../components/Card";
 import { Link } from "react-router-dom";
-import userCars from "../dummyData/userCars.json";
-import Pagination from "../components/Pagination";
-import usePagination from "../hooks/pagination";
+import Pagination from "../../components/Pagination";
+import usePagination from "../../hooks/pagination";
+import userCars from '../../dummyData/userCars.json'
 
 const initialPageLimit = 6;
 

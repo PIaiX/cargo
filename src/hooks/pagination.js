@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 
 export default function usePagination(initialPageLimit) {
     const [pageLimit, setPageLimit] = useState(initialPageLimit)

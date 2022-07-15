@@ -540,7 +540,7 @@ export default function Search() {
             ))}
           </div>
         )}
-        <div hidden={search !== "cargo"}>
+        <div hidden={search !== "cargo"} className="mt-4">
           <Pagination
             pageLimit={cargoPagination.pageLimit}
             currentPage={cargoPagination.currentPage}
@@ -551,7 +551,7 @@ export default function Search() {
             setStartingPage={cargoPagination.setStartingPage}
           />
         </div>
-        <div hidden={search === "cargo"}>
+        <div hidden={search === "cargo"} className="mt-4">
           <Pagination
             pageLimit={carsPagination.pageLimit}
             currentPage={carsPagination.currentPage}

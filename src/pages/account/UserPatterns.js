@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
-import Pattern from '../components/Pattern';
-import Pagination from "../components/Pagination";
-import usePagination from "../hooks/pagination";
+import Pattern from '../../components/Pattern';
+import Pagination from "../../components/Pagination";
+import usePagination from "../../hooks/pagination";
 
 const cars = [
     {
