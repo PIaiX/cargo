@@ -5,6 +5,8 @@ import { useLayoutEffect } from 'react';
 import AddCargo from '../pages/AddCargo';
 import AddCar from '../pages/AddCar';
 import AddRoute from '../pages/AddRoute';
+import EditCar from '../pages/EditCar';
+import EditCargo from '../pages/EditCargo';
 import CargoPage from '../pages/CargoPage';
 import CarPage from '../pages/CarPage';
 import Home from '../pages/Home';
@@ -43,6 +45,8 @@ export default function AppRouter() {
                 <Route path="add-cargo" element={<AddCargo />} />
                 <Route path="add-car" element={<AddCar />} />
                 <Route path="add-route" element={<AddRoute />} />
+                <Route path="edit-car/:id" element={<EditCar />} />
+                <Route path="edit-cargo/:id" element={<EditCargo />} />
                 <Route path="all-news" element={<AllNews />} />
                 <Route path="news/:slug" element={<ArticleFull />} />
                 <Route path="forum" element={<Forum />} />

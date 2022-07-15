@@ -73,6 +73,7 @@ export default function UserCargo() {
                   <div key={idx}>
                     <Card
                       type={item.type}
+                      id={idx}
                       className=""
                       title={item.title}
                       route={item.route}
