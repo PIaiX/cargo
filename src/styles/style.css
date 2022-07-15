@@ -3507,4 +3507,39 @@ footer .payment-methods img:not(:first-child) {
   }
 }
 
+.inputCity {
+  position: relative;
+  width: auto;
+}
+
+.mainCity {
+  position: absolute;
+  width: 100%;
+  height: auto;
+  background-color: #FFF;
+  max-height: 300px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.personalCity {
+  height: 100%;
+  width: 100%;
+  background: #FFF;
+  display: block;
+  z-index: 1;
+  text-align: left;
+  justify-content: flex-start;
+  color: #848484;
+  padding: 0.5em 2em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.personalCity:hover {
+  background: #038CB8;
+  color: #FFF;
+}
+
 /*# sourceMappingURL=style.css.map */
