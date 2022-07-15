@@ -1,13 +1,13 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import newsReducer from "./newsSlice";
 import savedCargoTemplatesReducer from "./savedCargoTemplates";
-import savedCarTemplatesReducer from "./savedCarTemplates";
+import savedRouteTemplatesReducer from "./savedRouteTemplates";
 import selectedCitySlice from './selectedCitySlice';
 
 const rootReducer = combineReducers({
     news: newsReducer,
     savedCargoTemplates: savedCargoTemplatesReducer,
-    savedCarTemplates: savedCarTemplatesReducer,
+    savedRouteTemplates: savedRouteTemplatesReducer,
     selectedCity: selectedCitySlice
   });
   
