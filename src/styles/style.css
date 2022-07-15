@@ -3109,6 +3109,12 @@ footer .payment-methods img:not(:first-child) {
 .modal__header .modal-body form label {
   margin: 1em 0 0.5em 0;
 }
+.modal__rename-template .modal-header {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
 
 .offcanvas {
   width: 300px;
