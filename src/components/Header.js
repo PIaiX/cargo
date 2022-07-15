@@ -5,11 +5,12 @@ import {MdMenu} from 'react-icons/md';
 import {RiUserLine} from "react-icons/ri";
 import CustomModal from "./utilities/CustomModal";
 import CityContainer from './CityContainer';
+import CustomOffcanvas from './utilities/CustomOffcanvas';
 
 export default function Header() {
 
-    const [isShow, setIsShow] = useState(false)
-
+    const [isShowModal, setIsShowModal] = useState(false)
+    const [isShowOffcanvas, setIsShowOffcanvas] = useState(false)
     const [question, setQuestion] = useState({
         firstName: '',
         email: '',
@@ -27,7 +28,7 @@ export default function Header() {
                         <NavLink to="/search">Поиск</NavLink>
                         <NavLink to="/forum">Форум</NavLink>
                         <a href="/">Информация</a>
-                        <button className="header__button" type="button" onClick={() => setIsShow(true)}>Задать вопрос</button>
+                        <button className="header__button" type="button" onClick={() => setIsShowModal(true)}>Задать вопрос</button>
                     </nav>
                     <div className="d-flex align-items-center ms-5">
                         <Link to="login" className="d-flex align-items-center order-2 order-lg-1 ms-4 ms-lg-0">
@@ -37,8 +38,11 @@ export default function Header() {
                             </IconContext.Provider>
                         </Link>
                         <CityContainer />
-                        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#header-menu"
-                                className="order-3 d-block d-lg-none ms-4">
+                        <button
+                            type="button"
+                            className="order-3 d-block d-lg-none ms-4"
+                            onClick={() => setIsShowOffcanvas(true)}
+                        >
                             <IconContext.Provider value={{className: "icon", title: "меню"}}>
                                 <MdMenu/>
                             </IconContext.Provider>
@@ -46,14 +50,13 @@ export default function Header() {
                     </div>
                 </div>
                 <CustomModal
+                    className='modal__header'
                     centered={false}
-                    isShow={isShow}
-                    setIsShow={setIsShow}
+                    isShow={isShowModal}
+                    setIsShow={setIsShowModal}
                     closeButton={true}
-                    title={true}
                     titleHead={'Задать вопрос'}
                     titleBody={'Задайте интересующий вопрос и мы ответим Вам в течение часа.'}
-                    className='modal__header'
                 >
                     <form>
                         <label>Ваше имя</label>
@@ -92,25 +95,22 @@ export default function Header() {
                 </CustomModal>
             </header>
 
-            <div className="offcanvas offcanvas-end" tabIndex="-1" id="header-menu">
-                <div className="offcanvas-body">
-                    <nav>
-                        <ul data-bs-dismiss="offcanvas">
-                            <li><NavLink to="/">Главная</NavLink></li>
-                            <li><NavLink to="/search">Поиск</NavLink></li>
-                            <li><NavLink to="/forum">Форум</NavLink></li>
-                            <li><NavLink to="">Информация</NavLink></li>
-                            <li><NavLink to="" onClick={() => setIsShow(true)}>Задать вопрос</NavLink></li>
-                        </ul>
-                    </nav>
-                    <button type="button" className="btn-close" data-bs-dismiss="offcanvas">
-                        <svg viewBox="0 0 16 17" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.00006 1.18237L15 15.9049"/>
-                            <path d="M14.9999 1.18237L1.00001 15.9049"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+            <CustomOffcanvas
+                isShow={isShowOffcanvas}
+                setIsShow={setIsShowOffcanvas}
+                closeButton={true}
+                placement="end"
+            >
+                <nav>
+                    <ul>
+                        <li><NavLink to="/">Главная</NavLink></li>
+                        <li><NavLink to="/search">Поиск</NavLink></li>
+                        <li><NavLink to="/forum">Форум</NavLink></li>
+                        <li><NavLink to="">Информация</NavLink></li>
+                        <li><NavLink to="" onClick={() => setIsShowModal(true)}>Задать вопрос</NavLink></li>
+                    </ul>
+                </nav>
+            </CustomOffcanvas>
         </>
     )
 }

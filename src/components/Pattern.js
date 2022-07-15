@@ -12,10 +12,6 @@ const Pattern = (props) => {
         note: '',
     })
 
-    useEffect(() => {
-        console.log(rename)
-    }, [rename])
-
     const onSubmitForRename = () => {
 
         const formData = new FormData()
