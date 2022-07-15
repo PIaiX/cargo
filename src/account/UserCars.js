@@ -72,6 +72,7 @@ export default function UserCars() {
                 <div key={idx}>
                   <Card
                     type={item.type}
+                    id={idx}
                     className=""
                     route={item.route}
                     carType={item.carType}
