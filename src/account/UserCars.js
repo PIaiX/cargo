@@ -23,7 +23,7 @@ export default function UserCars() {
 
     setFilteredCars(paginated);
     window.scrollTo(0, 0);
-  }, [paginationData.currentPage]);
+  }, [paginationData.currentPage, paginationData.pageLimit]);
 
   return (
     <div className="box px-0 p-sm-4 p-xl-5">
