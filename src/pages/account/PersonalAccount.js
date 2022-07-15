@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import AccountMenu from './AccountMenu';
 import PersonalAccountRouter from '../../routes/PersonalAccountRouter';
 
 export default function PersonalAccount() {

@@ -1,20 +1,22 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import { IconContext  } from "react-icons";
-import { IoEllipsisVertical } from 'react-icons/io5';
-import { BsPencilSquare, BsPrinter, BsDownload, BsTrash } from "react-icons/bs";
+import {IconContext} from 'react-icons';
+import {IoEllipsisVertical} from 'react-icons/io5';
+import {BsDownload, BsPencilSquare, BsPrinter} from 'react-icons/bs';
 
-export default function DocPreview(props) {
+const PatternPreview = (props) => {
     const navigate = useNavigate();
 
     return (
         <div
-            className={`docs-preview ${props.className ?? ''}`}
+            className={`patterns-preview ${props.className ?? ''}`}
             onClick={() => navigate(`/document/${props.docId}`)}
         >
-            <div className='title' title={props.title}>{props.title}</div>
-            <div className='number'>№ {props.number}</div>
-            <div className='date'>{props.date}</div>
+            <div className='title'>
+                <div>{props.title}</div>
+                <div>{props.note}</div>
+            </div>
+            <div className='doc-type'>{props.docType}</div>
             <div className='contractor'>
                 <Link to={props.contractor.url} className='blue bb-1' onClick={e => e.stopPropagation()}>
                     {props.contractor.name}
@@ -57,16 +59,10 @@ export default function DocPreview(props) {
                             <span className='ms-3'>Печать</span>
                         </button>
                     </li>
-                    <li>
-                        <button type='button' onClick={e => e.stopPropagation()}>
-                            <IconContext.Provider value={{className: "icon-10 fs-12 gray-4", title: "Удалить" }}>
-                                <BsTrash />
-                            </IconContext.Provider>
-                            <span className='ms-3'>Удалить</span>
-                        </button>
-                    </li>
                 </ul>
             </div>
         </div>
-    )
-}
+    );
+};
+
+export default PatternPreview;

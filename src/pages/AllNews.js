@@ -42,15 +42,17 @@ export default function AllNews() {
                   ))}
               </div>
             )}
-            <Pagination
-              pageLimit={pageLimit}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              pagesDisplayedLimit={3}
-              itemsAmount={news.length}
-              startingPage={startingPage}
-              setStartingPage={setStartingPage}
-            />
+            <div className="mt-4">
+                <Pagination
+                    pageLimit={pageLimit}
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    pagesDisplayedLimit={3}
+                    itemsAmount={news.length}
+                    startingPage={startingPage}
+                    setStartingPage={setStartingPage}
+                />
+            </div>
           </div>
           <div className="d-none d-md-block col-4 col-lg-3">
             <ForumWidget />
