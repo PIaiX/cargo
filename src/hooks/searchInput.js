@@ -15,7 +15,7 @@ const useSearchInput = (items = [], searchedField = '') => {
 
     }, [debouncedSearchValue, items])
 
-    return {searchValue, setSearchValue, foundItems, setFoundItems}
+    return {searchValue, setSearchValue, foundItems}
 }
 
 export default useSearchInput

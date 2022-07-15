@@ -12,33 +12,40 @@ import usePagination from '../../hooks/pagination';
 import useSearchInput from '../../hooks/searchInput';
 
 export default function UserDocuments() {
-    const [tab, setTab] = useState('docs');
-
-    // pagination data
     const initialPageLimit = 10;
+    const [tab, setTab] = useState('docs')
+    const [items, setItems] = useState(tab === 'docs' ? fakeDocuments : fakePatterns)
+    const {searchValue, setSearchValue, foundItems} = useSearchInput(items, 'contractorName')
+
     const documentsPagination = usePagination(initialPageLimit)
-    const patternsPagination = usePagination(initialPageLimit)
     const [documentsAmount, setDocumentsAmount] = useState(fakeDocuments.length)
+    const [documents, setDocuments] = useState(null)
+
+    const patternsPagination = usePagination(initialPageLimit)
     const [patternsAmount, setPatternsAmount] = useState(fakeDocuments.length)
-    const {searchValue, setSearchValue, foundItems, setFoundItems} = useSearchInput(tab === 'docs' ? fakeDocuments : fakePatterns, 'contractorName')
+    const [patterns, setPatterns] = useState(null)
+
+    useEffect(() => {
+        (tab === 'docs') ? setItems(fakeDocuments) : setItems(fakePatterns)
+    }, [tab])
 
     useEffect(() => {
         const startIdx = (documentsPagination.currentPage - 1) * documentsPagination.pageLimit;
         const endIdx = startIdx + documentsPagination.pageLimit;
         const paginated = foundItems.slice(startIdx, endIdx)
         setDocumentsAmount(foundItems.length)
-        setFoundItems(paginated)
+        setDocuments(paginated)
 
-    }, [documentsPagination.currentPage, documentsPagination.pageLimit])
+    }, [documentsPagination.currentPage, documentsPagination.pageLimit, foundItems])
 
     useEffect(() => {
         const startIdx = (patternsPagination.currentPage - 1) * patternsPagination.pageLimit;
         const endIdx = startIdx + patternsPagination.pageLimit;
         const paginated = foundItems.slice(startIdx, endIdx)
         setPatternsAmount(foundItems.length)
-        setFoundItems(paginated)
+        setPatterns(paginated)
 
-    }, [patternsPagination.currentPage, patternsPagination.pageLimit])
+    }, [patternsPagination.currentPage, patternsPagination.pageLimit, foundItems])
 
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
@@ -79,7 +86,16 @@ export default function UserDocuments() {
                         type="search"
                         placeholder='Поиск по контрагенту'
                         value={searchValue}
-                        onChange={e => setSearchValue(e.target.value)}
+                        onChange={e => {
+                            setSearchValue(e.target.value)
+                            if (searchValue.length && tab === 'docs') {
+                                documentsPagination.setCurrentPage(1)
+                                documentsPagination.setStartingPage(1)
+                            } else {
+                               patternsPagination.setCurrentPage(1)
+                               patternsPagination.setStartingPage(1)
+                            }
+                        }}
                     />
                     <button>
                         <IconContext.Provider value={{className: "icon-15 green", title: "Создать документ"}}>
@@ -125,7 +141,7 @@ export default function UserDocuments() {
                                 </div>
                             </div>
                             {
-                                foundItems && foundItems.map((document, index) => (
+                                documents && documents.map((document, index) => (
                                     <DocPreview
                                         key={index}
                                         type='doc'
@@ -162,7 +178,7 @@ export default function UserDocuments() {
                                 </div>
                             </div>
                             {
-                                foundItems && foundItems.map((pattern, index) => (
+                                patterns && patterns.map((pattern, index) => (
                                     <PatternPreview
                                         key={index}
                                         type='pattern'
