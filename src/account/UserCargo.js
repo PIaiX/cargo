@@ -66,24 +66,26 @@ export default function UserCargo() {
       </div>
       {
         tab === "active" ? (
-          <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
-            {filteredCargo.map((item, idx) => {
-              return (
-                <div key={idx}>
-                  <Card
-                    type={item.type}
-                    className=""
-                    title={item.title}
-                    route={item.route}
-                    size={item.size}
-                    weight={item.weight}
-                    notes={item.notes}
-                    url="/cargo-page"
-                    profileView={item.profileView}
-                  />
-                </div>
-              );
-            })}
+          <>
+            <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
+              {filteredCargo.map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <Card
+                      type={item.type}
+                      className=""
+                      title={item.title}
+                      route={item.route}
+                      size={item.size}
+                      weight={item.weight}
+                      notes={item.notes}
+                      url="/cargo-page"
+                      profileView={item.profileView}
+                    />
+                  </div>
+                );
+              })}
+            </div>
             {userCargo.length > initialPageLimit && (
               <Pagination
                 pageLimit={paginationData.pageLimit}
@@ -95,7 +97,7 @@ export default function UserCargo() {
                 setStartingPage={paginationData.setStartingPage}
               />
             )}
-          </div>
+          </>
         ) : (
           <div className="text-center fs-15">Архивных объявлений нет</div>
         )

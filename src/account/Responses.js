@@ -54,6 +54,7 @@ export default function Responses() {
         </button>
       </div>
       {tab === "active" ? (
+        <>
         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
           {filteredResponses.map((item, idx) => {
             return (
@@ -69,7 +70,8 @@ export default function Responses() {
               </div>
             );
           })}
-          {userResponses.length > initialPageLimit && (
+        </div>
+        {userResponses.length > initialPageLimit && (
             <Pagination
               pageLimit={paginationData.pageLimit}
               currentPage={paginationData.currentPage}
@@ -80,7 +82,7 @@ export default function Responses() {
               setStartingPage={paginationData.setStartingPage}
             />
           )}
-        </div>
+        </>
       ) : (
         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
           <div>
