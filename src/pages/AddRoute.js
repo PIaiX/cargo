@@ -145,8 +145,8 @@ export default function AddRoute() {
 
   useEffect(() => {
     if (currentTemplate) {
-      const newContacts = getContactsLengthArray(currentTemplate.data)
-      setContacts(newContacts)
+      const newContacts = getContactsLengthArray(currentTemplate.data);
+      setContacts(newContacts);
       setData(currentTemplate.data);
     }
   }, [currentTemplate]);
@@ -274,7 +274,7 @@ export default function AddRoute() {
         return newObj;
       })
     );
-    setContacts([])
+    setContacts([]);
   };
 
   const getSelectValue = (name) => {
@@ -321,13 +321,15 @@ export default function AddRoute() {
   };
 
   const getContactsLengthArray = (data) => {
-    const array = data.filter((obj) => obj.name.includes("contactName") && obj.name !== "contactName0")
-    let numArray = []
-    if(array.length > 1) {
-      numArray = _.range(1, array.length)
+    const array = data.filter(
+      (obj) => obj.name.includes("contactName") && obj.name !== "contactName0"
+    );
+    let numArray = [];
+    if (array.length > 1) {
+      numArray = _.range(1, array.length);
     }
-    return numArray
-  }
+    return numArray;
+  };
 
   return (
     <main className="bg-gray">
@@ -522,7 +524,11 @@ export default function AddRoute() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCar"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -702,7 +708,11 @@ export default function AddRoute() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCar"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -785,7 +795,11 @@ export default function AddRoute() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCar"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -817,7 +831,7 @@ export default function AddRoute() {
                       <button
                         type="button"
                         disabled={checkFieldset("aboutCar") ? false : true}
-                        onClick={() => setActiveField(5)}
+                        onClick={() => setActiveField(4)}
                         className="btn btn-1 w-100 fs-11"
                       >
                         <span className="me-1 me-sm-3 text-uppercase">
@@ -896,8 +910,8 @@ export default function AddRoute() {
                         name="paymentType"
                         onChange={(e) => fillDataList(e)}
                         checked={
-                          data.find((obj) => obj.name === "paymentType").value ===
-                          "Наличный расчет"
+                          data.find((obj) => obj.name === "paymentType")
+                            .value === "Наличный расчет"
                             ? true
                             : false
                         }
@@ -915,8 +929,8 @@ export default function AddRoute() {
                         name="paymentType"
                         onChange={(e) => fillDataList(e)}
                         checked={
-                          data.find((obj) => obj.name === "paymentType").value ===
-                          "Перевод по карте"
+                          data.find((obj) => obj.name === "paymentType")
+                            .value === "Перевод по карте"
                             ? true
                             : false
                         }
@@ -1012,7 +1026,11 @@ export default function AddRoute() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCar"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -1212,13 +1230,25 @@ export default function AddRoute() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCar"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="button">Сохранить шаблон</button>
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#savePatternCar"
+                      className="fs-11 mx-auto mt-2 mt-xl-3 blue"
+                      onClick={handleSaveTemplate}
+                    >
+                      Сохранить шаблон
+                    </button>
                   </div>
                   <div className="row gx-2 gx-sm-4 title-font">
                     <div className="col-5 col-sm-6">

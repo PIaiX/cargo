@@ -34,7 +34,7 @@ export default function SavedTemplate({name, remark, id, type}) {
           <div className="title-font fs-12 fw-7">{name}</div>
           {remark && <div className="fs-11 mt-1">{remark}</div>}
         </div>
-        <button type="button" className="btn btn-1 fs-09 px-2 px-sm-4 ms-2" onClick={handleSetCurrentTemplate}>
+        <button type="button" className="btn btn-1 fs-09 px-2 px-sm-4 ms-2" onClick={handleSetCurrentTemplate} data-bs-dismiss="modal">
           Выбрать
         </button>
         <button type="button" className="ms-2 ms-sm-3" onClick={handleTemplateDelete}>

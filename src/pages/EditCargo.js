@@ -25,6 +25,7 @@ import {
   setCargoFormData,
   setCurrentCargoTemplate,
 } from "../store/reducers/savedCargoTemplates";
+import { useNavigate } from "react-router-dom";
 
 const initialLoading = [
   [
@@ -311,6 +312,7 @@ const initialContactsField = [
 export default function AddCargo() {
   const ref = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
   const [loading, setLoading] = useState(initialLoading);
@@ -780,9 +782,12 @@ export default function AddCargo() {
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-        <Link to="/" className="fs-12 fw-5 d-block mb-3 mb-sm-5">
+      <button
+          onClick={() => navigate(-1)}
+          className="fs-12 fw-5 d-block mb-3 mb-sm-5"
+        >
           <span className="green fs-15 me-2">⟵</span> Назад
-        </Link>
+        </button>
 
         <form
           ref={ref}
@@ -795,7 +800,7 @@ export default function AddCargo() {
         >
           <div className="d-flex justify-content-between align-items-center mb-5">
             <h1 className="dark-blue text-center text-uppercase mb-0">
-              Добавление Груза
+              Редактирование Груза
             </h1>
             <div className="d-none d-lg-flex align-items-center fs-09">
               <button
@@ -2614,7 +2619,7 @@ export default function AddCargo() {
                         type="submit"
                         className="btn btn-2 w-100 h-100 fs-11 text-uppercase px-3"
                       >
-                        Разместить груз
+                        Сохранить изменения
                       </button>
                     </div>
                   </div>
@@ -2984,7 +2989,7 @@ export default function AddCargo() {
                 type="submit"
                 className="btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5"
               >
-                Разместить груз
+                Сохранить изменения
               </button>
               <button
                 type="button"

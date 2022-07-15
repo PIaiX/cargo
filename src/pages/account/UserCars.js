@@ -23,7 +23,7 @@ export default function UserCars() {
 
     setFilteredCars(paginated);
     window.scrollTo(0, 0);
-  }, [paginationData.currentPage]);
+  }, [paginationData.currentPage, paginationData.pageLimit]);
 
   return (
     <div className="box px-0 p-sm-4 p-xl-5">
@@ -65,26 +65,29 @@ export default function UserCars() {
         </div>
       </div>
       {tab === "active" ? (
-        <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
-          {filteredCars.map((item, idx) => {
-            return (
-              <div key={idx}>
-                <Card
-                  type={item.type}
-                  className=""
-                  route={item.route}
-                  carType={item.carType}
-                  verified={item.verified}
-                  date={item.date}
-                  carrying={item.carrying}
-                  size={item.size}
-                  dimensions={item.dimensions}
-                  url="/car-page"
-                  profileView={item.profileView}
-                />
-              </div>
-            );
-          })}
+        <>
+          <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
+            {filteredCars.map((item, idx) => {
+              return (
+                <div key={idx}>
+                  <Card
+                    type={item.type}
+                    id={idx}
+                    className=""
+                    route={item.route}
+                    carType={item.carType}
+                    verified={item.verified}
+                    date={item.date}
+                    carrying={item.carrying}
+                    size={item.size}
+                    dimensions={item.dimensions}
+                    url="/car-page"
+                    profileView={item.profileView}
+                  />
+                </div>
+              );
+            })}
+          </div>
           {userCars.length > initialPageLimit && (
             <Pagination
               pageLimit={paginationData.pageLimit}
@@ -96,7 +99,7 @@ export default function UserCars() {
               setStartingPage={paginationData.setStartingPage}
             />
           )}
-        </div>
+        </>
       ) : (
         <div className="text-center fs-15">Архивных объявлений нет</div>
       )}
