@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../components/Card';
+import Card from '../../components/Card';
 import { IconContext  } from "react-icons";
 import { IoChevronBackSharp, IoChevronForwardSharp, IoEllipsisVertical } from 'react-icons/io5';
 import { Swiper, SwiperSlide } from 'swiper/react';

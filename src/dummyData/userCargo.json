@@ -1,0 +1,434 @@
+[
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "cold",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "none",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "cold",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "none",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "cold",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "cold",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "none",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Трубы",
+    "route": "Далеко-Не близко",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Скам",
+    "route": "Лужа-Твой подъезд",
+    "size": "14",
+    "weight": "43 т",
+    "notes": "fragile",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Овощи мытые",
+    "route": "Норм город-Чистый город",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Наварованное",
+    "route": "Ларёк-Твой чердак",
+    "size": "24",
+    "weight": "223 т",
+    "notes": "dimensional",
+    "profileView": "active"
+  },
+  {
+    "type": "cargo",
+    "title": "Мебель твоей бабушки",
+    "route": "Деревня-Остановка рядом",
+    "size": "214",
+    "weight": "2203 т",
+    "notes": "fragile",
+    "profileView": "active"
+  }
+]

@@ -13,7 +13,7 @@ const CustomModal = (props) => {
             onHide={handleClose}
             backdrop={props.backdrop ?? true}
             data-bs-backdrop={false}
-            scroll={props.scroll ?? false}
+            scrollable={props.scrollable ?? false}
             centered={props.centered ?? true}
             size={props.size ?? null}
         >

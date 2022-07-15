@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useCallback} from "react";
 import {IoChevronBack, IoChevronForward} from "react-icons/io5";
 import * as _ from "lodash";
-import {logDOM} from "@testing-library/react";
 
 export default function Pagination(
     {
@@ -12,7 +11,8 @@ export default function Pagination(
         setCurrentPage,
         startingPage,
         setStartingPage,
-        callback
+        callback,
+        className
     }) {
 
     // Страницы до ... при большом количестве общего числа страниц
@@ -78,7 +78,7 @@ export default function Pagination(
     };
 
     return (
-        <nav className="mt-4">
+        <nav className={className ?? ''}>
             <ul className="pagination">
                 <li className="page-item" onClick={handleSelectPrevPage}>
                     <div

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useDispatch } from "react-redux/es/exports";
 import { saveCargoTemplate } from "../../store/reducers/savedCargoTemplates";
-import { saveCarTemplate } from "../../store/reducers/savedCarTemplates";
+import { saveRouteTemplate } from "../../store/reducers/savedRouteTemplates";
 import FormErrorMessage from "./../utilities/FormErrorMessage";
 
 const initialFormValue = {
@@ -34,7 +34,7 @@ export default function SaveTemplateModal({ type }) {
       dispatch(saveCargoTemplate(formValue));
     }
     if(type === "Car") {
-      dispatch(saveCarTemplate(formValue))
+      dispatch(saveRouteTemplate(formValue))
     }
   };
 
@@ -51,7 +51,7 @@ export default function SaveTemplateModal({ type }) {
             <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={() => setFormError("")}>
               <IoCloseOutline />
             </button>
-            <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "машины"}</h2>
+            <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "маршрута"}</h2>
             <form className="fs-12">
               <label htmlFor="pattern-name" className="fw-5 title-font mb-2">
                 Название шаблона
@@ -98,6 +98,7 @@ export default function SaveTemplateModal({ type }) {
                   <button
                     type="button"
                     className="btn btn-2 w-100"
+                    data-bs-dismiss={`${!formValue.name ? "" : "modal"}`}
                     onClick={handleFormSubmit}
                   >
                     Сохранить

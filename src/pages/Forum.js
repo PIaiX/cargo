@@ -12,22 +12,17 @@ import {BsFillInfoSquareFill, BsFillChatRightTextFill} from "react-icons/bs";
 import fakeForumSections from "../dummyData/forumSections.json";
 import Pagination from "../components/Pagination";
 import CustomModal from '../components/utilities/CustomModal';
-import useDebounce from '../hooks/debounce';
+import usePagination from '../hooks/pagination';
+import useSearchInput from '../hooks/searchInput';
 
 const initialPageLimit = 10;
 
 export default function Forum() {
-    // pagination data
-    const [pageLimit, setPageLimit] = useState(initialPageLimit);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [startingPage, setStartingPage] = useState(1);
+    const { pageLimit, setPageLimit, currentPage, setCurrentPage, startingPage, setStartingPage} = usePagination(initialPageLimit)
     const [itemsAmount, setItemsAmount] = useState(fakeForumSections.length || 0)
-
-    const [foundForumSections, setFoundForumSections] = useState(fakeForumSections || []);
     const [forumSections, setForumSections] = useState([]);
-    const [searchValue, setSearchValue] = useState('')
-    const debouncedSearchValue = useDebounce(searchValue, 300)
     const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
+    const {searchValue, setSearchValue, foundItems} = useSearchInput(fakeForumSections)
 
     //Make API call in the future, fetching actual forum data
 
@@ -35,36 +30,12 @@ export default function Forum() {
 
         const startIdx = (currentPage - 1) * pageLimit;
         const endIdx = startIdx + pageLimit;
-        const paginated = foundForumSections.slice(startIdx, endIdx);
+        const paginated = foundItems.slice(startIdx, endIdx);
 
         setForumSections(paginated);
-        setItemsAmount(foundForumSections.length)
+        setItemsAmount(foundItems.length)
 
-    }, [currentPage, pageLimit, foundForumSections]);
-
-    useEffect(() => {
-        const value = debouncedSearchValue.toLowerCase().trim()
-
-        fakeForumSections.length && debouncedSearchValue
-            ? setFoundForumSections(fakeForumSections.filter(section => section.title.toLowerCase().startsWith(value)))
-            : setFoundForumSections(fakeForumSections)
-
-    }, [debouncedSearchValue])
-
-    useEffect(() => {
-        setCurrentPage(1)
-        setStartingPage(1)
-    }, [pageLimit])
-
-    const handleCustomSelect = (value) => {
-        if (value === 1) setPageLimit(10);
-        if (value === 2) setPageLimit(15);
-        if (value === 3) setPageLimit(20);
-    };
-
-    const callback = (am) => {
-        !(am.includes(currentPage)) && setCurrentPage(startingPage)
-    }
+    }, [currentPage, pageLimit, foundItems]);
 
     return (
         <main className="bg-white py-4 py-sm-5">
@@ -108,7 +79,11 @@ export default function Forum() {
                                 type="search"
                                 placeholder="Поиск по форуму"
                                 value={searchValue}
-                                onChange={e => setSearchValue(e.target.value)}
+                                onChange={e => {
+                                    setSearchValue(e.target.value)
+                                    setStartingPage(1)
+                                    setCurrentPage(1)
+                                }}
                             />
                             <button>
                                 <IconContext.Provider
@@ -144,7 +119,6 @@ export default function Forum() {
                     <div className="col-lg-9">
                         <div className="d-flex justify-content-end mb-3">
                             <Pagination
-                                callback={callback}
                                 // Количество тем на странице
                                 pageLimit={pageLimit}
                                 // Текущая страница
@@ -180,7 +154,7 @@ export default function Forum() {
                         }
                         <div className="d-flex align-items-center justify-content-between mt-4">
                             <Pagination
-                                callback={callback}
+                                callback={pages => !(pages.includes(currentPage)) && setCurrentPage(startingPage)}
                                 pageLimit={pageLimit}
                                 currentPage={currentPage}
                                 setCurrentPage={setCurrentPage}

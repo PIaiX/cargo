@@ -67,18 +67,11 @@ const initialData = [
   },
 ];
 
-export default function AddCar() {
+export default function EditCar() {
+    //Make changes when the API will be ready, instead of using blank initial data, set state to the data fetched from the server based on the id in the query string.
   let [data, setData] = useState(initialData);
 
   const navigate = useNavigate();
-
-  let checkFieldset = (fieldName) => {
-    let newArr = data.filter(
-      (item) => item.fieldset === fieldName && item.required === true
-    );
-    let result = newArr.every((elem) => elem.value !== "");
-    return result;
-  };
 
   let handleRSelect = (e, name) => {
     let inputVal = e.value;
@@ -164,13 +157,13 @@ export default function AddCar() {
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate(-1)}
           className="fs-12 fw-5 d-block mb-3 mb-sm-5"
         >
           <span className="green fs-15 me-2">⟵</span> Назад
         </button>
         <h1 className="dark-blue text-center text-uppercase">
-          Добавление Машины
+          Редактирование Машины
         </h1>
         <form
           className="row"
@@ -529,7 +522,7 @@ export default function AddCar() {
                     type="submit"
                     className="btn btn-1 text-uppercase fs-15 mx-auto mt-2"
                   >
-                    добавить машину
+                    сохранить изменения
                   </button>
                 </div>
               </div>
@@ -545,7 +538,7 @@ export default function AddCar() {
                 type="submit"
                 className="btn btn-1 text-uppercase fs-15 mx-auto"
               >
-                добавить машину
+                сохранить изменения
               </button>
             </aside>
           </div>

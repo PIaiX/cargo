@@ -3,7 +3,7 @@ import { IconContext } from "react-icons";
 import { IoTrash } from "react-icons/io5";
 import { useDispatch } from "react-redux/es/exports";
 import { deleteCargoTemplate, setCurrentCargoTemplate } from "../../store/reducers/savedCargoTemplates";
-import { deleteCarTemplate, setCurrentCarTemplate } from "../../store/reducers/savedCarTemplates";
+import { deleteRouteTemplate, setCurrentRouteTemplate } from "../../store/reducers/savedRouteTemplates";
 
 
 export default function SavedTemplate({name, remark, id, type}) {
@@ -14,7 +14,7 @@ export default function SavedTemplate({name, remark, id, type}) {
         dispatch(deleteCargoTemplate(id))
       }
       if(type === "Car"){
-        dispatch(deleteCarTemplate(id))
+        dispatch(deleteRouteTemplate(id))
       }
     }
 
@@ -23,7 +23,7 @@ export default function SavedTemplate({name, remark, id, type}) {
         dispatch(setCurrentCargoTemplate(id))
       }
       if(type === "Car"){
-        dispatch(setCurrentCarTemplate(id))
+        dispatch(setCurrentRouteTemplate(id))
       }
     }
 
@@ -34,7 +34,7 @@ export default function SavedTemplate({name, remark, id, type}) {
           <div className="title-font fs-12 fw-7">{name}</div>
           {remark && <div className="fs-11 mt-1">{remark}</div>}
         </div>
-        <button type="button" className="btn btn-1 fs-09 px-2 px-sm-4 ms-2" onClick={handleSetCurrentTemplate}>
+        <button type="button" className="btn btn-1 fs-09 px-2 px-sm-4 ms-2" onClick={handleSetCurrentTemplate} data-bs-dismiss="modal">
           Выбрать
         </button>
         <button type="button" className="ms-2 ms-sm-3" onClick={handleTemplateDelete}>
