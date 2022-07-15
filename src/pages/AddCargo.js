@@ -7,8 +7,8 @@ import {
   IoCloseCircle,
   IoNewspaperOutline,
 } from "react-icons/io5";
-import {VscChromeClose} from "react-icons/vsc";
-import {IconContext} from "react-icons";
+import { VscChromeClose } from "react-icons/vsc";
+import { IconContext } from "react-icons";
 import Select from "react-select";
 import {
   optionsCargoType,
@@ -1252,7 +1252,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -1530,7 +1534,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2044,7 +2052,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2167,7 +2179,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2403,7 +2419,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2555,13 +2575,24 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="button">Сохранить шаблон</button>
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#savePatternCargo"
+                      onClick={handleSaveTemplate}
+                    >
+                      Сохранить шаблон
+                    </button>
                   </div>
                   <div className="row gx-2 gx-sm-4 title-font">
                     <div className="col-5 col-sm-6">
