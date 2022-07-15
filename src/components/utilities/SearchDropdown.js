@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import debounce from '../../hooks/debounce';
 import DefaultDropdown from './DefaultDropdown';
 
-const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedValues, placeholder}) => {
+const SearchDropdown = ({initialCount, isShow, options, onSelectItem, closeDropdown, checkedValues, placeholder}) => {
     const [optionsSearch, setOptionsSearch] = useState('')
     const debouncedOptionsSearch = debounce(optionsSearch, 300)
     const [foundOptions, setFoundOptions] = useState([])
@@ -11,7 +11,7 @@ const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedVa
     // scroll
     const [listItems, setListItems] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
-    const [total, setTotal] = useState(100);
+    const [total, setTotal] = useState(+initialCount);
 
     useEffect(() => {
         const value = debouncedOptionsSearch.toLowerCase().trim()
@@ -30,13 +30,13 @@ const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedVa
     useEffect(() => {
         if (!isShow) {
             setOptionsSearch('')
-            setListItems([])
+            setTotal(+initialCount)
+            setListItems(options.slice(0, initialCount))
         }
     }, [isShow])
 
-    useEffect(() => {
-        (options.length && listItems.length === 0) && fetchData();
-    }, [options, listItems]);
+    useEffect(() => options.length && fetchData(), [options]);
+    useEffect(() => isFetching && fetchData(), [isFetching]);
 
     const onScrollList = (event) => {
         const scrollBottom = event.target.scrollTop + event.target.offsetHeight + 100 >= event.target.scrollHeight;
@@ -55,8 +55,6 @@ const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedVa
         }, 1000);
     };
 
-    useEffect(() => isFetching && fetchData(), [isFetching]);
-
     return (
         <>
             <input
@@ -74,6 +72,7 @@ const SearchDropdown = ({isShow, options, onSelectItem, closeDropdown, checkedVa
                 checkedValues={checkedValues}
                 onScroll={onScrollList}
                 isFetching={isFetching}
+                isShow={isShow}
             />
         </>
     )

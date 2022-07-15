@@ -6,7 +6,7 @@ import useCustomSelect from '../../hooks/customSelect';
 // mode = values -> если в checkedOptions передаются values(значения которые нужны для вычислений и логики, прикрепляются к dropdown items, но не отображаются в UI)
 // child -> принимает что будет использовано в качестве дочерней компоненты dropdown
 // callback -> сработает в случает события клика по dropdown item, возвращает объект с title и value кликнутого элемента
-const CustomSelect = React.memo(({mode = 'titles', options = [], checkedOptions, btnClass, className, title, isShow, modificator, callback, child, placeholder, align}) => {
+const CustomSelect = React.memo(({mode = 'titles', options = [], checkedOptions, btnClass, className, title, isShow, modificator, callback, child, placeholder, align, initialCount}) => {
   const [dropdownItems, setDropdownItems] = useState([])
   const [checkedValue, setCheckedValue] = useState(null)
   const [checkedTitle, setCheckedTitle] = useState(null)
@@ -72,6 +72,7 @@ const CustomSelect = React.memo(({mode = 'titles', options = [], checkedOptions,
               checkedOptions={checkedOptions}
               mode={mode}
               placeholder={placeholder}
+              initialCount={initialCount}
           />
         </div>
       </div>

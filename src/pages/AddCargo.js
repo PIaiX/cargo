@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from "react";
-import {Link} from "react-scroll";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-scroll";
 import {
   IoAddCircle,
   IoChevronBackOutline,
@@ -7,8 +7,8 @@ import {
   IoCloseCircle,
   IoNewspaperOutline,
 } from "react-icons/io5";
-import {VscChromeClose} from "react-icons/vsc";
-import {IconContext} from "react-icons";
+import { VscChromeClose } from "react-icons/vsc";
+import { IconContext } from "react-icons";
 import Select from "react-select";
 import {
   optionsCargoType,
@@ -20,8 +20,11 @@ import {
   optionsPackageType,
   optionsTowns,
 } from "../components/utilities/data";
-import {useDispatch, useSelector} from "react-redux";
-import {setCargoFormData, setCurrentCargoTemplate,} from "../store/reducers/savedCargoTemplates";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCargoFormData,
+  setCurrentCargoTemplate,
+} from "../store/reducers/savedCargoTemplates";
 
 const initialLoading = [
   [
@@ -387,7 +390,8 @@ export default function AddCargo() {
   //main input changes handler
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
-    let inputVal = e.target.name === "remark" ? e.target.value : e.target.value.trim();
+    let inputVal =
+      e.target.name === "remark" ? e.target.value : e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
     if (e.target.type === "checkbox") {
@@ -555,7 +559,7 @@ export default function AddCargo() {
             } else if (addParams.includes(obj.name)) {
               return { ...obj, required: true };
             } else if (delParams.includes(obj.name)) {
-              delParams.map((item) => clearInput(item))
+              delParams.map((item) => clearInput(item));
               return { ...obj, required: false, value: "" };
             } else {
               return obj;
@@ -573,11 +577,13 @@ export default function AddCargo() {
     if (i !== undefined) {
       if (
         opt.find(
-          (obj) => obj.value === state[i].find((obj) => obj.name === param).value
+          (obj) =>
+            obj.value === state[i].find((obj) => obj.name === param).value
         )
       ) {
         return opt.find(
-          (obj) => obj.value === state[i].find((obj) => obj.name === param).value
+          (obj) =>
+            obj.value === state[i].find((obj) => obj.name === param).value
         );
       } else {
         return "";
@@ -647,11 +653,11 @@ export default function AddCargo() {
   const getContact = (param, i) => {
     let val;
     if (param === "name") {
-      const result = contacts.find((obj) => obj.index === i) 
-      if(result) val = result.name
+      const result = contacts.find((obj) => obj.index === i);
+      if (result) val = result.name;
     } else if (param === "phone") {
-      const result = contacts.find((obj) => obj.index === i) 
-      if(result) val = result.phone
+      const result = contacts.find((obj) => obj.index === i);
+      if (result) val = result.phone;
     } else {
       val = undefined;
     }
@@ -687,7 +693,7 @@ export default function AddCargo() {
   };
   //удаление fieldset
   let delState = (state, func, index) => {
-    const newArray = [...state]
+    const newArray = [...state];
     let arr = newArray.splice(index, 1);
     func(newArray.filter((obj) => obj !== arr));
   };
@@ -696,8 +702,8 @@ export default function AddCargo() {
   let checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
     return requiredArr.every(
-        (elem) =>
-            elem.value !== null && elem.value !== undefined && elem.value !== ""
+      (elem) =>
+        elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
   };
   let checkFieldsetArr = (state) => {
@@ -705,8 +711,8 @@ export default function AddCargo() {
       arr.filter((item) => item.required === true)
     );
     return requiredArr.every(
-        (elem) =>
-            elem.value !== null && elem.value !== undefined && elem.value !== ""
+      (elem) =>
+        elem.value !== null && elem.value !== undefined && elem.value !== ""
     );
   };
   let checkAllProps = (state) => {
@@ -720,7 +726,7 @@ export default function AddCargo() {
       return arr;
     });
     return requiredProps.every(
-        (elem) => elem !== null && elem !== undefined && elem !== ""
+      (elem) => elem !== null && elem !== undefined && elem !== ""
     );
   };
 
@@ -1246,7 +1252,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -1524,7 +1534,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2038,7 +2052,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2161,7 +2179,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2397,7 +2419,11 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
@@ -2549,13 +2575,24 @@ export default function AddCargo() {
               <div className="mobile-btns d-block d-lg-none">
                 <div className="container">
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                    <button type="button">
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#usePatternCargo"
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="button">Сохранить шаблон</button>
+                    <button
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#savePatternCargo"
+                      onClick={handleSaveTemplate}
+                    >
+                      Сохранить шаблон
+                    </button>
                   </div>
                   <div className="row gx-2 gx-sm-4 title-font">
                     <div className="col-5 col-sm-6">

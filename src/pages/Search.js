@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import CustomSelect from "../components/utilities/CustomSelect";
 import Card from "../components/Card";
-import {
-  IoChevronDownSharp,
-  IoSwapHorizontalSharp,
-} from "react-icons/io5";
+import { IoChevronDownSharp, IoSwapHorizontalSharp } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import Pagination from "../components/Pagination";
+import usePagination from "../hooks/pagination";
 import cargo from "./../dummyData/cargo.json";
 import cars from "./../dummyData/car.json";
+import {getCities} from "../API/cities";
+import SearchInput from "../components/utilities/SearchInput";
 
 const formValuesDefault = {
   from: "",
@@ -25,39 +25,47 @@ const formValuesDefault = {
   specialNotes: "",
 };
 
-const pageLimit = 12;
+const initialPageLimit = 12
 
 export default function Search() {
   const [search, setSearch] = useState("cargo"); // cargo & car
   const [filteredCargo, setFilteredCargo] = useState([]);
   const [filteredCars, setFilteredCars] = useState([]);
-  const [cargoPage, setCargoPage] = useState(1);
-  const [cargoStartingPage, setCargoStartingPage] = useState(1)
-  const [carsPage, setCarsPage] = useState(1);
-  const [carsStartingPage, setCarsStartingPage] = useState(1)
-  const [advSearch, setAdvSearch] = useState(true);
 
+  const cargoPagination = usePagination(initialPageLimit)
+  const carsPagination = usePagination(initialPageLimit);
+  
+  const [advSearch, setAdvSearch] = useState(true);
+  const [data, setData] = useState([])
   const [formValues, setFormValues] = useState(formValuesDefault);
 
   useEffect(() => {
+    getCities().then(res => {
+      if (res.status === 200) {
+        setData(res.body)
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     //Make an API call later getting the first page of all the cargo
-    const startIdx = (cargoPage - 1) * pageLimit;
-    const endIdx = startIdx + pageLimit;
+    const startIdx = (cargoPagination.currentPage - 1) * cargoPagination.pageLimit;
+    const endIdx = startIdx + cargoPagination.pageLimit;
     const paginated = cargo.slice(startIdx, endIdx);
 
     setFilteredCargo(paginated);
     window.scrollTo(0, 0);
-  }, [cargoPage]);
+  }, [cargoPagination.currentPage, cargoPagination.pageLimit]);
 
   useEffect(() => {
     //Make an API call later getting the first page of all the cars
-    const startIdx = (carsPage - 1) * pageLimit;
-    const endIdx = startIdx + pageLimit;
+    const startIdx = (carsPagination.currentPage - 1) * carsPagination.pageLimit;
+    const endIdx = startIdx + carsPagination.pageLimit;
     const paginated = cars.slice(startIdx, endIdx);
 
     setFilteredCars(paginated);
     window.scrollTo(0, 0);
-  }, [carsPage]);
+  }, [carsPagination.currentPage, carsPagination.pageLimit]);
 
   useEffect(() => {
     function collapseForm() {
@@ -130,12 +138,14 @@ export default function Search() {
               <div className="col-lg-8 d-sm-flex align-items-end">
                 <div className="flex-1 mb-3 mb-sm-0">
                   <label className="title-font mb-2 mb-xl-3">Откуда</label>
-                  <input
-                    type="text"
-                    placeholder="Город отправления"
-                    name="from"
-                    value={formValues.from}
-                    onChange={handleFormChange}
+                  <SearchInput
+                      data={data}
+                      placeHolder={'Город отправления'}
+                      callback={(inputValue) => setFormValues(prevState => {
+                        return {
+                          ...prevState, 'from': inputValue
+                        }
+                      })}
                   />
                 </div>
                 <IconContext.Provider
@@ -148,12 +158,14 @@ export default function Search() {
                 </IconContext.Provider>
                 <div className="flex-1">
                   <label className="title-font mb-2 mb-xl-3">Куда</label>
-                  <input
-                    type="text"
-                    placeholder="Город назначения"
-                    name="to"
-                    value={formValues.to}
-                    onChange={handleFormChange}
+                  <SearchInput
+                      data={data}
+                      placeHolder={'Город назначения'}
+                      callback={(inputValue) => setFormValues(prevState => {
+                        return {
+                          ...prevState, 'to': inputValue
+                        }
+                      })}
                   />
                 </div>
               </div>
@@ -263,7 +275,9 @@ export default function Search() {
                       checkedOptions={[formValues.cargoType]}
                       mode="values"
                       options={["Не важно", "Тип 1", "Тип 2"]}
-                      callback={({value}) => handleSelectChange(value, 'cargoType')}
+                      callback={({ value }) =>
+                        handleSelectChange(value, "cargoType")
+                      }
                     />
                   </div>
                   <div className="col-sm-6 col-md-4">
@@ -277,7 +291,9 @@ export default function Search() {
                       checkedOptions={[formValues.specialNotes]}
                       mode="values"
                       options={["Не важно", "Тип 1", "Тип 2"]}
-                      callback={({value}) => handleSelectChange(value, 'specialNotes')}
+                      callback={({ value }) =>
+                        handleSelectChange(value, "specialNotes")
+                      }
                     />
                   </div>
                 </>
@@ -401,7 +417,9 @@ export default function Search() {
                       checkedOptions={[formValues.cargoType]}
                       mode="values"
                       options={["Не важно", "Тип 1", "Тип 2"]}
-                      callback={({value}) => handleSelectChange(value, 'cargoType')}
+                      callback={({ value }) =>
+                        handleSelectChange(value, "cargoType")
+                      }
                     />
                   </div>
                   <div className="col-sm-6 col-md-4">
@@ -415,7 +433,9 @@ export default function Search() {
                       checkedOptions={[formValues.specialNotes]}
                       mode="values"
                       options={["Нет", "Пометка 1", "Пометка 2"]}
-                      callback={({value}) => handleSelectChange(value, 'specialNotes')}
+                      callback={({ value }) =>
+                        handleSelectChange(value, "specialNotes")
+                      }
                     />
                   </div>
                 </>
@@ -479,7 +499,7 @@ export default function Search() {
               checkedOptions={[formValues.sort]}
               mode="values"
               options={["По времени добавления", "По другому признаку"]}
-              callback={({value}) => handleSelectChange(value, 'sort')}
+              callback={({ value }) => handleSelectChange(value, "sort")}
             />
           </div>
         </div>
@@ -520,32 +540,26 @@ export default function Search() {
             ))}
           </div>
         )}
-        {/* <button
-          type="button"
-          className="fs-11 dark-blue mx-auto mt-4 mt-sm-5 bb-1"
-        >
-          Показать еще
-        </button> */}
         <div hidden={search !== "cargo"}>
           <Pagination
-            pageLimit={pageLimit}
-            currentPage={cargoPage}
-            setCurrentPage={setCargoPage}
+            pageLimit={cargoPagination.pageLimit}
+            currentPage={cargoPagination.currentPage}
+            setCurrentPage={cargoPagination.setCurrentPage}
             pagesDisplayedLimit={3}
             itemsAmount={cargo.length}
-            startingPage={cargoStartingPage}
-            setStartingPage={setCargoStartingPage}
+            startingPage={cargoPagination.startingPage}
+            setStartingPage={cargoPagination.setStartingPage}
           />
         </div>
         <div hidden={search === "cargo"}>
           <Pagination
-            pageLimit={pageLimit}
-            currentPage={carsPage}
-            setCurrentPage={setCarsPage}
+            pageLimit={carsPagination.pageLimit}
+            currentPage={carsPagination.currentPage}
+            setCurrentPage={carsPagination.setCurrentPage}
             pagesDisplayedLimit={3}
             itemsAmount={cars.length}
-            startingPage={carsStartingPage}
-            setStartingPage={setCarsStartingPage}
+            startingPage={carsPagination.startingPage}
+            setStartingPage={carsPagination.setStartingPage}
           />
         </div>
       </section>
