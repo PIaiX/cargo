@@ -45,7 +45,7 @@ export default function Search() {
 
     setFilteredCargo(paginated);
     window.scrollTo(0, 0);
-  }, [cargoPagination.currentPage]);
+  }, [cargoPagination.currentPage, cargoPagination.pageLimit]);
 
   useEffect(() => {
     //Make an API call later getting the first page of all the cars
@@ -55,7 +55,7 @@ export default function Search() {
 
     setFilteredCars(paginated);
     window.scrollTo(0, 0);
-  }, [carsPagination.currentPage]);
+  }, [carsPagination.currentPage, carsPagination.pageLimit]);
 
   useEffect(() => {
     function collapseForm() {

@@ -51,7 +51,7 @@ export default function SaveTemplateModal({ type }) {
             <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={() => setFormError("")}>
               <IoCloseOutline />
             </button>
-            <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "машины"}</h2>
+            <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "маршрута"}</h2>
             <form className="fs-12">
               <label htmlFor="pattern-name" className="fw-5 title-font mb-2">
                 Название шаблона
@@ -98,6 +98,7 @@ export default function SaveTemplateModal({ type }) {
                   <button
                     type="button"
                     className="btn btn-2 w-100"
+                    data-bs-dismiss={`${!formValue.name ? "" : "modal"}`}
                     onClick={handleFormSubmit}
                   >
                     Сохранить
