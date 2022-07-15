@@ -7,7 +7,7 @@ export default function ChooseTemplateModal({ type }) {
   const templates = useSelector((state) =>
     type === "Cargo"
       ? state.savedCargoTemplates.allTemplates
-      : state.savedCarTemplates.allTemplates
+      : state.savedRouteTemplates.allTemplates
   );
   return (
     <div
