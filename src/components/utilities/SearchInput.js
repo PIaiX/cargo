@@ -1,9 +1,25 @@
-import React, {memo, useState} from 'react';
+import React, {memo, useEffect, useRef, useState} from 'react';
 
 const SearchInput = memo(({data, placeHolder, callback}) => {
 
         const [inputValue, setInputValue] = useState('')
         const [inputValueShow, setInputValueShow] = useState(false)
+        const ref = useRef(null)
+
+        const closeFindDiv = () => setInputValueShow(false)
+
+        const handlerClickOutDiv = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) {
+                closeFindDiv()
+            }
+        }
+
+        useEffect(() => {
+            document.addEventListener('click', handlerClickOutDiv, true);
+            return () => {
+                document.removeEventListener('click', handlerClickOutDiv, true);
+            }
+        })
 
         const findValue = (value) => {
             const filteredValue = value.toLowerCase().trim()
@@ -18,14 +34,13 @@ const SearchInput = memo(({data, placeHolder, callback}) => {
 
         return (
             <>
-                <div className="inputCity">
+                <div className="inputCity" ref={ref}>
                     <input
                         type="text"
                         placeholder={placeHolder}
                         className="fs-15"
                         value={inputValue}
-                        onFocus={() => setInputValueShow(true)}
-                        onBlur={() => setTimeout(() => setInputValueShow(false), 200)}
+                        onClick={() => setInputValueShow(true)}
                         onChange={(e) => {
                             setInputValue(e.target.value)
                             findValue(e.target.value)
