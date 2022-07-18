@@ -22,7 +22,7 @@ export default function Forum() {
     const [itemsAmount, setItemsAmount] = useState(fakeForumSections.length || 0)
     const [forumSections, setForumSections] = useState([]);
     const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
-    const {searchValue, setSearchValue, foundItems} = useSearchInput(fakeForumSections)
+    const {searchValue, setSearchValue, foundItems} = useSearchInput(fakeForumSections, 'title')
 
     //Make API call in the future, fetching actual forum data
 
