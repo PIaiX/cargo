@@ -3695,4 +3695,11 @@ footer .payment-methods img:not(:first-child) {
   color: #FFF;
 }
 
+.validate-wrapper_error input {
+  border-color: red;
+}
+.validate-wrapper .validate-error {
+  color: red;
+}
+
 /*# sourceMappingURL=style.css.map */

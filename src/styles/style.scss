@@ -3807,3 +3807,19 @@ footer {
   background: $blue;
   color: #FFF;
 }
+
+//Validation
+
+.validate-wrapper {
+
+  &_error {
+
+    input {
+      border-color: red;
+    }
+  }
+
+  .validate-error {
+    color: red;
+  }
+}
