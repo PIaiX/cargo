@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import FormErrorMessage from "../components/utilities/FormErrorMessage";
 import Joi from "joi";
+import axiosPrivate from "../API/axiosPrivate";
+import apiRoutes from "../API/config/apiRoutes";
+import apiResponseMessages from "../API/config/apiResponseMessages";
 
 const emailSchema = Joi.object({
   email: Joi.string()
@@ -14,7 +17,7 @@ const emailSchema = Joi.object({
       "string.min": `Email адрес не может быть короче 4 символов`,
       "string.max": `Email адрес не может быть длиннее 20 символов`,
       "string.email": `Введите Email адрес корректного формата`,
-    })
+    }),
 });
 
 const fullSchema = Joi.object({
@@ -58,12 +61,15 @@ export default function ResetPassword() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let result;
-    
-    if(!smsCodeActive) {
-      result = emailSchema.validate({email: formValue.email}, { abortEarly: false });
+
+    if (!smsCodeActive) {
+      result = emailSchema.validate(
+        { email: formValue.email },
+        { abortEarly: false }
+      );
     }
 
-    if(smsCodeActive) {
+    if (smsCodeActive) {
       result = fullSchema.validate(formValue, { abortEarly: false });
     }
 
@@ -72,27 +78,57 @@ export default function ResetPassword() {
       return;
     }
 
-    // TODO: Make an API call in the future
+    if (!smsCodeActive) {
+      try {
+        const response = await axiosPrivate.post(
+          `${apiRoutes.FORGOT_PASSWORD_VERIFY_EMAIL}`,
+          { email: formValue.email }
+        );
+        console.log(response.data);
+      } catch (error) {
+        if (error.response.data.status === 400) {
+          setFormError((prev) => {
+            return {
+              ...prev,
+              email: apiResponseMessages.FORGOT_PASSWORD_EMAIL_NOT_FOUND,
+            };
+          });
+        }
+      }
+    }
 
-    // try {
-    //   const response = await axios.post(`${baseUrl}/api/auth/resetPassword`, {
-    //     ...formValue
-    //   });
-    // } catch (error) {
-    //   console.log(error.message)
-    // }
+    if (!smsCodeActive) {
+      return setSmsCodeActive(true);
+    }
 
-    if(!smsCodeActive){
-      return setSmsCodeActive(true)
-    } 
+    if(smsCodeActive){
+      try {
+        const response = await axiosPrivate.post(`${apiRoutes.FORGOT_PASSWORD_CODE_VERIFY}`, {
+          email: formValue.email,
+          verifyCode: formValue.smsCode
+        })
+        console.log("first step", response.data)
+      } catch (error) {
+        if(error.response.data.status === 400){
+          setFormError((prev) => {
+            return {...prev, smsCode: apiResponseMessages.WRONG_VERIFY_CODE}
+          })
+        }
+        return
+      }
+    }
 
-    alert(JSON.stringify(formValue));
     setFormError({ email: "" });
     setFormValue({ email: "" });
 
     //if all good, navigate to the /reset-password-2 which is the second step in the process
-    if(smsCodeActive) navigate("/reset-password-2");
-  };
+    if (smsCodeActive){
+      navigate("/reset-password-2", {state: {
+        email: formValue.email,
+        verifyCode: formValue.smsCode
+      }})
+    };
+  } 
 
   const handleFormErrors = (errors) => {
     errors.forEach((formField) => {

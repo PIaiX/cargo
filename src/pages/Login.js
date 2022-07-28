@@ -86,6 +86,7 @@ export default function Login() {
         rememberMe
       }
       dispatch(setCurrentUser(payload))
+      navigate("/")
     } catch (error) {
       if(error.response.data.status === 400) {
         setFormErrors({
