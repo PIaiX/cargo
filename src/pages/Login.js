@@ -3,11 +3,16 @@ import { Link } from "react-router-dom";
 import InputPassword from "../components/utilities/InputPassword";
 import FormErrorMessage from "../components/utilities/FormErrorMessage";
 import Joi from "joi";
+import axiosPrivate from "../API/axiosPrivate";
+import apiRoutes from "../API/config/apiRoutes";
+import apiResponseMessages from "../API/config/apiResponseMessages";
+import { useDispatch } from "react-redux/es/exports";
+import {setCurrentUser} from "../store/reducers/currentUser"
+import { useNavigate } from "react-router-dom";
 
 const formValueDefault = {
   email: "",
-  password: "",
-  remember: false,
+  password: ""
 };
 
 const formErrorDefault = {
@@ -38,19 +43,21 @@ const schema = Joi.object({
       "string.min": `Пароль не может быть короче 8 символов`,
       "string.max": `Пароль не может быть длиннее 20 символов`,
     }),
-  remember: Joi.boolean(),
 });
 
 export default function Login() {
   const [formValue, setFormValue] = useState(formValueDefault);
   const [formErrors, setFormErrors] = useState(formErrorDefault);
+  const [rememberMe, setRememberMe] = useState(false)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleFormChange = (e) => {
     setFormValue((prev) => {
       return {
         ...prev,
-        [e.target.name]:
-          e.target.type === "checkbox" ? e.target.checked : e.target.value,
+        [e.target.name]: e.target.value,
       };
     });
     setFormErrors((prev) => {
@@ -70,17 +77,25 @@ export default function Login() {
 
     if (hasError) return;
 
-    // TODO: Make an API call in the future
+    try {
+      const response = await axiosPrivate.post(`${apiRoutes.LOGIN}`, formValue);
+      const accessToken = response.data.body.token
 
-    // try {
-    //   const response = await axios.post(`${baseUrl}/api/auth/login`, {
-    //     ...formValue
-    //   });
-    // } catch (error) {
-    //   console.log(error.message)
-    // }
+      const payload = {
+        token: accessToken,
+        rememberMe
+      }
+      dispatch(setCurrentUser(payload))
+    } catch (error) {
+      if(error.response.data.status === 400) {
+        setFormErrors({
+          email: apiResponseMessages.USER_NOT_FOUND,
+          password: apiResponseMessages.USER_NOT_FOUND
+        })
+        return
+      }
+    }
 
-    alert(JSON.stringify(formValue));
     setFormErrors(formErrorDefault);
     setFormValue(formValueDefault);
   };
@@ -134,7 +149,7 @@ export default function Login() {
                     className="me-2"
                     defaultChecked={formValue.remember}
                     value={formValue.remember}
-                    onChange={handleFormChange}
+                    onChange={() => setRememberMe((prev) => !prev)}
                   />
                   <span className="blue">Запомнить меня</span>
                 </label>

@@ -6,6 +6,8 @@ import './styles/style.css';
 import AppRouter from './routes/AppRouter';
 import {Dropdown} from 'bootstrap';
 import {useInitialData} from "./hooks/loadInitialData"
+import fingerprint from "@fingerprintjs/fingerprintjs";
+
 
 function App() {
     useEffect(() => {
@@ -13,6 +15,16 @@ function App() {
         Array.from(document.querySelectorAll('.dropdown-toggle'))
             .forEach(dropdownNode => new Dropdown(dropdownNode))
     });
+
+    //Set fingerprint
+    useEffect(() => {
+        fingerprint
+            .load()
+            .then((fp) => fp.get())
+            .then((result) => {
+                localStorage.setItem("fingerprint", result.visitorId);
+            })
+    }, [])
 
     //Fetch initial data
     useInitialData()
