@@ -58,7 +58,7 @@ export default function CargoPage() {
                                 </div>
                             </div>
                         </div>
-                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/cargo/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
+                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="cargo" img="/img/users/logo.png" title="ООО НТК" contacts={[{name: 'Анастасия', phone: '+7 (952) 65 89 61'}, {name: 'Иван', phone: '+7 (952) 65 89 62'}]} />
                         <button type="button" data-bs-toggle="modal" data-bs-target="#report" className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
                             <IconContext.Provider value={{className: "gray-4 icon"}}>
                                 <IoWarning />
@@ -94,7 +94,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 
@@ -125,7 +124,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место загрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 
@@ -156,7 +154,6 @@ export default function CargoPage() {
                                 </IconContext.Provider>
                                 <span className="fw-5 me-2">Место разгрузки: </span>
                                 <span>г. Казань, Четаева 89</span>
-                                <button type="button" className="blue fs-09 ms-3">Показать на карте</button>
                             </div>
                         </div>
 
@@ -212,12 +209,6 @@ export default function CargoPage() {
 
                         <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
                             <button type="button" data-bs-toggle="offcanvas" data-bs-target="#warning" className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ</button>
-                            <button type="button" className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3">
-                                <IconContext.Provider value={{className: "icon me-1 me-lg-3"}}>
-                                    <IoRepeat />
-                                </IconContext.Provider>
-                                <span>Поиск грузов в обратном направлении</span>
-                            </button>
                         </div>
                     </div>
                 </div>

@@ -1,162 +1,241 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import ForumWidget from '../components/ForumWidget';
-import ForumSection from '../components/ForumSection';
-import CustomSelect from '../components/utilities/CustomSelect';
-import { IconContext  } from "react-icons";
-import { IoSearch, IoChevronBack, IoChevronForward, IoAddCircleSharp } from 'react-icons/io5';
-import { BsFillInfoSquareFill, BsFillChatRightTextFill } from "react-icons/bs";
+import React, {useState, useEffect} from "react";
+import {Link, NavLink} from "react-router-dom";
+import ForumWidget from "../components/ForumWidget";
+import ForumSection from "../components/ForumSection";
+import CustomSelect from "../components/utilities/CustomSelect";
+import {IconContext} from "react-icons";
+import {
+    IoSearch,
+    IoAddCircleSharp,
+} from "react-icons/io5";
+import {BsFillInfoSquareFill, BsFillChatRightTextFill} from "react-icons/bs";
+import fakeForumSections from "../dummyData/forumSections.json";
+import Pagination from "../components/Pagination";
+import CustomModal from '../components/utilities/CustomModal';
+import usePagination from '../hooks/pagination';
+import useSearchInput from '../hooks/searchInput';
 
+const initialPageLimit = 10;
 
 export default function Forum() {
+    const { pageLimit, setPageLimit, currentPage, setCurrentPage, startingPage, setStartingPage} = usePagination(initialPageLimit)
+    const [itemsAmount, setItemsAmount] = useState(fakeForumSections.length || 0)
+    const [forumSections, setForumSections] = useState([]);
+    const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
+    const {searchValue, setSearchValue, foundItems} = useSearchInput(fakeForumSections, 'title')
+
+    //Make API call in the future, fetching actual forum data
+
+    useEffect(() => {
+
+        const startIdx = (currentPage - 1) * pageLimit;
+        const endIdx = startIdx + pageLimit;
+        const paginated = foundItems.slice(startIdx, endIdx);
+
+        setForumSections(paginated);
+        setItemsAmount(foundItems.length)
+
+    }, [currentPage, pageLimit, foundItems]);
+
     return (
-        <main className='bg-white py-4 py-sm-5'>
-            <section className='container' id="sec-11">
-                <nav aria-label="breadcrumb" className='mb-3'>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
+        <main className="bg-white py-4 py-sm-5">
+            <section className="container" id="sec-11">
+                <nav aria-label="breadcrumb" className="mb-3">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
                     </ol>
                 </nav>
 
-                <h1 className='dark-blue text-uppercase'>Форум ПОРТАЛА</h1>
+                <h1 className="dark-blue text-uppercase">Форум ПОРТАЛА</h1>
 
-                <div className='row flex-lg-row-reverse'>
-                    <div className='col-lg-3'>
-                        <div className='d-flex justify-content-end align-items-center mb-3 fs-12'>
-                            <IconContext.Provider value={{className: "icon-10 blue", title: "Мои темы" }}>
-                                <BsFillChatRightTextFill />
+                <div className="row flex-lg-row-reverse">
+                    <div className="col-lg-3">
+                        <NavLink to="/my-topics" className="d-flex justify-content-end align-items-center mb-3 fs-12">
+                            <IconContext.Provider
+                                value={{className: "icon-10 blue", title: "Мои темы"}}
+                            >
+                                <BsFillChatRightTextFill/>
                             </IconContext.Provider>
-                            <span className='ms-2 blue'>Мои темы (2)</span>
-                        </div>
+                            <span className="ms-2 blue">Мои темы (2)</span>
+                        </NavLink>
 
-                        <button type='button' data-bs-toggle="modal" data-bs-target="#new-topic" className='btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex'>
-                            <IconContext.Provider value={{className: "icon-15 white", title: "Создать тему" }}>
-                                <IoAddCircleSharp />
+                        <button
+                            type="button"
+                            className="btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex"
+                            onClick={() => setIsShowCreateTheme(prevState => !prevState)}
+                        >
+                            <IconContext.Provider
+                                value={{className: "icon-15 white", title: "Создать тему"}}
+                            >
+                                <IoAddCircleSharp/>
                             </IconContext.Provider>
-                            <span className='flex-1'>Создать тему</span>
+                            <span className="flex-1">Создать тему</span>
                         </button>
 
-                        <form className='form-search mb-4'>
-                            <input type="search" placeholder='Поиск по форуму'/>
+                        <form className="form-search mb-4">
+                            <input
+                                type="search"
+                                placeholder="Поиск по форуму"
+                                value={searchValue}
+                                onChange={e => {
+                                    setSearchValue(e.target.value)
+                                    setStartingPage(1)
+                                    setCurrentPage(1)
+                                }}
+                            />
                             <button>
-                                <IconContext.Provider value={{className: "icon-15 green", title: "Поиск" }}>
-                                    <IoSearch />
+                                <IconContext.Provider
+                                    value={{className: "icon-15 green", title: "Поиск"}}
+                                >
+                                    <IoSearch/>
                                 </IconContext.Provider>
                             </button>
                         </form>
-                        <h5 class="d-none d-lg-block mb-1">Статистика портала</h5>
-                        <div className='stat d-none d-lg-block title-font p-3 mb-4'>
-                            <div className='d-flex justify-content-between mb-2 mb-xl-3'>
-                                <div className='gray-3 fw-4 me-4'>Темы:</div>
-                                <div className='fw-5'>213</div>
+                        <h5 className="d-none d-lg-block mb-1">Статистика портала</h5>
+                        <div className="stat d-none d-lg-block title-font p-3 mb-4">
+                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                <div className="gray-3 fw-4 me-4">Темы:</div>
+                                <div className="fw-5">213</div>
                             </div>
-                            <div className='d-flex justify-content-between mb-2 mb-xl-3'>
-                                <div className='gray-3 me-4'>Сообщения:</div>
-                                <div className='fw-5'>12 213</div>
+                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                <div className="gray-3 me-4">Сообщения:</div>
+                                <div className="fw-5">12 213</div>
                             </div>
-                            <div className='d-flex justify-content-between mb-2 mb-xl-3'>
-                                <div className='gray-3 me-4'>Пользователи:</div>
-                                <div className='fw-5'>813</div>
+                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                <div className="gray-3 me-4">Пользователи:</div>
+                                <div className="fw-5">813</div>
                             </div>
-                            <div className='d-flex justify-content-between'>
-                                <div className='gray-3 me-4'>Новая тема:</div>
-                                <div className='fw-5 flex-1 text-truncate blue'>Название темы Название темы Название темы</div>
+                            <div className="d-flex justify-content-between">
+                                <div className="gray-3 me-4">Новая тема:</div>
+                                <div className="fw-5 flex-1 text-truncate blue">
+                                    Название темы Название темы Название темы
+                                </div>
                             </div>
                         </div>
-                        <ForumWidget className="d-none d-lg-block" />
+                        <ForumWidget className="d-none d-lg-block"/>
                     </div>
-                    <div className='col-lg-9'>
-                        <div className='d-flex justify-content-end mb-3'>
-                            <nav>
-                                <ul className="pagination">
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Previous">
-                                            <IoChevronBack />
-                                        </a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link active" href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                                    <li className="page-item">...</li>
-                                    <li className="page-item"><a className="page-link" href="/">6</a></li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Next">
-                                            <IoChevronForward />
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
+                    <div className="col-lg-9">
+                        <div className="d-flex justify-content-end mb-3">
+                            <Pagination
+                                // Количество тем на странице
+                                pageLimit={pageLimit}
+                                // Текущая страница
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                // Лимит отображаемых страниц при 3 будет 123...6 при 6 будет 123456
+                                pagesDisplayedLimit={3}
+                                // Длинна массива тем
+                                itemsAmount={itemsAmount}
+                                // Стартовая страница
+                                startingPage={startingPage}
+                                setStartingPage={setStartingPage}
+                            />
                         </div>
-
-                        <div className='forum-header'>
-                            <div className='icon'></div>
-                            <div className='text'>Название раздела</div>
-                            <div className='topics'>Тем</div>
-                            <div className='messages'>Сообщений</div>
-                            <div className='latest'>Последнее сообщение</div>
+                        <div className="forum-header">
+                            <div className="icon"/>
+                            <div className="text">Название темы</div>
+                            <div className="messages">Сообщений</div>
+                            <div className="latest">Последнее сообщение</div>
                         </div>
-
-                        <ForumSection 
-                            title="Недобросовестные партнеры Недобросовестные партнеры Недобросовестные партнеры" 
-                            subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} 
-                            info="Информация о фирмах нарушающих договоренности и задерживающих оплату." 
-                            topics={15} 
-                            messages={205} 
-                            latest="14.04.2022 16:00"
-                        />
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату. Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-                        <ForumSection title="Недобросовестные партнеры" subsections={[{name: 'Название подраздела 1', url: '/forum-section'}, {name: 'Название подраздела 2', url: '/forum-section'}]} info="Информация о фирмах нарушающих договоренности и задерживающих оплату." topics={15} messages={205} latest="14.04.2022 16:00"/>
-
-                        <div className='d-flex align-items-center justify-content-between mt-4'>
-                            <nav>
-                                <ul className="pagination">
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Previous">
-                                            <IoChevronBack />
-                                        </a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link active" href="/">1</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">2</a></li>
-                                    <li className="page-item"><a className="page-link" href="/">3</a></li>
-                                    <li className="page-item">...</li>
-                                    <li className="page-item"><a className="page-link" href="/">6</a></li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="/" aria-label="Next">
-                                            <IoChevronForward />
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-
-                            <div className='d-flex align-items-center'>
-                                <span className='d-none d-sm-block me-2'>показать</span>
-                                <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right"/>
-                                <span className='ms-2 d-none d-md-block'>тем на странице</span>
+                        {
+                            forumSections.map((section) => (
+                                <ForumSection
+                                    key={section.id}
+                                    id={section.id}
+                                    title={section.title}
+                                    info={section.info}
+                                    topics={section.topics}
+                                    messages={section.messages}
+                                    latest={section.latest}
+                                />
+                            ))
+                        }
+                        <div className="d-flex align-items-center justify-content-between mt-4">
+                            <Pagination
+                                callback={pages => !(pages.includes(currentPage)) && setCurrentPage(startingPage)}
+                                pageLimit={pageLimit}
+                                currentPage={currentPage}
+                                setCurrentPage={setCurrentPage}
+                                pagesDisplayedLimit={3}
+                                itemsAmount={itemsAmount}
+                                startingPage={startingPage}
+                                setStartingPage={setStartingPage}
+                            />
+                            <div className="d-flex align-items-center">
+                                <span className="d-none d-sm-block me-2">показать</span>
+                                <CustomSelect
+                                    className="inp"
+                                    name="items-count"
+                                    options={['10', '15', '20']}
+                                    checkedOptions={[`${pageLimit}`]}
+                                    callback={({title}) => setPageLimit(+title)}
+                                    align="right"
+                                />
+                                <span className="ms-2 d-none d-md-block">тем на странице</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className='row'>
-                    <div className='col-lg-9'>
-                        <hr className='mt-5 mb-3'/>
-                        <div className='d-flex align-items-center fs-11 mb-3'>
-                            <IconContext.Provider value={{className: "icon-10 blue", title: "Правила публикации" }}>
-                                <BsFillInfoSquareFill />
+                <div className="row">
+                    <div className="col-lg-9">
+                        <hr className="mt-5 mb-3"/>
+                        <div className="d-flex align-items-center fs-11 mb-3">
+                            <IconContext.Provider
+                                value={{
+                                    className: "icon-10 blue",
+                                    title: "Правила публикации",
+                                }}
+                            >
+                                <BsFillInfoSquareFill/>
                             </IconContext.Provider>
-                            <span className='blue ms-2'>Правила публикации</span>
+                            <span className="blue ms-2">Правила публикации</span>
                         </div>
-                        <p className='gray-3'>Администрация сайта не несет ответственности за информацию, публикуемую в форуме, и ее мнение может не совпадать с мнением авторов сообщений. Сообщения о незаконно размещенной информации на форуме присылайте на адрес:<a href='mailto:mail@gmail.com'>mail@gmail.com</a></p>
+                        <p className="gray-3">
+                            Администрация сайта не несет ответственности за информацию,
+                            публикуемую в форуме, и ее мнение может не совпадать с мнением
+                            авторов сообщений. Сообщения о незаконно размещенной информации на
+                            форуме присылайте на адрес:
+                            <a href="mailto:mail@gmail.com">mail@gmail.com</a>
+                        </p>
                     </div>
                 </div>
             </section>
+
+            <CustomModal
+                isShow={isShowCreateTheme}
+                setIsShow={setIsShowCreateTheme}
+                closeButton={true}
+                size='lg'
+            >
+                <h3>Новая тема</h3>
+                <form className="fs-12">
+                    <label className="mb-2">Название темы</label>
+                    <input
+                        type="text"
+                        className="mb-4"
+                        placeholder="Придумайте название темы"
+                    />
+                    <label className="mb-2">Текст темы</label>
+                    <textarea rows="5" placeholder="Ваша история или вопрос"/>
+                    <div className="row flex-sm-row-reverse mt-4">
+                        <div className="col-sm-5">
+                            <button type="submit" className="btn btn-2 w-100">
+                                Сохранить
+                            </button>
+                        </div>
+                        <div className="col-sm-7 mt-2 mt-sm-0">
+                            <div className="fs-09 text-center">
+                                Нажимая на кнопку “Создать тему”, вы соглашаетесь с{" "}
+                                <a className="blue" href="/">
+                                    правилами публикации
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </CustomModal>
         </main>
-    )
+    );
 }

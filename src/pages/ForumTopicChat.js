@@ -9,6 +9,10 @@ import { BsFillInfoSquareFill } from "react-icons/bs";
 import { IoChevronBack, IoChevronForward, IoCloseOutline } from 'react-icons/io5';
 
 export default function ForumTopicChat() {
+    // pagination data
+    const initialPageLimit = 10;
+    const [pageLimit, setPageLimit] = useState(initialPageLimit);
+
     const [answer, setAnswer] = useState(false);
 
     return (
@@ -16,14 +20,14 @@ export default function ForumTopicChat() {
         <main className='bg-white py-4 py-sm-5'>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
+                    <ol className="breadcrumb">
+                        <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li className="breadcrumb-item">
                             <Link to="/forum-section">Недобросовестные партнеры</Link>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li className="breadcrumb-item">
                             <Link to="/forum-topic">Название темы</Link>
                         </li>
                     </ol>
@@ -36,7 +40,7 @@ export default function ForumTopicChat() {
 
                 <div className='fixed-comment'>
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
@@ -47,7 +51,7 @@ export default function ForumTopicChat() {
                         {
                             (answer)?
                             <form>
-                                <label for="answer-1" className='title-font fs-12 fw-5 mb-2'>Ваш ответ</label>
+                                <label htmlFor="answer-1" className='title-font fs-12 fw-5 mb-2'>Ваш ответ</label>
                                 <textarea rows="6" placeholder='Текст' id="answer-1"></textarea>
                                 <div className='d-sm-flex align-items-center justify-content-end mt-2 mt-sm-3'>
                                     <div className='text-end fs-09 me-sm-4 mb-2 mb-sm-0'>Нажимая на кнопку “Ответить”, вы<br/> соглашаетесь с <a href="/" className='blue'>правилами публикации</a></div>
@@ -83,7 +87,7 @@ export default function ForumTopicChat() {
 
                 <div className='answers-box'>
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Модератор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Модератор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         citation = {{name: 'Имя пользователя', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus.'}}
@@ -92,7 +96,7 @@ export default function ForumTopicChat() {
                         dislikes={3}
                     />
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Imperdiet ipsum nisl, amet, pharetra sagittis tincidunt mattis. Orci eu sagittis, aliquam libero cursus phasellus. Nullam eu laoreet at blandit vitae odio. Semper risus blandit aliquam sed nec. Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus." 
@@ -100,7 +104,7 @@ export default function ForumTopicChat() {
                         dislikes={1}
                     />
                     <ForumComment 
-                        author={{name: 'Имя пользователя', imgURL: '/cargo/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
+                        author={{name: 'Имя пользователя', imgURL: '/img/users/photo.jpg', pageURL: '/personal-account/view-profile', post: 'Автор'}} 
                         date="12.01.2022" 
                         time="14:30" 
                         comment="Justo ut nunc, nec id risus ut augue interdum vitae. Adipiscing vulputate ligula lectus lectus ut faucibus. Tellus sociis et tristique gravida molestie tempus volutpat enim gravida. Ut odio donec nibh congue tempus pulvinar. Velit, eget netus non pellentesque enim diam vitae at pharetra. Massa nisl porttitor morbi cras. Commodo at volutpat vitae quis sem non nec. Urna, diam vel nisl ullamcorper lobortis nulla aenean augue sed. Dictum nec turpis velit, dui viverra. Pulvinar sit neque, auctor condimentum quis fermentum. Nulla vitae lectus id in. Accumsan elementum non donec diam augue euismod massa feugiat nec. Potenti mauris at vel, mollis." 
@@ -132,7 +136,14 @@ export default function ForumTopicChat() {
 
                     <div className='d-flex align-items-center'>
                         <span className='d-none d-sm-block me-2'>показать</span>
-                        <CustomSelect className="inp" name="items-count" checkedOpt={1} options={['10', '15', '20']} alignment="right"/>
+                        <CustomSelect
+                            className="inp"
+                            name="items-count"
+                            options={['10', '15', '20']}
+                            checkedOptions={[`${pageLimit}`]}
+                            callback={({title}) => setPageLimit(+title)}
+                            align="right"
+                        />
                         <span className='ms-2 d-none d-md-block'>тем на странице</span>
                     </div>
                 </div>
@@ -172,7 +183,7 @@ export default function ForumTopicChat() {
                                 </div>
                             </blockquote>
 
-                            <label for="answer-2" className='mb-2'>Ваш ответ</label>
+                            <label htmlFor="answer-2" className='mb-2'>Ваш ответ</label>
                             <textarea id="answer-2" rows="6" placeholder='Текст'></textarea>
                             <div className='row flex-sm-row-reverse mt-4'>
                                 <div className='col-sm-5'>
@@ -197,7 +208,7 @@ export default function ForumTopicChat() {
                         </button>
                         <h3>Добавить ответ</h3>
                         <form className='fs-12'>
-                            <label for="report" className='mb-2'>Опишите вашу жалобу</label>
+                            <label htmlFor="report" className='mb-2'>Опишите вашу жалобу</label>
                             <textarea id="report" rows="3" placeholder='Текст'></textarea>
                             <button type='submit' className='btn btn-2 w-100 mt-4'>Отправить</button>
                         </form>

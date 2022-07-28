@@ -1,0 +1,762 @@
+[
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Продукты питания",
+        "route": "Казань-Грозный",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    },
+    {
+        "type": "cargo",
+        "title": "Оборудование",
+        "route": "Казань-Москва",
+        "size": "70",
+        "weight": "10 т",
+        "notes": "cold"
+    },{
+        "type": "cargo",
+        "title": "Стройматериалы",
+        "route": "Казань-Уфа",
+        "size": "50",
+        "weight": "10 т",
+        "notes": "none"
+    },{
+        "type": "cargo",
+        "title": "Трубы",
+        "route": "Казань-Анапа",
+        "size": "20",
+        "weight": "10 т",
+        "notes": "dimensional"
+    },
+    {
+        "type": "cargo",
+        "title": "Мебель",
+        "route": "Томь-Тоже Томь",
+        "size": "30",
+        "weight": "15 т",
+        "notes": "fragile"
+    }
+]

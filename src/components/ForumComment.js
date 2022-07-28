@@ -37,7 +37,7 @@ export default function ForumComment(props) {
                     {
                         (props.author.imgURL)?
                         <img src={props.author.imgURL} alt={props.author.name} />
-                        : <img src="/cargo/img/users/no-photo.png" alt={props.author.name} />
+                        : <img src="/img/users/no-photo.png" alt={props.author.name} />
                     }
                     <div>
                         <Link to={props.author.pageURL} className='blue text-decoration-underline d-block mb-2'>{props.author.name}</Link>

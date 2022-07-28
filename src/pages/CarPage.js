@@ -61,7 +61,7 @@ export default function CarPage() {
                                 </div>
                             </div>
                         </div>
-                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="car" img="/cargo/img/users/photo.jpg" title="Наумова Эльвира" contacts={[{phone: '+ 7 (969) 152 36 95'}]} />
+                        <UserContacts className="order-1 order-md-3 mb-4 mb-md-0" type="car" img="/img/users/photo.jpg" title="Наумова Эльвира" contacts={[{phone: '+ 7 (969) 152 36 95'}]} />
                         <button type="button" data-bs-toggle="modal" data-bs-target="#report" className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
                             <IconContext.Provider value={{className: "gray-4 icon"}}>
                                 <IoWarning />
