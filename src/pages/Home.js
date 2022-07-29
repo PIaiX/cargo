@@ -30,18 +30,8 @@ export default function Home() {
         })
     }, [])
 
-    const handleClick = async () => {
-        try {
-            const response = await axiosPrivate.get("/car/bodyTypes")
-            console.log(response.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     return (
         <main>
-            <button onClick={handleClick}>click</button>
             <section id="sec-1" className="py-4 py-sm-5">
                 <div className="container">
                     <div className="row justify-content-center gx-3">
