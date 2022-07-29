@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes} from 'react-router-dom';
+import {Route, Routes, Navigate} from 'react-router-dom';
 import AccountMenu from '../pages/account/AccountMenu';
 import UserProfile from '../pages/account/UserProfile';
 import ViewAccount from '../pages/account/ViewAccount';
@@ -20,7 +20,7 @@ const PersonalAccountRouter = ({isMobile}) => {
             <Route path="/" element={<PersonalAccountLayout isMobile={isMobile}/>}>
                 {isMobile
                     ? <Route index element={<AccountMenu />} />
-                    : <Route index element={<UserProfile />} />
+                    : <Route index element={<Navigate to="profile" replace={true} />} />
                 }
                 <Route path="profile" element={<UserProfile/>}/>
                 <Route path="view-profile" element={<ViewAccount/>}/>

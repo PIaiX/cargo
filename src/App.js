@@ -5,7 +5,6 @@ import "./styles/fonts.css";
 import "./styles/style.css";
 import AppRouter from "./routes/AppRouter";
 import { Dropdown } from "bootstrap";
-import { useInitialData } from "./hooks/loadInitialData";
 import fingerprint from "@fingerprintjs/fingerprintjs";
 import useInitialAuth from "./hooks/initialAuth";
 
@@ -29,9 +28,6 @@ function App() {
         localStorage.setItem("fingerprint", result.visitorId);
       });
   }, []);
-
-  //Fetch initial data
-  useInitialData();
 
   return (
     <BrowserRouter>

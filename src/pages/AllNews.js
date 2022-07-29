@@ -2,21 +2,26 @@ import React, { useEffect, useState } from "react";
 import ArticleMini from "../components/ArticleMini";
 import ForumWidget from "../components/ForumWidget";
 import Pagination from "../components/Pagination";
-import news from "./../dummyData/news.json";
+import usePagination from '../hooks/pagination';
+import {getAllNews} from '../API/news';
+import Loader from '../components/Loader';
 
 const pageLimit = 12;
 
 export default function AllNews() {
-  const [articles, setArticles] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [startingPage, setStartingPage] = useState(1)
+  const [news, setNews] = useState({
+    isLoading: false,
+    error: null,
+    meta: null,
+    items: []
+  })
+  const newsPagination = usePagination(pageLimit)
 
   useEffect(() => {
-    //Make an API call later getting the first page of all the articles
-    const items = news.slice(currentPage - 1, currentPage + (pageLimit - 1));
-      setArticles(items);
-    window.scrollTo(0, 0)
-  }, [currentPage]);
+    getAllNews(newsPagination.currentPage, pageLimit)
+        .then(result => setNews(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
+        .catch(error => setNews(prev => ({...prev, isLoading: true, error})))
+  }, [newsPagination.currentPage])
 
   return (
     <main className="bg-white">
@@ -26,32 +31,39 @@ export default function AllNews() {
         </h1>
         <div className="row">
           <div className="col-md-8 col-lg-9">
-            {articles.length > 0 && (
-              <div className="row row-cols-2 row-cols-lg-3 gx-2 gx-xl-3 gy-4 gy-lg-5">
-                {articles.map((item, idx) => (
-                    <div>
-                      <ArticleMini
-                        key={idx}
-                        url={`/news/${item.slug}`}
-                        title={item.title}
-                        img={`${item.img}`}
-                        text={item.body}
-                        date={item.date}
-                      />
-                    </div>
-                  ))}
-              </div>
-            )}
+            {
+              news.isLoading
+                  ? news?.items?.length
+                      ? <div className="row row-cols-2 row-cols-lg-3 gx-2 gx-xl-3 gy-4 gy-lg-5">
+                        {
+                          news.items.map(item => (
+                              <div key={item.id}>
+                                <ArticleMini
+                                    url={`/news/${item.slug}`}
+                                    title={item.title}
+                                    img={`${item.image}`}
+                                    text={item.description}
+                                    date={item.createdAt}
+                                />
+                              </div>
+                          ))
+                        }
+                      </div>
+                      : null
+                  : <div className="d-flex justify-content-center"><Loader color="#545454"/></div>
+            }
             <div className="mt-4">
-                <Pagination
-                    pageLimit={pageLimit}
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    pagesDisplayedLimit={3}
-                    itemsAmount={news.length}
-                    startingPage={startingPage}
-                    setStartingPage={setStartingPage}
-                />
+              {(news?.items?.length) &&
+                  <Pagination
+                      pageLimit={newsPagination.pageLimit}
+                      currentPage={newsPagination.currentPage}
+                      setCurrentPage={newsPagination.setCurrentPage}
+                      pagesDisplayedLimit={3}
+                      itemsAmount={news?.meta?.total || 0}
+                      startingPage={newsPagination.startingPage}
+                      setStartingPage={newsPagination.setStartingPage}
+                  />
+              }
             </div>
           </div>
           <div className="d-none d-md-block col-4 col-lg-3">

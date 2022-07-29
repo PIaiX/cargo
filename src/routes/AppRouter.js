@@ -28,14 +28,12 @@ import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 
 export default function AppRouter() {
-  const Wrapper = ({ children }) => {
-    const location = useLocation();
-    useLayoutEffect(() => {
-      document.documentElement.scrollTo(0, 0);
-    }, [location.pathname]);
-    return children;
-  };
 
+const Wrapper = ({children}) => {
+        const {pathname} = useLocation();
+        useLayoutEffect(() => document.documentElement.scrollTo(0, 0), [pathname]);
+        return children
+} 
   return (
     <Wrapper>
       <Routes>
@@ -71,5 +69,5 @@ export default function AppRouter() {
         </Route>
       </Routes>
     </Wrapper>
-  );
+  )
 }
