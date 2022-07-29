@@ -9,6 +9,7 @@ const axiosPrivate = axios.create({
     "User-Fingerprint": localStorage.getItem("fingerprint"),
     "Access-Control-Allow-Origin": "*",
   },
+  withCredentials: true
 });
 
 export default axiosPrivate;

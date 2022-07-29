@@ -135,6 +135,7 @@ export default function Registration() {
           return { ...prev, email: apiResponseMessages.VERIFY_CODE_EXISTS };
         });
       }
+      //TODO: Add a handle for a 500 status code error
     }
   };
 

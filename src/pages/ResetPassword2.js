@@ -70,7 +70,6 @@ export default function ResetPassword2() {
 
     try {
       const response = await axiosPrivate.post(`${apiRoutes.FORGOT_PASSWORD}`, formValue)
-      console.log("second step", response.data)
     } catch (error) {
       console.log(error.response)
     }

@@ -84,7 +84,6 @@ export default function ResetPassword() {
           `${apiRoutes.FORGOT_PASSWORD_VERIFY_EMAIL}`,
           { email: formValue.email }
         );
-        console.log(response.data);
       } catch (error) {
         if (error.response.data.status === 400) {
           setFormError((prev) => {
@@ -107,7 +106,6 @@ export default function ResetPassword() {
           email: formValue.email,
           verifyCode: formValue.smsCode
         })
-        console.log("first step", response.data)
       } catch (error) {
         if(error.response.data.status === 400){
           setFormError((prev) => {
