@@ -8,15 +8,12 @@ import SwiperCore, {Navigation, Pagination} from "swiper";
 import {useSelector} from "react-redux";
 import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
-import useAxiosPrivate from "../hooks/axiosPrivate"
 
 SwiperCore.use([Navigation, Pagination]);
 
 const homePageNewsLimit = 5;
 
 export default function Home() {
-    const axiosPrivate = useAxiosPrivate()
-
     const news = useSelector((state) => state.news);
     const [data, setData] = useState([])
     const [selectFirstCity, setSelectFirstCity] = useState('')

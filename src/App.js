@@ -9,7 +9,6 @@ import { useInitialData } from "./hooks/loadInitialData";
 import fingerprint from "@fingerprintjs/fingerprintjs";
 import useInitialAuth from "./hooks/initialAuth";
 
-
 function App() {
   //iniaitial Auth
   useInitialAuth()

@@ -83,7 +83,8 @@ export default function Login() {
 
       const payload = {
         token: accessToken,
-        rememberMe
+        rememberMe,
+        user: response.data.body.user
       }
       dispatch(setCurrentUser(payload))
       navigate("/")

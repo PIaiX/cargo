@@ -15,6 +15,7 @@ const useInitialAuth = () => {
             const response = await axiosPrivate.post(
               `${apiRoutes.REFRESH_TOKEN}/37`
             );
+
             const payload = {...currentUser, token: response.data.body}
             dispatch(setCurrentUser(payload));
           } catch (error) {

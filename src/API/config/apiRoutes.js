@@ -6,5 +6,5 @@ export default {
     FORGOT_PASSWORD_VERIFY_EMAIL: "/auth/forgotPassword/emailVerify",
     FORGOT_PASSWORD_CODE_VERIFY: "/auth/forgotPassword/codeVerify",
     FORGOT_PASSWORD: "/auth/forgotPassword",
-    REFRESH_TOKEN: "/auth/refreshToken"
+    REFRESH_TOKEN: "/auth/refreshToken",
 }
