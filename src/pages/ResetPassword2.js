@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import InputPassword from "../components/utilities/InputPassword";
 import FormErrorMessage from "../components/utilities/FormErrorMessage";
 import Joi from "joi";
+import axiosPrivate from "../API/axiosPrivate";
+import apiRoutes from "../API/config/apiRoutes";
+import apiResponseMessages from "../API/config/apiResponseMessages";
+import { useLocation } from "react-router-dom";
 
 const formValueDefault = {
   password: "",
-  remember: false,
 };
 
 const formErrorDefault = {
@@ -25,20 +28,30 @@ const schema = Joi.object({
         "Пароль должен содержать одну заглавную букву и одну цифру",
       "string.min": `Пароль не может быть короче 8 символов`,
       "string.max": `Пароль не может быть длиннее 20 символов`,
-    }),
-    remember: Joi.boolean()
+    })
 });
 
 export default function ResetPassword2() {
   const [formValue, setFormValue] = useState(formValueDefault);
   const [formErrors, setFormErrors] = useState(formErrorDefault);
+  const [rememberMe, setRememberMe] = useState(false)
+
+  const location = useLocation()
+  
+  useEffect(() => {
+    const {email, verifyCode} = location?.state
+    if(email && verifyCode){
+      setFormValue((prev) => {
+        return {...prev, email, verifyCode}
+      })
+    }
+  }, [location])
 
   const handleFormChange = (e) => {
     setFormValue((prev) => {
       return {
         ...prev,
-        [e.target.name]:
-          e.target.type === "checkbox" ? e.target.checked : e.target.value,
+        [e.target.name]: e.target.value,
       };
     });
     setFormErrors((prev) => {
@@ -49,23 +62,18 @@ export default function ResetPassword2() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    const result = schema.validate(formValue, { abortEarly: false });
+    const result = schema.validate({password: formValue.password}, { abortEarly: false });
     if (result.error) {
       handleFormErrors(result.error.details);
       return
     }
 
-    // TODO: Make an API call in the future
+    try {
+      const response = await axiosPrivate.post(`${apiRoutes.FORGOT_PASSWORD}`, formValue)
+    } catch (error) {
+      console.log(error.response)
+    }
 
-    // try {
-    //   const response = await axios.post(`${baseUrl}/api/auth/login`, {
-    //     ...formValue
-    //   });
-    // } catch (error) {
-    //   console.log(error.message)
-    // }
-
-    alert(JSON.stringify(formValue));
     setFormErrors(formErrorDefault);
     setFormValue(formValueDefault);
 
@@ -105,9 +113,9 @@ export default function ResetPassword2() {
                   type="checkbox"
                   name="remember"
                   className="me-2"
-                  defaultChecked={formValue.remember}
-                  value={formValue.remember}
-                  onChange={handleFormChange}
+                  defaultChecked={rememberMe}
+                  value={rememberMe}
+                  onChange={() => setRememberMe((prev) => !prev)}
                 />
                 <span className="blue">Запомнить пароль</span>
               </label>

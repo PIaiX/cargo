@@ -8,12 +8,14 @@ import SwiperCore, {Navigation, Pagination} from "swiper";
 import {useSelector} from "react-redux";
 import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
+import useAxiosPrivate from "../hooks/axiosPrivate"
 
 SwiperCore.use([Navigation, Pagination]);
 
 const homePageNewsLimit = 5;
 
 export default function Home() {
+    const axiosPrivate = useAxiosPrivate()
 
     const news = useSelector((state) => state.news);
     const [data, setData] = useState([])
@@ -28,8 +30,18 @@ export default function Home() {
         })
     }, [])
 
+    const handleClick = async () => {
+        try {
+            const response = await axiosPrivate.get("/car/bodyTypes")
+            console.log(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <main>
+            <button onClick={handleClick}>click</button>
             <section id="sec-1" className="py-4 py-sm-5">
                 <div className="container">
                     <div className="row justify-content-center gx-3">
