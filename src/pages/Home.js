@@ -7,15 +7,13 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
-import useAxiosPrivate from "../hooks/axiosPrivate"
 import {getAllNews} from '../API/news';
 import Loader from '../components/Loader';
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
-    const axiosPrivate = useAxiosPrivate()
-
+    const news = useSelector((state) => state.news);
     const [news, setNews] = useState({
         isLoading: false,
         error: null,
@@ -37,7 +35,7 @@ export default function Home() {
             .then(result => setNews(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
             .catch(error => setNews(prev => ({...prev, isLoading: true, error})))
     }, [])
-
+    
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
