@@ -3702,4 +3702,10 @@ footer .payment-methods img:not(:first-child) {
   color: red;
 }
 
+.article__title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /*# sourceMappingURL=style.css.map */

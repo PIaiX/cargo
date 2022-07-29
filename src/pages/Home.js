@@ -5,10 +5,11 @@ import ArticleCard from "../components/ArticleCard";
 import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
-import {useSelector} from "react-redux";
 import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
 import useAxiosPrivate from "../hooks/axiosPrivate"
+import {getAllNews} from '../API/news';
+import Loader from '../components/Loader';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -17,7 +18,12 @@ const homePageNewsLimit = 5;
 export default function Home() {
     const axiosPrivate = useAxiosPrivate()
 
-    const news = useSelector((state) => state.news);
+    const [news, setNews] = useState({
+        isLoading: false,
+        error: null,
+        meta: null,
+        items: []
+    })
     const [data, setData] = useState([])
     const [selectFirstCity, setSelectFirstCity] = useState('')
     const [selectSecondCity, setSelectSecondCity] = useState('')
@@ -28,6 +34,10 @@ export default function Home() {
                 setData(res.body)
             }
         })
+
+        getAllNews(1, 5, 'desc')
+            .then(result => setNews(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
+            .catch(error => setNews(prev => ({...prev, isLoading: true, error})))
     }, [])
 
     return (
@@ -657,31 +667,34 @@ export default function Home() {
                 </div>
             </section>
 
-            <section id="sec-6" className="container mb-5">
+            {(news?.items?.length >= 5) && <section id="sec-6" className="container mb-5">
                 <h2>Новости ПОРТАЛА</h2>
-                {news.loading && "Идет загрузка новостей..."}
-                {!news.loading && news.data.length > 0 && (
-                    <div className="news-grid">
-                        {news.data.slice(0, homePageNewsLimit).map((item, idx) => {
-                            return (
-                                <ArticleCard
-                                    key={idx}
-                                    url={`/news/${item.slug}`}
-                                    title={item.title}
-                                    img={item.img}
-                                    text={item.body}
-                                />
-                            );
-                        })}
-                    </div>
-                )}
+                {
+                    news.isLoading
+                        ? news?.items?.length >= 5
+                            ? <div className="news-grid">
+                                {
+                                    news.items.map(item => (
+                                        <ArticleCard
+                                            key={item.id}
+                                            url={`/news/${item.slug}`}
+                                            title={item.title}
+                                            img={item.image}
+                                            text={item.description}
+                                        />
+                                    ))
+                                }
+                            </div>
+                            : null
+                        : <div className="d-flex justify-content-center"><Loader color="#545454"/></div>
+                }
                 <Link
                     to="all-news"
                     className="btn btn-2 mx-auto mt-5 fs-12 text-uppercase"
                 >
                     К другим новостям
                 </Link>
-            </section>
+            </section>}
         </main>
     );
 }

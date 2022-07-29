@@ -27,10 +27,8 @@ import NotFound from '../pages/NotFound';
 
 export default function AppRouter() {
     const Wrapper = ({children}) => {
-        const location = useLocation();
-        useLayoutEffect(() => {
-          document.documentElement.scrollTo(0, 0);
-        }, [location.pathname]);
+        const {pathname} = useLocation();
+        useLayoutEffect(() => document.documentElement.scrollTo(0, 0), [pathname]);
         return children
     } 
    
@@ -48,7 +46,7 @@ export default function AppRouter() {
                 <Route path="edit-car/:id" element={<EditCar />} />
                 <Route path="edit-cargo/:id" element={<EditCargo />} />
                 <Route path="all-news" element={<AllNews />} />
-                <Route path="news/:slug" element={<ArticleFull />} />
+                <Route path="news/:newsSlug" element={<ArticleFull />} />
                 <Route path="forum" element={<Forum />} />
                 <Route path="forum-section/:id" element={<ForumTopicChat />} />
                 <Route path="my-topics" element={<ForumMyTopics />} />

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import PersonalAccountRouter from '../../routes/PersonalAccountRouter';
 
 export default function PersonalAccount() {
-    const [mob, setMob] = useState(false);
+    const [mob, setMob] = useState(window.matchMedia("(max-width: 991px)").matches);
 
     useEffect(() => {
         function updateView() {
