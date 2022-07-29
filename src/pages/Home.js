@@ -13,7 +13,7 @@ import Loader from '../components/Loader';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
-    const news = useSelector((state) => state.news);
+
     const [news, setNews] = useState({
         isLoading: false,
         error: null,
@@ -25,11 +25,7 @@ export default function Home() {
     const [selectSecondCity, setSelectSecondCity] = useState('')
 
     useEffect(() => {
-        getCities().then(res => {
-            if (res.status === 200) {
-                setData(res.body)
-            }
-        })
+        getCities().then(res => setData(res.body)).catch(error => console.log(error))
 
         getAllNews(1, 5, 'desc')
             .then(result => setNews(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))

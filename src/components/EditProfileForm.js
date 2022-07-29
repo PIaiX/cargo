@@ -5,16 +5,22 @@ import ValidateWrapper from "./utilities/ValidateWrapper";
 import NumberFormat from "react-number-format";
 import {NavLink} from "react-router-dom";
 import {useForm} from "react-hook-form";
-
-const accountType = ['Грузовладелец', 'Перевозчик', 'Перевозчик-Грузовладелец']
+import {deleteUserAvatar, getAccountType} from "../API/profile";
+import {updateUserInfo} from "../API/profile";
+import useAxiosPrivate from "../hooks/axiosPrivate";
 
 const EditProfileForm = () => {
 
+    const axiosPrivate = useAxiosPrivate()
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
     const [entity, setEntity] = useState('entity');
+    const [accType, setAccType] = useState({
+        data: [],
+        arrayType: [],
+    })
     const [typeInitialForm, setTypeInitialForm] = useState(
         {
-            entity: '1',
+            subject: '1',
             nameOfCompany: '',
             INN: '',
             accTypeValue: '',
@@ -25,6 +31,16 @@ const EditProfileForm = () => {
             city: '',
         }
     )
+
+
+    useEffect(() => {
+        getAccountType()
+            .then(info => setAccType(prevState =>
+                ({...prevState, data: info, arrayType: info.map(i => i.name)})))
+            .catch(error => console.log(error))
+    }, [])
+
+
     const maxNumber = 1;
     const handleChange = e => {
         let val = e.target.value;
@@ -54,10 +70,9 @@ const EditProfileForm = () => {
     useEffect(() => {
         (entity === 'entity')
             ? setTypeInitialForm({
-                entity: '1',
-                nameOfCompany: '',
-                INN: '',
-                accTypeValue: '',
+                subject: '1',
+                companyName: '',
+                taxIdentificationNumber: '',
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -65,8 +80,7 @@ const EditProfileForm = () => {
                 city: '',
             })
             : setTypeInitialForm({
-                entity: '0',
-                accTypeValue: '',
+                subject: '0',
                 firstName: '',
                 lastName: '',
                 email: '',
@@ -77,16 +91,30 @@ const EditProfileForm = () => {
 
     const submitForm = () => {
         const formData = new FormData()
-        const request = {...typeInitialForm, images}
+        const avatar = images[0]?.file
+        const request = (avatar === undefined) ? {...typeInitialForm} : {...typeInitialForm, avatar}
+
         for (const key in request) {
             formData.append(key, request[key])
         }
         try {
-            // request code
+           const response = updateUserInfo(37, formData, axiosPrivate)
+            console.log(response)
         } catch (error) {
             console.log(error)
         }
     }
+
+    const deleteAvatar = () => {
+        try{
+            const response = deleteUserAvatar(37, axiosPrivate)
+            console.log(response)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    console.log(typeInitialForm)
 
     return (
         <form
@@ -130,7 +158,10 @@ const EditProfileForm = () => {
                                                         Загрузить фото
                                                     </button>
                                                     <button
-                                                        onClick={() => onImageRemove(index)}
+                                                        onClick={() => {
+                                                            onImageRemove(index)
+                                                            deleteAvatar()
+                                                        }}
                                                     >
                                                         <img
                                                             src="/img/icons/delete_photo_in_userprofile.svg"
@@ -159,7 +190,7 @@ const EditProfileForm = () => {
                                     value="individual"
                                     onChange={(e) => {
                                         handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, entity: '0'}))
+                                        setTypeInitialForm(prevState => ({...prevState, subject: '0'}))
                                     }}
                                 />
                                 <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Физическое лицо</span>
@@ -174,7 +205,7 @@ const EditProfileForm = () => {
                                     value="entity"
                                     onChange={(e) => {
                                         handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, entity: '1'}))
+                                        setTypeInitialForm(prevState => ({...prevState, subject: '1'}))
                                     }}
                                 />
                                 <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Юридическое лицо</span>
@@ -191,14 +222,14 @@ const EditProfileForm = () => {
                                 className="inp w-100 fs-12"
                                 name="account-type"
                                 checkedOptions={[typeInitialForm?.accTypeText]}
-                                options={accountType}
+                                options={accType?.arrayType}
                                 align="left"
                                 callback={({title, value}) => {
                                     setTypeInitialForm(prevState => {
                                         return {
                                             ...prevState,
                                             'accTypeText': title,
-                                            'accTypeValue': value
+                                            'roleId': value + 2
                                         }
                                     })
                                 }}
@@ -213,13 +244,13 @@ const EditProfileForm = () => {
                                 <div className='gray-2 title-font fw-5 fs-12'>Название компании:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <ValidateWrapper error={errors?.nameOfCompany}>
+                                <ValidateWrapper error={errors?.companyName}>
                                     <input
                                         type="text"
                                         className='fs-12'
                                         placeholder='Название компании'
-                                        value={typeInitialForm?.nameOfCompany}
-                                        {...register('nameOfCompany', {
+                                        value={typeInitialForm?.companyName}
+                                        {...register('companyName', {
                                             required: 'Поле обязательно к заполнению',
                                             minLength: {
                                                 value: 1,
@@ -232,7 +263,7 @@ const EditProfileForm = () => {
                                         })}
                                         onChange={(e) =>
                                             setTypeInitialForm(prevState =>
-                                                ({...prevState, 'nameOfCompany': e.target.value}))
+                                                ({...prevState, 'companyName': e.target.value}))
                                         }
                                     />
                                 </ValidateWrapper>
@@ -241,13 +272,13 @@ const EditProfileForm = () => {
                                 <div className='gray-2 title-font fw-5 fs-12'>ИНН:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <ValidateWrapper error={errors?.INN}>
+                                <ValidateWrapper error={errors?.taxIdentificationNumber}>
                                     <input
                                         type="number"
                                         className='fs-12'
                                         placeholder='ИНН'
-                                        value={typeInitialForm?.INN}
-                                        {...register('INN', {
+                                        value={typeInitialForm?.taxIdentificationNumber}
+                                        {...register('taxIdentificationNumber', {
                                             required: 'Поле обязательно к заполнению',
                                             minLength: {
                                                 value: 1,
@@ -261,7 +292,7 @@ const EditProfileForm = () => {
                                         })}
                                         onChange={(e) => {
                                             setTypeInitialForm(prevState =>
-                                                ({...prevState, 'INN': e.target.value}))
+                                                ({...prevState, 'taxIdentificationNumber': e.target.value}))
                                         }}
                                     />
                                 </ValidateWrapper>
@@ -358,11 +389,12 @@ const EditProfileForm = () => {
                             <ValidateWrapper error={errors?.phone}>
                                 <NumberFormat
                                     placeholder="Телефон"
-                                    format="+ 7 ### ### ## ## "
+                                    format="+7##########"
                                     className='fs-12'
                                     value={typeInitialForm?.phone}
-                                    onValueChange={(e) => {
-                                        setTypeInitialForm(prevState => ({...prevState, 'phone': e.value}))
+                                    onValueChange={(values) => {
+                                        const {formattedValue, value} = values
+                                        setTypeInitialForm(prevState => ({...prevState, 'phone': formattedValue}))
                                     }}
                                 />
                             </ValidateWrapper>
@@ -404,7 +436,13 @@ const EditProfileForm = () => {
                             <NavLink to="/personal-account/profile" className='btn btn-1 w-100'>Отмена</NavLink>
                         </div>
                         <div>
-                            <button type='submit' className='btn btn-2 w-100'>Сохранить</button>
+                            <button
+                                type='submit'
+                                className='btn btn-2 w-100'
+
+                            >
+                                Сохранить
+                            </button>
                         </div>
                     </div>
                 </div>

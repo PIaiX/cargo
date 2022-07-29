@@ -7,11 +7,9 @@ export default {
     FORGOT_PASSWORD_CODE_VERIFY: "/auth/forgotPassword/codeVerify",
     FORGOT_PASSWORD: "/auth/forgotPassword",
     REFRESH_TOKEN: "/auth/refreshToken",
-    
-    // user
     ACCOUNT_TYPES: "/user/accountTypes",
-    
-    // news
     NEWS: "/news",
     RANDOM_NEWS: "/news/random",
+    UPDATE_USER: "/user",
+    DELETE_AVATAR: "/user/deleteAvatar",
 }
