@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from "react";
 import ArticleMini from "../components/ArticleMini";
 import ForumWidget from "../components/ForumWidget";
-
 import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
-
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import {useParams} from "react-router-dom";
@@ -11,8 +9,6 @@ import {getRandomNews, getSingleNews} from '../API/news';
 import Loader from '../components/Loader';
 
 SwiperCore.use([Navigation, Pagination]);
-
-// const articlesLimit = 8
 
 export default function ArticleFull() {
     const {newsSlug} = useParams()
@@ -120,7 +116,7 @@ export default function ArticleFull() {
                                 >
                                     {
                                         swiperNews.items.map(item => (
-                                            <SwiperSlide>
+                                            <SwiperSlide key={item.id}>
                                                 <ArticleMini
                                                     key={item.id}
                                                     url={`/news/${item.slug}`}

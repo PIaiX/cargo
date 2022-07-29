@@ -13,8 +13,6 @@ import Loader from '../components/Loader';
 
 SwiperCore.use([Navigation, Pagination]);
 
-const homePageNewsLimit = 5;
-
 export default function Home() {
     const axiosPrivate = useAxiosPrivate()
 
