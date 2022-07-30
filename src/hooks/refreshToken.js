@@ -6,14 +6,11 @@ import apiRoutes from "../API/config/apiRoutes";
 const useRefreshToken = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.currentUser.data);
-  const token = useSelector((state) => state.currentUser.data.token);
 
   const refreshToken = async () => {
     try {
-      const response = await axiosPrivate.post(
-        `${apiRoutes.REFRESH_TOKEN}/${currentUser.id}`
-      );
-      const newAccessToken = response.data.token;
+      const response = await axiosPrivate.post(`${apiRoutes.REFRESH_TOKEN}/37`);
+      const newAccessToken = response.data.body;
       const newUser = { ...currentUser, token: newAccessToken };
 
       dispatch(setCurrentUser(newUser));
