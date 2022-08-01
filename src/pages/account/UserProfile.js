@@ -2,8 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {IoShieldCheckmarkSharp} from 'react-icons/io5';
 import {MdModeEdit} from "react-icons/md";
+import {useSelector} from "react-redux";
 
 export default function UserProfile() {
+    const currentUser = useSelector(state => state.currentUser.data.user)
+    console.log(currentUser)
+    const uploadPhoto = () => {
+       return currentUser.avatar && `https://eritrans.ru/uploads/./${currentUser.avatar}`
+    }
     return (
         <div className='box p-4 p-xl-5'>
             <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span
@@ -12,7 +18,7 @@ export default function UserProfile() {
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>
                     <div className='profile-picture mx-auto mb-4 mb-sm-5'>
-                        <img src="/img/users/no-photo.png" alt="ООО НТК"/>
+                        <img src={uploadPhoto() ?? "/img/users/no-photo.png"} alt="ООО НТК" style={{borderRadius: 50 + "%"}}/>
                     </div>
                 </div>
                 <div className='col-md-8'>
@@ -21,24 +27,24 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Тип аккаунта:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Грузовладелец-перевозчик</div>
+                            <div>{currentUser.roleForUser}</div>
                         </div>
 
                         {/* Только для юр лиц start */}
-                        {
+                        {currentUser.subject &&
                             <>
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>Название компании:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>ООО НТК</div>
+                                    <div>{currentUser.companyName}</div>
                                 </div>
 
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>ИНН:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>027363360430</div>
+                                    <div>{currentUser.taxIdentificationNumber}</div>
                                 </div>
                             </>
                         }
@@ -48,35 +54,35 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Имя:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Эльвира</div>
+                            <div>{currentUser.firstName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Фамилия:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Наумова</div>
+                            <div>{currentUser.lastName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Email:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Email@mail</div>
+                            <div>{currentUser.email}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Телефон:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>+ 7 969 152 36 95</div>
+                            <div>{currentUser.phone}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Город:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Казань</div>
+                            <div>{currentUser.city}</div>
                         </div>
                     </div>
                 </div>

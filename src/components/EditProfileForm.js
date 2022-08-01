@@ -8,9 +8,11 @@ import {useForm} from "react-hook-form";
 import {deleteUserAvatar, getAccountType} from "../API/profile";
 import {updateUserInfo} from "../API/profile";
 import useAxiosPrivate from "../hooks/axiosPrivate";
+import {useSelector} from "react-redux";
 
 const EditProfileForm = () => {
 
+    const currentUser = useSelector(state => state.currentUser.data.user)
     const axiosPrivate = useAxiosPrivate()
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
     const [entity, setEntity] = useState('entity');
@@ -20,7 +22,7 @@ const EditProfileForm = () => {
     })
     const [typeInitialForm, setTypeInitialForm] = useState(
         {
-            subject: '1',
+
             nameOfCompany: '',
             INN: '',
             accTypeValue: '',
@@ -70,24 +72,24 @@ const EditProfileForm = () => {
     useEffect(() => {
         (entity === 'entity')
             ? setTypeInitialForm({
-                subject: '1',
-                companyName: '',
-                taxIdentificationNumber: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                city: '',
+                subject: true,
+                companyName: currentUser.companyName || '',
+                taxIdentificationNumber: currentUser.taxIdentificationNumber || '',
+                firstName: currentUser.firstName || '',
+                lastName: currentUser.lastName || '',
+                email: currentUser.email || '',
+                phone: currentUser.phone || '',
+                city: currentUser.city || '',
             })
             : setTypeInitialForm({
-                subject: '0',
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                city: '',
+                subject: false,
+                firstName: currentUser.firstName || '',
+                lastName: currentUser.lastName || '',
+                email: currentUser.email || '',
+                phone: currentUser.phone || '',
+                city: currentUser.city || '',
             })
-    }, [entity])
+    }, [entity, currentUser])
 
     const submitForm = () => {
         const formData = new FormData()
@@ -112,6 +114,10 @@ const EditProfileForm = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const uploadPhoto = () => {
+        return currentUser.avatar && `https://eritrans.ru/uploads/./${currentUser.avatar}`
     }
 
     console.log(typeInitialForm)
@@ -144,7 +150,7 @@ const EditProfileForm = () => {
                                     <div className="imgs-box">
                                         {imageList.map((image, index) => (
                                             <div key={index} className="image-item">
-                                                <img src={image['data_url']} alt="" width="100"/>
+                                                <img src={uploadPhoto() || image['data_url']} alt="" width="100"/>
                                                 <div className="image-item__btn-wrapper">
                                                     <button
                                                         type="button"
@@ -181,16 +187,18 @@ const EditProfileForm = () => {
                     </div>
                 </div>
                 <div className='col-md-8'>
-                    <fieldset className='row row-cols-xxl-2 g-3 g-sm-4 mb-4 mb-sm-5'>
+                    {currentUser &&
+                        <fieldset className='row row-cols-xxl-2 g-3 g-sm-4 mb-4 mb-sm-5'>
                         <div>
                             <label>
                                 <input
                                     type="radio"
                                     name="entity"
                                     value="individual"
+                                    defaultChecked={!currentUser.subject}
                                     onChange={(e) => {
                                         handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, subject: '0'}))
+                                        setTypeInitialForm(prevState => ({...prevState, subject: false}))
                                     }}
                                 />
                                 <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Физическое лицо</span>
@@ -201,17 +209,18 @@ const EditProfileForm = () => {
                                 <input
                                     type="radio"
                                     name="entity"
-                                    defaultChecked={true}
                                     value="entity"
+                                    defaultChecked={currentUser.subject}
                                     onChange={(e) => {
                                         handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, subject: '1'}))
+                                        setTypeInitialForm(prevState => ({...prevState, subject: true}))
                                     }}
                                 />
                                 <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Юридическое лицо</span>
                             </label>
                         </div>
                     </fieldset>
+                    }
 
                     <fieldset className='row g-sm-4 mb-sm-4'>
                         <div className='col-sm-4 mb-1 mb-sm-0'>
@@ -221,7 +230,7 @@ const EditProfileForm = () => {
                             <CustomSelect
                                 className="inp w-100 fs-12"
                                 name="account-type"
-                                checkedOptions={[typeInitialForm?.accTypeText]}
+                                checkedOptions={[typeInitialForm?.accTypeText || currentUser.roleForUser]}
                                 options={accType?.arrayType}
                                 align="left"
                                 callback={({title, value}) => {
