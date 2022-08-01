@@ -1,30 +1,25 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { setCurrentUser } from "../store/reducers/currentUser"
-import axiosPrivate from "../API/axiosPrivate";
-import apiRoutes from "../API/config/apiRoutes";
+import React, { useEffect, useState } from "react";
+import useRefreshToken from "./refreshToken";
 
 const useInitialAuth = () => {
-    const dispatch = useDispatch();
-    
-    const currentUser = useSelector((state) => state.currentUser.data)
+  const [isLoading, setIsLoading] = useState(true);
+  const refresh = useRefreshToken();
 
-    useEffect(() => {
-        const getToken = async () => {
-          try {
-            const response = await axiosPrivate.post(
-              `${apiRoutes.REFRESH_TOKEN}/37`
-            );
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        await refresh();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-            const payload = {...currentUser, token: response.data.body}
-            dispatch(setCurrentUser(payload));
-          } catch (error) {
-            console.log(error);
-          }
-        };
-    
-        getToken();
-      }, []);
-}
+    getToken();
+  }, []);
 
-export default useInitialAuth
+  return isLoading;
+};
+
+export default useInitialAuth;

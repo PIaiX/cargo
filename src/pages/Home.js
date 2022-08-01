@@ -7,8 +7,8 @@ import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
-import {getAllNews} from '../API/news';
-import Loader from '../components/Loader';
+import {getAllNews} from "../API/news";
+import Loader from "../components/Loader";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -18,20 +18,33 @@ export default function Home() {
         isLoading: false,
         error: null,
         meta: null,
-        items: []
-    })
-    const [data, setData] = useState([])
-    const [selectFirstCity, setSelectFirstCity] = useState('')
-    const [selectSecondCity, setSelectSecondCity] = useState('')
+        items: [],
+    });
+    const [data, setData] = useState([]);
+    const [selectFirstCity, setSelectFirstCity] = useState("");
+    const [selectSecondCity, setSelectSecondCity] = useState("");
 
     useEffect(() => {
-        getCities().then(res => setData(res.body)).catch(error => console.log(error))
+        getCities().then((res) => {
+            if (res.status === 200) {
+                setData(res.body);
+            }
+        });
 
-        getAllNews(1, 5, 'desc')
-            .then(result => setNews(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
-            .catch(error => setNews(prev => ({...prev, isLoading: true, error})))
-    }, [])
-    
+        getAllNews(1, 5, "desc")
+            .then((result) =>
+                setNews((prev) => ({
+                    ...prev,
+                    isLoading: true,
+                    meta: result.meta,
+                    items: result.data,
+                }))
+            )
+            .catch((error) =>
+                setNews((prev) => ({...prev, isLoading: true, error}))
+            );
+    }, []);
+
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
@@ -122,9 +135,9 @@ export default function Home() {
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
                                 <SearchInput
                                     callback={(inputValue) => {
-                                        setSelectFirstCity(inputValue)
+                                        setSelectFirstCity(inputValue);
                                     }}
-                                    placeHolder={'Город отправления'}
+                                    placeHolder={"Город отправления"}
                                     data={data}
                                 />
                             </div>
@@ -132,9 +145,9 @@ export default function Home() {
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
                                 <SearchInput
                                     callback={(inputValue) => {
-                                        setSelectSecondCity(inputValue)
+                                        setSelectSecondCity(inputValue);
                                     }}
-                                    placeHolder={'Город назначения'}
+                                    placeHolder={"Город назначения"}
                                     data={data}
                                 />
                             </div>
@@ -644,10 +657,7 @@ export default function Home() {
                     </div>
                     <div className="point">
                         <div className="icon">
-                            <img
-                                src="/img/icons/icon-6.svg"
-                                alt="Все готово для перевозки"
-                            />
+                            <img src="/img/icons/icon-6.svg" alt="Все готово для перевозки"/>
                         </div>
                         <div className="text">
                             <div className="title mb-0">
@@ -659,34 +669,36 @@ export default function Home() {
                 </div>
             </section>
 
-            {(news?.items?.length >= 5) && <section id="sec-6" className="container mb-5">
-                <h2>Новости ПОРТАЛА</h2>
-                {
-                    news.isLoading
-                        ? news?.items?.length >= 5
-                            ? <div className="news-grid">
-                                {
-                                    news.items.map(item => (
-                                        <ArticleCard
-                                            key={item.id}
-                                            url={`/news/${item.slug}`}
-                                            title={item.title}
-                                            img={item.image}
-                                            text={item.description}
-                                        />
-                                    ))
-                                }
+            {news?.items?.length >= 5 && (
+                <section id="sec-6" className="container mb-5">
+                    <h2>Новости ПОРТАЛА</h2>
+                    {news.isLoading ? (
+                        news?.items?.length >= 5 ? (
+                            <div className="news-grid">
+                                {news.items.map((item) => (
+                                    <ArticleCard
+                                        key={item.id}
+                                        url={`/news/${item.slug}`}
+                                        title={item.title}
+                                        img={item.image}
+                                        text={item.description}
+                                    />
+                                ))}
                             </div>
-                            : null
-                        : <div className="d-flex justify-content-center"><Loader color="#545454"/></div>
-                }
-                <Link
-                    to="all-news"
-                    className="btn btn-2 mx-auto mt-5 fs-12 text-uppercase"
-                >
-                    К другим новостям
-                </Link>
-            </section>}
+                        ) : null
+                    ) : (
+                        <div className="d-flex justify-content-center">
+                            <Loader color="#545454"/>
+                        </div>
+                    )}
+                    <Link
+                        to="all-news"
+                        className="btn btn-2 mx-auto mt-5 fs-12 text-uppercase"
+                    >
+                        К другим новостям
+                    </Link>
+                </section>
+            )}
         </main>
     );
 }

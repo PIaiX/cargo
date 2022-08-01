@@ -10,7 +10,7 @@ import useInitialAuth from "./hooks/initialAuth";
 
 function App() {
   //iniaitial Auth
-  useInitialAuth()
+  const isLoading = useInitialAuth();
 
   useEffect(() => {
     //init dropdown
@@ -28,6 +28,8 @@ function App() {
         localStorage.setItem("fingerprint", result.visitorId);
       });
   }, []);
+
+  if (isLoading) return <></>;
 
   return (
     <BrowserRouter>
