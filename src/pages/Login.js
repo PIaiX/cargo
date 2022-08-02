@@ -92,6 +92,8 @@ export default function Login() {
 
       dispatch(setCurrentUser(payload))
       navigate("/")
+      window.log("logged in successfully")
+      return
     } catch (error) {
       if(error.response.data.status === 400) {
         setFormErrors({

@@ -183,6 +183,7 @@ export default function Registration() {
 
       dispatch(setCurrentUser(payload));
       navigate("/");
+      return
     } catch (error) {
         console.log(error)
         if (error.response.status === 400) {
