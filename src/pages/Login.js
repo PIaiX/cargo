@@ -9,6 +9,7 @@ import apiResponseMessages from "../API/config/apiResponseMessages";
 import { useDispatch } from "react-redux/es/exports";
 import {setCurrentUser} from "../store/reducers/currentUser"
 import { useNavigate } from "react-router-dom";
+import { handleRemeberMe } from "../API/auth";
 
 const formValueDefault = {
   email: "",
@@ -79,13 +80,16 @@ export default function Login() {
 
     try {
       const response = await axiosPrivate.post(`${apiRoutes.LOGIN}`, formValue);
-      const accessToken = response.data.body.token
+      const token = response.data.body.token
+      const user = response.data.body.user
 
       const payload = {
-        token: accessToken,
-        rememberMe,
-        user: response.data.body.user
+        token,
+        user
       }
+
+      handleRemeberMe(rememberMe)
+
       dispatch(setCurrentUser(payload))
       navigate("/")
     } catch (error) {
@@ -109,7 +113,7 @@ export default function Login() {
       });
     });
   };
-  
+
   return (
     <main className="bg-white position-relative">
       <img

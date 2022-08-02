@@ -6,7 +6,8 @@ import Joi from "joi";
 import axiosPrivate from "../API/axiosPrivate";
 import apiRoutes from "../API/config/apiRoutes";
 import apiResponseMessages from "../API/config/apiResponseMessages";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { handleRemeberMe } from "../API/auth";
 
 const formValueDefault = {
   password: "",
@@ -37,8 +38,11 @@ export default function ResetPassword2() {
   const [rememberMe, setRememberMe] = useState(false)
 
   const location = useLocation()
+  const navigate = useNavigate()
   
   useEffect(() => {
+    if(!location.state) return navigate("/")
+
     const {email, verifyCode} = location?.state
     if(email && verifyCode){
       setFormValue((prev) => {
@@ -70,14 +74,15 @@ export default function ResetPassword2() {
 
     try {
       const response = await axiosPrivate.post(`${apiRoutes.FORGOT_PASSWORD}`, formValue)
+      handleRemeberMe(rememberMe)
+      console.log(response.data)
+      return navigate("/")
     } catch (error) {
       console.log(error.response)
     }
 
     setFormErrors(formErrorDefault);
     setFormValue(formValueDefault);
-
-    //TODO: Add additional logic at the, after the successful response from the API
   };
 
   const handleFormErrors = (errors) => {
@@ -87,7 +92,6 @@ export default function ResetPassword2() {
       });
     });
   };
-
   return (
     <main className="bg-white position-relative">
       <section id="sec-10" className="container py-3 py-sm-4 py-lg-5">
