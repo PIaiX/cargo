@@ -3699,6 +3699,8 @@ footer .payment-methods img:not(:first-child) {
   border-color: red;
 }
 .validate-wrapper .validate-error {
+  margin-top: 5px;
+  white-space: nowrap;
   color: red;
 }
 
@@ -3706,6 +3708,25 @@ footer .payment-methods img:not(:first-child) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dimensions-validation {
+  flex-direction: column;
+  gap: 20px;
+}
+.dimensions-validation > div {
+  width: 100%;
+}
+
+.card-mini .car-card__actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card-mini .car-card__actions > button {
+  font-size: 20px;
+  font-weight: 400;
 }
 
 /*# sourceMappingURL=style.css.map */
