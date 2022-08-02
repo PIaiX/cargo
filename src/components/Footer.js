@@ -2,11 +2,15 @@ import React from "react";
 import { IoCloseOutline, IoDocumentText } from "react-icons/io5";
 import { MdPerson, MdCopyright } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SaveTemplateModal from "./footerComponents/SaveTemplateModal";
 import ChooseTemplateModal from "./footerComponents/ChooseTemplateModal";
+import { useDispatch } from "react-redux/es/exports";
+import { logout } from "../API/auth";
 
 export const Footer = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <>
       <footer>
@@ -19,24 +23,41 @@ export const Footer = () => {
               <div className="fs-12 fw-7 mb-4 mb-md-5">КАРТА САЙТА</div>
               <hr />
               <ul className="list-unstyled row row-cols-sm-2 g-3 g-md-4 mt-1 mt-sm-3">
-                <li><Link to="/">ГЛАВНАЯ</Link></li>
-                <li><Link to="/">ИНФОРМАЦИЯ</Link></li>
-                <li><Link to="/search">ПОИСК</Link></li>
-                <li><Link to="/">ЗАДАТЬ ВОПРОС</Link></li>
-                <li><Link to="/forum">ФОРУМ</Link></li>
-                <li><Link to="/">ЛИЧНЫЙ КАБИНЕТ</Link></li>
+                <li>
+                  <Link to="/">ГЛАВНАЯ</Link>
+                </li>
+                <li>
+                  <Link to="/">ИНФОРМАЦИЯ</Link>
+                </li>
+                <li>
+                  <Link to="/search">ПОИСК</Link>
+                </li>
+                <li>
+                  <Link to="/">ЗАДАТЬ ВОПРОС</Link>
+                </li>
+                <li>
+                  <Link to="/forum">ФОРУМ</Link>
+                </li>
+                <li>
+                  <Link to="/">ЛИЧНЫЙ КАБИНЕТ</Link>
+                </li>
               </ul>
             </div>
           </div>
           <hr />
           <div className="payment-methods mt-3 mt-md-4">
-            <img src="/img/payment/visa.png" alt="visa"/>
-            <img src="/img/payment/mastercard.png" alt="mastercard"/>
-            <img src="/img/payment/tinkoff.png" alt="tinkoff"/>
-            <img src="/img/payment/mir.png" alt="mir"/>
-            <img src="/img/payment/sbp.png" alt="sbp"/>
+            <img src="/img/payment/visa.png" alt="visa" />
+            <img src="/img/payment/mastercard.png" alt="mastercard" />
+            <img src="/img/payment/tinkoff.png" alt="tinkoff" />
+            <img src="/img/payment/mir.png" alt="mir" />
+            <img src="/img/payment/sbp.png" alt="sbp" />
           </div>
-          <div className="d-flex justify-content-center align-items-center mt-3 fs-09 fw-7"><MdCopyright/> <span className="ms-2">ВСЕ ПРАВА ЗАЩИЩЕНЫ · ГРУЗОПЕРЕВОЗКИ&nbsp;·&nbsp;2022</span></div>
+          <div className="d-flex justify-content-center align-items-center mt-3 fs-09 fw-7">
+            <MdCopyright />{" "}
+            <span className="ms-2">
+              ВСЕ ПРАВА ЗАЩИЩЕНЫ · ГРУЗОПЕРЕВОЗКИ&nbsp;·&nbsp;2022
+            </span>
+          </div>
         </div>
         {/* <div className="container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100">
           <div className="info d-lg-flex align-items-center">
@@ -288,7 +309,15 @@ export const Footer = () => {
                   </button>
                 </div>
                 <div>
-                  <button type="button" className="btn btn-2 w-100">
+                  <button
+                    type="button"
+                    className="btn btn-2 w-100"
+                    data-bs-dismiss="modal"
+                    onClick={() => {
+                      logout(dispatch)
+                      navigate("/")}
+                    }
+                  >
                     Выйти
                   </button>
                 </div>
@@ -428,8 +457,8 @@ export const Footer = () => {
 
       <ChooseTemplateModal type="Cargo" />
       <ChooseTemplateModal type="Car" />
-      <SaveTemplateModal type="Cargo"/>
-      <SaveTemplateModal type="Car"/>
+      <SaveTemplateModal type="Cargo" />
+      <SaveTemplateModal type="Car" />
 
       {/* Offcanvas */}
       <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
