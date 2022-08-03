@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-scroll";
+import {useNavigate} from "react-router-dom"
 import {
   IoAddCircle,
   IoChevronBackOutline,
@@ -311,6 +312,8 @@ const initialContactsField = [
 export default function AddCargo() {
   const ref = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
   const [loading, setLoading] = useState(initialLoading);
@@ -320,6 +323,8 @@ export default function AddCargo() {
   const [payment, setPayment] = useState(initialPayment);
   const [contacts, setContacts] = useState(initialContacts);
   const [contactsField, setContactsField] = useState(initialContactsField);
+
+  const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
 
   const currentTemplate = useSelector(
     (state) => state.savedCargoTemplates.currentTemplate
@@ -678,7 +683,7 @@ export default function AddCargo() {
     let newObj = {
       index: newNum,
       phone: "",
-      name: "",
+      name: ""
     };
     setContacts([...contacts, newObj]);
   };
@@ -699,35 +704,29 @@ export default function AddCargo() {
   };
 
   //проверка fieldset на заполнение
-  let checkFieldset = (state) => {
+  const checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
-    return requiredArr.every(
-      (elem) =>
-        elem.value !== null && elem.value !== undefined && elem.value !== ""
-    );
+    const emptyRequiredFields = requiredArr.filter((elem) => !elem.value);
+    const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
+    return fieldNamesArray;
   };
-  let checkFieldsetArr = (state) => {
+
+  const checkFieldsetArr = (state) => {
     let requiredArr = state.flatMap((arr) =>
       arr.filter((item) => item.required === true)
     );
-    return requiredArr.every(
-      (elem) =>
-        elem.value !== null && elem.value !== undefined && elem.value !== ""
-    );
+    const emptyRequiredFields = requiredArr.filter((elem) => !elem.value);
+    const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
+    return fieldNamesArray;
   };
-  let checkAllProps = (state) => {
-    let requiredProps = state.flatMap((obj) => {
-      let arr = [];
-      for (let key in obj) {
-        if (key !== "index") {
-          arr.push(obj[key]);
-        }
-      }
-      return arr;
-    });
-    return requiredProps.every(
-      (elem) => elem !== null && elem !== undefined && elem !== ""
-    );
+
+  const checkAllProps = (state) => {
+    const data = state[0];
+    const emptyRequiredFields = [];
+    for (let key in data) {
+      if (!data[key] && key !== "index") emptyRequiredFields.push(key);
+    }
+    return emptyRequiredFields;
   };
 
   // ДОДЕЛАТЬ!!!
@@ -762,27 +761,30 @@ export default function AddCargo() {
 
   //This works, but the code needs refactoring
   const checkAllRequiredFields = () => {
-    let isValid = undefined;
-    isValid = checkFieldsetArr(loading);
-    if (!isValid) return false;
-    isValid = checkFieldsetArr(unloading);
-    if (!isValid) return false;
-    isValid = checkFieldsetArr(cargo);
-    if (!isValid) return false;
-    isValid = checkFieldset(requirements);
-    if (!isValid) return false;
-    isValid = checkFieldset(payment);
-    if (!isValid) return false;
-    isValid = checkAllProps(contacts);
-    return isValid;
+    let invalidFields = [];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(loading)];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(unloading)];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(cargo)];
+    invalidFields = [...invalidFields, ...checkFieldset(requirements)];
+    invalidFields = [...invalidFields, ...checkFieldset(payment)];
+    invalidFields = [...invalidFields, ...checkAllProps(contacts)];
+
+    setEmptyRequiredFieldsArray(invalidFields);
+    return invalidFields.length === 0;
+  };
+
+  const getRedErrorWarning = (name, originalClasses, addedClass = "red") => {
+    if (emptyRequiredFieldsArray.includes(name))
+      return `${originalClasses} ${addedClass}`;
+    return originalClasses;
   };
 
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-        <Link to="/" className="fs-12 fw-5 d-block mb-3 mb-sm-5">
+        <button className="fs-12 fw-5 d-block mb-3 mb-sm-5 " onClick={() => navigate(-1)}>
           <span className="green fs-15 me-2">⟵</span> Назад
-        </Link>
+        </button>
 
         <form
           ref={ref}
@@ -821,42 +823,42 @@ export default function AddCargo() {
             <div className="mobile-indicators d-flex d-lg-none">
               <button
                 type="button"
-                className={checkFieldsetArr(loading) ? "active" : ""}
+                className={!checkFieldsetArr(loading).length ? "active" : ""}
                 onClick={() => setActiveField(1)}
               >
                 1
               </button>
               <button
                 type="button"
-                className={checkFieldsetArr(unloading) ? "active" : ""}
+                className={!checkFieldsetArr(unloading).length ? "active" : ""}
                 onClick={() => setActiveField(2)}
               >
                 2
               </button>
               <button
                 type="button"
-                className={checkFieldsetArr(cargo) ? "active" : ""}
+                className={!checkFieldsetArr(cargo).length ? "active" : ""}
                 onClick={() => setActiveField(3)}
               >
                 3
               </button>
               <button
                 type="button"
-                className={checkFieldset(requirements) ? "active" : ""}
+                className={!checkFieldset(requirements).length ? "active" : ""}
                 onClick={() => setActiveField(4)}
               >
                 4
               </button>
               <button
                 type="button"
-                className={checkFieldset(payment) ? "active" : ""}
+                className={!checkFieldset(payment).length ? "active" : ""}
                 onClick={() => setActiveField(4)}
               >
                 5
               </button>
               <button
                 type="button"
-                className={checkAllProps(contacts) ? "active" : ""}
+                className={!checkAllProps(contacts).length ? "active" : ""}
                 onClick={() => setActiveField(5)}
               >
                 6
@@ -891,7 +893,10 @@ export default function AddCargo() {
                       <div
                         data-label="frequency"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "frequency",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Дата*
                       </div>
@@ -932,6 +937,11 @@ export default function AddCargo() {
                               >
                                 <input
                                   type="date"
+                                  className={getRedErrorWarning(
+                                    "loadingDate",
+                                    "",
+                                    "border border-danger"
+                                  )}
                                   name="loadingDate"
                                   value={getValArr(
                                     loading,
@@ -950,7 +960,11 @@ export default function AddCargo() {
                                 data-warning="false"
                               >
                                 <Select
-                                  className="w-100"
+                                  className={getRedErrorWarning(
+                                    "loadingDays",
+                                    "w-100",
+                                    "border border-danger"
+                                  )}
                                   classNamePrefix="react-select"
                                   placeholder={"Выберите..."}
                                   value={getObj(
@@ -1006,7 +1020,11 @@ export default function AddCargo() {
                               }
                             >
                               <Select
-                                className="fs-12"
+                                className={getRedErrorWarning(
+                                  "loadingPeriodType",
+                                  "fs-12",
+                                  "border border-danger"
+                                )}
                                 classNamePrefix="react-select"
                                 placeholder={"Выберите..."}
                                 options={optionsLoadingPeriodType}
@@ -1100,7 +1118,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div
-                    className="row mb-4"
+                    className={getRedErrorWarning("loadingAddress", "row mb-4")}
                     data-label="loadingTown"
                     data-warning="false"
                   >
@@ -1142,6 +1160,11 @@ export default function AddCargo() {
                         >
                           <input
                             type="text"
+                            className={getRedErrorWarning(
+                              "loadingAddress",
+                              "",
+                              "border border-danger"
+                            )}
                             name="loadingAddress"
                             value={getValArr(loading, index, "loadingAddress")}
                             onChange={(e) =>
@@ -1425,7 +1448,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div
-                    className="row mb-4"
+                    className={getRedErrorWarning("unloadingTown", "row mb-4")}
                     data-label="unloadingTown"
                     data-warning="false"
                   >
@@ -1439,6 +1462,10 @@ export default function AddCargo() {
                         <div className="col-sm-5 mb-2 mb-sm-0">
                           <Select
                             classNamePrefix="react-select"
+                            className={getRedErrorWarning(
+                              "unloadingTown",
+                              "", "border border-danger"
+                            )}
                             placeholder={"Выберите..."}
                             name="unloadingTown"
                             value={getObj(
@@ -1468,6 +1495,11 @@ export default function AddCargo() {
                           <input
                             type="text"
                             name="unloadingAddress"
+                            className={getRedErrorWarning(
+                              "unloadingAddress",
+                              "col-sm-7",
+                              "border border-danger"
+                            )}
                             value={getValArr(
                               unloading,
                               index,
@@ -1642,7 +1674,10 @@ export default function AddCargo() {
                       <div
                         data-label="weight"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "weight",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Вес*
                       </div>
@@ -1651,7 +1686,11 @@ export default function AddCargo() {
                       <div className="row">
                         <div className="col-md-4">
                           <input
-                            className="weight w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "weight",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                             type="number"
                             name="weight"
                             min="1"
@@ -1670,7 +1709,10 @@ export default function AddCargo() {
                       <div
                         data-label="capacity"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "capacity",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Объем*
                       </div>
@@ -1679,7 +1721,11 @@ export default function AddCargo() {
                       <div className="row">
                         <div className="col-md-4">
                           <input
-                            className="size w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "capacity",
+                              "size w-100 fs-12",
+                              "border border-danger"
+                            )}
                             type="number"
                             name="capacity"
                             min="1"
@@ -2117,14 +2163,21 @@ export default function AddCargo() {
                     <div
                       data-label="carType"
                       data-warning="false"
-                      className="title-font fs-12 fw-5"
+                      className={getRedErrorWarning(
+                        "carType",
+                        "title-font fs-12 fw-5"
+                      )}
                     >
                       Тип кузова*
                     </div>
                   </div>
                   <div className="col-md-9">
                     <Select
-                      className="fs-12 w-100"
+                      className={getRedErrorWarning(
+                        "carType",
+                        "fs-12 w-100",
+                        "border border-danger"
+                      )}
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
                       name="carType"
@@ -2392,7 +2445,10 @@ export default function AddCargo() {
                     <div
                       data-label="prepay"
                       data-warning="false"
-                      className="title-font fs-12 fw-5"
+                      className={getRedErrorWarning(
+                        "prepay",
+                        "title-font fs-12 fw-5"
+                      )}
                     >
                       Предоплата*
                     </div>
@@ -2408,7 +2464,11 @@ export default function AddCargo() {
                           placeholder="0"
                           value={getVal(payment, "prepay")}
                           onChange={(e) => fillData(e, setPayment, payment)}
-                          className="percent w-100 fs-12"
+                          className={getRedErrorWarning(
+                            "prepay",
+                            "percent w-100 fs-12",
+                            "border border-danger"
+                          )}
                         />
                       </div>
                     </div>
@@ -2487,7 +2547,10 @@ export default function AddCargo() {
                           <div
                             data-label="phone"
                             data-warning="false"
-                            className="title-font fs-12 fw-5"
+                            className={getRedErrorWarning(
+                              "phone",
+                              "title-font fs-12 fw-5"
+                            )}
                           >
                             Телефон*
                           </div>
@@ -2499,14 +2562,21 @@ export default function AddCargo() {
                             placeholder="+ 7 (962) 458 65 79"
                             value={getContact("phone", idx)}
                             onChange={(e) => fillContacts(e, idx)}
-                            className="w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "phone",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                           />
                         </div>
                         <div className="col-md-4">
                           <div
                             data-label="name"
                             data-warning="false"
-                            className="title-font fs-12 fw-5"
+                            className={getRedErrorWarning(
+                              "name",
+                              "title-font fs-12 fw-5"
+                            )}
                           >
                             Имя*
                           </div>
@@ -2518,7 +2588,11 @@ export default function AddCargo() {
                             placeholder="Имя"
                             value={getContact("name", obj.index)}
                             onChange={(e) => fillContacts(e, obj.index)}
-                            className="w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "name",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                           />
                         </div>
                       </div>
@@ -2639,7 +2713,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(loading) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(loading).length ? "filled" : ""
+                      }
                     >
                       Загрузка
                     </Link>
@@ -2719,7 +2795,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(unloading) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(unloading).length ? "filled" : ""
+                      }
                     >
                       Разгрузка
                     </Link>
@@ -2778,7 +2856,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(cargo) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(cargo).length ? "filled" : ""
+                      }
                     >
                       Груз
                     </Link>
@@ -2882,7 +2962,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldset(requirements) ? "filled" : ""}
+                      className={
+                        !checkFieldset(requirements).length ? "filled" : ""
+                      }
                     >
                       Требования к машине
                     </Link>
@@ -2914,7 +2996,7 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldset(payment) ? "filled" : ""}
+                      className={!checkFieldset(payment).length ? "filled" : ""}
                     >
                       Оплата
                     </Link>
@@ -2967,7 +3049,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkAllProps(contacts) ? "filled" : ""}
+                      className={
+                        !checkAllProps(contacts).length ? "filled" : ""
+                      }
                     >
                       Контакты
                     </Link>
