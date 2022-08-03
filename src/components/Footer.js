@@ -456,9 +456,9 @@ export const Footer = () => {
       {/*</div>*/}
 
       <ChooseTemplateModal type="Cargo" />
-      <ChooseTemplateModal type="Car" />
+      <ChooseTemplateModal type="Route" />
       <SaveTemplateModal type="Cargo" />
-      <SaveTemplateModal type="Car" />
+      <SaveTemplateModal type="Route" />
 
       {/* Offcanvas */}
       <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">

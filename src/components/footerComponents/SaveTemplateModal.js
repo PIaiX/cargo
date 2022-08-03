@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import { IoCloseOutline } from "react-icons/io5";
-import { useDispatch } from "react-redux/es/exports";
+import { useDispatch} from "react-redux/es/exports";
 import { saveCargoTemplate } from "../../store/reducers/savedCargoTemplates";
 import { saveRouteTemplate } from "../../store/reducers/savedRouteTemplates";
 import FormErrorMessage from "./../utilities/FormErrorMessage";
@@ -10,7 +10,7 @@ const initialFormValue = {
   remark: "",
 };
 
-export default function SaveTemplateModal({ type }) {
+export default function SaveTemplateModal({ type, setIsShow }) {
   const [formValue, setFormValue] = useState(initialFormValue);
   const [formError, setFormError] = useState("");
 
@@ -29,28 +29,18 @@ export default function SaveTemplateModal({ type }) {
       return;
     }
     setFormValue(initialFormValue);
-    setFormError("")
-    if(type === "Cargo") {
+    setFormError("");
+    if (type === "Cargo") {
       dispatch(saveCargoTemplate(formValue));
     }
-    if(type === "Car") {
-      dispatch(saveRouteTemplate(formValue))
+    if (type === "Route") {
+      dispatch(saveRouteTemplate(formValue));
     }
+    setIsShow(false)
   };
 
   return (
-    <div
-      className="modal fade"
-      id={`savePattern${type}`}
-      tabIndex="-1"
-      aria-hidden="true"
-    >
-      <div className="modal-dialog modal-lg">
-        <div className="modal-content">
-          <div className="modal-body">
-            <button type="button" className="btn-close" data-bs-dismiss="modal" onClick={() => setFormError("")}>
-              <IoCloseOutline />
-            </button>
+          <>
             <h2>Сохранить шаблон {type === "Cargo" ? "груза" : "маршрута"}</h2>
             <form className="fs-12">
               <label htmlFor="pattern-name" className="fw-5 title-font mb-2">
@@ -89,6 +79,7 @@ export default function SaveTemplateModal({ type }) {
                     onClick={() => {
                       setFormValue(initialFormValue);
                       setFormError("");
+                      setIsShow(false)
                     }}
                   >
                     Отмена
@@ -106,9 +97,6 @@ export default function SaveTemplateModal({ type }) {
                 </div>
               </div>
             </form>
-          </div>
-        </div>
-      </div>
-    </div>
+          </>
   );
 }

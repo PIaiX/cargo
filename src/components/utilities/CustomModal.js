@@ -21,7 +21,7 @@ const CustomModal = (props) => {
                 {props?.closeButton &&
                     <button
                         type="button"
-                        className="btn-close"
+                        className="btn-close m-2"
                         onClick={handleClose}
                     >
                         <IoCloseOutline />
