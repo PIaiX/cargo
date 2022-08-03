@@ -3,7 +3,7 @@ import {Tooltip} from "bootstrap";
 import {IoHelpCircleOutline} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
 import {IconContext} from "react-icons";
-import Select from "react-select";
+import AsyncSelect from 'react-select/async';
 import {createCar, getCarTypes} from '../API/car';
 import useAxiosPrivate from '../hooks/axiosPrivate';
 import {useForm, Controller} from 'react-hook-form';
@@ -13,50 +13,64 @@ import {useSelector} from 'react-redux';
 
 export default function AddCar() {
     const userId = useSelector(state => state?.currentUser?.data?.user?.id)
-    const select = useRef()
     const navigate = useNavigate()
     const axiosPrivate = useAxiosPrivate()
-    const [carTypes, setCarTypes] = useState({
-        isLoading: false,
-        error: null,
-        items: []
-    })
+    const [carTypes, setCarTypes] = useState([])
+    const [selectValue, setSelectValue] = useState(null)
 
     const {
         register,
         formState: {errors},
         handleSubmit,
         control,
-        reset
+        reset,
+        getValues
     } = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
     })
-    const [formData, setFormData] = useState({userId})
-
-    useEffect(() => {
-        console.log(formData)
-    }, [formData])
+    const [formData, setFormData] = useState(null)
 
     useEffect(() => {
         getCarTypes(axiosPrivate)
-            .then(items => setCarTypes(prev => ({
-                ...prev,
-                isLoading: true,
-                items: items && items.map(item => ({value: item.id, label: item.name}))
-            })))
-            .catch(error => setCarTypes(prev => ({...prev, isLoading: true, error})))
+            .then(items => items && setCarTypes(items.map(item => ({value: item.id, label: item.name}))))
+            .catch(() => setCarTypes([]))
     }, [])
 
-    useEffect(() => {
-        createCar(axiosPrivate, formData)
-            .then(result => console.log(result))
-            .catch(error => console.log(error))
-    }, [formData])
+    useEffect(() => (formData && userId) && createCar(axiosPrivate, formData, userId), [formData])
 
     const onSubmit = (data) => {
         setFormData(prev => ({...prev, ...data}))
-        reset()
+        onReset()
+    }
+
+    const onReset = () => {
+        reset({
+            name: '',
+            additionalConfiguration: '',
+            carrying: '',
+            capacity: '',
+            width: '',
+            height: '',
+            length: '',
+            sts: '',
+            vin: '',
+            pts: '',
+            carBodyTypeId: '',
+        })
+        setFormData(null)
+        setSelectValue(null)
+    }
+
+    const loadOptions = async (searchKey) => {
+        const defaultValue = getValues('carBodyTypeId')
+        setSelectValue(carTypes.find(item => item.value === defaultValue))
+
+        if (!searchKey) {
+            return await carTypes
+        } else {
+            return await carTypes.filter(item => item.label.includes(searchKey))
+        }
     }
 
     useEffect(() => {
@@ -89,7 +103,14 @@ export default function AddCar() {
                                 className="d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3">
                                 <h4 className="text-center text-lg-start mb-0">О Машине</h4>
                                 <div className="d-none d-lg-flex align-items-center fs-09">
-                                    <button type="reset" className="btn btn-4 p-2 ms-3">
+                                    <button
+                                        type="reset"
+                                        className="btn btn-4 p-2 ms-3"
+                                        onClick={() => {
+                                            onReset()
+                                            setSelectValue(null)
+                                        }}
+                                    >
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <VscChromeClose/>
                                         </IconContext.Provider>
@@ -135,20 +156,27 @@ export default function AddCar() {
                                         </div>
                                     </div>
                                     <div className="col-md-9">
-                                        <ValidateWrapper error={errors?.carTypes}>
+                                        <ValidateWrapper error={errors?.carBodyTypeId}>
                                             <Controller
                                                 control={control}
                                                 name="carBodyTypeId"
-                                                render={({ field}) => (
-                                                    <Select
-                                                        ref={select}
-                                                        options={carTypes.items || []}
-                                                        onChange={val => {
-                                                            field.onChange(val.value)
-                                                        }}
-                                                    />
+                                                render={({field}) => (
+                                                    (carTypes.length !== 0) && (
+                                                        <AsyncSelect
+                                                            className="fs-12 w-100"
+                                                            classNamePrefix="react-select"
+                                                            placeholder={"Выберите..."}
+                                                            loadOptions={loadOptions}
+                                                            defaultOptions
+                                                            value={selectValue && carTypes.find(item => item.value === selectValue.value)}
+                                                            onChange={val => {
+                                                                setSelectValue({value: val.value, label: val.label})
+                                                                field.onChange(val.value)
+                                                            }}
+                                                        />
+                                                    )
                                                 )}
-                                                rules={{ required: 'выберите тип машины' }}
+                                                rules={{required: 'выберите тип машины'}}
                                             />
                                         </ValidateWrapper>
                                         <ValidateWrapper error={errors?.additionalConfiguration} className="mt-3">
@@ -455,7 +483,10 @@ export default function AddCar() {
                                 <div className="container d-flex align-items-center justify-content-center">
                                     <div
                                         className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
-                                        <button type="button">
+                                        <button
+                                            type="reset"
+                                            onClick={() => onReset()}
+                                        >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>

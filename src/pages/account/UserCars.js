@@ -89,7 +89,7 @@ export default function UserCars() {
                                 </div>
                             ))
                             : <h6 className="text-center w-100 p-5">У вас пока не машин</h6>
-                        : <div className="d-flex justify-content-center"><Loader color="#545454"/></div>
+                        : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                 }
             </div>
             <div className="mt-4">

@@ -18,9 +18,9 @@ const getCars = async (axiosPrivate, userId, page = 1, limit = '') => {
     }
 }
 
-const createCar = async (axiosPrivate, payloads) => {
+const createCar = async (axiosPrivate, payloads, userId) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}`, payloads)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}`, {...payloads, userId})
         return response.data.body
     } catch (error) {
         console.log(error)
@@ -36,9 +36,9 @@ const getCar = async (axiosPrivate, id) => {
     }
 }
 
-const updateCar = async (axiosPrivate, payloads, id) => {
+const updateCar = async (axiosPrivate, payloads, userId) => {
     try {
-        const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}/${id}`, payloads)
+        const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}/${payloads.id}`, {...payloads, userId})
         return response.data.body
     } catch (error) {
         console.log(error)
