@@ -53,7 +53,7 @@ export default function AllNews() {
                   : <div className="d-flex justify-content-center"><Loader color="#545454"/></div>
             }
             <div className="mt-4">
-              {(news?.items?.length) &&
+              {(news?.items?.length > 0) &&
                   <Pagination
                       pageLimit={newsPagination.pageLimit}
                       currentPage={newsPagination.currentPage}

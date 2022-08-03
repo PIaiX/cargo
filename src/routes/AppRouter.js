@@ -55,7 +55,7 @@ const Wrapper = ({children}) => {
           </Route>
             {/* Роуты доступные только зареганным пользователям */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="car-page" element={<CarPage />} />
+            <Route path="car-page/:id" element={<CarPage />} />
             <Route path="add-cargo" element={<AddCargo />} />
             <Route path="add-car" element={<AddCar />} />
             <Route path="add-route" element={<AddRoute />} />

@@ -15,4 +15,9 @@ export default {
     // news
     NEWS: "/news",
     RANDOM_NEWS: "/news/random",
+
+    // car
+    CAR: "/car",
+    CAR_TYPES: "/car/bodyTypes",
+    CARS: "/car/user",
 }
