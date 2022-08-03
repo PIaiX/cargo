@@ -8,8 +8,8 @@ import { Dropdown } from "bootstrap";
 import fingerprint from "@fingerprintjs/fingerprintjs";
 import useInitialAuth from "./hooks/initialAuth";
 
-function App() {
-  //iniaitial Auth
+function App() {  
+  //iniaitial Auth    
   const isLoading = useInitialAuth();
 
   useEffect(() => {
@@ -21,7 +21,7 @@ function App() {
 
   //Set fingerprint
   useEffect(() => {
-    fingerprint
+    fingerprint    
       .load()
       .then((fp) => fp.get())
       .then((result) => {

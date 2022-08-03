@@ -11,11 +11,10 @@ const useInitialAuth = () => {
 
   useEffect(() => {
     const getToken = async () => {
-      if(!rememberMe){
+      if(rememberMe === "false"){
         setIsLoading(false)
         return logout(dispatch)
       } 
-
 
       try {
         await refresh();
