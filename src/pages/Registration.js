@@ -10,6 +10,7 @@ import apiResponseMessages from "../API/config/apiResponseMessages";
 import { useDispatch } from "react-redux/es/exports";
 import {setCurrentUser} from "../store/reducers/currentUser"
 import { useNavigate } from "react-router-dom";
+import { handleRemeberMe } from "../API/auth";
 
 const formValueDefault = {
   accountType: undefined,
@@ -166,23 +167,23 @@ export default function Registration() {
     if (hasError) return;
 
     try {
-        newFormValue = {...newFormValue, roleId: formValue.accountType.id}
-        delete newFormValue.accountType
-        const response = await axiosPrivate.post(`${apiRoutes.REGISTER}`, newFormValue)
-        
-        //TODO: This is temporary. Later on, get the token from the /register response
-        const loginResponse = await axiosPrivate.post(`${apiRoutes.LOGIN}`, {
-            email: newFormValue.email,
-            password: newFormValue.password
-        })
+      newFormValue = { ...newFormValue, roleId: formValue.accountType.id };
+      delete newFormValue.accountType;
+      const response = await axiosPrivate.post(
+        `${apiRoutes.REGISTER}`,
+        newFormValue
+      );
 
-        const accessToken = loginResponse.data.body?.token
-        const payload = {
-            token: accessToken,
-            rememberMe
-        }
-        dispatch(setCurrentUser(payload))
-        navigate("/")
+      const { token, user } = response.data.body;
+      const payload = {
+        token,
+        user,
+      };
+      handleRemeberMe(rememberMe)
+
+      dispatch(setCurrentUser(payload));
+      navigate("/");
+      return
     } catch (error) {
         console.log(error)
         if (error.response.status === 400) {
@@ -204,7 +205,6 @@ export default function Registration() {
       });
     });
   };
-
   return (
     <main className="bg-white position-relative">
       <img

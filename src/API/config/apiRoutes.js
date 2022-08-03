@@ -3,6 +3,7 @@ export default {
     EMAIL_VERIFY: "/auth/register/emailVerify",
     REGISTER: "/auth/register",
     LOGIN: "/auth/login",
+    LOGOUT: "/auth/logout",
     FORGOT_PASSWORD_VERIFY_EMAIL: "/auth/forgotPassword/emailVerify",
     FORGOT_PASSWORD_CODE_VERIFY: "/auth/forgotPassword/codeVerify",
     FORGOT_PASSWORD: "/auth/forgotPassword",
