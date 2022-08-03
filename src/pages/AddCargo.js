@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-scroll";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import {
   IoAddCircle,
   IoChevronBackOutline,
@@ -26,6 +26,8 @@ import {
   setCargoFormData,
   setCurrentCargoTemplate,
 } from "../store/reducers/savedCargoTemplates";
+import CustomModal from "../components/utilities/CustomModal";
+import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
 
 const initialLoading = [
   [
@@ -313,6 +315,8 @@ export default function AddCargo() {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [isShowTemplateModal, setIsShowTemplateModal] = useState(false)
 
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
@@ -683,7 +687,7 @@ export default function AddCargo() {
     let newObj = {
       index: newNum,
       phone: "",
-      name: ""
+      name: "",
     };
     setContacts([...contacts, newObj]);
   };
@@ -755,6 +759,12 @@ export default function AddCargo() {
   };
 
   const handleSaveTemplate = () => {
+    const isValidForm = checkAllRequiredFields();
+    if (!isValidForm) {
+      return alert("Заполните все обязательные поля");
+    }
+
+    setIsShowTemplateModal(true)
     const data = getEntireFormValue();
     dispatch(setCargoFormData(data));
   };
@@ -782,7 +792,10 @@ export default function AddCargo() {
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-        <button className="fs-12 fw-5 d-block mb-3 mb-sm-5 " onClick={() => navigate(-1)}>
+        <button
+          className="fs-12 fw-5 d-block mb-3 mb-sm-5 "
+          onClick={() => navigate(-1)}
+        >
           <span className="green fs-15 me-2">⟵</span> Назад
         </button>
 
@@ -1464,7 +1477,8 @@ export default function AddCargo() {
                             classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "unloadingTown",
-                              "", "border border-danger"
+                              "",
+                              "border border-danger"
                             )}
                             placeholder={"Выберите..."}
                             name="unloadingTown"
@@ -3072,13 +3086,21 @@ export default function AddCargo() {
               </button>
               <button
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#savePatternCargo"
+                // data-bs-toggle="modal"
+                // data-bs-target="#savePatternCargo"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
                 onClick={handleSaveTemplate}
               >
                 Сохранить шаблон
               </button>
+              <CustomModal
+                isShow={isShowTemplateModal}
+                setIsShow={setIsShowTemplateModal}
+                size="lg"
+                closeButton={true}
+              >
+                <SaveTemplateModal type="Cargo" setIsShow={setIsShowTemplateModal}/>
+              </CustomModal>
             </aside>
           </div>
         </form>
