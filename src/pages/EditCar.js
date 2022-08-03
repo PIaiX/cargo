@@ -62,7 +62,8 @@ export default function EditCar() {
     useEffect(() => (formData && userId) && updateCar(axiosPrivate, formData, userId), [formData, userId])
 
     const onSubmit = (data) => setFormData(prev => ({...prev, ...data}))
-    const onReset = () => {
+    
+    const resetForm = () => {
         reset({
             id,
             name: '',
@@ -125,7 +126,7 @@ export default function EditCar() {
                                         type="reset"
                                         className="btn btn-4 p-2 ms-3"
                                         onClick={() => {
-                                            onReset()
+                                            resetForm()
                                             setSelectValue(null)
                                             setRadioBtnState(null)
                                         }}
@@ -515,7 +516,7 @@ export default function EditCar() {
                                     <div
                                         className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                                         <button type="reset" onClick={() => {
-                                            onReset()
+                                            resetForm()
                                             setSelectValue(null)
                                             setRadioBtnState(null)
                                         }}>

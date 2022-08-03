@@ -3817,9 +3817,14 @@ footer {
     input {
       border-color: red;
     }
+
+    .react-select__control {
+      border-color: red !important;
+    }
   }
 
   .validate-error {
+    text-transform: lowercase;
     margin-top: 5px;
     white-space: nowrap;
     color: red;

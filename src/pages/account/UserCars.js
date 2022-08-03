@@ -27,8 +27,8 @@ export default function UserCars() {
     const [isShowCardModal, setIsShowCardModal] = useState(false)
     const [carId, setCarId] = useState(null)
 
-    const getCarsRequest = () => {
-        getCars(axiosPrivate, userId)
+    const getCarsRequest = (page, limit) => {
+        getCars(axiosPrivate, userId, page, limit)
             .then(result => setCars(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
     }
@@ -38,7 +38,9 @@ export default function UserCars() {
         getCarsRequest()
     }
 
-    useEffect(() => getCarsRequest(), [])
+    useEffect(() => {
+        getCarsRequest(carsPagination.currentPage, carsPagination.pageLimit)
+    }, [carsPagination.currentPage, carsPagination.pageLimit])
 
     useEffect(() => !isShowCardModal && setCarId(null), [isShowCardModal])
 
@@ -79,7 +81,7 @@ export default function UserCars() {
                                         id={item.id}
                                         type="car"
                                         name={item.name}
-                                        carTypeForUser="hard code"
+                                        carTypeForUser={item?.bodyType?.name}
                                         profileView={true}
                                         callback={id => {
                                             setIsShowCardModal(true)
