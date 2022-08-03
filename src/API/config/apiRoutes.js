@@ -15,4 +15,7 @@ export default {
     // news
     NEWS: "/news",
     RANDOM_NEWS: "/news/random",
+
+    // cargo
+    CARGO_CREATE: "/cargo"
 }
