@@ -3698,7 +3698,11 @@ footer .payment-methods img:not(:first-child) {
 .validate-wrapper_error input {
   border-color: red;
 }
+.validate-wrapper_error .react-select__control {
+  border-color: red !important;
+}
 .validate-wrapper .validate-error {
+  text-transform: lowercase;
   margin-top: 5px;
   white-space: nowrap;
   color: red;

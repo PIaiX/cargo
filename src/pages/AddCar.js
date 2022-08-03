@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Tooltip} from "bootstrap";
 import {IoHelpCircleOutline} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
@@ -6,7 +6,7 @@ import {IconContext} from "react-icons";
 import AsyncSelect from 'react-select/async';
 import {createCar, getCarTypes} from '../API/car';
 import useAxiosPrivate from '../hooks/axiosPrivate';
-import {useForm, Controller} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import ValidateWrapper from '../components/utilities/ValidateWrapper';
 import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
@@ -17,6 +17,7 @@ export default function AddCar() {
     const axiosPrivate = useAxiosPrivate()
     const [carTypes, setCarTypes] = useState([])
     const [selectValue, setSelectValue] = useState(null)
+    const [responseErrors, setResponseErrors] = useState(null)
 
     const {
         register,
@@ -37,14 +38,28 @@ export default function AddCar() {
             .catch(() => setCarTypes([]))
     }, [])
 
-    useEffect(() => (formData && userId) && createCar(axiosPrivate, formData, userId), [formData])
+    useEffect(() => {
+        if (formData && userId) {
+            setResponseErrors(null)
 
-    const onSubmit = (data) => {
-        setFormData(prev => ({...prev, ...data}))
-        onReset()
-    }
+            createCar(axiosPrivate, formData, userId)
+                .then(result => result?.response?.data?.body?.errors)
+                .then(errors => errors && errors.forEach(
+                    error => setResponseErrors(prev => ({
+                        ...prev,
+                        [error.field]: {
+                            message: error.message
+                        }
+                    }))
+                ))
+        }
+    }, [formData])
 
-    const onReset = () => {
+    useEffect(() => !responseErrors && resetForm(), [responseErrors])
+
+    const onSubmit = (data) => setFormData(prev => ({...prev, ...data}))
+
+    const resetForm = () => {
         reset({
             name: '',
             additionalConfiguration: '',
@@ -107,7 +122,7 @@ export default function AddCar() {
                                         type="reset"
                                         className="btn btn-4 p-2 ms-3"
                                         onClick={() => {
-                                            onReset()
+                                            resetForm()
                                             setSelectValue(null)
                                         }}
                                     >
@@ -179,7 +194,9 @@ export default function AddCar() {
                                                 rules={{required: 'выберите тип машины'}}
                                             />
                                         </ValidateWrapper>
-                                        <ValidateWrapper error={errors?.additionalConfiguration} className="mt-3">
+                                        <ValidateWrapper
+                                            error={errors?.additionalConfiguration}
+                                            className="mt-3">
                                             <div
                                                 data-label="additionalConfiguration"
                                                 data-warning="false"
@@ -244,7 +261,7 @@ export default function AddCar() {
                                     <div className="col-sm-7 col-md-9">
                                         <div className="row">
                                             <div className="col-md-4">
-                                                <ValidateWrapper error={errors?.carrying}>
+                                                <ValidateWrapper error={errors?.carrying || responseErrors?.carrying}>
                                                     <input
                                                         type="number"
                                                         min="1"
@@ -295,14 +312,16 @@ export default function AddCar() {
                                         <div
                                             className={`row row-cols-sm-3 gx-3 gx-xxl-4 fs-12 ${(errors?.length || errors?.width || errors?.height) ? 'dimensions-validation' : ''}`}>
                                             <div className="mb-2 mb-sm-0">
-                                                <ValidateWrapper error={errors?.length}>
+                                                <ValidateWrapper error={errors?.length || responseErrors?.length}>
                                                     <div className="row gx-2 align-items-center">
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
                                                             <label data-label="length" data-warning="false">
                                                                 Длина:
                                                             </label>
                                                         </div>
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
                                                             <input
                                                                 type="number"
                                                                 min="1"
@@ -320,12 +339,14 @@ export default function AddCar() {
                                             <div className="mb-2 mb-sm-0">
                                                 <ValidateWrapper error={errors?.width}>
                                                     <div className="row gx-2 align-items-center">
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
                                                             <label data-label="width" data-warning="false">
                                                                 Ширина:
                                                             </label>
                                                         </div>
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
                                                             <input
                                                                 type="number"
                                                                 min="1"
@@ -343,12 +364,14 @@ export default function AddCar() {
                                             <div className="mb-2 mb-sm-0">
                                                 <ValidateWrapper error={errors?.height}>
                                                     <div className="row gx-2 align-items-center">
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-2' : "col-3 col-sm-5"}>
                                                             <label data-label="height" data-warning="false">
                                                                 Высота:
                                                             </label>
                                                         </div>
-                                                        <div className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
+                                                        <div
+                                                            className={(errors?.length || errors?.width || errors?.height) ? 'col-10' : "col-9 col-sm-7"}>
                                                             <input
                                                                 type="number"
                                                                 min="1"
@@ -389,7 +412,12 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <ValidateWrapper error={errors?.sts}>
+                                                <ValidateWrapper
+                                                    error={errors?.sts || (responseErrors?.sts
+                                                            ? {message: 'значение должно быть уникальным'}
+                                                            : null
+                                                    )}
+                                                >
                                                     <input
                                                         type="text"
                                                         placeholder="sts"
@@ -426,7 +454,12 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <ValidateWrapper error={errors?.vin}>
+                                                <ValidateWrapper
+                                                    error={errors?.vin || (responseErrors?.vin
+                                                            ? {message: 'значение должно быть уникальным'}
+                                                            : null
+                                                    )}
+                                                >
                                                     <input
                                                         type="text"
                                                         placeholder="VIN код"
@@ -463,7 +496,12 @@ export default function AddCar() {
                                     <div className="col-sm-9">
                                         <div className="row">
                                             <div className="col-md-6">
-                                                <ValidateWrapper error={errors?.pts}>
+                                                <ValidateWrapper
+                                                    error={errors?.pts || (responseErrors?.pts
+                                                        ? {message: 'значение должно быть уникальным'}
+                                                        : null
+                                                    )}
+                                                >
                                                     <input
                                                         type="text"
                                                         placeholder="ПТС"
@@ -485,7 +523,7 @@ export default function AddCar() {
                                         className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                                         <button
                                             type="reset"
-                                            onClick={() => onReset()}
+                                            onClick={() => resetForm()}
                                         >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>

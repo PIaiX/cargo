@@ -1,7 +1,6 @@
 import React from 'react';
-import {IoEllipsisVertical, IoShieldCheckmarkSharp} from 'react-icons/io5';
-import {Link, useNavigate} from 'react-router-dom';
-import {IconContext} from 'react-icons';
+import {IoShieldCheckmarkSharp} from 'react-icons/io5';
+import {useNavigate} from 'react-router-dom';
 
 const CarCard = (props) => {
     const navigate = useNavigate()
@@ -12,17 +11,19 @@ const CarCard = (props) => {
                 <div className="title mb-2 mb-sm-3">{props.route}</div>
                 {props.name && (
                     <div className="fs-12 mt-1 mt-sm-2">
-                        <span className="fw-7 me-2">{props.name}</span>
+                        <span className="fw-7 me-2">
+                            Марка машины: {props.name}
+                        </span>
                         <span className="green">
-                {props.verified && <IoShieldCheckmarkSharp/>}
-              </span>
+                            {props.verified && <IoShieldCheckmarkSharp/>}
+                        </span>
                     </div>
                 )}
-                {true && (
                     <div className="fs-11 mt-1 mt-sm-2">
-                        <span className="fw-5">Тип машины: </span>{props.carTypeForUser}
+                        <span className="fw-5">
+                            Тип машины: {props.carTypeForUser}
+                        </span>
                     </div>
-                )}
             </div>
             <div className="car-card__actions">
                 <button
