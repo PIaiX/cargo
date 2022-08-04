@@ -26,6 +26,7 @@ import ForumMyTopics from "../pages/ForumMyTopics";
 import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
+import EditRoute from "../pages/EditRoute";
 
 export default function AppRouter() {
 
@@ -55,12 +56,17 @@ const Wrapper = ({children}) => {
           </Route>
             {/* Роуты доступные только зареганным пользователям */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="car-page/:id" element={<CarPage />} />
+            <Route path="route-page" element={<CarPage />}>
+              <Route path=':id' element={<CarPage/>}/>
+            </Route>
             <Route path="add-cargo" element={<AddCargo />} />
             <Route path="add-car" element={<AddCar />} />
             <Route path="add-route" element={<AddRoute />} />
             <Route path="edit-car/:id" element={<EditCar />} />
             <Route path="edit-cargo/:id" element={<EditCargo />} />
+            <Route path="edit-route" element={<EditRoute/>}>
+              <Route path=':id' element={<EditRoute/>}/>
+            </Route>
             <Route path="my-topics" element={<ForumMyTopics />} />
             <Route path="personal-account/*" element={<PersonalAccount />} />
             <Route path="document/:docID" element={<Document />} />

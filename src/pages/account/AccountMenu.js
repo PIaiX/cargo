@@ -2,9 +2,18 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { MdLocalShipping } from 'react-icons/md';
-import { IoCube, IoDocumentTextSharp, IoExitSharp, IoNewspaperSharp, IoAddCircleSharp, IoBriefcase } from 'react-icons/io5';
+import {
+    IoCube,
+    IoDocumentTextSharp,
+    IoExitSharp,
+    IoNewspaperSharp,
+    IoAddCircleSharp,
+    IoBriefcase,
+    IoMailOpenOutline
+} from 'react-icons/io5';
 import { RiUserFill, RiMoneyDollarBoxFill } from "react-icons/ri";
 import { BsFillHandIndexThumbFill } from "react-icons/bs";
+import { FaMapMarkerAlt } from 'react-icons/fa'
 
 export default function AccountMenu() {
     return (
@@ -45,6 +54,19 @@ export default function AccountMenu() {
                         <Link to="/add-cargo">
                             <IconContext.Provider value={{className: "icon-15 blue", title: "Добавить груз" }}>
                                 <IoAddCircleSharp />
+                            </IconContext.Provider>
+                        </Link>
+                    </li>
+                    <li>
+                        <NavLink to='user-routes'>
+                            <IconContext.Provider value={{className: 'icon-15 green', title: 'Мои маршруты'}}>
+                                <FaMapMarkerAlt/>
+                            </IconContext.Provider>
+                            <span className='ms-2 ms-xl-3'>Мои маршруты</span>
+                        </NavLink>
+                        <Link to='/add-route'>
+                            <IconContext.Provider value={{className: 'icon-15 blue', title: 'Добавить маршрут'}}>
+                                <IoAddCircleSharp/>
                             </IconContext.Provider>
                         </Link>
                     </li>

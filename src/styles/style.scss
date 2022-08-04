@@ -3180,6 +3180,11 @@ footer {
       align-items: center;
     }
   }
+  &__deleteRoute {
+    .modal-body {
+      padding: 0;
+    }
+  }
 }
 
 .offcanvas {

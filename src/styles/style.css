@@ -3120,6 +3120,9 @@ footer .payment-methods img:not(:first-child) {
   flex-wrap: nowrap;
   align-items: center;
 }
+.modal__deleteRoute .modal-body {
+  padding: 0;
+}
 
 .offcanvas {
   z-index: 2000;

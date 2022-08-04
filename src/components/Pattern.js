@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { IconContext  } from "react-icons";
 import { IoTrash, IoCaretDown, IoEllipsisVertical } from 'react-icons/io5';
 import CustomModal from "./utilities/CustomModal";
+import {NavLink} from "react-router-dom";
 
 const Pattern = (props) => {
 
@@ -78,12 +79,13 @@ const Pattern = (props) => {
                 </div>
                 {/*des*/}
                 <div className='d-none d-md-flex'>
-                    <button
+                    <NavLink
                         type='button'
                         className='btn btn-1 fs-09'
+                        to={props.url}
                     >
                         Открыть
-                    </button>
+                    </NavLink>
                     <button
                         type='button'
                         className='btn btn-1 fs-09 ms-2 ms-xxl-3'
@@ -106,24 +108,30 @@ const Pattern = (props) => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>Маршрут</th>
-                            <td>{props.route}</td>
+                            <th>Маршрут:</th>
+                            <td>{props.fromRoute} - {props.toRoute}</td>
                         </tr>
                         <tr>
-                            <th>Дата</th>
-                            <td>{props.date}</td>
+                            <th>Дата:</th>
+                            <td>{props.date ? 'постоянно' : 'единожды'}</td>
                         </tr>
                         <tr>
-                            <th>О&nbsp;машине</th>
-                            <td>{props.aboute}</td>
+                            <th>О&nbsp;машине:</th>
+                            <td></td>
                         </tr>
                         <tr>
-                            <th>Оплата</th>
-                            <td>{props.payment}</td>
+                            <th>Оплата:</th>
+                            <td>
+                                {props.bargainType ? 'возможен торг' : "без торга"},&nbsp;
+                                {props.calculateType ? "наличный расчет" : "перевод по карте"},&nbsp;
+                                {props.notVatPrice && `цена без НДС:${props.notVatPrice} ₽`},&nbsp;
+                                {props.vatPrice && `цена с НДС:${props.vatPrice} ₽`},&nbsp;
+                                предоплата {props.prepayment}%
+                            </td>
                         </tr>
                         <tr>
-                            <th>Контакты</th>
-                            <td>{props.contacts}</td>
+                            <th>Контакты:</th>
+                            <td>{props.contacts && `${props.contacts.map(i => i.phone)} ${props.contacts.map(i => i.firstName)}`}</td>
                         </tr>
                     </tbody>
                 </table>
