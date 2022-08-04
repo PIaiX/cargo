@@ -3817,9 +3817,16 @@ footer {
     input {
       border-color: red;
     }
+
+    .react-select__control {
+      border-color: red !important;
+    }
   }
 
   .validate-error {
+    text-transform: lowercase;
+    margin-top: 5px;
+    white-space: nowrap;
     color: red;
   }
 }
@@ -3828,4 +3835,25 @@ footer {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dimensions-validation {
+  flex-direction: column;
+  gap: 20px;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.card-mini .car-card__actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & > button {
+    font-size: 20px;
+    font-weight: 400;
+  }
 }
