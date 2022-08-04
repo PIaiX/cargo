@@ -1,7 +1,7 @@
 import apiRoutes from "../API/config/apiRoutes";
 import axios from 'axios';
 
-const getCount = async () => {
+const getCargoCount = async () => {
     try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_COUNT}`)
         return response.data.body
@@ -28,18 +28,18 @@ const paginateCargo = async (city) => {
     }
 }
 
-const getNotArchiveCargo = async (axiosPrivate, userId) => {
+const getNotArchivedCargo = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_NOT_ARCHIVE}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_NOT_ARCHIVE}/${userId}`, {page, limit})
         return response.data.body
     } catch (error) {
         console.log(error)
     }
 }
 
-const getArchiveCargo = async (axiosPrivate, userId) => {
+const getArchivedCargo = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ARCHIVE}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ARCHIVE}/${userId}`, {page, limit})
         return response.data.body
     } catch (error) {
         console.log(error)
@@ -55,9 +55,9 @@ const unArchiveCargo = async (axiosPrivate, id) => {
     }
 }
 
-const getCargo = async (axiosPrivate, id) => {
+const getCargo = async (id) => {
     try {
-        const response = await axiosPrivate.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ACTIONS}/${id}`)
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ACTIONS}/${id}`)
         return response.data.body
     } catch (error) {
         console.log(error)
@@ -91,4 +91,4 @@ const createCargo = async (axiosPrivate, payloads) => {
     }
 }
 
-export {getCount, searchCargo, paginateCargo, getNotArchiveCargo, getArchiveCargo, unArchiveCargo, getCargo, updateCargo, deleteCargo, createCargo}
+export {getCargoCount, searchCargo, paginateCargo, getNotArchivedCargo, getArchivedCargo, unArchiveCargo, getCargo, updateCargo, deleteCargo, createCargo}

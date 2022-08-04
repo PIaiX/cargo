@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import CustomSelect from "../components/utilities/CustomSelect";
-import Card from "../components/Card";
 import { IoChevronDownSharp, IoSwapHorizontalSharp } from "react-icons/io5";
 import { IconContext } from "react-icons";
 import Pagination from "../components/Pagination";
@@ -503,43 +502,43 @@ export default function Search() {
             />
           </div>
         </div>
-        {search === "cargo" ? (
-          <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
-            {filteredCargo.map((item, idx) => (
-              <div key={idx}>
-                <Card
-                  type={item.type}
-                  className=""
-                  title={item.title}
-                  route={item.route}
-                  size={item.size}
-                  weight={item.weight}
-                  notes={item.notes}
-                  url="/cargo-page"
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
-            {filteredCars.map((item, idx) => (
-              <div key={idx}>
-                <Card
-                  type={item.type}
-                  className=""
-                  route={item.route}
-                  carType={item.carType}
-                  verified={item.verified}
-                  date={item.date}
-                  carrying={item.carrying}
-                  size={item.size}
-                  dimensions={item.dimensions}
-                  url="/car-page"
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        {/*{search === "cargo" ? (*/}
+        {/*  <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">*/}
+        {/*    {filteredCargo.map((item, idx) => (*/}
+        {/*      <div key={idx}>*/}
+        {/*        <Card*/}
+        {/*          type={item.type}*/}
+        {/*          className=""*/}
+        {/*          title={item.title}*/}
+        {/*          route={item.route}*/}
+        {/*          size={item.size}*/}
+        {/*          weight={item.weight}*/}
+        {/*          notes={item.notes}*/}
+        {/*          url="/cargo-page"*/}
+        {/*        />*/}
+        {/*      </div>*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*) : (*/}
+        {/*  <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">*/}
+        {/*    {filteredCars.map((item, idx) => (*/}
+        {/*      <div key={idx}>*/}
+        {/*        <Card*/}
+        {/*          type={item.type}*/}
+        {/*          className=""*/}
+        {/*          route={item.route}*/}
+        {/*          carType={item.carType}*/}
+        {/*          verified={item.verified}*/}
+        {/*          date={item.date}*/}
+        {/*          carrying={item.carrying}*/}
+        {/*          size={item.size}*/}
+        {/*          dimensions={item.dimensions}*/}
+        {/*          url="/car-page"*/}
+        {/*        />*/}
+        {/*      </div>*/}
+        {/*    ))}*/}
+        {/*  </div>*/}
+        {/*)}*/}
         <div hidden={search !== "cargo"} className="mt-4">
           <Pagination
             pageLimit={cargoPagination.pageLimit}

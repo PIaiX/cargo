@@ -28,5 +28,5 @@ export default {
     CARGO_NOT_ARCHIVE: "/cargo/notArchive",
     CARGO_ARCHIVE: "/cargo/archive",
     CARGO_UNARCHIVE: "/cargo/unArchive",
-    CARGO_ACTIONS: "/cargo/",
+    CARGO_ACTIONS: "/cargo",
 }
