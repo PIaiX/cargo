@@ -61,10 +61,6 @@ export default function Home() {
             .catch(error => setCargoPaginate(prev => ({isLoading: true, error})))
     }, [selectedCity])
 
-    useEffect(() => {
-        console.log(cargoPaginate)
-    }, [cargoPaginate])
-
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
