@@ -29,7 +29,7 @@ export default function UserCars() {
 
     const getCarsRequest = (page, limit) => {
         getCars(axiosPrivate, userId, page, limit)
-            .then(result => setCars(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
+            .then(result => setCars(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
     }
 

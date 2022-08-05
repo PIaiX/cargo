@@ -19,9 +19,9 @@ const searchCargo = async () => {
     }
 }
 
-const paginateCargo = async (city) => {
+const paginateCargo = async (city, page, limit) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_PAGINATE}/${city}`)
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_PAGINATE}/${city}`, {page, limit})
         return response.data.body
     } catch (error) {
         console.log(error)
