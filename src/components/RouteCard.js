@@ -1,9 +1,7 @@
 import React from 'react';
-import {IoEllipsisVertical, IoShieldCheckmarkSharp} from "react-icons/io5";
+import {IoEllipsisVertical} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import {IconContext} from "react-icons";
-import {deleteRoute} from "../API/routes";
-import useAxiosPrivate from "../hooks/axiosPrivate";
 
 const RouteCard = (props) => {
     return (
@@ -66,7 +64,7 @@ const RouteCard = (props) => {
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        props?.callback && props?.callback(props.id)
+                                        props?.callbackForUnArchive && props.callbackForUnArchive(props.id)
                                     }}
                                 >
                                     Восстановить
@@ -80,7 +78,7 @@ const RouteCard = (props) => {
                             <button
                                 type="button"
                                 onClick={() => {
-                                    props?.callback && props.callback(props.id)
+                                    props?.callbackForDelete && props.callbackForDelete(props.id)
                                 }}
                             >
                                 Удалить

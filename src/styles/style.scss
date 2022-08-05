@@ -3181,6 +3181,19 @@ footer {
     }
   }
   &__deleteRoute {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0;
+    }
+  }
+  &__unArchive {
+    .modal-header {
+      height: 4em;
+      padding: 1em 1em 0 1em;
+    }
     .modal-body {
       padding: 0;
     }

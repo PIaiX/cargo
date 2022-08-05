@@ -7,11 +7,9 @@ import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
 import Select from "react-select";
 import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilities/data";
 import {Link} from "react-scroll";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {setCurrentRouteTemplate, setRouteFormData} from "../store/reducers/savedRouteTemplates";
 import {
-    createRoute,
     deleteTemplate,
     getRoutePage,
     getTemplates,
@@ -19,18 +17,13 @@ import {
     saveTemplateRoute,
     updateRoute
 } from "../API/routes";
-import {useForm} from "react-hook-form";
 import CustomModal from "../components/utilities/CustomModal";
 
 const EditRoute = () => {
 
     const {id} = useParams()
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
-    const dispatch = useDispatch();
     const axiosPrivate = useAxiosPrivate()
-    const currentTemplate = useSelector(
-        (state) => state.savedRouteTemplates.currentTemplate
-    );
     const currentUser = useSelector(state => state.currentUser.data.user)
     const [contactsInfo, setContactsInfo] = useState(
         {
@@ -159,8 +152,6 @@ const EditRoute = () => {
             .catch(error => console.log(error))
     }, [currentUser])
 
-    console.log(cars)
-
     const getDate = (dateMe) => {
         const newDate = new Date(dateMe)
         setData(prevState => ({
@@ -173,8 +164,6 @@ const EditRoute = () => {
         const find = cars?.forSelect?.find(i => i.value === carId)
         return <span>{find?.label}</span>
     }
-
-    console.log('data', data)
 
     useEffect(() => {
         setData(prevState => ({...prevState, contacts: [contactsInfo]}))
@@ -210,8 +199,6 @@ const EditRoute = () => {
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }, [currentUser])
-
-    console.log(templates)
 
     const [showUseTemplate, setShowUseTemplate] = useState(false)
 

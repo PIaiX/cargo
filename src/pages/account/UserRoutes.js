@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {IconContext} from "react-icons";
-import {IoAddCircleSharp, IoCloseOutline} from "react-icons/io5";
+import {IoAddCircleSharp} from "react-icons/io5";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/pagination";
-import {deleteRoute, getArchiveRoutes, getUserRoutes} from "../../API/routes";
+import {deleteRoute, getArchiveRoutes, getUserRoutes, unArchivedRoutes} from "../../API/routes";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
 import Loader from "../../components/Loader";
 import CustomModal from "../../components/utilities/CustomModal";
 import RouteCard from "../../components/RouteCard";
 
-const initialPageLimit = 4;
+const initialPageLimit = 6;
 
 const UserRoutes = () => {
 
@@ -65,7 +65,7 @@ const UserRoutes = () => {
                         isLoading: true
                     })))
                     .catch(error => console.log(error))
-            else {
+                else {
                     getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
                         .then(r => setArchiveRoutes(prevState => ({
                             ...prevState,
@@ -79,7 +79,30 @@ const UserRoutes = () => {
         )
     }
 
+    const [isShowRouteUnArchive, setIsShowRouteUnArchive] = useState(false)
 
+    const unArchiveRoute = () => {
+        unArchivedRoutes(axiosPrivate, routeId)
+            .then(() => {
+                getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
+                    .then(r => setArchiveRoutes(prevState => ({
+                        ...prevState,
+                        data: r?.data?.body?.data,
+                        meta: r?.data?.body?.meta,
+                        isLoading: true
+                    })))
+                    .catch(error => console.log(error))
+                getUserRoutes(routesPagination.pageLimit, routesPagination.currentPage, currentUser?.id, axiosPrivate)
+                    .then(r => setRoutes(prevState => ({
+                        ...prevState,
+                        data: r?.data?.body?.data,
+                        meta: r?.data?.body?.meta,
+                        isLoading: true
+                    })))
+                    .catch(error => console.log(error))
+            })
+            .catch(error => console.log(error))
+    }
 
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
@@ -141,8 +164,12 @@ const UserRoutes = () => {
                                             date={(i.dateType === false) ? "постоянно" : 'единожды'}
                                             url={`/route-page/${i.id}`}
                                             profileView='active'
-                                            callback={(id) => {
+                                            callbackForDelete={(id) => {
                                                 setIsShowRouteModal(true)
+                                                setRouteId(id)
+                                            }}
+                                            callbackForUnArchive={id => {
+                                                setIsShowRouteUnArchive(true)
                                                 setRouteId(id)
                                             }}
                                         />
@@ -183,12 +210,16 @@ const UserRoutes = () => {
                                             carrying={i.car?.carrying}
                                             notes="cold"
                                             carType={i.carBodyType?.name}
-                                            dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}
+                                            dimensions={`${i.car?.length}/${i.car?.width}/${i.car?.height}`}
                                             date={(i.dateType === false) ? "постоянно" : 'единожды'}
                                             url={`/route-page/${i.id}`}
                                             profileView='archive'
-                                            callback={(id) => {
+                                            callbackForDelete={(id) => {
                                                 setIsShowRouteModal(true)
+                                                setRouteId(id)
+                                            }}
+                                            callbackForUnArchive={id => {
+                                                setIsShowRouteUnArchive(true)
                                                 setRouteId(id)
                                             }}
                                         />
@@ -198,7 +229,7 @@ const UserRoutes = () => {
                             : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
-                    {(routes?.data?.length > 0) && (
+                    {(archiveRoutes?.data?.length > 0) && (
                         <Pagination
                             className='mt-4'
                             pageLimit={archiveRoutesPag.pageLimit}
@@ -212,8 +243,6 @@ const UserRoutes = () => {
                     )}
                 </>
             }
-
-
             <CustomModal
                 className='modal__deleteRoute'
                 isShow={isShowRouteModal}
@@ -221,10 +250,9 @@ const UserRoutes = () => {
                 closeButton={true}
                 centered={false}
             >
-
-                <div className="p-lg-5">
+                <div className="pt-0 pe-5 pb-5 ps-5">
                     <div className="dark-blue fs-12 fw-7 title-font text-center">
-                        Вы действительно хотите удалить объявление?
+                        Вы действительно хотите удалить маршрут?
                     </div>
                     <div className="d-flex justify-content-center mt-4 fs-12">
                         <div>
@@ -239,6 +267,45 @@ const UserRoutes = () => {
                                 Удалить
                             </button>
                         </div>
+                    </div>
+                </div>
+            </CustomModal>
+            <CustomModal
+                className='modal__unArchive'
+                isShow={isShowRouteUnArchive}
+                setIsShow={setIsShowRouteUnArchive}
+                closeButton={true}
+                centered={false}
+            >
+                <div className="pt-0 pe-5 pb-5 ps-5">
+                    <div className="dark-blue fs-12 fw-7 title-font text-center">
+                        Убрать маршрут из архива?
+                    </div>
+                    <div className="d-flex justify-content-evenly mt-4 fs-12">
+                        <div>
+                            <button
+                                type="button"
+                                className="btn btn-1 w-100 px-4 mb-3 mb-sm-0"
+                                onClick={() => {
+                                    setIsShowRouteUnArchive(false)
+                                }}
+                            >
+                                Отмена
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                type="button"
+                                className="btn btn-1 w-100 px-4 mb-3 mb-sm-0"
+                                onClick={() => {
+                                    setIsShowRouteUnArchive(false)
+                                    unArchiveRoute()
+                                }}
+                            >
+                                Убрать
+                            </button>
+                        </div>
+
                     </div>
                 </div>
             </CustomModal>

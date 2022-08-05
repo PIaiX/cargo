@@ -7,7 +7,6 @@ import {
     IoChevronBackSharp,
     IoChevronForwardSharp,
     IoRepeat,
-    IoShieldCheckmarkSharp,
     IoWarning,
     IoEllipsisVertical
 } from 'react-icons/io5';
@@ -22,7 +21,7 @@ import {useParams} from "react-router-dom";
 
 SwiperCore.use([Navigation, Pagination]);
 
-export default function CarPage() {
+export default function RoutePage() {
 
     const verified = true; //иконка напротив заголовка, если машина подтвержденная?
     const [data, setData] = useState({
@@ -164,7 +163,7 @@ export default function CarPage() {
                             <div className="mb-3"><span className="fw-5">Грузоподъемнсть:</span> {data?.car?.carrying} т
                             </div>
                             <div><span
-                                className="fw-5">Габариты кузова:</span> {data?.car?.height}/{data?.car?.width}/{data?.car?.length} м
+                                className="fw-5">Габариты кузова:</span> {data?.car?.length}/{data?.car?.width}/{data?.car?.height} м
                             </div>
                         </div>
 

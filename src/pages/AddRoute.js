@@ -1,11 +1,9 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-scroll";
 import {
-    IoAddCircle,
-    IoCloseCircle,
     IoChevronBackOutline,
     IoChevronForwardOutline,
-    IoNewspaperOutline, IoCloseOutline, IoTrash,
+    IoNewspaperOutline, IoTrash,
 } from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
 import {IconContext} from "react-icons";
@@ -15,27 +13,17 @@ import {
     optionsLoadingPeriodType,
     optionsLoadingDays,
 } from "../components/utilities/data";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    setCurrentRouteTemplate,
-    setRouteFormData,
-} from "../store/reducers/savedRouteTemplates";
+import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 import {createRoute, deleteTemplate, getTemplates, getUserCars, saveTemplateRoute} from "../API/routes";
 import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
 import {NavLink} from "react-router-dom";
 import CustomModal from "../components/utilities/CustomModal";
-import SavedTemplate from "../components/footerComponents/SavedTemplate";
-import AsyncSelect from "react-select/async";
 
 export default function AddRoute() {
 
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
-    const dispatch = useDispatch();
     const axiosPrivate = useAxiosPrivate()
-    const currentTemplate = useSelector(
-        (state) => state.savedRouteTemplates.currentTemplate
-    );
     const currentUser = useSelector(state => state.currentUser.data.user)
     const [contactsInfo, setContactsInfo] = useState(
         {
@@ -102,7 +90,6 @@ export default function AddRoute() {
         } else {
             try {
                 const response = createRoute(data, axiosPrivate)
-                console.log(response)
             } catch (error) {
                 console.log(error)
             }
@@ -147,8 +134,6 @@ export default function AddRoute() {
             .catch(error => console.log(error))
     }, [currentUser])
 
-    console.log(cars)
-
     const getDate = (dateMe) => {
         const newDate = new Date(dateMe)
         setData(prevState => ({
@@ -161,8 +146,6 @@ export default function AddRoute() {
         const find = cars?.forSelect?.find(i => i.value === carId)
         return <span>{find?.label}</span>
     }
-
-    console.log('data', data)
 
     useEffect(() => {
         setData(prevState => ({...prevState, contacts: [contactsInfo]}))
@@ -196,8 +179,6 @@ export default function AddRoute() {
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }, [currentUser])
-
-    console.log(templates)
 
     const [showUseTemplate, setShowUseTemplate] = useState(false)
 

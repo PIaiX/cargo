@@ -30,10 +30,12 @@ export default {
     UPDATE_ROUTE: '/route',
     USER_ARCHIVE_ROUTES: '/route/archive',
     DELETE_ROUTE: '/route',
+    ROUTE_CITY: '/route/paginate',
+    ROUTE_UNARCHIVE: '/route/unArchive',
 
     // templatesRouts
     SAVE_TEMPLATE: '/template/route',
     GET_TEMPLATES: '/template/route',
     DELETE_TEMPLATES: '/template',
-
+    UPDATE_NAME_TEMP: '/template'
 }

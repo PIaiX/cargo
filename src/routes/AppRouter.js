@@ -10,7 +10,7 @@ import AddRoute from "../pages/AddRoute";
 import EditCar from "../pages/EditCar";
 import EditCargo from "../pages/EditCargo";
 import CargoPage from "../pages/CargoPage";
-import CarPage from "../pages/CarPage";
+import RoutePage from "../pages/RoutePage";
 import Home from "../pages/Home";
 import Search from "../pages/Search";
 import AllNews from "../pages/AllNews";
@@ -56,8 +56,8 @@ const Wrapper = ({children}) => {
           </Route>
             {/* Роуты доступные только зареганным пользователям */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="route-page" element={<CarPage />}>
-              <Route path=':id' element={<CarPage/>}/>
+            <Route path="route-page" element={<RoutePage />}>
+              <Route path=':id' element={<RoutePage/>}/>
             </Route>
             <Route path="add-cargo" element={<AddCargo />} />
             <Route path="add-car" element={<AddCar />} />
