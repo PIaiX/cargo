@@ -30,6 +30,7 @@ import CustomModal from "../components/utilities/CustomModal";
 import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
 import apiRoutes from "../API/config/apiRoutes";
 import useAxiosPrivate from "../hooks/axiosPrivate";
+import { parseCargoClientToServer } from "../helpers/parser";
 
 const initialLoading = [
   [
@@ -185,7 +186,7 @@ const initialCargo = [
     },
     {
       name: "adr1",
-      value: true,
+      value: false,
       required: false,
     },
     {
@@ -333,10 +334,28 @@ export default function AddCargo() {
 
   const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
 
+  const [itemTypes, setItemTypes] = useState([])
+  const [packageTypes, setPackageTypes] = useState([])
+
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
   const currentTemplate = useSelector(
     (state) => state.savedCargoTemplates.currentTemplate
   );
+
+    useEffect(() => {
+      const getOptions = async () => {
+        try {
+          const itemResponse = await axiosPrivate.get("/cargo/itemTypes")
+          const packageResponse = await axiosPrivate.get("/cargo/packageTypes")
+          setItemTypes(itemResponse.data.body)
+          setPackageTypes(packageResponse.data.body)
+        } catch (error) {
+          window.log(error)
+        }
+      }
+
+      getOptions()
+    }, [])
 
   const getEntireFormValue = () => {
     const newContactsField = [
@@ -697,9 +716,11 @@ export default function AddCargo() {
   };
 
   //добавление fieldset
-  let addState = (state, func) => {
+  let addState = (state, func, stateName) => {
+    const checkBoxes = ["adr1", "adr2", "adr3", "adr4", "adr5", "adr6", "adr7", "adr8", "adr9", "tir", "emkt"]
     let arr = state[0];
     let clearedArr = arr.map((obj) => {
+      if(stateName && stateName === "cargo" && checkBoxes.includes(obj.name)) return { ...obj, value: false };
       return { ...obj, value: "" };
     });
     func([...state, clearedArr]);
@@ -751,133 +772,7 @@ export default function AddCargo() {
     dispatch(setCurrentCargoTemplate(null));
   };
 
-  const formatDataBeforeSend = (formData) => {
-    const extractValue = (array, name) => {
-      const object = array.filter((item) => item.name === name);
-      return object[0].value;
-    };
-
-    const formatContacts = (contacts) => {
-      return contacts.map((item) => {
-        return { phone: item.phone, firstName: item.name };
-      });
-    };
-
-    const formatLoadings = (loadings) => {
-      const formattedLoadings = [];
-      loadings.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "frequency")
-            return (newItem.type = i.value === "0" ? false : true);
-          if (i.name === "isLoadingAllDay") return (newItem.isAllDay = i.value ? true : false);
-          if (i.name === "loadingAddress") return (newItem.address = i.value);
-          if (i.name === "loadingDate") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.date = array.join("."));
-          }
-          if (i.name === "loadingDays") return (newItem.days = i.value);
-          if (i.name === "loadingPeriodType")
-            return (newItem.periodType = i.value);
-          if (i.name === "loadingTimeFrom") return (newItem.timeFrom = i.value);
-          if (i.name === "loadingTimeTo") return (newItem.timeTo = i.value);
-          if (i.name === "loadingTown") return (newItem.town = "Казань");
-          if (i.name === "transportationType")
-            return (newItem.transportaionType =
-              i.value === "FTL" ? false : true);
-          if (i.name === "loadingType")
-            return (newItem.cargoLoadingTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedLoadings.push(newItem);
-      });
-
-      return formattedLoadings;
-    };
-
-    const formatUnloadings = (unloadings) => {
-      const formattedUnloadings = [];
-      unloadings.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "isUnloadingAllDay")
-            return (newItem.isAllDay = !i.value ? false : i.value);
-          if (i.name === "unloadingTown") return (newItem.town = "Казань");
-          if (i.name === "unloadingAddress") return (newItem.address = i.value);
-          if (i.name === "unloadingDateFrom") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.dateFrom = array.join("."));
-          }
-          if (i.name === "unloadingDateTo") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.dateTo = array.join("."));
-          }
-          if (i.name === "unloadingTimeFrom")
-            return (newItem.timeFrom = i.value);
-          if (i.name === "unloadingTimeTo") return (newItem.timeTo = i.value);
-          if (i.name === "unloadingType")
-            return (newItem.cargoLoadingTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedUnloadings.push(newItem);
-      });
-
-      return formattedUnloadings;
-    };
-
-    const formatCargo = (cargo) => {
-      const formattedCargo = [];
-      cargo.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "unloadingAddress") return (newItem.address = i.value);
-          if (i.name === "notes") return (newItem.noteType = i.value);
-          if (i.name === "cargoType")
-            return (newItem.cargoItemTypeId = i.value);
-          if (i.name === "cargoItemPackageTypeId")
-            return (newItem.cargoItemTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedCargo.push(newItem);
-      });
-
-      return formattedCargo;
-    };
-
-    const formattedFormData = {
-      loadings: formatLoadings(formData.loading),
-      unloadings: formatUnloadings(formData.unloading),
-      items: formatCargo(formData.cargo),
-      prepayment: extractValue(formData.payment, "prepay"),
-      userId: currentUserId,
-      bargainType:
-        extractValue(formData.payment, "bargain") === "0" ? true : false,
-      calculateType:
-        extractValue(formData.payment, "paymentType") === "0" ? true : false,
-      fromTemperature: extractValue(formData.requirements, "tempFrom"),
-      toTemperature: extractValue(formData.requirements, "tempTo"),
-      vatPrice: extractValue(formData.payment, "priceVat"),
-      noVatPrice: extractValue(formData.payment, "priceNovat"),
-      note: extractValue(formData.contactsField, "remark"),
-      contacts: formatContacts(formData.contacts),
-    };
-    return formattedFormData;
-  };
+  
 
   //финальная проверка на заполнение и отправка формы
   const onSubmit = async (e) => {
@@ -886,7 +781,7 @@ export default function AddCargo() {
     // const isValidForm = checkAllRequiredFields();
     // if (!isValidForm) return alert("Заполните все обязательные поля");
 
-    const result = formatDataBeforeSend(getEntireFormValue());
+    const result = parseCargoClientToServer(getEntireFormValue(), currentUserId);
 
     try {
       const response = await axiosPrivate.post(apiRoutes.CARGO_CREATE, result);
@@ -926,6 +821,8 @@ export default function AddCargo() {
       return `${originalClasses} ${addedClass}`;
     return originalClasses;
   };
+
+  console.log(cargo[0])
 
   return (
     <main className="bg-gray">
@@ -1808,7 +1705,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="cargoType"
                         value={getObj(
-                          optionsCargoType,
+                          itemTypes.map((i) => {
+                            return {value: i.id, label: i.name}
+                          }),
                           cargo,
                           "cargoType",
                           index
@@ -1816,7 +1715,9 @@ export default function AddCargo() {
                         onChange={(e) =>
                           handleRSelect(e, "cargoType", setCargo, cargo, index)
                         }
-                        options={optionsCargoType}
+                        options={itemTypes.map((i) => {
+                          return {value: i.id, label: i.name}
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1982,7 +1883,9 @@ export default function AddCargo() {
                         name="packageType"
                         placeholder={"Выберите..."}
                         value={getObj(
-                          optionsPackageType,
+                          packageTypes.map((i) => {
+                            return {value: i.id, label: i.name}
+                          }),
                           cargo,
                           "packageType",
                           index
@@ -1996,7 +1899,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsPackageType}
+                        options={packageTypes.map((i) => {
+                          return {value: i.id, label: i.name}
+                        })}
                         isSearchable={true}
                       />
                       <IconContext.Provider
@@ -2057,7 +1962,7 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR1"
+                              name="adr1"
                               value={getValArr(cargo, index, "adr1")}
                               checked={getValArr(cargo, index, "adr1")}
                               onChange={(e) =>
@@ -2238,7 +2143,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(cargo, setCargo)}
+                onClick={() => addState(cargo, setCargo, "cargo")}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>

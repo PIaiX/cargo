@@ -35,8 +35,8 @@ export default function Home() {
         setNews((prev) => ({
           ...prev,
           isLoading: true,
-          meta: result.meta,
-          items: result.data,
+          meta: result?.meta,
+          items: result?.data,
         }))
       )
       .catch((error) =>
