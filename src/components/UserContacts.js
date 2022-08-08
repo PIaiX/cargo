@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 
 export default function UserContacts(props) {
+
     const [visible, setVisibility] = useState(false);
 
+    console.log(props)
     return (
         <div className={"row g-0 user-contacts " + props.className}>
             <div className="col-4 col-sm-5 col-md-12">
@@ -23,7 +25,7 @@ export default function UserContacts(props) {
                     (visible) &&
                     <div className="d-flex flex-column align-items-left align-items-md-center">
                         {
-                            props.contacts.map(item => {
+                            props?.contacts?.map(item => {
                                 return (
                                     <div key={item.phone.toString()} className="mb-2">
                                         <a href={"tel:"+item.phone}>{item.phone}</a>

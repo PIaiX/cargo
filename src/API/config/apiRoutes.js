@@ -29,4 +29,19 @@ export default {
     CARGO_ARCHIVE: "/cargo/archive",
     CARGO_UNARCHIVE: "/cargo/unArchive",
     CARGO_ACTIONS: "/cargo",
+
+    // route
+    ROUTE_COUNT: '/route/count',
+    ROUTE_SEARCH: '/route/search',
+    ROUTE_PAGINATE: '/route/paginate',
+    ROUTE_NOT_ARCHIVE: '/route/notArchive',
+    ROUTE_ARCHIVE: '/route/archive',
+    ROUTE_UNARCHIVE: '/route/unArchive',
+    ROUTE_ACTIONS: "/route",
+
+    // templatesRouts
+    SAVE_TEMPLATE: '/template/route',
+    GET_TEMPLATES: '/template/route',
+    DELETE_TEMPLATES: '/template',
+    UPDATE_NAME_TEMP: '/template'
 }

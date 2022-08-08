@@ -9,34 +9,15 @@ import cars from "./../dummyData/car.json";
 import {getCities} from "../API/cities";
 import SearchInput from "../components/utilities/SearchInput";
 
-const formValuesDefault = {
-  from: "",
-  to: "",
-  date: "",
-  minVolume: "",
-  maxVolume: "",
-  minWeight: "",
-  maxWeight: "",
-  length: "",
-  width: "",
-  height: "",
-  cargoType: "",
-  specialNotes: "",
-};
-
 const initialPageLimit = 12
 
 export default function Search() {
   const [search, setSearch] = useState("cargo"); // cargo & car
-  const [filteredCargo, setFilteredCargo] = useState([]);
-  const [filteredCars, setFilteredCars] = useState([]);
 
   const cargoPagination = usePagination(initialPageLimit)
   const carsPagination = usePagination(initialPageLimit);
   
-  const [advSearch, setAdvSearch] = useState(true);
   const [data, setData] = useState([])
-  const [formValues, setFormValues] = useState(formValuesDefault);
 
   useEffect(() => {
     getCities().then(res => {
@@ -45,70 +26,6 @@ export default function Search() {
       }
     })
   }, [])
-
-  useEffect(() => {
-    //Make an API call later getting the first page of all the cargo
-    const startIdx = (cargoPagination.currentPage - 1) * cargoPagination.pageLimit;
-    const endIdx = startIdx + cargoPagination.pageLimit;
-    const paginated = cargo.slice(startIdx, endIdx);
-
-    setFilteredCargo(paginated);
-    window.scrollTo(0, 0);
-  }, [cargoPagination.currentPage, cargoPagination.pageLimit]);
-
-  useEffect(() => {
-    //Make an API call later getting the first page of all the cars
-    const startIdx = (carsPagination.currentPage - 1) * carsPagination.pageLimit;
-    const endIdx = startIdx + carsPagination.pageLimit;
-    const paginated = cars.slice(startIdx, endIdx);
-
-    setFilteredCars(paginated);
-    window.scrollTo(0, 0);
-  }, [carsPagination.currentPage, carsPagination.pageLimit]);
-
-  useEffect(() => {
-    function collapseForm() {
-      if (window.matchMedia("(max-width: 767px)").matches) {
-        setAdvSearch(false);
-      } else {
-        setAdvSearch(true);
-      }
-    }
-    window.addEventListener("resize", collapseForm);
-    collapseForm();
-    return () => window.removeEventListener("resize", collapseForm);
-  }, []);
-
-  const handleSelectChange = (value, fieldName) => {
-    setFormValues((prev) => {
-      return { ...prev, [fieldName]: value };
-    });
-  };
-
-  const handleFormChange = (e) => {
-    setFormValues((prev) => {
-      return {
-        ...prev,
-        [e.target.name]:
-          e.target.type === "checkbox" ? e.target.checked : e.target.value,
-      };
-    });
-  };
-
-  const handleFormSubmit = async () => {
-    // TODO: Make an API call in the future
-
-    // try {
-    //   const response = await axios.post(`${baseUrl}/api/search`, {
-    //     ...formValue
-    //   });
-    // } catch (error) {
-    //   console.log(error.message)
-    // }
-
-    alert(JSON.stringify(formValues));
-    console.log(formValues);
-  };
 
   return (
     <main>
