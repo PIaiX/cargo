@@ -3733,4 +3733,9 @@ footer .payment-methods img:not(:first-child) {
   font-weight: 400;
 }
 
+.add-cargo_hidden-count {
+  justify-content: end !important;
+  gap: 10px;
+}
+
 /*# sourceMappingURL=style.css.map */

@@ -9,7 +9,7 @@ import {deleteCar, getCars} from '../../API/car';
 import {useSelector} from 'react-redux';
 import useAxiosPrivate from '../../hooks/axiosPrivate';
 import Loader from '../../components/Loader';
-import CarCard from '../../components/carCard';
+import CarCard from '../../components/CarCard';
 import CustomModal from '../../components/utilities/CustomModal';
 
 const initialPageLimit = 9;
@@ -29,7 +29,7 @@ export default function UserCars() {
 
     const getCarsRequest = (page, limit) => {
         getCars(axiosPrivate, userId, page, limit)
-            .then(result => setCars(prev => ({...prev, isLoading: true, meta: result.meta, items: result.data})))
+            .then(result => setCars(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
     }
 
@@ -75,11 +75,10 @@ export default function UserCars() {
                 {
                     cars.isLoading
                         ? cars?.items?.length
-                            ? cars.items.map((item, index) => (
-                                <div key={index}>
+                            ? cars.items.map(item => (
+                                <div key={item.id}>
                                     <CarCard
                                         id={item.id}
-                                        type="car"
                                         name={item.name}
                                         carTypeForUser={item?.bodyType?.name}
                                         profileView={true}

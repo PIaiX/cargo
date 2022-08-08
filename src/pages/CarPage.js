@@ -1,5 +1,4 @@
 import React from 'react';
-import Card from '../components/Card';
 import UserContacts from '../components/UserContacts';
 
 import { RiChat4Fill, RiMapPinFill, RiCalendarEventFill } from "react-icons/ri";
@@ -160,78 +159,79 @@ export default function CarPage() {
                         prevEl: '.swiper-button-prev',
                     }}
                 >
-                    <SwiperSlide>
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="cold"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Оборудование" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="fragile"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>    
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Стройматериалы" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="none"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Трубы" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="dimensional"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Продукты питания" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="cold"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <Card 
-                            type="cargo"
-                            className=""
-                            title="Оборудование" 
-                            route="Казань-Москва"
-                            size="30"
-                            weight="10 т"
-                            notes="fragile"
-                            url="/cargo-page"
-                        />
-                    </SwiperSlide>
+                    {/* todo: ATTENTION */}
+                    {/*<SwiperSlide>*/}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Продукты питания" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="cold"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
+                    {/*<SwiperSlide>*/}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Оборудование" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="fragile"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
+                    {/*<SwiperSlide>    */}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Стройматериалы" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="none"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
+                    {/*<SwiperSlide>*/}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Трубы" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="dimensional"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
+                    {/*<SwiperSlide>*/}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Продукты питания" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="cold"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
+                    {/*<SwiperSlide>*/}
+                    {/*    <Card */}
+                    {/*        type="cargo"*/}
+                    {/*        className=""*/}
+                    {/*        title="Оборудование" */}
+                    {/*        route="Казань-Москва"*/}
+                    {/*        size="30"*/}
+                    {/*        weight="10 т"*/}
+                    {/*        notes="fragile"*/}
+                    {/*        url="/cargo-page"*/}
+                    {/*    />*/}
+                    {/*</SwiperSlide>*/}
                     <div className="swiper-button-prev">
                         <IoChevronBackSharp />
                     </div>
