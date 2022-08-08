@@ -22,6 +22,8 @@ export default {
     CARS: "/car/user",
 
     // cargo
+    CARGO_ITEM_TYPES: "/cargo/itemTypes",
+    CARGO_PACKAGE_TYPES: "/cargo/packageTypes",
     CARGO_COUNT: "/cargo/count",
     CARGO_SEARCH: "/cargo/search",
     CARGO_PAGINATE: "/cargo/paginate",

@@ -3880,3 +3880,15 @@ footer {
   justify-content: end !important;
   gap: 10px;
 }
+
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__checkbox {
+    label > input {
+      margin-right: 20px;
+    }
+  }
+}

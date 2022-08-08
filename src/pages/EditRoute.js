@@ -9,15 +9,9 @@ import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilit
 import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {
-    deleteTemplate,
-    getRoutePage,
-    getTemplates,
-    getUserCars,
-    saveTemplateRoute,
-    updateRoute
-} from "../API/routes";
+import {deleteTemplate, getRoutePage, getTemplates, saveTemplateRoute, updateRoute} from "../API/route";
 import CustomModal from "../components/utilities/CustomModal";
+import {getCars} from '../API/car';
 
 const EditRoute = () => {
 
@@ -142,7 +136,7 @@ const EditRoute = () => {
     })
 
     useEffect(() => {
-        getUserCars(1,currentUser?.id, axiosPrivate)
+        getCars(axiosPrivate, currentUser?.id, 1)
             .then(res => setCars(prevState => (
                 {
                     ...prevState,

@@ -3752,4 +3752,13 @@ footer .payment-methods img:not(:first-child) {
   gap: 10px;
 }
 
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.type-select__checkbox label > input {
+  margin-right: 20px;
+}
+
 /*# sourceMappingURL=style.css.map */

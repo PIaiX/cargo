@@ -15,10 +15,11 @@ import {
 } from "../components/utilities/data";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {createRoute, deleteTemplate, getTemplates, getUserCars, saveTemplateRoute} from "../API/routes";
+import {createRoute, deleteTemplate, getTemplates, saveTemplateRoute} from "../API/route";
 import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
 import {NavLink} from "react-router-dom";
 import CustomModal from "../components/utilities/CustomModal";
+import {getCars} from '../API/car';
 
 export default function AddRoute() {
 
@@ -124,7 +125,7 @@ export default function AddRoute() {
     })
 
     useEffect(() => {
-        getUserCars(1, currentUser?.id, axiosPrivate)
+        getCars(axiosPrivate, currentUser?.id, 1)
             .then(res => setCars(prevState => (
                 {
                     ...prevState,

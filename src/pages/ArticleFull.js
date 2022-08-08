@@ -37,6 +37,10 @@ export default function ArticleFull() {
             .catch(error => setSwiperNews(prev => ({...prev, isLoading: true, error})))
     }, [])
 
+    useEffect(() => {
+        console.log(newsItem)
+    }, [newsItem])
+
     return (
         <main className="bg-white py-4 py-lg-5">
             <div className="container">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Card from "../components/Card";
 import ArticleCard from "../components/ArticleCard";
 import { IoChevronBackSharp, IoChevronForwardSharp } from "react-icons/io5";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -216,78 +215,78 @@ export default function Home() {
               prevEl: ".swiper-button-prev",
             }}
           >
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Продукты питания"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="cold"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Оборудование"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="fragile"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Стройматериалы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="none"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Трубы"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="dimensional"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Продукты питания"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="cold"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="cargo"
-                className=""
-                title="Оборудование"
-                route="Казань-Москва"
-                size="30"
-                weight="10 т"
-                notes="fragile"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Продукты питания"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="cold"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Оборудование"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="fragile"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Стройматериалы"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="none"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Трубы"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="dimensional"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Продукты питания"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="cold"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="cargo"*/}
+            {/*    className=""*/}
+            {/*    title="Оборудование"*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    size="30"*/}
+            {/*    weight="10 т"*/}
+            {/*    notes="fragile"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
             <div className="swiper-button-prev">
               <IoChevronBackSharp />
             </div>
@@ -341,118 +340,118 @@ export default function Home() {
               prevEl: ".swiper-button-prev",
             }}
           >
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Тягач"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Рефрижератор"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Тягач"
-                verified={true}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань — Москва"
-                carType="Рефрижератор"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <Card
-                type="car"
-                className=""
-                route="Казань-Москва"
-                carType="Фура"
-                verified={false}
-                date="Ежедневно"
-                carrying="20"
-                size="30"
-                dimensions="13/2,45/2,45"
-                url="/cargo-page"
-              />
-            </SwiperSlide>
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    carType="Фура"*/}
+            {/*    verified={true}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань — Москва"*/}
+            {/*    carType="Тягач"*/}
+            {/*    verified={true}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань — Москва"*/}
+            {/*    carType="Рефрижератор"*/}
+            {/*    verified={false}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    carType="Фура"*/}
+            {/*    verified={false}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    carType="Фура"*/}
+            {/*    verified={true}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань — Москва"*/}
+            {/*    carType="Тягач"*/}
+            {/*    verified={true}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань — Москва"*/}
+            {/*    carType="Рефрижератор"*/}
+            {/*    verified={false}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
+            {/*<SwiperSlide>*/}
+            {/*  <Card*/}
+            {/*    type="car"*/}
+            {/*    className=""*/}
+            {/*    route="Казань-Москва"*/}
+            {/*    carType="Фура"*/}
+            {/*    verified={false}*/}
+            {/*    date="Ежедневно"*/}
+            {/*    carrying="20"*/}
+            {/*    size="30"*/}
+            {/*    dimensions="13/2,45/2,45"*/}
+            {/*    url="/cargo-page"*/}
+            {/*  />*/}
+            {/*</SwiperSlide>*/}
             <div className="swiper-button-prev">
               <IoChevronBackSharp />
             </div>

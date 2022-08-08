@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Card from '../components/Card';
 import UserContacts from '../components/UserContacts';
 
 import {RiChat4Fill, RiMapPinFill, RiCalendarEventFill} from "react-icons/ri";
@@ -15,9 +14,10 @@ import {IconContext} from "react-icons";
 
 import {Swiper, SwiperSlide} from 'swiper/react';
 import SwiperCore, {Navigation, Pagination} from 'swiper';
-import {getRoutePage, getSearchRoutes} from "../API/routes";
+import {getRoutePage} from "../API/route";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 import {useParams} from "react-router-dom";
+import {searchRoute} from '../API/route';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -47,13 +47,11 @@ export default function RoutePage() {
     }, [])
 
     useEffect(() => {
-        getSearchRoutes(false, 1, 6, axiosPrivate)
+        searchRoute(1, 6, {isVerified: false})
             .then(res => setSearchRoutes(res?.data?.body?.data))
             .catch(error => console.log(error))
     }, [])
 
-    console.log(searchRoutes)
-    console.log(data)
     return (
         <main className="bg-white">
             <section id="sec-8" className="container py-4 py-sm-5">

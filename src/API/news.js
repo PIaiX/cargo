@@ -21,7 +21,7 @@ const getRandomNews = async (limit = 4) => {
 
 const getSingleNews = async (slug) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.NEWS}/${slug}`)
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.NEWS}/${slug}`)
         return response.data.body
     } catch (error) {
         console.log(error)

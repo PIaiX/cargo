@@ -3,10 +3,10 @@ import axios from "axios";
 
 const site = process.env.REACT_APP_BASE_URL
 
-const searchRoute = async () => {
+export const searchRoute = async (page, limit, payloads = {}) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.ROUTE_SEARCH}`)
-        return response.data.body
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.ROUTE_SEARCH}`, {page, limit, ...payloads})
+        return response?.data?.body
     } catch (error) {
         console.log(error)
     }
