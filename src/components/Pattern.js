@@ -1,32 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import { IconContext  } from "react-icons";
 import { IoTrash, IoCaretDown, IoEllipsisVertical } from 'react-icons/io5';
-import CustomModal from "./utilities/CustomModal";
+import {NavLink} from "react-router-dom";
 
 const Pattern = (props) => {
-
-    const [isShowRenameModal, setIsShowRenameModal] = useState(false)
-    const [isShowDeleteModal, setIsShowDeleteModal] = useState(false)
-    const [rename, setRename] = useState({
-        patternName: '',
-        note: '',
-    })
-
-    const onSubmitForRename = () => {
-
-        const formData = new FormData()
-        const req = {...rename}
-
-        for (const key in req){
-            formData.append(key, req[key])
-        }
-
-        try {
-            ///
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    
+    const [car, setCar] = useState({})
+    
+    useEffect(() => {
+        props?.car && setCar(props.car)
+    }, [props.car])
 
     return (
         <details className={props.className}>
@@ -39,8 +22,8 @@ const Pattern = (props) => {
                         </IconContext.Provider>
                     </h5>
                     {
-                        (props.note)&&
-                        <div className='fs-11'>{props.note}</div>
+                        (props.car)&&
+                        <div className='fs-11'>{props.car?.bodyType.name}</div>
                     }
                 </div>
                 {/*mobile*/}
@@ -52,16 +35,17 @@ const Pattern = (props) => {
                     </button>
                     <ul className="dropdown-menu py-2">
                         <li>
-                            <button
+                            <NavLink
                                 type='button'
+                                to={props.url}
                             >
                                 Открыть
-                            </button>
+                            </NavLink>
                         </li>
                         <li>
                             <button
                             type='button'
-                            onClick={() => setIsShowRenameModal(true)}
+                            onClick={() => props?.callbackForRename && props.callbackForRename(props.id)}
                             >
                                 Переименовать
                             </button>
@@ -69,7 +53,7 @@ const Pattern = (props) => {
                         <li>
                             <button
                                 type='button'
-                                onClick={() => setIsShowDeleteModal(true)}
+                                onClick={() => props?.callbackForDelete && props.callbackForDelete(props.id)}
                             >
                                 Удалить
                             </button>
@@ -78,22 +62,23 @@ const Pattern = (props) => {
                 </div>
                 {/*des*/}
                 <div className='d-none d-md-flex'>
-                    <button
+                    <NavLink
                         type='button'
                         className='btn btn-1 fs-09'
+                        to={props.url}
                     >
                         Открыть
-                    </button>
+                    </NavLink>
                     <button
                         type='button'
                         className='btn btn-1 fs-09 ms-2 ms-xxl-3'
-                        onClick={() => setIsShowRenameModal(true)}
+                        onClick={() => props?.callbackForRename && props.callbackForRename(props.id)}
                     >
                         Переименовать
                     </button>
                     <button
                         type='button'
-                        onClick={() => setIsShowDeleteModal(true)}
+                        onClick={() => props?.callbackForDelete && props.callbackForDelete(props.id)}
                         className='ms-3 ms-xxl-4'
                     >
                         <IconContext.Provider value={{className: "icon-15 gray-4", title: "Удалить" }}>
@@ -106,104 +91,34 @@ const Pattern = (props) => {
                 <table>
                     <tbody>
                         <tr>
-                            <th>Маршрут</th>
-                            <td>{props.route}</td>
+                            <th>Маршрут:</th>
+                            <td>{props.fromRoute} - {props.toRoute}</td>
                         </tr>
                         <tr>
-                            <th>Дата</th>
-                            <td>{props.date}</td>
+                            <th>Дата:</th>
+                            <td>{props.date ? 'постоянно' : 'единожды'}</td>
                         </tr>
                         <tr>
-                            <th>О&nbsp;машине</th>
-                            <td>{props.aboute}</td>
+                            <th>О&nbsp;машине:</th>
+                            <td>{car && `${car?.bodyType?.name}, ${car?.name}, ${car?.carrying}Т,${car?.capacity}м3, ${car?.length}/${car?.width}/${car?.height}`}</td>
                         </tr>
                         <tr>
-                            <th>Оплата</th>
-                            <td>{props.payment}</td>
+                            <th>Оплата:</th>
+                            <td>
+                                {props.bargainType ? 'возможен торг' : "без торга"},&nbsp;
+                                {props.calculateType ? "наличный расчет" : "перевод по карте"},&nbsp;
+                                {props.notVatPrice && `цена без НДС:${props.notVatPrice} ₽`},&nbsp;
+                                {props.vatPrice && `цена с НДС:${props.vatPrice} ₽`},&nbsp;
+                                предоплата {props.prepayment}%
+                            </td>
                         </tr>
                         <tr>
-                            <th>Контакты</th>
-                            <td>{props.contacts}</td>
+                            <th>Контакты:</th>
+                            <td>{props.contacts && `${props.contacts.map(i => i.phone)} ${props.contacts.map(i => i.firstName)}`}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <CustomModal
-                closeButton={true}
-                isShow={isShowRenameModal}
-                setIsShow={setIsShowRenameModal}
-                title={true}
-                titleHead={'Переименовать шаблон'}
-                className="modal__rename-template"
-            >
-                <form className="fs-12">
-                    <label className="mb-2">Название шаблона</label>
-                    <input
-                        type="text"
-                        className="mb-3"
-                        placeholder="Название"
-                        value={rename.patternName}
-                        onChange={(e) => {
-                            setRename(prevState => {
-                                return {...prevState, 'patternName': e.target.value}
-                            })
-                        }}
-                    />
-                    <label className="mb-2">Примечание</label>
-                    <input
-                        type="text"
-                        className="mb-3"
-                        placeholder="Примечание"
-                        value={rename.note}
-                        onChange={(e) => {
-                            setRename(prevState => {
-                                return {...prevState, 'note': e.target.value}
-                            })
-                        }}
-                    />
-                    <div className="row row-cols-sm-2 mt-4">
-                        <div className="mb-3 mb-sm-0">
-                            <button
-                                type="button"
-                                onClick={() => setIsShowRenameModal(false)}
-                                className="btn btn-1 w-100"
-                            >
-                                Отмена
-                            </button>
-                        </div>
-                        <div>
-                            <button type="button" className="btn btn-2 w-100">
-                                Сохранить
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </CustomModal>
-            <CustomModal
-                isShow={isShowDeleteModal}
-                setIsShow={setIsShowDeleteModal}
-                closeButton={true}
-                title={true}
-                titleHead={'Вы действительно хотите удалить шаблон?'}
-                className="modal__delete-template"
-            >
-                <div className="row row-cols-sm-2 fs-12">
-                    <div className="mb-3 mb-sm-0">
-                        <button
-                            type="button"
-                            onClick={() => setIsShowDeleteModal(false)}
-                            className="btn btn-1 w-100"
-                        >
-                            Отмена
-                        </button>
-                    </div>
-                    <div>
-                        <button type="button" className="btn btn-2 w-100">
-                            Удалить
-                        </button>
-                    </div>
-                </div>
-            </CustomModal>
         </details>
     )
 }

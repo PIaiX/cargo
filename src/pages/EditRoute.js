@@ -1,49 +1,74 @@
-import React, {useState, useEffect} from "react";
-import {Link} from "react-scroll";
-import {
-    IoChevronBackOutline,
-    IoChevronForwardOutline,
-    IoNewspaperOutline, IoTrash,
-} from "react-icons/io5";
-import {VscChromeClose} from "react-icons/vsc";
+import React, {useEffect, useState} from 'react';
+import {NavLink, useParams} from "react-router-dom";
 import {IconContext} from "react-icons";
+import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
+import {VscChromeClose} from "react-icons/vsc";
+import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
 import Select from "react-select";
-import {
-
-    optionsLoadingPeriodType,
-    optionsLoadingDays,
-} from "../components/utilities/data";
+import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilities/data";
+import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {createRoute, deleteTemplate, getTemplates, getUserCars, saveTemplateRoute} from "../API/routes";
-import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
-import {NavLink} from "react-router-dom";
+import {
+    deleteTemplate,
+    getRoutePage,
+    getTemplates,
+    getUserCars,
+    saveTemplateRoute,
+    updateRoute
+} from "../API/routes";
 import CustomModal from "../components/utilities/CustomModal";
 
-export default function AddRoute() {
+const EditRoute = () => {
 
+    const {id} = useParams()
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
     const axiosPrivate = useAxiosPrivate()
     const currentUser = useSelector(state => state.currentUser.data.user)
     const [contactsInfo, setContactsInfo] = useState(
         {
+            id: '',
             phone: '',
             firstName: '',
         }
     )
     const [contactsArray, setContactsArray] = useState([]);
-    const [showModalSave, setShowModalSave] = useState(false)
+
+    const [curRoute, setCurRoute] = useState()
+
+    useEffect(() => {
+        getRoutePage(id, axiosPrivate)
+            .then(res => setCurRoute(res?.data?.body))
+            .catch(error => console.log(error))
+    }, [id])
 
     let [data, setData] = useState(
         {
             userId: currentUser.id,
-            bargainType: 0,
-            calculateType: 0,
-            contacts: [contactsInfo],
-            dateType: false,
-
         }
     );
+
+    useEffect(() => {
+        setData(prevState => ({...prevState,
+            userId: currentUser.id,
+            fromRoute: curRoute?.fromRoute,
+            loadingRadius: curRoute?.loadingRadius,
+            toRoute: curRoute?.toRoute,
+            unloadingRadius: curRoute?.unloadingRadius,
+            date: curRoute?.date,
+            dateDays: curRoute?.dateDays,
+            dateType: curRoute?.dateType,
+            datePeriodType: curRoute?.dateType,
+            bargainType: curRoute?.bargainType,
+            calculateType: curRoute?.calculateType,
+            vatPrice: curRoute?.vatPrice,
+            noVatPrice: curRoute?.noVatPrice,
+            prepayment: curRoute?.prepayment,
+            contacts: curRoute?.contacts,
+            note: curRoute?.note,
+
+        }))
+    }, [contactsInfo, curRoute, currentUser])
 
     const fields = {
         isInValidFromRoute: false,
@@ -89,24 +114,17 @@ export default function AddRoute() {
             setValid({...valid, isInValidFirstName: true})
         } else {
             try {
-                const response = createRoute(data, axiosPrivate)
+                const response = updateRoute(id,data, axiosPrivate)
+                console.log(response)
             } catch (error) {
                 console.log(error)
             }
         }
     }
 
-    const resetFieldVal = (newState, field) => {
-        setValid({...valid, [field]: false})
-    }
-
     const onReset = (e) => {
         setData({})
         setContactsArray([]);
-    };
-
-    let deleteContacts = (i) => {
-        setContactsArray(contactsArray.filter((obj) => obj !== i));
     };
 
     useEffect(() => {
@@ -124,7 +142,7 @@ export default function AddRoute() {
     })
 
     useEffect(() => {
-        getUserCars(1, currentUser?.id, axiosPrivate)
+        getUserCars(1,currentUser?.id, axiosPrivate)
             .then(res => setCars(prevState => (
                 {
                     ...prevState,
@@ -151,8 +169,8 @@ export default function AddRoute() {
         setData(prevState => ({...prevState, contacts: [contactsInfo]}))
     }, [contactsInfo])
 
-    const addContacts = () => {
-        setContactsArray(prevState => ([...prevState, contactsInfo]))
+    const resetFieldVal = (newState, field) => {
+        setValid({...valid, [field]: false})
     }
 
     const [dataTemplate, setDataTemplate] = useState({})
@@ -172,10 +190,12 @@ export default function AddRoute() {
         }
     }
 
+    const [showModalSave, setShowModalSave] = useState(false)
+
     const [templates, setTemplates] = useState([])
 
     useEffect(() => {
-        getTemplates(axiosPrivate, currentUser?.id, 1)
+        getTemplates(axiosPrivate, currentUser?.id,1 )
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }, [currentUser])
@@ -184,7 +204,7 @@ export default function AddRoute() {
 
     const onDeleteTemplate = async (id) => {
         await deleteTemplate(id, axiosPrivate)
-        await getTemplates(axiosPrivate, currentUser?.id, 1)
+        await getTemplates( axiosPrivate, currentUser?.id,1)
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }
@@ -199,7 +219,7 @@ export default function AddRoute() {
                     <span className="green fs-15 me-2">⟵</span> Назад
                 </NavLink>
                 <h1 className="dark-blue text-center text-uppercase">
-                    Добавление Маршрута
+                    Редактирование Маршрута
                 </h1>
                 <form
                     className="row"
@@ -1279,7 +1299,7 @@ export default function AddRoute() {
                                 type="submit"
                                 className="btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5"
                             >
-                                добавить маршрут
+                                Редактировать
                             </button>
                             <div className="fs-09 text-center mt-2 mt-xl-3">
                                 Объявление будет опубликованно до 1 января включительно, после
@@ -1445,4 +1465,6 @@ export default function AddRoute() {
             </section>
         </main>
     );
-}
+};
+
+export default EditRoute;

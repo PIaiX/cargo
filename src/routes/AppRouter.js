@@ -10,7 +10,7 @@ import AddRoute from "../pages/AddRoute";
 import EditCar from "../pages/EditCar";
 import EditCargo from "../pages/EditCargo";
 import CargoPage from "../pages/CargoPage";
-import CarPage from "../pages/CarPage";
+import RoutePage from "../pages/RoutePage";
 import Home from "../pages/Home";
 import Search from "../pages/Search";
 import AllNews from "../pages/AllNews";
@@ -26,6 +26,7 @@ import ForumMyTopics from "../pages/ForumMyTopics";
 import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
+import EditRoute from "../pages/EditRoute";
 
 export default function AppRouter() {
 
@@ -55,12 +56,17 @@ const Wrapper = ({children}) => {
           </Route>
             {/* Роуты доступные только зареганным пользователям */}
           <Route element={<ProtectedRoutes />}>
-            <Route path="car-page/:id" element={<CarPage />} />
+            <Route path="route-page" element={<RoutePage />}>
+              <Route path=':id' element={<RoutePage/>}/>
+            </Route>
             <Route path="add-cargo" element={<AddCargo />} />
             <Route path="add-car" element={<AddCar />} />
             <Route path="add-route" element={<AddRoute />} />
             <Route path="edit-car/:id" element={<EditCar />} />
             <Route path="edit-cargo/:id" element={<EditCargo />} />
+            <Route path="edit-route" element={<EditRoute/>}>
+              <Route path=':id' element={<EditRoute/>}/>
+            </Route>
             <Route path="my-topics" element={<ForumMyTopics />} />
             <Route path="personal-account/*" element={<PersonalAccount />} />
             <Route path="document/:docID" element={<Document />} />

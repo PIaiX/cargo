@@ -20,4 +20,22 @@ export default {
     CAR: "/car",
     CAR_TYPES: "/car/bodyTypes",
     CARS: "/car/user",
+
+    // routes
+    COUNT: '/route/count',
+    CREATE_ROUTE: '/route/',
+    ROUTE_PAGE: '/route',
+    SEARCH_ROUTE: '/route/search',
+    USER_ROUTES: '/route/notArchive',
+    UPDATE_ROUTE: '/route',
+    USER_ARCHIVE_ROUTES: '/route/archive',
+    DELETE_ROUTE: '/route',
+    ROUTE_CITY: '/route/paginate',
+    ROUTE_UNARCHIVE: '/route/unArchive',
+
+    // templatesRouts
+    SAVE_TEMPLATE: '/template/route',
+    GET_TEMPLATES: '/template/route',
+    DELETE_TEMPLATES: '/template',
+    UPDATE_NAME_TEMP: '/template'
 }
