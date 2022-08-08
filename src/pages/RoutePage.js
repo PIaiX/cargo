@@ -18,12 +18,12 @@ import SwiperCore, {Navigation, Pagination} from 'swiper';
 import {getRoutePage, getSearchRoutes} from "../API/routes";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 import {useParams} from "react-router-dom";
+import RouteCard from "../components/RouteCard";
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default function RoutePage() {
 
-    const verified = true; //иконка напротив заголовка, если машина подтвержденная?
     const [data, setData] = useState({
         route: [],
         car: [],
@@ -33,6 +33,7 @@ export default function RoutePage() {
     const axiosPrivate = useAxiosPrivate()
     const [searchRoutes, setSearchRoutes] = useState([])
     const {id} = useParams()
+    const [citys, setCitys] = useState({})
 
     useEffect(() => {
         getRoutePage(id, axiosPrivate)
@@ -47,13 +48,18 @@ export default function RoutePage() {
     }, [])
 
     useEffect(() => {
-        getSearchRoutes(false, 1, 6, axiosPrivate)
+        setCitys({
+            toRoute: data?.route.toRoute,
+            fromRoute: data?.route.fromRoute
+        })
+    }, [data])
+
+    useEffect(() => {
+        (citys?.fromRoute?.length > 2 && citys?.toRoute?.length > 2) && getSearchRoutes(axiosPrivate, 1, 6, false, citys)
             .then(res => setSearchRoutes(res?.data?.body?.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [citys])
 
-    console.log(searchRoutes)
-    console.log(data)
     return (
         <main className="bg-white">
             <section id="sec-8" className="container py-4 py-sm-5">
@@ -229,7 +235,7 @@ export default function RoutePage() {
                     >
                         {searchRoutes?.map(i => (
                             <SwiperSlide key={i.id}>
-                                <Card
+                                <RouteCard
                                     type="car"
                                     className=""
                                     title={`${i.fromRoute} - ${i.toRoute}`}

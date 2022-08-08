@@ -37,8 +37,8 @@ export default function Home() {
                 setNews((prev) => ({
                     ...prev,
                     isLoading: true,
-                    meta: result.meta,
-                    items: result.data,
+                    meta: result?.meta,
+                    items: result?.data,
                 }))
             )
             .catch((error) =>
@@ -64,8 +64,6 @@ export default function Home() {
                 meta: r?.data?.body?.meta
             }))).catch(error => console.log(error))
     }, [city])
-
-    console.log(routes)
 
     return (
         <main>
@@ -175,7 +173,7 @@ export default function Home() {
                             </div>
                             <div className="col-md-4 col-xl-3 col-xxl-2">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Дата</div>
-                                <input type="date" className="fs-15"/>
+                                <input type="date" className="fs-15" min={"2022-08-08"}/>
                             </div>
                             <div
                                 className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">

@@ -30,9 +30,9 @@ export const getRoutePage = async (id,axiosPrivate) => {
     }
 }
 
-export const getSearchRoutes = async (onlyVerified,page,limit, axiosPrivate) => {
+export const getSearchRoutes = async (axiosPrivate, page, limit, onlyVerified, payloads) => {
     try {
-        const response = axiosPrivate.post(`${site}${apiRoutes.SEARCH_ROUTE}`, {onlyVerified ,page, limit})
+        const response = axiosPrivate.post(`${site}${apiRoutes.SEARCH_ROUTE}`, {onlyVerified ,page, limit, ...payloads})
         return response
     } catch (error) {
         console.log(error)

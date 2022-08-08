@@ -3375,7 +3375,7 @@ footer {
   width: 100%;
   max-width: 100%;
   position: relative;
-  z-index: $select-z-index;
+
 
   &__toggle {
     width: 100%;
@@ -3435,7 +3435,6 @@ footer {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     z-index: $select-z-index;
-    padding: 0.5rem 0;
 
     &[data-alignment="right"] {
       left: unset;

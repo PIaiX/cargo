@@ -5,7 +5,6 @@ export default function UserContacts(props) {
 
     const [visible, setVisibility] = useState(false);
 
-    console.log(props)
     return (
         <div className={"row g-0 user-contacts " + props.className}>
             <div className="col-4 col-sm-5 col-md-12">
