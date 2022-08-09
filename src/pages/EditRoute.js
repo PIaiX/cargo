@@ -290,8 +290,6 @@ const EditRoute = () => {
 
     const [showModalValidation, setShowModalValidation] = useState(false)
 
-    console.log(data)
-
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">

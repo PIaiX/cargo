@@ -124,7 +124,6 @@ export default function AddRoute() {
 
     const [cars, setCars] = useState([])
 
-    console.log(data)
     useEffect(() => {
         getCars(axiosPrivate, currentUser?.id, 1)
             .then(res => setCars(res?.data?.map(i => ({value: i.id, label: i.name}))))
