@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {setSelectedCity} from '../store/actions/selectedCity';
-import {defineCity} from '../API/defineCity';
 import {useDispatch} from 'react-redux/es/exports';
+import defineCity from '../API/defineCity';
 
 const useSelectedCity = () => {
     const dispatch = useDispatch()

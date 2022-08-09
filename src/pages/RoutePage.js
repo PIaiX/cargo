@@ -227,19 +227,19 @@ export default function RoutePage() {
                     >
                         {searchRoutes?.map(i => (
                             <SwiperSlide key={i.id}>
-                                <Card
-                                    type="car"
-                                    className=""
-                                    title={`${i.fromRoute} - ${i.toRoute}`}
-                                    route={`${i.fromRoute} - ${i.toRoute}`}
-                                    size={i.car?.capacity}
-                                    carrying={i.car?.carrying}
-                                    notes="cold"
-                                    carType={i.carBodyType?.name}
-                                    dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}
-                                    date={(i.dateType === false) ? "постоянно" : 'единожды'}
-                                    url={`/route-page/${i.id}`}
-                                />
+                                {/*<Card*/}
+                                {/*    type="car"*/}
+                                {/*    className=""*/}
+                                {/*    title={`${i.fromRoute} - ${i.toRoute}`}*/}
+                                {/*    route={`${i.fromRoute} - ${i.toRoute}`}*/}
+                                {/*    size={i.car?.capacity}*/}
+                                {/*    carrying={i.car?.carrying}*/}
+                                {/*    notes="cold"*/}
+                                {/*    carType={i.carBodyType?.name}*/}
+                                {/*    dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}*/}
+                                {/*    date={(i.dateType === false) ? "постоянно" : 'единожды'}*/}
+                                {/*    url={`/route-page/${i.id}`}*/}
+                                {/*/>*/}
                             </SwiperSlide>
                         ))}
                         <div className="swiper-button-prev">
