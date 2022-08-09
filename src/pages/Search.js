@@ -122,17 +122,19 @@ export default function Search() {
                                 : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                         }
                     </div>
-                    <div className="mt-4">
-                        <Pagination
-                            pageLimit={cargoPagination.pageLimit}
-                            currentPage={cargoPagination.currentPage}
-                            setCurrentPage={cargoPagination.setCurrentPage}
-                            pagesDisplayedLimit={3}
-                            itemsAmount={cargo?.meta?.total || 0}
-                            startingPage={cargoPagination.startingPage}
-                            setStartingPage={cargoPagination.setStartingPage}
-                        />
-                    </div>
+                    {(cargo?.data?.length > 0) && (
+                        <div className="mt-4">
+                            <Pagination
+                                pageLimit={cargoPagination.pageLimit}
+                                currentPage={cargoPagination.currentPage}
+                                setCurrentPage={cargoPagination.setCurrentPage}
+                                pagesDisplayedLimit={3}
+                                itemsAmount={cargo?.meta?.total || 0}
+                                startingPage={cargoPagination.startingPage}
+                                setStartingPage={cargoPagination.setStartingPage}
+                            />
+                        </div>
+                    )}
                 </>}
                 {(searchType === 'car') && <>
                     <div className="row row-cols-2 row-cols-md-3 row-cols-xxl-4 g-1 g-sm-2 g-lg-3">
@@ -157,17 +159,19 @@ export default function Search() {
                                 : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                         }
                     </div>
-                    <div className="mt-4">
-                        <Pagination
-                            pageLimit={carsPagination.pageLimit}
-                            currentPage={carsPagination.currentPage}
-                            setCurrentPage={carsPagination.setCurrentPage}
-                            pagesDisplayedLimit={3}
-                            itemsAmount={cars?.meta?.total || 0}
-                            startingPage={carsPagination.startingPage}
-                            setStartingPage={carsPagination.setStartingPage}
-                        />
-                    </div>
+                    {(cars?.data?.length > 0) && (
+                        <div className="mt-4">
+                            <Pagination
+                                pageLimit={carsPagination.pageLimit}
+                                currentPage={carsPagination.currentPage}
+                                setCurrentPage={carsPagination.setCurrentPage}
+                                pagesDisplayedLimit={3}
+                                itemsAmount={cars?.meta?.total || 0}
+                                startingPage={carsPagination.startingPage}
+                                setStartingPage={carsPagination.setStartingPage}
+                            />
+                        </div>
+                    )}
                 </>}
             </section>
         </main>
