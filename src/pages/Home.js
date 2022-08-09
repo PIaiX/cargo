@@ -207,7 +207,7 @@ export default function Home() {
             </section>
 
             {cargoSwiperItems.isLoading
-                ? (cargoSwiperItems?.items?.length >= 8)
+                ? (cargoSwiperItems?.items?.length > 0)
                     ? <section className="sec-3 container mb-6">
                         <h2>Грузы в вашем городе</h2>
                         <div className="position-relative mb-4">
@@ -243,7 +243,7 @@ export default function Home() {
                                     prevEl: ".swiper-button-prev",
                                 }}
                             >
-                                {cargoSwiperItems?.items?.length && cargoSwiperItems.items.map(item => <SwiperSlide
+                                {cargoSwiperItems.items.map(item => <SwiperSlide
                                         key={item.id}>
                                         <CargoCard
                                             id={item.id}
