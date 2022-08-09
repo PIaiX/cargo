@@ -21,17 +21,25 @@ export default {
     CAR_TYPES: "/car/bodyTypes",
     CARS: "/car/user",
 
-    // routes
-    COUNT: '/route/count',
-    CREATE_ROUTE: '/route/',
-    ROUTE_PAGE: '/route',
-    SEARCH_ROUTE: '/route/search',
-    USER_ROUTES: '/route/notArchive',
-    UPDATE_ROUTE: '/route',
-    USER_ARCHIVE_ROUTES: '/route/archive',
-    DELETE_ROUTE: '/route',
-    ROUTE_CITY: '/route/paginate',
+    // cargo
+    CARGO_ITEM_TYPES: "/cargo/itemTypes",
+    CARGO_PACKAGE_TYPES: "/cargo/packageTypes",
+    CARGO_COUNT: "/cargo/count",
+    CARGO_SEARCH: "/cargo/search",
+    CARGO_PAGINATE: "/cargo/paginate",
+    CARGO_NOT_ARCHIVE: "/cargo/notArchive",
+    CARGO_ARCHIVE: "/cargo/archive",
+    CARGO_UNARCHIVE: "/cargo/unArchive",
+    CARGO_ACTIONS: "/cargo",
+
+    // route
+    ROUTE_COUNT: '/route/count',
+    ROUTE_SEARCH: '/route/search',
+    ROUTE_PAGINATE: '/route/paginate',
+    ROUTE_NOT_ARCHIVE: '/route/notArchive',
+    ROUTE_ARCHIVE: '/route/archive',
     ROUTE_UNARCHIVE: '/route/unArchive',
+    ROUTE_ACTIONS: "/route",
 
     // templatesRouts
     SAVE_TEMPLATE: '/template/route',

@@ -3,18 +3,18 @@ import axios from "axios";
 
 const site = process.env.REACT_APP_BASE_URL
 
-export const createRoute = async (payload ,axiosPrivate) => {
+export const searchRoute = async (page, limit, payloads = {}) => {
     try {
-        const response = axiosPrivate.post(`${site}${apiRoutes.CREATE_ROUTE}`, payload)
-        return response
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.ROUTE_SEARCH}`, {page, limit, ...payloads})
+        return response?.data?.body
     } catch (error) {
         console.log(error)
     }
 }
 
-export const getUserCars = async (page, userId, axiosPrivate) => {
+export const createRoute = async (payload ,axiosPrivate) => {
     try {
-        const response = axiosPrivate.post(`${site}${apiRoutes.CARS}/${userId}`, {page})
+        const response = axiosPrivate.post(`${site}${apiRoutes.ROUTE_ACTIONS}`, payload)
         return response
     } catch (error) {
         console.log(error)
@@ -23,25 +23,16 @@ export const getUserCars = async (page, userId, axiosPrivate) => {
 
 export const getRoutePage = async (id,axiosPrivate) => {
     try {
-        const response = axiosPrivate.get(`${site}${apiRoutes.ROUTE_PAGE}/${id}`)
+        const response = axiosPrivate.get(`${site}${apiRoutes.ROUTE_ACTIONS}/${id}`)
         return response
     } catch (error) {
 
-    }
-}
-
-export const getSearchRoutes = async (onlyVerified,page,limit, axiosPrivate) => {
-    try {
-        const response = axiosPrivate.post(`${site}${apiRoutes.SEARCH_ROUTE}`, {onlyVerified ,page, limit})
-        return response
-    } catch (error) {
-        console.log(error)
     }
 }
 
 export const getUserRoutes = async (limit,page,userId, axiosPrivate) => {
     try {
-        const response = axiosPrivate.post(`${site}${apiRoutes.USER_ROUTES}/${userId}`, {limit,page, orderBy:'desc'})
+        const response = axiosPrivate.post(`${site}${apiRoutes.ROUTE_NOT_ARCHIVE}/${userId}`, {limit,page, orderBy:'desc'})
         return response
     } catch (error) {
         console.log(error)

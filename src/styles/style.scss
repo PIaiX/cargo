@@ -1188,6 +1188,7 @@ main {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: .5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba($green, 0.34);
@@ -1203,6 +1204,10 @@ main {
   }
   @media (max-width: 575px) {
     padding: .75em;
+  }
+
+  &__wrapper {
+    height: 100%;
   }
 
   .title {
@@ -3873,5 +3878,30 @@ footer {
   & > button {
     font-size: 20px;
     font-weight: 400;
+  }
+}
+
+.add-cargo_hidden-count {
+  justify-content: end !important;
+  gap: 10px;
+}
+
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__checkbox {
+    label > input {
+      margin-right: 20px;
+    }
+  }
+}
+
+.cargo-count {
+
+  &_hasnt {
+    justify-content: end !important;
+    gap: 20px
   }
 }

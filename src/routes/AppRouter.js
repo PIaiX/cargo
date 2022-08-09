@@ -42,7 +42,7 @@ const Wrapper = ({children}) => {
             {/* Роуты доступные всем пользователям */}
           <Route index element={<Home />} />
           <Route path="search" element={<Search />} />
-          <Route path="cargo-page" element={<CargoPage />} />
+          <Route path="cargo-page/:id" element={<CargoPage />} />
           <Route path="all-news" element={<AllNews />} />
           <Route path="news/:slug" element={<ArticleFull />} />
           <Route path="forum" element={<Forum />} />
