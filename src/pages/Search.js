@@ -41,18 +41,16 @@ export default function Search() {
     useEffect(() => setFilters(initialFilters), [searchType])
 
     useEffect(() => {
-        (searchType === 'cargo') && searchCargo(cargoPagination.currentPage, cargoPagination.pageLimit, filters || {})
+        (searchType === 'cargo') && searchCargo(cargoPagination.currentPage, cargoPagination.pageLimit, filters)
             .then(res => setCargo(prev => ({...prev, isLoading: true, data: res?.data, meta: res?.meta})))
             .catch(error => setCargo(prev => ({...prev, isLoading: true, error})))
-        console.log('cargo')
-    }, [searchType, cargoPagination.currentPage, cargoPagination.pageLimit, filters])
+    }, [cargoPagination.currentPage, cargoPagination.pageLimit, filters])
 
     useEffect(() => {
-        (searchType === 'car') && searchRoute(carsPagination.currentPage, carsPagination.pageLimit, filters || {onlyVerified: false})
+        (searchType === 'car') && searchRoute(carsPagination.currentPage, carsPagination.pageLimit, {...filters, onlyVerified: false})
             .then(res => setCars(prev => ({...prev, isLoading: true, data: res?.data, meta: res?.meta})))
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
-        console.log('cars')
-    }, [searchType, carsPagination.currentPage, carsPagination.pageLimit, filters])
+    }, [carsPagination.currentPage, carsPagination.pageLimit, filters])
 
     return (
         <main>
@@ -120,7 +118,7 @@ export default function Search() {
                                         weight={generalWeight}
                                     />
                                 })
-                                    : <h6 className="text-center w-100 p-5">У вас пока нет грузов</h6>
+                                    : <h6 className="text-center w-100 p-5">Не найдено ни одного груза</h6>
                                 : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                         }
                     </div>
@@ -155,7 +153,7 @@ export default function Search() {
                                         />
                                     </div>
                                 ))
-                                    : <h6 className="text-center w-100 p-5">У вас пока нет грузов</h6>
+                                    : <h6 className="text-center w-100 p-5">Не найдено ни одной машины</h6>
                                 : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                         }
                     </div>

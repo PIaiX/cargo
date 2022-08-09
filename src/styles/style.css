@@ -1075,6 +1075,7 @@ main.bg-gray {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: 0.5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
@@ -1095,6 +1096,9 @@ main.bg-gray {
   .card-mini {
     padding: 0.75em;
   }
+}
+.card-mini__wrapper {
+  height: 100%;
 }
 .card-mini .title {
   white-space: nowrap;
@@ -3759,6 +3763,11 @@ footer .payment-methods img:not(:first-child) {
 }
 .type-select__checkbox label > input {
   margin-right: 20px;
+}
+
+.cargo-count_hasnt {
+  justify-content: end !important;
+  gap: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1188,6 +1188,7 @@ main {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: .5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba($green, 0.34);
@@ -1203,6 +1204,10 @@ main {
   }
   @media (max-width: 575px) {
     padding: .75em;
+  }
+
+  &__wrapper {
+    height: 100%;
   }
 
   .title {
@@ -3890,5 +3895,13 @@ footer {
     label > input {
       margin-right: 20px;
     }
+  }
+}
+
+.cargo-count {
+
+  &_hasnt {
+    justify-content: end !important;
+    gap: 20px
   }
 }
