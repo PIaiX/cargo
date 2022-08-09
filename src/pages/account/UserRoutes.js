@@ -104,8 +104,6 @@ const UserRoutes = () => {
             .catch(error => console.log(error))
     }
 
-    console.log(routes)
-    console.log(archiveRoutes)
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
             <Link

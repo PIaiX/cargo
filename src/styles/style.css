@@ -3134,6 +3134,30 @@ footer .payment-methods img:not(:first-child) {
 .modal__unArchive .modal-body {
   padding: 0;
 }
+.modal__patternRoute .modal-header {
+  height: 5em;
+  padding: 1em 1em 0 1em;
+}
+.modal__patternRoute .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
+.modal__savePattern .modal-header {
+  height: 5em;
+  padding: 1em 1em 0 1em;
+}
+.modal__savePattern .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
+.modal__routeErrorValid .modal-content {
+  border-radius: 7px;
+}
+.modal__routeErrorValid .modal-header {
+  height: 4em;
+  padding: 1em 1em 0 1em;
+}
+.modal__routeErrorValid .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
 
 .offcanvas {
   z-index: 2000;

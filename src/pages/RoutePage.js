@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import Card from '../components/Card';
 import UserContacts from '../components/UserContacts';
 
 import {RiChat4Fill, RiMapPinFill, RiCalendarEventFill} from "react-icons/ri";
