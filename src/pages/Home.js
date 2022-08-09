@@ -9,7 +9,7 @@ import SearchInput from "../components/utilities/SearchInput";
 import {getCities} from "../API/cities";
 import {getAllNews} from "../API/news";
 import Loader from "../components/Loader";
-import {getRoutesInCity} from "../API/routes";
+import {getCountRoutes, getRoutesInCity} from "../API/routes";
 import RouteCard from "../components/RouteCard";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -24,6 +24,7 @@ export default function Home() {
     const [data, setData] = useState([]);
     const [selectFirstCity, setSelectFirstCity] = useState("");
     const [selectSecondCity, setSelectSecondCity] = useState("");
+    const [countRoute, setCountRoute] = useState([])
 
     useEffect(() => {
         getCities().then((res) => {
@@ -55,7 +56,6 @@ export default function Home() {
     const city = localStorage.getItem('userCity')
 
     useEffect(() => {
-
         getRoutesInCity(city)
             .then(r => setRoutes(prevState => ({
                 ...prevState,
@@ -64,6 +64,14 @@ export default function Home() {
                 meta: r?.data?.body?.meta
             }))).catch(error => console.log(error))
     }, [city])
+
+    useEffect(() => {
+        getCountRoutes()
+            .then(r => setCountRoute(r))
+            .catch(error => console.log(error))
+    }, [])
+
+    console.log(countRoute)
 
     return (
         <main>

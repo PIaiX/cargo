@@ -125,3 +125,12 @@ export const unArchivedRoutes = async (axiosPrivate, routeId) => {
         console.log(error)
     }
 }
+
+export const getCountRoutes = async () => {
+    try {
+        const response = axios.get(`${site}${apiRoutes.COUNT}`)
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+}
