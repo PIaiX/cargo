@@ -1075,6 +1075,7 @@ main.bg-gray {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: 0.5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba(1, 191, 196, 0.34);
@@ -1095,6 +1096,9 @@ main.bg-gray {
   .card-mini {
     padding: 0.75em;
   }
+}
+.card-mini__wrapper {
+  height: 100%;
 }
 .card-mini .title {
   white-space: nowrap;
@@ -3120,6 +3124,44 @@ footer .payment-methods img:not(:first-child) {
   flex-wrap: nowrap;
   align-items: center;
 }
+.modal__deleteRoute .modal-header {
+  height: 5em;
+  padding: 1em 1em 0 1em;
+}
+.modal__deleteRoute .modal-body {
+  padding: 0;
+}
+.modal__unArchive .modal-header {
+  height: 4em;
+  padding: 1em 1em 0 1em;
+}
+.modal__unArchive .modal-body {
+  padding: 0;
+}
+.modal__patternRoute .modal-header {
+  height: 5em;
+  padding: 1em 1em 0 1em;
+}
+.modal__patternRoute .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
+.modal__savePattern .modal-header {
+  height: 5em;
+  padding: 1em 1em 0 1em;
+}
+.modal__savePattern .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
+.modal__routeErrorValid .modal-content {
+  border-radius: 7px;
+}
+.modal__routeErrorValid .modal-header {
+  height: 4em;
+  padding: 1em 1em 0 1em;
+}
+.modal__routeErrorValid .modal-body {
+  padding: 0 2.5em 2.5em 2.5em;
+}
 
 .offcanvas {
   z-index: 2000;
@@ -3274,7 +3316,6 @@ footer .payment-methods img:not(:first-child) {
   width: 100%;
   max-width: 100%;
   position: relative;
-  z-index: 1800;
 }
 .custom-select__toggle {
   width: 100%;
@@ -3334,7 +3375,6 @@ footer .payment-methods img:not(:first-child) {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   z-index: 1800;
-  padding: 0.5rem 0;
 }
 .custom-select .dropdown-list[data-alignment=right] {
   left: unset;
@@ -3698,7 +3738,13 @@ footer .payment-methods img:not(:first-child) {
 .validate-wrapper_error input {
   border-color: red;
 }
+.validate-wrapper_error .react-select__control {
+  border-color: red !important;
+}
 .validate-wrapper .validate-error {
+  text-transform: lowercase;
+  margin-top: 5px;
+  white-space: nowrap;
   color: red;
 }
 
@@ -3706,6 +3752,44 @@ footer .payment-methods img:not(:first-child) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dimensions-validation {
+  flex-direction: column;
+  gap: 20px;
+}
+.dimensions-validation > div {
+  width: 100%;
+}
+
+.card-mini .car-card__actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.card-mini .car-card__actions > button {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.add-cargo_hidden-count {
+  justify-content: end !important;
+  gap: 10px;
+}
+
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.type-select__checkbox label > input {
+  margin-right: 20px;
+}
+
+.cargo-count_hasnt {
+  justify-content: end !important;
+  gap: 20px;
 }
 
 /*# sourceMappingURL=style.css.map */

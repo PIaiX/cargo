@@ -15,21 +15,21 @@ const useAxiosPrivate = () => {
         }
         return request
     }, (error) => {
-        Promise.reject(error)
+        return Promise.reject(error)
     })
 
     const responseInterceptor = axiosPrivate.interceptors.response.use(
       (response) => response,
       async (error) => {
         const prevRequest = error?.config
-        if(error.response.status === 401 && !prevRequest.isSent){
+        if(error.response.status === 403 && !prevRequest.isSent){
             console.log("interceptor is working")
             prevRequest.isSent = true
             const newAccessToken = await refreshToken()
             prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`
             return axiosPrivate(prevRequest)
         }
-        Promise.reject(error)
+        return Promise.reject(error)
       }
     );
 

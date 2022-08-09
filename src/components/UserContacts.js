@@ -1,29 +1,38 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 export default function UserContacts(props) {
+
     const [visible, setVisibility] = useState(false);
+
+    const uploadPhoto = (img) => {
+        const site = 'https://api.eritrans.ru/upload'
+        if(img === null) {
+            return '/img/users/no-photo.png'
+        } else {
+            return `${site}${img}`
+        }
+    }
 
     return (
         <div className={"row g-0 user-contacts " + props.className}>
             <div className="col-4 col-sm-5 col-md-12">
                 {
-                    (visible)?
-                    <img src={props.img} alt={props.title} className="logo"/>
-                    : <img src="/img/bg/cargo.png" alt="перевозка грузов" className="sample"/>
+                    (visible) &&
+                    <img src={uploadPhoto(props?.img)} alt={props.title} className="logo"/>
                 }
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">
                 <h4 className="text-left text-md-center mt-md-4 mb-2 mb-sm-3">
-                    <Link to="/personal-account/view-profile">
+                    <NavLink to={`/personal-account/view-profile/${props?.id}`}>
                         {props.title}
-                    </Link>
+                    </NavLink>
                 </h4>
                 {
                     (visible) &&
                     <div className="d-flex flex-column align-items-left align-items-md-center">
                         {
-                            props.contacts.map(item => {
+                            props?.contacts?.map(item => {
                                 return (
                                     <div key={item.phone.toString()} className="mb-2">
                                         <a href={"tel:"+item.phone}>{item.phone}</a>

@@ -11,7 +11,7 @@ import Loader from '../components/Loader';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function ArticleFull() {
-    const {newsSlug} = useParams()
+    const {slug} = useParams()
     const [newsItem, setNewsItem] = useState({
         isLoading: false,
         error: null,
@@ -25,17 +25,21 @@ export default function ArticleFull() {
     const articleDate = newsItem.item ? new Date(newsItem?.item?.createdAt) : null
 
     useEffect(() => {
-        getSingleNews(newsSlug)
+        getSingleNews(slug)
             .then(item => setNewsItem(prev => ({...prev, isLoading: true, item})))
             .catch(error => setNewsItem(prev => ({...prev, isLoading: true, error})))
 
-    }, [newsSlug])
+    }, [slug])
 
     useEffect(() => {
         getRandomNews(8)
             .then(items => setSwiperNews(prev => ({...prev, isLoading: true, items})))
             .catch(error => setSwiperNews(prev => ({...prev, isLoading: true, error})))
     }, [])
+
+    useEffect(() => {
+        console.log(newsItem)
+    }, [newsItem])
 
     return (
         <main className="bg-white py-4 py-lg-5">

@@ -1,49 +1,71 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import Card from "../components/Card";
 import ArticleCard from "../components/ArticleCard";
 import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
 import {Swiper, SwiperSlide} from "swiper/react";
 import SwiperCore, {Navigation, Pagination} from "swiper";
 import SearchInput from "../components/utilities/SearchInput";
-import {getCities} from "../API/cities";
 import {getAllNews} from "../API/news";
 import Loader from "../components/Loader";
+import {useSelector} from 'react-redux';
+import {getCargoCount, paginateCargo} from '../API/cargo';
+import CargoCard from '../components/CargoCard';
+import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from '../helpers/cargo';
+import {getCountRoutes, paginateRoutes} from "../API/route";
+import RouteCard from "../components/RouteCard";
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
-
+    const selectedCity = useSelector(state => state?.selectedCity?.city)
+    const [cargoCount, setCargoCount] = useState(null)
+    const [countRoute, setCountRoute] = useState([])
+    const [cargoSwiperItems, setCargoSwiperItems] = useState({
+        isLoading: false,
+        error: null,
+        items: []
+    })
     const [news, setNews] = useState({
         isLoading: false,
         error: null,
         meta: null,
         items: [],
     });
-    const [data, setData] = useState([]);
-    const [selectFirstCity, setSelectFirstCity] = useState("");
-    const [selectSecondCity, setSelectSecondCity] = useState("");
 
     useEffect(() => {
-        getCities().then((res) => {
-            if (res.status === 200) {
-                setData(res.body);
-            }
-        });
-
+        getCountRoutes().then(res => setCountRoute(res?.data?.body))
+        getCargoCount().then(res => res && setCargoCount(res))
         getAllNews(1, 5, "desc")
             .then((result) =>
                 setNews((prev) => ({
                     ...prev,
                     isLoading: true,
-                    meta: result.meta,
-                    items: result.data,
+                    meta: result?.meta,
+                    items: result?.data,
                 }))
             )
             .catch((error) =>
                 setNews((prev) => ({...prev, isLoading: true, error}))
             );
     }, []);
+
+    const [routes, setRoutes] = useState({
+        isLoading: false,
+        data: [],
+        meta: []
+    })
+
+    useEffect(() => {
+        paginateCargo(selectedCity, 1, 8)
+            .then(result => result && setCargoSwiperItems(prev => ({...prev, isLoading: true, items: result?.data})))
+            .catch(error => error && setCargoSwiperItems(prev => ({...prev, isLoading: true, error})))
+    }, [selectedCity])
+
+    useEffect(() => {
+        paginateRoutes(selectedCity, 1, 6)
+            .then(res => setRoutes({isLoading: true, meta: res?.data?.body?.meta, data: res?.data?.body?.data}))
+            .catch(error => console.log(error))
+    }, [selectedCity])
 
     return (
         <main>
@@ -103,23 +125,32 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-4 col-xxl-3 d-flex flex-lg-column justify-content-between mt-4 mt-lg-0">
+                        <div
+                            className={`col-lg-4 col-xxl-3 d-flex flex-lg-column justify-content-between mt-4 mt-lg-0 cargo-count ${!cargoCount ? 'cargo-count_hasnt' : ''}`}
+                        >
                             <div className="box text-center">
-                                <div className="title-font dark-blue fw-9 fs-25 mb-2">
-                                    2 512 359
-                                </div>
-                                <div className="fs-12 mb-3">Грузов доставленно</div>
+                                {cargoCount && <>
+                                    <div className="title-font dark-blue fw-9 fs-25 mb-2">
+                                        {cargoCount}
+                                    </div>
+                                    <div className="fs-12 mb-3">Грузов доставленно</div>
+                                </>}
                                 <Link to="add-cargo" className="btn btn-1 fs-12 w-100 px-2">
                                     Добавить груз
                                 </Link>
                             </div>
                             <div className="box text-center">
-                                <div className="title-font dark-blue fw-9 fs-25 mb-2">
-                                    12 359
-                                </div>
-                                <div className="fs-12 mb-3">Машин на сайте</div>
+                                {
+                                    countRoute &&
+                                    <>
+                                        <div className="title-font dark-blue fw-9 fs-25 mb-2">
+                                            {countRoute}
+                                        </div>
+                                        <div className="fs-12 mb-3">Маршрутов на сайте</div>
+                                    </>
+                                }
                                 <Link to="add-car" className="btn btn-1 fs-12 w-100 px-2">
-                                    Добавить машину
+                                    Добавить маршрут
                                 </Link>
                             </div>
                         </div>
@@ -134,26 +165,18 @@ export default function Home() {
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
                                 <SearchInput
-                                    callback={(inputValue) => {
-                                        setSelectFirstCity(inputValue);
-                                    }}
                                     placeHolder={"Город отправления"}
-                                    data={data}
                                 />
                             </div>
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
                                 <SearchInput
-                                    callback={(inputValue) => {
-                                        setSelectSecondCity(inputValue);
-                                    }}
                                     placeHolder={"Город назначения"}
-                                    data={data}
                                 />
                             </div>
                             <div className="col-md-4 col-xl-3 col-xxl-2">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Дата</div>
-                                <input type="date" className="fs-15"/>
+                                <input type="date" className="fs-15" min={"2022-08-08"}/>
                             </div>
                             <div
                                 className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">
@@ -183,129 +206,74 @@ export default function Home() {
                 </div>
             </section>
 
-            <section className="sec-3 container mb-6">
-                <h2>Грузы в вашем городе</h2>
-                <div className="position-relative mb-4">
-                    <Swiper
-                        className="swiper-4"
-                        spaceBetween={4}
-                        slidesPerView={2}
-                        breakpoints={{
-                            576: {
-                                slidesPerView: 2,
-                                spaceBetween: 10,
-                            },
-                            768: {
-                                slidesPerView: 3,
-                                spaceBetween: 8,
-                            },
-                            992: {
-                                slidesPerView: 3,
-                                spaceBetween: 16,
-                            },
-                            1400: {
-                                slidesPerView: 4,
-                                spaceBetween: 20,
-                            },
-                        }}
-                        pagination={{
-                            el: ".swiper-pagination",
-                            type: "bullets",
-                            clickable: true,
-                        }}
-                        navigation={{
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
-                        }}
-                    >
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Продукты питания"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="cold"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Оборудование"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="fragile"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Стройматериалы"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="none"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Трубы"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="dimensional"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Продукты питания"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="cold"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="cargo"
-                                className=""
-                                title="Оборудование"
-                                route="Казань-Москва"
-                                size="30"
-                                weight="10 т"
-                                notes="fragile"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <div className="swiper-button-prev">
-                            <IoChevronBackSharp/>
+            {cargoSwiperItems.isLoading
+                ? (cargoSwiperItems?.items?.length >= 8)
+                    ? <section className="sec-3 container mb-6">
+                        <h2>Грузы в вашем городе</h2>
+                        <div className="position-relative mb-4">
+                            <Swiper
+                                className="swiper-4"
+                                spaceBetween={4}
+                                slidesPerView={2}
+                                breakpoints={{
+                                    576: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 10,
+                                    },
+                                    768: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 8,
+                                    },
+                                    992: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 16,
+                                    },
+                                    1400: {
+                                        slidesPerView: 4,
+                                        spaceBetween: 20,
+                                    },
+                                }}
+                                pagination={{
+                                    el: ".swiper-pagination",
+                                    type: "bullets",
+                                    clickable: true,
+                                }}
+                                navigation={{
+                                    nextEl: ".swiper-button-next",
+                                    prevEl: ".swiper-button-prev",
+                                }}
+                            >
+                                {cargoSwiperItems?.items?.length && cargoSwiperItems.items.map(item => <SwiperSlide
+                                        key={item.id}>
+                                        <CargoCard
+                                            id={item.id}
+                                            title={item?.type?.name}
+                                            route={getRoute(item)}
+                                            notesType={getNotesType(item?.items)}
+                                            capacity={getGeneralCapacity(item?.items)}
+                                            weight={getGeneralWeight(item?.items)}
+                                        />
+                                    </SwiperSlide>
+                                )}
+                                <div className="swiper-button-prev">
+                                    <IoChevronBackSharp/>
+                                </div>
+                                <div className="swiper-button-next">
+                                    <IoChevronForwardSharp/>
+                                </div>
+                                <div className="swiper-pagination"></div>
+                            </Swiper>
                         </div>
-                        <div className="swiper-button-next">
-                            <IoChevronForwardSharp/>
-                        </div>
-                        <div className="swiper-pagination"></div>
-                    </Swiper>
-                </div>
-                <button
-                    type="button"
-                    className="btn btn-2 fs-12 text-uppercase mx-auto"
-                >
-                    Найти груз
-                </button>
-            </section>
+                        <button
+                            type="button"
+                            className="btn btn-2 fs-12 text-uppercase mx-auto"
+                        >
+                            Найти груз
+                        </button>
+                    </section>
+                    : null
+                : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
+            }
 
             <section className="sec-3 container mb-6">
                 <h2>Машины в Вашем городе</h2>
@@ -343,118 +311,25 @@ export default function Home() {
                             prevEl: ".swiper-button-prev",
                         }}
                     >
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань-Москва"
-                                carType="Фура"
-                                verified={true}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань — Москва"
-                                carType="Тягач"
-                                verified={true}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань — Москва"
-                                carType="Рефрижератор"
-                                verified={false}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань-Москва"
-                                carType="Фура"
-                                verified={false}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань-Москва"
-                                carType="Фура"
-                                verified={true}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань — Москва"
-                                carType="Тягач"
-                                verified={true}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань — Москва"
-                                carType="Рефрижератор"
-                                verified={false}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
-                        <SwiperSlide>
-                            <Card
-                                type="car"
-                                className=""
-                                route="Казань-Москва"
-                                carType="Фура"
-                                verified={false}
-                                date="Ежедневно"
-                                carrying="20"
-                                size="30"
-                                dimensions="13/2,45/2,45"
-                                url="/cargo-page"
-                            />
-                        </SwiperSlide>
+                        {routes?.isLoading
+                            ? routes?.data.map((route, index) => (
+                                <SwiperSlide key={index}>
+                                    <RouteCard
+                                        id={route.id}
+                                        title={`${route.fromRoute} - ${route.toRoute}`}
+                                        route={`${route.fromRoute} - ${route.toRoute}`}
+                                        size={route.car?.capacity}
+                                        carrying={route.car?.carrying}
+                                        carType={route.carBodyType?.name}
+                                        dimensions={`${route.car?.length}/${route.car?.width}/${route.car?.height}`}
+                                        date={route.dateType ? 'единожды' : 'постоянно'}
+                                        inProfile={false}
+                                    />
+                                </SwiperSlide>
+                            ))
+                            : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
+                        }
+
                         <div className="swiper-button-prev">
                             <IoChevronBackSharp/>
                         </div>

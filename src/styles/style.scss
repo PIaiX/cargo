@@ -1188,6 +1188,7 @@ main {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: .5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba($green, 0.34);
@@ -1203,6 +1204,10 @@ main {
   }
   @media (max-width: 575px) {
     padding: .75em;
+  }
+
+  &__wrapper {
+    height: 100%;
   }
 
   .title {
@@ -3180,6 +3185,54 @@ footer {
       align-items: center;
     }
   }
+  &__deleteRoute {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0;
+    }
+  }
+  &__unArchive {
+    .modal-header {
+      height: 4em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0;
+    }
+  }
+  &__patternRoute {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+    }
+  }
+  &__savePattern {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+    }
+  }
+  &__routeErrorValid {
+    .modal-content {
+      border-radius: 7px;
+    }
+    .modal-header {
+      height: 4em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+    }
+  }
 }
 
 .offcanvas {
@@ -3357,7 +3410,7 @@ footer {
   width: 100%;
   max-width: 100%;
   position: relative;
-  z-index: $select-z-index;
+
 
   &__toggle {
     width: 100%;
@@ -3417,7 +3470,6 @@ footer {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     z-index: $select-z-index;
-    padding: 0.5rem 0;
 
     &[data-alignment="right"] {
       left: unset;
@@ -3817,9 +3869,16 @@ footer {
     input {
       border-color: red;
     }
+
+    .react-select__control {
+      border-color: red !important;
+    }
   }
 
   .validate-error {
+    text-transform: lowercase;
+    margin-top: 5px;
+    white-space: nowrap;
     color: red;
   }
 }
@@ -3828,4 +3887,50 @@ footer {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dimensions-validation {
+  flex-direction: column;
+  gap: 20px;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.card-mini .car-card__actions {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & > button {
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
+.add-cargo_hidden-count {
+  justify-content: end !important;
+  gap: 10px;
+}
+
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__checkbox {
+    label > input {
+      margin-right: 20px;
+    }
+  }
+}
+
+.cargo-count {
+
+  &_hasnt {
+    justify-content: end !important;
+    gap: 20px
+  }
 }

@@ -1,46 +1,83 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-scroll";
-import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash,} from "react-icons/io5";
-import {VscChromeClose} from "react-icons/vsc";
+import React, {useEffect, useState} from 'react';
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {IconContext} from "react-icons";
-import {optionsLoadingDays, optionsLoadingPeriodType,} from "../components/utilities/data";
+import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
+import {VscChromeClose} from "react-icons/vsc";
+import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
+import Select from "react-select";
+import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilities/data";
+import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {createRoute, deleteTemplate, getTemplates, saveTemplateRoute} from "../API/route";
-import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
-import {NavLink, useNavigate} from "react-router-dom";
+import {deleteTemplate, getRoutePage, getTemplates, saveTemplateRoute, updateRoute} from "../API/route";
 import CustomModal from "../components/utilities/CustomModal";
 import AsyncSelect from "react-select/async";
 import {Alert} from "react-bootstrap";
 import {getCars} from '../API/car';
 
 
-export default function AddRoute() {
+const EditRoute = () => {
 
-    const navigate = useNavigate()
+    const {id} = useParams()
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
     const axiosPrivate = useAxiosPrivate()
     const currentUser = useSelector(state => state.currentUser.data.user)
+    const [btnRadioDate, setBtnRadioDate] = useState(0)
+    const [btnRadioBargain, setBtnRadioBargain] = useState(0)
+    const [btnRadioCalculate, setBtnRadioCalculate] = useState(0)
+    const navigate = useNavigate()
     const [contactsInfo, setContactsInfo] = useState(
         {
+            id: '',
             phone: '',
             firstName: '',
         }
     )
     const [contactsArray, setContactsArray] = useState([]);
-    const [showModalSave, setShowModalSave] = useState(false)
-    const [btnRadioDate, setBtnRadioDate] = useState(0)
-    const [btnRadioBargain, setBtnRadioBargain] = useState(0)
-    const [btnRadioCalculate, setBtnRadioCalculate] = useState(0)
-    const [data, setData] = useState(
+
+    const [curRoute, setCurRoute] = useState()
+
+    useEffect(() => {
+        getRoutePage(id, axiosPrivate)
+            .then(res => setCurRoute(res?.data?.body))
+            .catch(error => console.log(error))
+    }, [id])
+
+    let [data, setData] = useState(
         {
             userId: currentUser.id,
-            bargainType: 0,
-            calculateType: 0,
-            contacts: [contactsInfo],
-            dateType: 0,
         }
     );
+
+    useEffect(() => {
+        setData(prevState => ({
+            ...prevState,
+            userId: currentUser.id,
+            fromRoute: curRoute?.fromRoute,
+            loadingRadius: curRoute?.loadingRadius,
+            toRoute: curRoute?.toRoute,
+            unloadingRadius: curRoute?.unloadingRadius,
+            dateForInput: curRoute?.date,
+            dateDays: curRoute?.dateDays,
+            dateType: curRoute?.dateType,
+            datePeriodType: curRoute?.dateType,
+            bargainType: curRoute?.bargainType,
+            calculateType: curRoute?.calculateType,
+            vatPrice: curRoute?.vatPrice,
+            noVatPrice: curRoute?.noVatPrice,
+            prepayment: curRoute?.prepayment,
+            contacts: curRoute?.contacts,
+            note: curRoute?.note,
+            carId: curRoute?.carId,
+            date: getDate(data?.dateForInput)
+        }))
+        setBtnRadioDate(Number(curRoute?.dateType))
+        setBtnRadioCalculate(Number(curRoute?.calculateType))
+        setBtnRadioBargain(Number(curRoute?.bargainType))
+        setSelectCar({value: curRoute?.carId, label: curRoute?.carName})
+        setSelectPeriodType({value: curRoute?.datePeriodType, label: curRoute?.datePeriodTypeForUser})
+        setSelectDays({value: curRoute?.dateDays, label: `${curRoute?.dateDays} дн.`})
+    }, [contactsInfo, curRoute, currentUser, data?.dateForInput])
 
     const fields = {
         isInValidFromRoute: false,
@@ -67,7 +104,6 @@ export default function AddRoute() {
         || (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length <= 11)
     const isInValidFirstName = (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length > 50) || (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length < 2)
 
-
     const onSubmit = (e) => {
         e.preventDefault()
 
@@ -87,40 +123,35 @@ export default function AddRoute() {
             setValid({...valid, isInValidFirstName: true})
         } else {
             try {
-                if (data?.dateType === 1) {
+                if (data?.dateType === true) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
                     delete data?.datePeriodType
                 }
-                const response = createRoute(data, axiosPrivate)
-                    .then(() => {
-                        navigate('/personal-account/user-routes')
-                    })
-                    .catch(() => {
-                        setShowModalValidation(true)
-                        setIsShowAlert(true)
-                    })
+                const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
+                console.log(response)
             } catch (error) {
                 console.log(error)
             }
         }
     }
 
-    const resetFieldVal = (newState, field) => {
-        setValid({...valid, [field]: false})
-    }
-
     const onReset = () => {
         setData({
-            userId: currentUser?.id,
+            userId: currentUser?.id
         })
         setContactsArray([]);
     };
 
-    let deleteContacts = (i) => {
-        setContactsArray(contactsArray.filter((obj) => obj !== i));
-    };
+    useEffect(() => {
+        if (data.dateType === 1) {
+            delete data.date;
+            delete data.dateDays
+        } else {
+            delete data.datePeriodType
+        }
+    }, [data])
 
     const [cars, setCars] = useState([])
 
@@ -149,8 +180,8 @@ export default function AddRoute() {
         setData(prevState => ({...prevState, contacts: [contactsInfo]}))
     }, [contactsInfo])
 
-    const addContacts = () => {
-        setContactsArray(prevState => ([...prevState, contactsInfo]))
+    const resetFieldVal = (newState, field) => {
+        setValid({...valid, [field]: false})
     }
 
     const [dataTemplate, setDataTemplate] = useState({})
@@ -171,9 +202,9 @@ export default function AddRoute() {
                 }
                 saveTemplateRoute(data, dataTemplate, axiosPrivate)
                     .then(() => {
-                        setIsShowAlert(true)
-                        setAlertForSavePattern(true)
-                    })
+                    setIsShowAlert(true)
+                    setAlertForSavePattern(true)
+                })
                     .catch(() => {
                         setAlertForSavePattern(false)
                         setIsShowAlert(true)
@@ -183,6 +214,8 @@ export default function AddRoute() {
             }
         }
     }
+
+    const [showModalSave, setShowModalSave] = useState(false)
 
     const [templates, setTemplates] = useState([])
 
@@ -203,10 +236,6 @@ export default function AddRoute() {
 
     const [selectCar, setSelectCar] = useState(null)
 
-    useEffect(() => {
-        setSelectCar({value: data?.carId, label: data?.carName})
-    }, [data])
-
     const loadOptions = async (searchKey) => {
         const defaultValue = data?.carId
         setSelectCar(cars?.find(item => item.value === defaultValue))
@@ -219,13 +248,6 @@ export default function AddRoute() {
     }
 
     const [selectPeriodType, setSelectPeriodType] = useState(null)
-
-    useEffect(() => {
-        setSelectPeriodType({
-            value: data?.datePeriodType,
-            label: data?.datePeriodTypeForUser
-        })
-    }, [data])
 
     const loadOptions2 = async (searchKey) => {
 
@@ -240,13 +262,6 @@ export default function AddRoute() {
     }
 
     const [selectDays, setSelectDays] = useState(null)
-
-    useEffect(() => {
-        setSelectDays({
-            value: data?.dateDays,
-            label: `${data?.dateDays} дн.`
-        })
-    }, [data])
 
     const loadOptions3 = async (searchKey) => {
 
@@ -273,10 +288,6 @@ export default function AddRoute() {
         return new Date().toISOString().slice(0, 10)
     }
 
-    useEffect(() => {
-        getDate(data?.dateForInput)
-    }, [data?.dateForInput])
-
     const [showModalValidation, setShowModalValidation] = useState(false)
 
     return (
@@ -289,7 +300,7 @@ export default function AddRoute() {
                     <span className="green fs-15 me-2">⟵</span> Назад
                 </NavLink>
                 <h1 className="dark-blue text-center text-uppercase">
-                    Добавление Маршрута
+                    Редактирование Маршрута
                 </h1>
                 <form
                     className="row"
@@ -301,35 +312,35 @@ export default function AddRoute() {
                         <div className="mobile-indicators d-flex d-lg-none">
                             <button
                                 type="button"
-                                style={{background: (data?.toRoute && data?.fromRoute) && '#01BFC4'}}
+                                /*className={checkFieldset("route") ? "active" : ""}*/
                                 onClick={() => setActiveField(1)}
                             >
                                 1
                             </button>
                             <button
                                 type="button"
-                                style={{background: (data?.dateType === 0 || data?.dateType === 1) && '#01BFC4'}}
+                                /*className={checkFieldset("date") ? "active" : ""}*/
                                 onClick={() => setActiveField(2)}
                             >
                                 2
                             </button>
                             <button
                                 type="button"
-                                style={{background: (data?.carId) && '#01BFC4'}}
+                                /*className={checkFieldset("aboutCar") ? "active" : ""}*/
                                 onClick={() => setActiveField(3)}
                             >
                                 3
                             </button>
                             <button
                                 type="button"
-                                style={{background: (data?.prepayment) && '#01BFC4'}}
+                                /*className={checkFieldset("payment") ? "active" : ""}*/
                                 onClick={() => setActiveField(4)}
                             >
                                 4
                             </button>
                             <button
                                 type="button"
-                                style={{background: (data?.contacts?.find(i => i.phone && i.firstName)) && '#01BFC4'}}
+                                /*className={checkFieldset("contacts") ? "active" : ""}*/
                                 onClick={() => setActiveField(5)}
                             >
                                 5
@@ -556,8 +567,8 @@ export default function AddRoute() {
                                                             onClick={e => setBtnRadioDate(Number(e.target.value))}
                                                         />
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Единожды
-                    </span>
+                                                            Единожды
+                                                        </span>
                                                     </label>
                                                     <div
                                                         className={
@@ -621,8 +632,8 @@ export default function AddRoute() {
                                                             onClick={e => setBtnRadioDate(Number(e.target.value))}
                                                         />
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Постоянно
-                    </span>
+                                                            Постоянно
+                                                        </span>
                                                     </label>
                                                     <div
                                                         data-label="loadingPeriodType"
@@ -689,20 +700,19 @@ export default function AddRoute() {
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
                                                 <span className="ms-1 ms-sm-3 text-uppercase">
-                    Назад
-                    </span>
+                                                    Назад
+                                                </span>
                                             </button>
                                         </div>
                                         <div>
                                             <button
                                                 type="button"
-                                                /*disabled={checkFieldset("date") ? false : true}*/
                                                 onClick={() => setActiveField(3)}
                                                 className="btn btn-1 w-100 fs-11"
                                             >
-                    <span className="me-1 me-sm-3 text-uppercase">
-                    Далее
-                    </span>
+                                                <span className="me-1 me-sm-3 text-uppercase">
+                                                    Далее
+                                                </span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
                                                 </IconContext.Provider>
@@ -745,15 +755,8 @@ export default function AddRoute() {
                                                 resetFieldVal(e, 'isInValidCar')
                                             }}
                                         />
-                                        {
-                                            valid.isInValidCar &&
-                                            <span
-                                                className='position-absolute'
-                                                style={{color: valid.isInValidCar && 'red'}}
-                                            >
-                    Выберите машину
-                    </span>
-                                        }
+                                        {valid.isInValidCar && <span className='position-absolute'
+                                                                     style={{color: valid.isInValidCar && 'red'}}>Выберете машину</span>}
                                     </div>
                                 </div>
                             </div>
@@ -792,8 +795,8 @@ export default function AddRoute() {
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
                                                 <span className="ms-1 ms-sm-3 text-uppercase">
-                    Назад
-                    </span>
+                                                    Назад
+                                                </span>
                                             </button>
                                         </div>
                                         <div>
@@ -803,9 +806,9 @@ export default function AddRoute() {
                                                 onClick={() => setActiveField(4)}
                                                 className="btn btn-1 w-100 fs-11"
                                             >
-                    <span className="me-1 me-sm-3 text-uppercase">
-                    Далее
-                    </span>
+                                                <span className="me-1 me-sm-3 text-uppercase">
+                                                    Далее
+                                                </span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
                                                 </IconContext.Provider>
@@ -839,8 +842,8 @@ export default function AddRoute() {
                                                 onChange={e => onRadioHandler(e, setData, true)}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Возможен торг
-                    </span>
+                                                Возможен торг
+                                            </span>
                                         </label>
                                     </div>
                                     <div>
@@ -854,8 +857,8 @@ export default function AddRoute() {
                                                 value={1}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Без торга
-                    </span>
+                                                Без торга
+                                            </span>
                                         </label>
                                     </div>
                                 </div>
@@ -875,8 +878,8 @@ export default function AddRoute() {
                                                 value={0}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Наличный расчет
-                    </span>
+                                                Наличный расчет
+                                            </span>
                                         </label>
                                     </div>
                                     <div>
@@ -890,8 +893,8 @@ export default function AddRoute() {
                                                 value={1}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Перевод по карте
-                    </span>
+                                                Перевод по карте
+                                            </span>
                                         </label>
                                     </div>
                                 </div>
@@ -1016,8 +1019,8 @@ export default function AddRoute() {
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
                                                 <span className="ms-1 ms-sm-3 text-uppercase">
-                    Назад
-                    </span>
+                                                    Назад
+                                                </span>
                                             </button>
                                         </div>
                                         <div>
@@ -1027,9 +1030,9 @@ export default function AddRoute() {
                                                 onClick={() => setActiveField(5)}
                                                 className="btn btn-1 w-100 fs-11"
                                             >
-                    <span className="me-1 me-sm-3 text-uppercase">
-                    Далее
-                    </span>
+                                                <span className="me-1 me-sm-3 text-uppercase">
+                                                    Далее
+                                                </span>
                                                 <IconContext.Provider value={{className: "icon-15"}}>
                                                     <IoChevronForwardOutline/>
                                                 </IconContext.Provider>
@@ -1049,6 +1052,22 @@ export default function AddRoute() {
                                 Контакты
                             </h4>
                             <div className="box">
+                                {/*<div className="row gx-2 gx-sm-4 mb-4 mb-md-0">
+                                    <div className="d-flex justify-content-center">
+                                        <button
+                                            type="button"
+                                            onClick={() => addContacts()}
+                                            className="green fs-11 fw-5 text-start"
+                                        >
+                                            <IconContext.Provider
+                                                value={{className: "green icon-15"}}
+                                            >
+                                                <IoAddCircle/>
+                                            </IconContext.Provider>
+                                            <span className="ms-2">Добавить контакт</span>
+                                        </button>
+                                    </div>
+                                </div>*/}
                                 <div className="row mt-3">
                                     <div className="col-md-9">
                                         <div className="row align-items-center gy-2 gy-md-3">
@@ -1111,6 +1130,66 @@ export default function AddRoute() {
                                         </div>
                                     </div>
                                 </div>
+                                {/*{contactsArray.map((obj, idx) => (
+                                <div className="row mt-3">
+                                    <div className="col-md-9">
+                                        <div className="row align-items-center gy-2 gy-md-3">
+                                            <div className="col-md-4">
+                                                <div
+                                                    data-label={"contactPhone"}
+                                                    data-warning="false"
+                                                    className="title-font fs-12 fw-5"
+                                                >
+                                                    Телефон
+                                                </div>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input
+                                                    type="tel"
+                                                    name='phone'
+                                                    onChange={e => setContactsInfo(prevState => ({...prevState, phone: e.target.value}))}
+                                                    placeholder="+ 7 (962) 458 65 79"
+                                                    className="w-100 fs-12"
+                                                />
+                                            </div>
+                                            <div className="col-md-4">
+                                                <div
+                                                    data-label={`contactName`}
+                                                    data-warning="false"
+                                                    className="title-font fs-12 fw-5"
+                                                >
+                                                    Имя
+                                                </div>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input
+                                                    type="text"
+                                                    name='firstName'
+                                                    onChange={e => setContactsInfo(prevState => ({...prevState, firstName: e.target.value}))}
+                                                    placeholder="Имя"
+                                                    className="w-100 fs-12"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {contactsArray?.length > 1 &&
+                                            <div className="col-md-3 mt-2 mt-md-0">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => deleteContacts(obj)}
+                                                    className="red fs-11 fw-5"
+                                                >
+                                                    <IconContext.Provider
+                                                        value={{className: "red icon-15"}}
+                                                    >
+                                                        <IoCloseCircle/>
+                                                    </IconContext.Provider>
+                                                    <span className="ms-2">Удалить</span>
+                                                </button>
+                                            </div>
+                                        }
+                                </div>
+                                )).reverse()}*/}
                                 <div className="row mt-3">
                                     <div className="col-md-3 mb-2 mb-md-0">
                                         <div
@@ -1122,13 +1201,13 @@ export default function AddRoute() {
                                         </div>
                                     </div>
                                     <div className="col-md-9">
-                    <textarea
-                        rows={3}
-                        name="note"
-                        value={data?.note || ''}
-                        onChange={e => onInputHandler(e, setData)}
-                        placeholder="Укажите здесь дополнительную информацию или дополнительные контакты"
-                    />
+                                        <textarea
+                                            rows={3}
+                                            name="note"
+                                            value={data?.note || ''}
+                                            onChange={e => onInputHandler(e, setData)}
+                                            placeholder="Укажите здесь дополнительную информацию или дополнительные контакты"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -1166,25 +1245,16 @@ export default function AddRoute() {
                                                     <IoChevronBackOutline/>
                                                 </IconContext.Provider>
                                                 <span className="ms-1 ms-sm-3 text-uppercase">
-                    Назад
-                    </span>
+                          Назад
+                        </span>
                                             </button>
                                         </div>
                                         <div className="col-7 col-sm-6">
                                             <button
                                                 type="submit"
                                                 className="btn btn-2 w-100 h-100 fs-11 text-uppercase px-3"
-                                                onClick={() => (
-                                                    isInValidFromRoute ||
-                                                    isInValidToRoute ||
-                                                    isInValidDateType ||
-                                                    isInValidCar ||
-                                                    isInValidPrepayment ||
-                                                    isInValidPhone ||
-                                                    isInValidFirstName
-                                                ) && setShowModalValidation(true)}
                                             >
-                                                Разместить маршрут
+                                                Разместить груз
                                             </button>
                                         </div>
                                     </div>
@@ -1240,12 +1310,17 @@ export default function AddRoute() {
                                                 ?
                                                 <>
                                                     <span className="me-1">Единожды:</span>
-                                                    <span
-                                                        className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
-                                                    <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
+                                                    <span className="me-1">{data?.date}</span>
+                                                    <span>+ {data?.days} дней</span>
                                                 </>
                                                 :
-                                                <span>Постоянно {data?.datePeriodTypeForUser}</span>
+                                                <>
+                                                    <span>Постоянно</span>
+                                                    {data?.loadingPeriodType === '0' && <span> По рабочим дням</span>}
+                                                    {data?.loadingPeriodType === '1' && <span> По выходным</span>}
+                                                    {data?.loadingPeriodType === '2' && <span> Ежедневно</span>}
+                                                    {data?.loadingPeriodType === '3' && <span> Через день</span>}
+                                                </>
                                             }
                                         </div>
                                     </li>
@@ -1328,7 +1403,7 @@ export default function AddRoute() {
                                 type="submit"
                                 className="btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5"
                             >
-                                добавить маршрут
+                                Редактировать
                             </button>
                             <div className="fs-09 text-center mt-2 mt-xl-3">
                                 Объявление будет опубликованно до 1 января включительно, после
@@ -1343,207 +1418,199 @@ export default function AddRoute() {
                                 Сохранить шаблон
                             </button>
                         </aside>
-                    </div>
-                </form>
-            </section>
-            <CustomModal
-                className='modal__savePattern'
-                isShow={showModalSave}
-                setIsShow={setShowModalSave}
-                centered={false}
-                size={'lg'}
-                closeButton={true}
-            >
-                <div>
-                    <div>
-                        <div>
-                            {alertForSavePattern &&
-                                <div className='d-flex justify-content-center'>
-                                    <Alert
+                        <CustomModal
+                            className='modal__savePattern'
+                            isShow={showModalSave}
+                            setIsShow={setShowModalSave}
+                            centered={false}
+                            size={'lg'}
+                            closeButton={true}
+                        >
+                            <div>
+                                {alertForSavePattern &&
+                                    <div className='d-flex justify-content-center'>
+                                        <Alert
+                                            show={isShowAlert}
+                                            className='end-0 m-0 p-2'
+                                            variant='success'
+                                        >
+                                            <span>Сохранено</span>
+                                        </Alert>
+                                    </div>
+                                }
+                                {alertForSavePattern === false &&
+                                    <div className='d-flex justify-content-center'><Alert
                                         show={isShowAlert}
                                         className='end-0 m-0 p-2'
-                                        variant='success'
+                                        variant='danger'
                                     >
-                                        <span>Сохранено</span>
+                                        <span>Ошибка</span>
                                     </Alert>
-                                </div>
-                            }
-                            {alertForSavePattern === false &&
-                                <div className='d-flex justify-content-center'><Alert
-                                    show={isShowAlert}
-                                    className='end-0 m-0 p-2'
-                                    variant='danger'
-                                >
-                                    <span>Ошибка</span>
-                                </Alert>
-                                </div>
-                            }
-                            <h3>Сохранить шаблон маршрута</h3>
-                            <form className="fs-12">
-                                <label className="mb-2">Название шаблона</label>
-                                <input
-                                    type="text"
-                                    className="mb-3"
-                                    placeholder="Название"
-                                    style={{borderColor: valid.isInValidNameTemplate && 'red'}}
-                                    onChange={(e) => {
-                                        setDataTemplate(prevState => ({
-                                            ...prevState,
-                                            templateName: e.target.value
-                                        }))
-                                        resetFieldVal(e, 'isInValidNameTemplate')
-                                    }}
-                                />
-                                {valid.isInValidNameTemplate &&
-                                    <span
-                                        style={{color: valid.isInValidNameTemplate && 'red'}}
-                                    >
+                                    </div>
+                                }
+                                <h3>Сохранить шаблон маршрута</h3>
+                                <form className="fs-12">
+                                    <label className="mb-2">Название шаблона</label>
+                                    <input
+                                        type="text"
+                                        className="mb-3"
+                                        placeholder="Название"
+                                        style={{borderColor: valid.isInValidNameTemplate && 'red'}}
+                                        onChange={(e) => {
+                                            setDataTemplate(prevState => ({
+                                                ...prevState,
+                                                templateName: e.target.value
+                                            }))
+                                            resetFieldVal(e, 'isInValidNameTemplate')
+                                        }}
+                                    />
+                                    {valid.isInValidNameTemplate &&
+                                        <span
+                                            style={{color: valid.isInValidNameTemplate && 'red'}}
+                                        >
                                                     Введите название шаблона
                                                 </span>
-                                }
-                                <label className="mb-2">Примечание</label>
-                                <input
-                                    type="text"
-                                    className="mb-3"
-                                    placeholder="Примечание"
-                                    onChange={e => setDataTemplate(prevState => ({
-                                        ...prevState,
-                                        note: e.target.value
-                                    }))}
-                                />
-                                <div className="row row-cols-sm-2 mt-4">
-                                    <div className="mb-3 mb-sm-0">
-                                        <button
-                                            type="button"
-                                            className="btn btn-1 w-100"
-                                            onClick={() => setShowUseTemplate(false)}
-                                        >
-                                            Отмена
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button
-                                            type="button"
-                                            className="btn btn-2 w-100"
-                                            onClick={(e) => {
-                                                saveTemplate()
-                                            }}
-                                        >
-                                            Сохранить
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </CustomModal>
-            <CustomModal
-                className='modal__patternRoute'
-                isShow={showUseTemplate}
-                setIsShow={setShowUseTemplate}
-                centered={false}
-                closeButton={true}
-                size={'lg'}
-            >
-                <div>
-                    <div className="d-flex align-items-center">
-                        <div className="flex-1">
-                            {templates?.length > 0 && <h2>Выберите шаблон</h2>}
-                            {templates.map((item, index) => (
-                                <div key={index} className="box patterns p-2 p-sm-4">
-                                    <div className="d-flex align-items-center">
-                                        <div className="flex-1">
-                                            <div className="title-font fs-12 fw-7">{item.name}</div>
-                                            {item.note && <div className="fs-11 mt-1">{item.note}</div>}
+                                    }
+                                    <label className="mb-2">Примечание</label>
+                                    <input
+                                        type="text"
+                                        className="mb-3"
+                                        placeholder="Примечание"
+                                        onChange={e => setDataTemplate(prevState => ({
+                                            ...prevState,
+                                            note: e.target.value
+                                        }))}
+                                    />
+                                    <div className="row row-cols-sm-2 mt-4">
+                                        <div className="mb-3 mb-sm-0">
+                                            <button
+                                                type="button"
+                                                className="btn btn-1 w-100"
+                                                onClick={() => setShowUseTemplate(false)}
+                                            >
+                                                Отмена
+                                            </button>
                                         </div>
+                                        <div>
+                                            <button
+                                                type="button"
+                                                className="btn btn-2 w-100"
+                                                onClick={(e) => {
+                                                    saveTemplate()
+                                                }}
+                                            >
+                                                Сохранить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </CustomModal>
+                        <CustomModal
+                            className='modal__patternRoute'
+                            isShow={showUseTemplate}
+                            setIsShow={setShowUseTemplate}
+                            centered={false}
+                            closeButton={true}
+                            size={'lg'}
+                        >
+                            <div>
+                                <div className="d-flex align-items-center">
+                                    <div className="flex-1">
+                                        {templates?.length > 0 && <h2>Выберите шаблон</h2>}
+                                        {templates.map((item, index) => (
+                                            <div key={index} className="box patterns p-2 p-sm-4">
+                                                <div className="d-flex align-items-center">
+                                                    <div className="flex-1">
+                                                        <div className="title-font fs-12 fw-7">{item.name}</div>
+                                                        {item.note && <div className="fs-11 mt-1">{item.note}</div>}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-1 fs-09 px-2 px-sm-4 ms-2"
+                                                        onClick={() =>
+                                                            setData(prevState => (
+                                                                {
+                                                                    ...prevState,
+                                                                    userId: currentUser.id,
+                                                                    fromRoute: item?.route?.fromRoute,
+                                                                    loadingRadius: item?.route?.loadingRadius,
+                                                                    toRoute: item?.route?.toRoute,
+                                                                    unloadingRadius: item?.route?.unloadingRadius,
+                                                                    dateForInput: item?.route?.date,
+                                                                    dateDays: item?.route?.dateDays,
+                                                                    dateType: item?.route?.dateType,
+                                                                    datePeriodType: item?.route?.dateType,
+                                                                    bargainType: item?.route?.bargainType,
+                                                                    calculateType: item?.route?.calculateType,
+                                                                    vatPrice: item?.route?.vatPrice,
+                                                                    noVatPrice: item?.route?.noVatPrice,
+                                                                    prepayment: item?.route?.prepayment,
+                                                                    contacts: item?.route?.contacts,
+                                                                    note: item?.route?.note,
+                                                                }))}
+                                                    >
+                                                        Выбрать
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className="ms-2 ms-sm-3"
+                                                        onClick={() => onDeleteTemplate(item.id)}
+                                                    >
+                                                        <IconContext.Provider value={{className: "gray-4 icon-15"}}>
+                                                            <IoTrash/>
+                                                        </IconContext.Provider>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {!templates.length && (
+                                            <h5 className="text-center">У Вас нет сохраненных шаблонов</h5>
+                                        )}
+                                        <p className="text-center fs-11">
+                                            Сохраняйте однотипные объявления в шаблоны <br/> для удобства
+                                            и экономии времени
+                                        </p>
                                         <button
                                             type="button"
-                                            className="btn btn-1 fs-09 px-2 px-sm-4 ms-2"
-                                            onClick={() => {
-                                                setData(
-                                                    {
-                                                        userId: currentUser.id,
-                                                        fromRoute: item?.route?.fromRoute,
-                                                        loadingRadius: item?.route?.loadingRadius,
-                                                        toRoute: item?.route?.toRoute,
-                                                        unloadingRadius: item?.route?.unloadingRadius,
-                                                        dateForInput: item?.route?.date,
-                                                        carId: item?.route?.carId,
-                                                        carName: item?.route?.car?.name,
-                                                        dateDays: item?.route?.dateDays,
-                                                        dateType: item?.route?.dateType,
-                                                        datePeriodType: +item?.route?.datePeriodType,
-                                                        datePeriodTypeForUser: item?.route?.datePeriodTypeForUser,
-                                                        bargainType: item?.route?.bargainType,
-                                                        calculateType: item?.route?.calculateType,
-                                                        vatPrice: item?.route?.vatPrice,
-                                                        noVatPrice: item?.route?.noVatPrice,
-                                                        prepayment: item?.route?.prepayment,
-                                                        contacts: item?.route?.contacts,
-                                                        note: item?.route?.note,
-                                                    })
-                                                setBtnRadioDate(Number(item?.route?.dateType))
-                                                setBtnRadioCalculate(Number(item?.route?.calculateType))
-                                                setBtnRadioBargain(Number(item?.route?.bargainType))
-                                            }}
+                                            onClick={() => setShowUseTemplate(false)}
+                                            className="btn btn-1 fs-12 mx-auto mt-4"
                                         >
-                                            Выбрать
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="ms-2 ms-sm-3"
-                                            onClick={() => onDeleteTemplate(item.id)}
-                                        >
-                                            <IconContext.Provider value={{className: "gray-4 icon-15"}}>
-                                                <IoTrash/>
-                                            </IconContext.Provider>
+                                            Закрыть
                                         </button>
                                     </div>
                                 </div>
-                            ))}
-                            {!templates.length && (
-                                <h5 className="text-center">У Вас нет сохраненных шаблонов</h5>
-                            )}
-                            <p className="text-center fs-11">
-                                Сохраняйте однотипные объявления в шаблоны <br/> для удобства
-                                и экономии времени
-                            </p>
-                            <button
-                                type="button"
-                                onClick={() => setShowUseTemplate(false)}
-                                className="btn btn-1 fs-12 mx-auto mt-4"
-                            >
-                                Закрыть
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </CustomModal>
-            <CustomModal
-                className='modal__routeErrorValid'
-                isShow={showModalValidation}
-                setIsShow={setShowModalValidation}
-                closeButton={true}
-                size={'lg'}
-            >
-                <div>
-                    <div className='text-center'>
+                            </div>
+                        </CustomModal>
+                        <CustomModal
+                            className='modal__routeErrorValid'
+                            isShow={showModalValidation}
+                            setIsShow={setShowModalValidation}
+                            closeButton={true}
+                            size={'lg'}
+                        >
+                            <div>
+                                <div className='text-center'>
                                     <span className='fs-12'>
                                         Для размещения объявления заполните все обязательные поля
                                     </span>
-                        <div className='mt-4'>
-                            <button
-                                className='btn btn-2 w-100 h-100 fs-11 text-uppercase px-3'
-                                type='button'
-                                onClick={() => setShowModalValidation(false)}
-                            >
-                                ПОНЯТНО
-                            </button>
-                        </div>
+                                    <div className='mt-4'>
+                                        <button
+                                            className='btn btn-2 w-100 h-100 fs-11 text-uppercase px-3'
+                                            type='button'
+                                            onClick={() => setShowModalValidation(false)}
+                                        >
+                                            ПОНЯТНО
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </CustomModal>
                     </div>
-                </div>
-            </CustomModal>
+                </form>
+            </section>
         </main>
     );
-}
+};
+
+export default EditRoute;

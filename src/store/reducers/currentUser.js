@@ -4,7 +4,6 @@ const initialState = {
   data: {
     token: "",
     user: {},
-    rememberMe: false,
   },
 };
 
@@ -16,7 +15,7 @@ const currentUserSlice = createSlice({
       state.data = action.payload;
     },
     resetCurrentUser: (state, action) => {
-      state.data = initialState;
+      state.data = initialState.data;
     },
   },
 });
