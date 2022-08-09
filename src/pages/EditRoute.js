@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {IconContext} from "react-icons";
 import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
@@ -9,17 +9,12 @@ import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilit
 import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {
-    deleteTemplate,
-    getRoutePage,
-    getTemplates,
-    getUserCars,
-    saveTemplateRoute,
-    updateRoute
-} from "../API/routes";
+import {deleteTemplate, getRoutePage, getTemplates, saveTemplateRoute, updateRoute} from "../API/route";
 import CustomModal from "../components/utilities/CustomModal";
 import AsyncSelect from "react-select/async";
 import {Alert} from "react-bootstrap";
+import {getCars} from '../API/car';
+
 
 const EditRoute = () => {
 
@@ -30,6 +25,7 @@ const EditRoute = () => {
     const [btnRadioDate, setBtnRadioDate] = useState(0)
     const [btnRadioBargain, setBtnRadioBargain] = useState(0)
     const [btnRadioCalculate, setBtnRadioCalculate] = useState(0)
+    const navigate = useNavigate()
     const [contactsInfo, setContactsInfo] = useState(
         {
             id: '',
@@ -133,7 +129,7 @@ const EditRoute = () => {
                 } else {
                     delete data?.datePeriodType
                 }
-                const response = updateRoute(id, data, axiosPrivate).then().catch(() => setShowModalValidation(true))
+                const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
                 console.log(response)
             } catch (error) {
                 console.log(error)
@@ -160,8 +156,8 @@ const EditRoute = () => {
     const [cars, setCars] = useState([])
 
     useEffect(() => {
-        getUserCars(1, currentUser?.id, axiosPrivate)
-            .then(res => setCars(res?.data?.body?.data?.map(i => ({value: i.id, label: i.name}))))
+        getCars(axiosPrivate, currentUser?.id, 1)
+            .then(res => setCars(res?.data?.map(i => ({value: i.id, label: i.name}))))
             .catch(error => console.log(error))
     }, [currentUser])
 

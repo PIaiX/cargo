@@ -1,8 +1,8 @@
 import React, {memo, useEffect, useRef, useState} from 'react';
 
-const SearchInput = memo(({data, placeHolder, callback}) => {
+const SearchInput = memo(({data, placeHolder, callback, value}) => {
 
-        const [inputValue, setInputValue] = useState('')
+        const [inputValue, setInputValue] = useState(value || '')
         const [inputValueShow, setInputValueShow] = useState(false)
         const ref = useRef(null)
 
@@ -14,14 +14,7 @@ const SearchInput = memo(({data, placeHolder, callback}) => {
             }
         }
 
-        useEffect(() => {
-            document.addEventListener('click', handlerClickOutDiv, true);
-            return () => {
-                document.removeEventListener('click', handlerClickOutDiv, true);
-            }
-        })
-
-        const findValue = (value) => {
+        const findValue = (value = '') => {
             const filteredValue = value.toLowerCase().trim()
             if (data) {
                 return data.filter(x => x.toLowerCase().startsWith(filteredValue)).slice(0, 5)
@@ -32,6 +25,17 @@ const SearchInput = memo(({data, placeHolder, callback}) => {
             callback && callback(inputValue)
         }
 
+        useEffect(() => {
+            document.addEventListener('click', handlerClickOutDiv, true);
+            return () => {
+                document.removeEventListener('click', handlerClickOutDiv, true);
+            }
+        })
+
+    useEffect(() => {
+        setInputValue(value)
+    }, [value])
+
         return (
             <>
                 <div className="inputCity" ref={ref}>
@@ -39,7 +43,7 @@ const SearchInput = memo(({data, placeHolder, callback}) => {
                         type="text"
                         placeholder={placeHolder}
                         className="fs-15"
-                        value={inputValue}
+                        value={inputValue || ''}
                         onClick={() => setInputValueShow(true)}
                         onChange={(e) => {
                             setInputValue(e.target.value)

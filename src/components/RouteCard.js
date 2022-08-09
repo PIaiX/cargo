@@ -1,6 +1,6 @@
 import React from 'react';
-import {IoEllipsisVertical} from "react-icons/io5";
-import {Link} from "react-router-dom";
+import {IoEllipsisVertical, IoShieldCheckmarkSharp} from "react-icons/io5";
+import {NavLink} from "react-router-dom";
 import {IconContext} from "react-icons";
 
 const RouteCard = (props) => {
@@ -12,7 +12,8 @@ const RouteCard = (props) => {
                     <div className="fs-12 mt-1 mt-sm-2">
                         <span className="fw-7 me-2">{props.carType}</span>
                         <span className="green">
-              </span>
+                            {props.isVerified && <IoShieldCheckmarkSharp />}
+                        </span>
                     </div>
                 )}
                 {props.date && (
@@ -38,9 +39,9 @@ const RouteCard = (props) => {
                     </div>
                 )}
             </div>
-            <Link to={props.url} className="btn btn-1 mt-2 mt-sm-3 mt-xl-4">
+            <NavLink to={`/route-page/${props.id}`} className="btn btn-1 mt-2 mt-sm-3 mt-xl-4">
                 Перейти
-            </Link>
+            </NavLink>
             {props.profileView && (
                 <div className="dropdown dropstart">
                     <button
@@ -72,7 +73,7 @@ const RouteCard = (props) => {
                             </li>
                         )}
                         <li>
-                            <Link to={`/edit-${props.type}/${props.id}`}>Редактировать</Link>
+                            <NavLink to={`/edit-${props.type}/${props.id}`}>Редактировать</NavLink>
                         </li>
                         <li>
                             <button

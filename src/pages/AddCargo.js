@@ -28,6 +28,8 @@ import {
 } from "../store/reducers/savedCargoTemplates";
 import CustomModal from "../components/utilities/CustomModal";
 import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
+import apiRoutes from "../API/config/apiRoutes";
+import useAxiosPrivate from "../hooks/axiosPrivate";
 
 const initialLoading = [
   [
@@ -182,57 +184,57 @@ const initialCargo = [
       required: false,
     },
     {
-      name: "ADR1",
+      name: "adr1",
       value: true,
       required: false,
     },
     {
-      name: "ADR2",
+      name: "adr2",
       value: false,
       required: false,
     },
     {
-      name: "ADR3",
+      name: "adr3",
       value: false,
       required: false,
     },
     {
-      name: "ADR4",
+      name: "adr4",
       value: false,
       required: false,
     },
     {
-      name: "ADR5",
+      name: "adr5",
       value: false,
       required: false,
     },
     {
-      name: "ADR6",
+      name: "adr6",
       value: false,
       required: false,
     },
     {
-      name: "ADR7",
+      name: "adr7",
       value: false,
       required: false,
     },
     {
-      name: "ADR8",
+      name: "adr8",
       value: false,
       required: false,
     },
     {
-      name: "ADR9",
+      name: "adr9",
       value: false,
       required: false,
     },
     {
-      name: "TIR",
+      name: "tir",
       value: false,
       required: false,
     },
     {
-      name: "EKMT",
+      name: "ekmt",
       value: false,
       required: false,
     },
@@ -315,8 +317,9 @@ export default function AddCargo() {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
 
-  const [isShowTemplateModal, setIsShowTemplateModal] = useState(false)
+  const [isShowTemplateModal, setIsShowTemplateModal] = useState(false);
 
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
@@ -330,6 +333,7 @@ export default function AddCargo() {
 
   const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
 
+  const currentUserId = useSelector((state) => state.currentUser.data.user.id);
   const currentTemplate = useSelector(
     (state) => state.savedCargoTemplates.currentTemplate
   );
@@ -747,15 +751,149 @@ export default function AddCargo() {
     dispatch(setCurrentCargoTemplate(null));
   };
 
+  const formatDataBeforeSend = (formData) => {
+    const extractValue = (array, name) => {
+      const object = array.filter((item) => item.name === name);
+      return object[0].value;
+    };
+
+    const formatContacts = (contacts) => {
+      return contacts.map((item) => {
+        return { phone: item.phone, firstName: item.name };
+      });
+    };
+
+    const formatLoadings = (loadings) => {
+      const formattedLoadings = [];
+      loadings.forEach((item) => {
+        const newItem = {};
+        item.forEach((i) => {
+          if (i.name === "frequency")
+            return (newItem.type = i.value === "0" ? false : true);
+          if (i.name === "isLoadingAllDay") return (newItem.isAllDay = i.value ? true : false);
+          if (i.name === "loadingAddress") return (newItem.address = i.value);
+          if (i.name === "loadingDate") {
+            let formattedDate = i.value.split("-");
+            let array = [];
+            array[0] = formattedDate[2];
+            array[1] = formattedDate[1];
+            array[2] = formattedDate[0];
+            return (newItem.date = array.join("."));
+          }
+          if (i.name === "loadingDays") return (newItem.days = i.value);
+          if (i.name === "loadingPeriodType")
+            return (newItem.periodType = i.value);
+          if (i.name === "loadingTimeFrom") return (newItem.timeFrom = i.value);
+          if (i.name === "loadingTimeTo") return (newItem.timeTo = i.value);
+          if (i.name === "loadingTown") return (newItem.town = "Казань");
+          if (i.name === "transportationType")
+            return (newItem.transportaionType =
+              i.value === "FTL" ? false : true);
+          if (i.name === "loadingType")
+            return (newItem.cargoLoadingTypeId = i.value);
+
+          newItem[i.name] = i.value;
+        });
+        formattedLoadings.push(newItem);
+      });
+
+      return formattedLoadings;
+    };
+
+    const formatUnloadings = (unloadings) => {
+      const formattedUnloadings = [];
+      unloadings.forEach((item) => {
+        const newItem = {};
+        item.forEach((i) => {
+          if (i.name === "isUnloadingAllDay")
+            return (newItem.isAllDay = !i.value ? false : i.value);
+          if (i.name === "unloadingTown") return (newItem.town = "Казань");
+          if (i.name === "unloadingAddress") return (newItem.address = i.value);
+          if (i.name === "unloadingDateFrom") {
+            let formattedDate = i.value.split("-");
+            let array = [];
+            array[0] = formattedDate[2];
+            array[1] = formattedDate[1];
+            array[2] = formattedDate[0];
+            return (newItem.dateFrom = array.join("."));
+          }
+          if (i.name === "unloadingDateTo") {
+            let formattedDate = i.value.split("-");
+            let array = [];
+            array[0] = formattedDate[2];
+            array[1] = formattedDate[1];
+            array[2] = formattedDate[0];
+            return (newItem.dateTo = array.join("."));
+          }
+          if (i.name === "unloadingTimeFrom")
+            return (newItem.timeFrom = i.value);
+          if (i.name === "unloadingTimeTo") return (newItem.timeTo = i.value);
+          if (i.name === "unloadingType")
+            return (newItem.cargoLoadingTypeId = i.value);
+
+          newItem[i.name] = i.value;
+        });
+        formattedUnloadings.push(newItem);
+      });
+
+      return formattedUnloadings;
+    };
+
+    const formatCargo = (cargo) => {
+      const formattedCargo = [];
+      cargo.forEach((item) => {
+        const newItem = {};
+        item.forEach((i) => {
+          if (i.name === "unloadingAddress") return (newItem.address = i.value);
+          if (i.name === "notes") return (newItem.noteType = i.value);
+          if (i.name === "cargoType")
+            return (newItem.cargoItemTypeId = i.value);
+          if (i.name === "cargoItemPackageTypeId")
+            return (newItem.cargoItemTypeId = i.value);
+
+          newItem[i.name] = i.value;
+        });
+        formattedCargo.push(newItem);
+      });
+
+      return formattedCargo;
+    };
+
+    const formattedFormData = {
+      loadings: formatLoadings(formData.loading),
+      unloadings: formatUnloadings(formData.unloading),
+      items: formatCargo(formData.cargo),
+      prepayment: extractValue(formData.payment, "prepay"),
+      userId: currentUserId,
+      bargainType:
+        extractValue(formData.payment, "bargain") === "0" ? true : false,
+      calculateType:
+        extractValue(formData.payment, "paymentType") === "0" ? true : false,
+      fromTemperature: extractValue(formData.requirements, "tempFrom"),
+      toTemperature: extractValue(formData.requirements, "tempTo"),
+      vatPrice: extractValue(formData.payment, "priceVat"),
+      noVatPrice: extractValue(formData.payment, "priceNovat"),
+      note: extractValue(formData.contactsField, "remark"),
+      contacts: formatContacts(formData.contacts),
+    };
+    return formattedFormData;
+  };
+
   //финальная проверка на заполнение и отправка формы
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    const isValidForm = checkAllRequiredFields();
-    if (!isValidForm) return alert("Заполните все обязательные поля");
+    // const isValidForm = checkAllRequiredFields();
+    // if (!isValidForm) return alert("Заполните все обязательные поля");
 
-    //Make an API call in the future sending the data to the server
-    console.log(getEntireFormValue());
+    const result = formatDataBeforeSend(getEntireFormValue());
+
+    try {
+      const response = await axiosPrivate.post(apiRoutes.CARGO_CREATE, result);
+      console.log(response);
+    } catch (error) {
+      console.log("you suck at coding", error);
+    }
   };
 
   const handleSaveTemplate = () => {
@@ -764,7 +902,7 @@ export default function AddCargo() {
       return alert("Заполните все обязательные поля");
     }
 
-    setIsShowTemplateModal(true)
+    setIsShowTemplateModal(true);
     const data = getEntireFormValue();
     dispatch(setCargoFormData(data));
   };
@@ -1913,15 +2051,15 @@ export default function AddCargo() {
                       </div>
                     </div>
                     <div className="col-md-9">
-                      <div className="mb-2">опасные грузы, ADR:</div>
+                      <div className="mb-2">опасные грузы, adr:</div>
                       <div className="row row-cols-3 g-3 mb-4">
                         <div>
                           <label>
                             <input
                               type="checkbox"
                               name="ADR1"
-                              value={getValArr(cargo, index, "ADR1")}
-                              checked={getValArr(cargo, index, "ADR1")}
+                              value={getValArr(cargo, index, "adr1")}
+                              checked={getValArr(cargo, index, "adr1")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1935,9 +2073,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR2"
-                              value={getValArr(cargo, index, "ADR2")}
-                              checked={getValArr(cargo, index, "ADR2")}
+                              name="adr2"
+                              value={getValArr(cargo, index, "adr2")}
+                              checked={getValArr(cargo, index, "adr2")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1951,9 +2089,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR3"
-                              value={getValArr(cargo, index, "ADR3")}
-                              checked={getValArr(cargo, index, "ADR3")}
+                              name="adr3"
+                              value={getValArr(cargo, index, "adr3")}
+                              checked={getValArr(cargo, index, "adr3")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1967,9 +2105,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR4"
-                              value={getValArr(cargo, index, "ADR4")}
-                              checked={getValArr(cargo, index, "ADR4")}
+                              name="adr4"
+                              value={getValArr(cargo, index, "adr4")}
+                              checked={getValArr(cargo, index, "adr4")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1983,9 +2121,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR5"
-                              value={getValArr(cargo, index, "ADR5")}
-                              checked={getValArr(cargo, index, "ADR5")}
+                              name="adr5"
+                              value={getValArr(cargo, index, "adr5")}
+                              checked={getValArr(cargo, index, "adr5")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1999,9 +2137,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR6"
-                              value={getValArr(cargo, index, "ADR6")}
-                              checked={getValArr(cargo, index, "ADR6")}
+                              name="adr6"
+                              value={getValArr(cargo, index, "adr6")}
+                              checked={getValArr(cargo, index, "adr6")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2015,9 +2153,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR7"
-                              value={getValArr(cargo, index, "ADR7")}
-                              checked={getValArr(cargo, index, "ADR7")}
+                              name="adr7"
+                              value={getValArr(cargo, index, "adr7")}
+                              checked={getValArr(cargo, index, "adr7")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2031,9 +2169,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR8"
-                              value={getValArr(cargo, index, "ADR8")}
-                              checked={getValArr(cargo, index, "ADR8")}
+                              name="adr8"
+                              value={getValArr(cargo, index, "adr8")}
+                              checked={getValArr(cargo, index, "adr8")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2047,9 +2185,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR9"
-                              value={getValArr(cargo, index, "ADR9")}
-                              checked={getValArr(cargo, index, "ADR9")}
+                              name="adr9"
+                              value={getValArr(cargo, index, "adr9")}
+                              checked={getValArr(cargo, index, "adr9")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2065,9 +2203,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="TIR"
-                              value={getValArr(cargo, index, "TIR")}
-                              checked={getValArr(cargo, index, "TIR")}
+                              name="tir"
+                              value={getValArr(cargo, index, "tir")}
+                              checked={getValArr(cargo, index, "tir")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2081,9 +2219,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="EKMT"
-                              value={getValArr(cargo, index, "EKMT")}
-                              checked={getValArr(cargo, index, "EKMT")}
+                              name="ekmt"
+                              value={getValArr(cargo, index, "ekmt")}
+                              checked={getValArr(cargo, index, "ekmt")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2930,37 +3068,37 @@ export default function AddCargo() {
                             , {getObjLabel(optionsNotes, arr, "notes")}
                           </span>
                         )}
-                        {getValArr(cargo, index, "ADR1") && (
+                        {getValArr(cargo, index, "adr1") && (
                           <span className="me-1">, ADR1</span>
                         )}
-                        {getValArr(cargo, index, "ADR2") && (
+                        {getValArr(cargo, index, "adr2") && (
                           <span className="me-1">, ADR2</span>
                         )}
-                        {getValArr(cargo, index, "ADR3") && (
+                        {getValArr(cargo, index, "adr3") && (
                           <span className="me-1">, ADR3</span>
                         )}
-                        {getValArr(cargo, index, "ADR4") && (
+                        {getValArr(cargo, index, "adr4") && (
                           <span className="me-1">, ADR4</span>
                         )}
-                        {getValArr(cargo, index, "ADR5") && (
+                        {getValArr(cargo, index, "adr5") && (
                           <span className="me-1">, ADR5</span>
                         )}
-                        {getValArr(cargo, index, "ADR6") && (
+                        {getValArr(cargo, index, "adr6") && (
                           <span className="me-1">, ADR6</span>
                         )}
-                        {getValArr(cargo, index, "ADR7") && (
+                        {getValArr(cargo, index, "adr7") && (
                           <span className="me-1">, ADR7</span>
                         )}
-                        {getValArr(cargo, index, "ADR8") && (
+                        {getValArr(cargo, index, "adr8") && (
                           <span className="me-1">, ADR8</span>
                         )}
-                        {getValArr(cargo, index, "ADR9") && (
+                        {getValArr(cargo, index, "adr9") && (
                           <span className="me-1">, ADR9</span>
                         )}
-                        {getValArr(cargo, index, "TIR") && (
+                        {getValArr(cargo, index, "tir") && (
                           <span className="me-1">, TIR</span>
                         )}
-                        {getValArr(cargo, index, "EKMT") && (
+                        {getValArr(cargo, index, "ekmt") && (
                           <span className="me-1">, EKMT</span>
                         )}
                       </div>
@@ -3099,7 +3237,10 @@ export default function AddCargo() {
                 size="lg"
                 closeButton={true}
               >
-                <SaveTemplateModal type="Cargo" setIsShow={setIsShowTemplateModal}/>
+                <SaveTemplateModal
+                  type="Cargo"
+                  setIsShow={setIsShowTemplateModal}
+                />
               </CustomModal>
             </aside>
           </div>

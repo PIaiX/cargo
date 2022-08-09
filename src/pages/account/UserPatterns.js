@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import Pattern from '../../components/Pattern';
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/pagination";
-import {deleteTemplate, getTemplates, updateTemplateRouteName} from "../../API/routes";
+import {deleteTemplate, getTemplates, updateTemplateRouteName} from "../../API/route";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
 import Loader from "../../components/Loader";

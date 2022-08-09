@@ -4,7 +4,7 @@ import {IconContext} from "react-icons";
 import {IoAddCircleSharp} from "react-icons/io5";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/pagination";
-import {deleteRoute, getArchiveRoutes, getUserRoutes, unArchivedRoutes} from "../../API/routes";
+import {deleteRoute, getArchiveRoutes, getUserRoutes, unArchivedRoutes} from "../../API/route";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
 import Loader from "../../components/Loader";
@@ -211,7 +211,7 @@ const UserRoutes = () => {
                                             notes="cold"
                                             carType={i.carBodyType?.name}
                                             dimensions={`${i.car?.length}/${i.car?.width}/${i.car?.height}`}
-                                            date={(i.dateType === false) ? "постоянно" : 'единожды'}
+                                            date={i.dateType ? 'единожды' : 'постоянно'}
                                             url={`/route-page/${i.id}`}
                                             profileView='archive'
                                             callbackForDelete={(id) => {
