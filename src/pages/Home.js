@@ -11,7 +11,8 @@ import {useSelector} from 'react-redux';
 import {getCargoCount, paginateCargo} from '../API/cargo';
 import CargoCard from '../components/CargoCard';
 import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from '../helpers/cargo';
-import {getCountRoutes} from "../API/route";
+import {getCountRoutes, paginateRoutes} from "../API/route";
+import RouteCard from "../components/RouteCard";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -30,7 +31,6 @@ export default function Home() {
         meta: null,
         items: [],
     });
-
 
     useEffect(() => {
         getCountRoutes().then(res => setCountRoute(res?.data?.body))
@@ -59,6 +59,12 @@ export default function Home() {
         paginateCargo(selectedCity, 1, 8)
             .then(result => result && setCargoSwiperItems(prev => ({...prev, isLoading: true, items: result?.data})))
             .catch(error => error && setCargoSwiperItems(prev => ({...prev, isLoading: true, error})))
+    }, [selectedCity])
+
+    useEffect(() => {
+        paginateRoutes(selectedCity, 1, 6)
+            .then(res => setRoutes({isLoading: true, meta: res?.data?.body?.meta, data: res?.data?.body?.data}))
+            .catch(error => console.log(error))
     }, [selectedCity])
 
     return (
@@ -305,118 +311,25 @@ export default function Home() {
                             prevEl: ".swiper-button-prev",
                         }}
                     >
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань-Москва"*/}
-                        {/*    carType="Фура"*/}
-                        {/*    verified={true}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань — Москва"*/}
-                        {/*    carType="Тягач"*/}
-                        {/*    verified={true}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань — Москва"*/}
-                        {/*    carType="Рефрижератор"*/}
-                        {/*    verified={false}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань-Москва"*/}
-                        {/*    carType="Фура"*/}
-                        {/*    verified={false}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань-Москва"*/}
-                        {/*    carType="Фура"*/}
-                        {/*    verified={true}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань — Москва"*/}
-                        {/*    carType="Тягач"*/}
-                        {/*    verified={true}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань — Москва"*/}
-                        {/*    carType="Рефрижератор"*/}
-                        {/*    verified={false}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
-                        {/*<SwiperSlide>*/}
-                        {/*  <Card*/}
-                        {/*    type="car"*/}
-                        {/*    className=""*/}
-                        {/*    route="Казань-Москва"*/}
-                        {/*    carType="Фура"*/}
-                        {/*    verified={false}*/}
-                        {/*    date="Ежедневно"*/}
-                        {/*    carrying="20"*/}
-                        {/*    size="30"*/}
-                        {/*    dimensions="13/2,45/2,45"*/}
-                        {/*    url="/cargo-page"*/}
-                        {/*  />*/}
-                        {/*</SwiperSlide>*/}
+                        {routes?.isLoading
+                            ? routes?.data.map((route, index) => (
+                                <SwiperSlide key={index}>
+                                    <RouteCard
+                                        id={route.id}
+                                        title={`${route.fromRoute} - ${route.toRoute}`}
+                                        route={`${route.fromRoute} - ${route.toRoute}`}
+                                        size={route.car?.capacity}
+                                        carrying={route.car?.carrying}
+                                        carType={route.carBodyType?.name}
+                                        dimensions={`${route.car?.length}/${route.car?.width}/${route.car?.height}`}
+                                        date={route.dateType ? 'единожды' : 'постоянно'}
+                                        inProfile={false}
+                                    />
+                                </SwiperSlide>
+                            ))
+                            : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
+                        }
+
                         <div className="swiper-button-prev">
                             <IoChevronBackSharp/>
                         </div>

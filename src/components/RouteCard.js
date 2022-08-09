@@ -59,7 +59,7 @@ const RouteCard = (props) => {
                             <IoEllipsisVertical />
                         </IconContext.Provider>
                     </button>
-                    <ul className="dropdown-menu py-2">
+                    {props?.inProfile && <ul className="dropdown-menu py-2">
                         {props.profileView === "archive" && (
                             <li>
                                 <button
@@ -85,7 +85,7 @@ const RouteCard = (props) => {
                                 Удалить
                             </button>
                         </li>
-                    </ul>
+                    </ul>}
                 </div>
             )}
         </div>

@@ -172,6 +172,7 @@ const UserRoutes = () => {
                                                 setIsShowRouteUnArchive(true)
                                                 setRouteId(id)
                                             }}
+                                            inProfile={true}
                                         />
                                     </div>
                                 ))
@@ -222,6 +223,7 @@ const UserRoutes = () => {
                                                 setIsShowRouteUnArchive(true)
                                                 setRouteId(id)
                                             }}
+                                            inProfile={true}
                                         />
                                     </div>
                                 ))

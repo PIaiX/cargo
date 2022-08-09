@@ -344,6 +344,7 @@ export default function RoutePage() {
                                     dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}
                                     date={(i.dateType === false) ? "постоянно" : 'единожды'}
                                     id={i.id}
+                                    inProfile={false}
                                 />
                             </SwiperSlide>
                         ))}

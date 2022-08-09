@@ -133,3 +133,12 @@ export const reportRoute = async (axiosPrivate, payloads) => {
         console.log(error)
     }
 }
+
+export const paginateRoutes = async (city, page , limit ) => {
+    try {
+        const response = axios.post(`${site}${apiRoutes.ROUTE_PAGINATE}/${city}`, {page, limit})
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+}
