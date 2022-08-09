@@ -45,5 +45,14 @@ export default {
     SAVE_TEMPLATE: '/template/route',
     GET_TEMPLATES: '/template/route',
     DELETE_TEMPLATES: '/template',
-    UPDATE_NAME_TEMP: '/template'
+    UPDATE_NAME_TEMP: '/template',
+
+    // response
+    ACCEPT_RESPONSE: '/response/accept',
+    DELETE_RESPONSE: 'response',
+
+    // reports
+    REPORT_ROUTE: '/report/route',
+    REPORT_CARGO: '/report/cargo',
+    REPORT_USER: '/report/user'
 }

@@ -67,7 +67,7 @@ export const deleteTemplate = async (templateId,axiosPrivate) => {
 
 export const updateRoute = async (id,data,axiosPrivate) => {
     try {
-        const response = axiosPrivate.patch(`${site}${apiRoutes.UPDATE_ROUTE}/${id}`, data)
+        const response = axiosPrivate.patch(`${site}${apiRoutes.ROUTE_ACTIONS}/${id}`, data)
         return response
     } catch (error) {
         console.log(error)
@@ -76,7 +76,7 @@ export const updateRoute = async (id,data,axiosPrivate) => {
 
 export const getArchiveRoutes = async (limit,page,userId,axiosPrivate) => {
     try {
-         const response = axiosPrivate.post(`${site}${apiRoutes.USER_ARCHIVE_ROUTES}/${userId}`, {page, limit})
+         const response = axiosPrivate.post(`${site}${apiRoutes.ROUTE_ARCHIVE}/${userId}`, {page, limit})
         return response
     } catch (error) {
         console.log(error)
@@ -85,7 +85,7 @@ export const getArchiveRoutes = async (limit,page,userId,axiosPrivate) => {
 
 export const deleteRoute = async (id,axiosPrivate) => {
     try {
-        return axiosPrivate.delete(`${site}${apiRoutes.DELETE_ROUTE}/${id}`)
+        return axiosPrivate.delete(`${site}${apiRoutes.ROUTE_ACTIONS}/${id}`)
     } catch (error) {
         console.log(error)
     }
@@ -100,18 +100,35 @@ export const updateTemplateRouteName = async (axiosPrivate, idTemplate, userId, 
     }
 }
 
-export const getRoutesInCity = async (city, page= 1, limit = 6) => {
+export const unArchivedRoutes = async (axiosPrivate, routeId) => {
     try {
-        const response = axios.post(`${site}${apiRoutes.ROUTE_CITY}/${city}`, {page, limit, orderBy: 'desc'})
+        return axiosPrivate.post(`${site}${apiRoutes.ROUTE_UNARCHIVE}/${routeId}`)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getCountRoutes = async () => {
+    try {
+        const response = axios.get(`${site}${apiRoutes.ROUTE_COUNT}`)
         return response
     } catch (error) {
         console.log(error)
     }
 }
 
-export const unArchivedRoutes = async (axiosPrivate, routeId) => {
+export const acceptResponse = async (axiosPrivate, routeId) => {
     try {
-        return axiosPrivate.post(`${site}${apiRoutes.ROUTE_UNARCHIVE}/${routeId}`)
+        const response = axiosPrivate.patch(`${site}${apiRoutes.ACCEPT_RESPONSE}/${routeId}`)
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const reportRoute = async (axiosPrivate, payloads) => {
+    try {
+        return axiosPrivate.post(`${site}${apiRoutes.REPORT_ROUTE}`, payloads)
     } catch (error) {
         console.log(error)
     }
