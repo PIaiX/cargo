@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {NavLink, useParams} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {IconContext} from "react-icons";
 import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
@@ -11,7 +11,10 @@ import {useSelector} from "react-redux";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 import {deleteTemplate, getRoutePage, getTemplates, saveTemplateRoute, updateRoute} from "../API/route";
 import CustomModal from "../components/utilities/CustomModal";
+import AsyncSelect from "react-select/async";
+import {Alert} from "react-bootstrap";
 import {getCars} from '../API/car';
+
 
 const EditRoute = () => {
 
@@ -19,6 +22,10 @@ const EditRoute = () => {
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
     const axiosPrivate = useAxiosPrivate()
     const currentUser = useSelector(state => state.currentUser.data.user)
+    const [btnRadioDate, setBtnRadioDate] = useState(0)
+    const [btnRadioBargain, setBtnRadioBargain] = useState(0)
+    const [btnRadioCalculate, setBtnRadioCalculate] = useState(0)
+    const navigate = useNavigate()
     const [contactsInfo, setContactsInfo] = useState(
         {
             id: '',
@@ -43,13 +50,14 @@ const EditRoute = () => {
     );
 
     useEffect(() => {
-        setData(prevState => ({...prevState,
+        setData(prevState => ({
+            ...prevState,
             userId: currentUser.id,
             fromRoute: curRoute?.fromRoute,
             loadingRadius: curRoute?.loadingRadius,
             toRoute: curRoute?.toRoute,
             unloadingRadius: curRoute?.unloadingRadius,
-            date: curRoute?.date,
+            dateForInput: curRoute?.date,
             dateDays: curRoute?.dateDays,
             dateType: curRoute?.dateType,
             datePeriodType: curRoute?.dateType,
@@ -60,9 +68,16 @@ const EditRoute = () => {
             prepayment: curRoute?.prepayment,
             contacts: curRoute?.contacts,
             note: curRoute?.note,
-
+            carId: curRoute?.carId,
+            date: getDate(data?.dateForInput)
         }))
-    }, [contactsInfo, curRoute, currentUser])
+        setBtnRadioDate(Number(curRoute?.dateType))
+        setBtnRadioCalculate(Number(curRoute?.calculateType))
+        setBtnRadioBargain(Number(curRoute?.bargainType))
+        setSelectCar({value: curRoute?.carId, label: curRoute?.carName})
+        setSelectPeriodType({value: curRoute?.datePeriodType, label: curRoute?.datePeriodTypeForUser})
+        setSelectDays({value: curRoute?.dateDays, label: `${curRoute?.dateDays} дн.`})
+    }, [contactsInfo, curRoute, currentUser, data?.dateForInput])
 
     const fields = {
         isInValidFromRoute: false,
@@ -78,19 +93,19 @@ const EditRoute = () => {
 
     const [valid, setValid] = useState(fields);
 
+    const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
+    const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50
+    const isInValidDateType = data?.dateType === undefined
+    const isInValidCar = data?.carId === undefined
+    const isInValidPrepayment = data?.prepayment === undefined || data?.prepayment > 100 || data?.prepayment < 0
+    const isInValidPhone =
+        (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length > 12)
+        || !(data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').includes('+7'))
+        || (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length <= 11)
+    const isInValidFirstName = (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length > 50) || (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length < 2)
+
     const onSubmit = (e) => {
         e.preventDefault()
-
-        const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
-        const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50
-        const isInValidDateType = data?.dateType === undefined
-        const isInValidCar = data?.carId === undefined
-        const isInValidPrepayment = data?.prepayment === undefined || data?.prepayment > 100 || data?.prepayment < 0
-        const isInValidPhone =
-            (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length > 12)
-            || !(data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').includes('+7'))
-            || (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length <= 11)
-        const isInValidFirstName = (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length > 50) || (data?.contacts?.map(i => i.firstName)[0].replace(/\s/g, '').length < 2)
 
         if (isInValidFromRoute) {
             setValid({...valid, isInValidFromRoute: true})
@@ -108,7 +123,13 @@ const EditRoute = () => {
             setValid({...valid, isInValidFirstName: true})
         } else {
             try {
-                const response = updateRoute(id,data, axiosPrivate)
+                if (data?.dateType === true) {
+                    delete data?.date
+                    delete data?.dateDays
+                } else {
+                    delete data?.datePeriodType
+                }
+                const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
                 console.log(response)
             } catch (error) {
                 console.log(error)
@@ -116,8 +137,10 @@ const EditRoute = () => {
         }
     }
 
-    const onReset = (e) => {
-        setData({})
+    const onReset = () => {
+        setData({
+            userId: currentUser?.id
+        })
         setContactsArray([]);
     };
 
@@ -130,32 +153,26 @@ const EditRoute = () => {
         }
     }, [data])
 
-    const [cars, setCars] = useState({
-        cars: [],
-        forSelect: []
-    })
+    const [cars, setCars] = useState([])
 
     useEffect(() => {
         getCars(axiosPrivate, currentUser?.id, 1)
-            .then(res => setCars(prevState => (
-                {
-                    ...prevState,
-                    cars: res?.data?.body?.data,
-                    forSelect: res?.data?.body?.data?.map(i => ({value: i.id, label: i.name}))
-                })))
+            .then(res => setCars(res?.data?.map(i => ({value: i.id, label: i.name}))))
             .catch(error => console.log(error))
     }, [currentUser])
 
     const getDate = (dateMe) => {
         const newDate = new Date(dateMe)
+        const re = newDate.toLocaleDateString()
         setData(prevState => ({
             ...prevState,
-            'date': `${newDate.getDate()}.${newDate.getMonth() + 1}.${newDate.getFullYear()}`
+            'date': re
         }))
+        return re
     }
 
     const findCar = (carId) => {
-        const find = cars?.forSelect?.find(i => i.value === carId)
+        const find = cars?.find(i => i.value === carId)
         return <span>{find?.label}</span>
     }
 
@@ -177,7 +194,21 @@ const EditRoute = () => {
             setValid({...valid, isInValidNameTemplate: true})
         } else {
             try {
+                if (data?.dateType === true) {
+                    delete data?.date
+                    delete data?.dateDays
+                } else {
+                    delete data?.datePeriodType
+                }
                 saveTemplateRoute(data, dataTemplate, axiosPrivate)
+                    .then(() => {
+                    setIsShowAlert(true)
+                    setAlertForSavePattern(true)
+                })
+                    .catch(() => {
+                        setAlertForSavePattern(false)
+                        setIsShowAlert(true)
+                    })
             } catch (error) {
                 console.log(error)
             }
@@ -189,7 +220,7 @@ const EditRoute = () => {
     const [templates, setTemplates] = useState([])
 
     useEffect(() => {
-        getTemplates(axiosPrivate, currentUser?.id,1 )
+        getTemplates(axiosPrivate, currentUser?.id, 1)
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }, [currentUser])
@@ -198,10 +229,66 @@ const EditRoute = () => {
 
     const onDeleteTemplate = async (id) => {
         await deleteTemplate(id, axiosPrivate)
-        await getTemplates( axiosPrivate, currentUser?.id,1)
+        await getTemplates(axiosPrivate, currentUser?.id, 1)
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }
+
+    const [selectCar, setSelectCar] = useState(null)
+
+    const loadOptions = async (searchKey) => {
+        const defaultValue = data?.carId
+        setSelectCar(cars?.find(item => item.value === defaultValue))
+
+        if (!searchKey) {
+            return await cars;
+        } else {
+            return await cars?.filter(item => item.label.includes(searchKey));
+        }
+    }
+
+    const [selectPeriodType, setSelectPeriodType] = useState(null)
+
+    const loadOptions2 = async (searchKey) => {
+
+        const defaultValue = data?.datePeriodType
+        setSelectPeriodType(optionsLoadingPeriodType?.find(item => item.value === defaultValue))
+
+        if (!searchKey) {
+            return await optionsLoadingPeriodType;
+        } else {
+            return await optionsLoadingPeriodType?.filter(item => item.label.includes(searchKey));
+        }
+    }
+
+    const [selectDays, setSelectDays] = useState(null)
+
+    const loadOptions3 = async (searchKey) => {
+
+        const defaultValue = data?.dateDays
+        setSelectDays(optionsLoadingDays?.find(item => item.value === defaultValue))
+
+        if (!searchKey) {
+            return await optionsLoadingDays;
+        } else {
+            return await optionsLoadingDays?.filter(item => item.label.includes(searchKey));
+        }
+    }
+
+    const [isShowAlert, setIsShowAlert] = useState(false)
+    const [alertForSavePattern, setAlertForSavePattern] = useState(false)
+
+    useEffect(() => {
+        if (isShowAlert) {
+            setTimeout(() => setIsShowAlert(false), 1500)
+        }
+    }, [isShowAlert])
+
+    const currentDate = () => {
+        return new Date().toISOString().slice(0, 10)
+    }
+
+    const [showModalValidation, setShowModalValidation] = useState(false)
 
     return (
         <main className="bg-gray">
@@ -278,7 +365,11 @@ const EditRoute = () => {
                                         </IconContext.Provider>
                                         <span className="ms-2">Использовать шаблон</span>
                                     </button>
-                                    <button type="reset" className="btn btn-4 p-2 ms-3">
+                                    <button
+                                        type="reset"
+                                        className="btn btn-4 p-2 ms-3"
+                                        onClick={() => onReset()}
+                                    >
                                         <IconContext.Provider value={{className: "icon-15"}}>
                                             <VscChromeClose/>
                                         </IconContext.Provider>
@@ -416,7 +507,10 @@ const EditRoute = () => {
                                             </IconContext.Provider>
                                             <span className="ms-1">Использовать шаблон</span>
                                         </button>
-                                        <button type="reset">
+                                        <button
+                                            type="reset"
+                                            onClick={() => onReset()}
+                                        >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>
@@ -464,12 +558,13 @@ const EditRoute = () => {
                                                         <input
                                                             type="radio"
                                                             name="dateType"
-                                                            defaultChecked={!(data?.dateType)}
+                                                            checked={btnRadioDate === 0}
                                                             value={0}
                                                             onChange={e => {
                                                                 onRadioHandler(e, setData, true)
                                                                 resetFieldVal(e, 'isInValidDateType')
                                                             }}
+                                                            onClick={e => setBtnRadioDate(Number(e.target.value))}
                                                         />
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
                                                             Единожды
@@ -492,7 +587,8 @@ const EditRoute = () => {
                                                             <input
                                                                 type="date"
                                                                 name="date"
-                                                                value={data?.date || ''}
+                                                                min={currentDate()}
+                                                                defaultValue={data?.dateForInput}
                                                                 onChange={e => getDate(e.target.value)}
                                                             />
                                                         </label>
@@ -502,22 +598,20 @@ const EditRoute = () => {
                                                             data-label="dateDays"
                                                             data-warning="false"
                                                         >
-                                                            <Select
-                                                                className="fs-12"
+                                                            <AsyncSelect
+                                                                className="fs-12 w-100"
                                                                 classNamePrefix="react-select"
-                                                                placeholder="Дней"
-                                                                options={optionsLoadingDays}
-                                                                name="dateDays"
-                                                                isSearchable={false}
-                                                                defaultValue={data?.dateDays || ''}
-                                                                onChange={e => {
+                                                                placeholder={"Выберите..."}
+                                                                loadOptions={loadOptions3}
+                                                                defaultOptions={optionsLoadingDays}
+                                                                value={selectDays && optionsLoadingDays?.find(item => item.value === selectDays.value)}
+                                                                onChange={val => {
+                                                                    setSelectDays({value: val.value, label: val.label})
                                                                     setData(prevState => ({
                                                                         ...prevState,
-                                                                        'dateDays': e.value
+                                                                        dateDays: val.value
                                                                     }))
                                                                 }}
-                                                                /*value={getSelectValue("days")}
-                                                                onChange={(e) => handleRSelect(e, "days")}*/
                                                             />
                                                         </label>
                                                     </div>
@@ -529,12 +623,13 @@ const EditRoute = () => {
                                                         <input
                                                             type="radio"
                                                             name="dateType"
-                                                            defaultChecked={data?.dateType || false}
+                                                            checked={btnRadioDate === 1}
                                                             value={1}
                                                             onChange={e => {
                                                                 onRadioHandler(e, setData, true)
                                                                 resetFieldVal(e, 'isInValidDateType')
                                                             }}
+                                                            onClick={e => setBtnRadioDate(Number(e.target.value))}
                                                         />
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
                                                             Постоянно
@@ -545,22 +640,23 @@ const EditRoute = () => {
                                                         data-warning="false"
                                                         className={`${data.dateType !== 0 ? '' : 'disabled'} `}
                                                     >
-
-                                                        <Select
-                                                            className="fs-12"
+                                                        <AsyncSelect
+                                                            className="fs-12 w-100"
                                                             classNamePrefix="react-select"
-                                                            placeholder="Выберите..."
-                                                            options={optionsLoadingPeriodType}
-                                                            name="datePeriodType"
-                                                            isSearchable={false}
-                                                            onChange={e => setData(prevState => ({
-                                                                ...prevState,
-                                                                'datePeriodType': e.value
-                                                            }))}
-                                                            /*value={getSelectValue("loadingPeriodType")}
-                                                            onChange={(e) =>
-                                                              handleRSelect(e, "loadingPeriodType")
-                                                            }*/
+                                                            placeholder={"Выберите..."}
+                                                            loadOptions={loadOptions2}
+                                                            defaultOptions={optionsLoadingPeriodType}
+                                                            value={selectPeriodType && optionsLoadingPeriodType?.find(item => item.value === selectPeriodType.value)}
+                                                            onChange={val => {
+                                                                setSelectPeriodType({
+                                                                    value: val.value,
+                                                                    label: val.label
+                                                                })
+                                                                setData(prevState => ({
+                                                                    ...prevState,
+                                                                    datePeriodType: val.value
+                                                                }))
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
@@ -583,7 +679,10 @@ const EditRoute = () => {
                                             </IconContext.Provider>
                                             <span className="ms-1">Использовать шаблон</span>
                                         </button>
-                                        <button type="reset">
+                                        <button
+                                            type="reset"
+                                            onClick={() => onReset()}
+                                        >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>
@@ -608,7 +707,6 @@ const EditRoute = () => {
                                         <div>
                                             <button
                                                 type="button"
-                                                /*disabled={checkFieldset("date") ? false : true}*/
                                                 onClick={() => setActiveField(3)}
                                                 className="btn btn-1 w-100 fs-11"
                                             >
@@ -644,15 +742,17 @@ const EditRoute = () => {
                                         </div>
                                     </div>
                                     <div className="col-md-9">
-                                        <Select
+                                        <AsyncSelect
                                             className="fs-12 w-100"
                                             classNamePrefix="react-select"
                                             placeholder={"Выберите..."}
-                                            options={cars.forSelect}
-                                            name="carName"
-                                            isSearchable={true}
-                                            onChange={e => {
-                                                setData(prevState => ({...prevState, 'carId': e.value}))
+                                            loadOptions={loadOptions}
+                                            defaultOptions={cars}
+                                            value={selectCar && cars?.find(item => item.value === selectCar.value)}
+                                            onChange={(val, e) => {
+                                                setSelectCar({value: val.value, label: val.label})
+                                                setData(prevState => ({...prevState, carId: val.value}))
+                                                resetFieldVal(e, 'isInValidCar')
                                             }}
                                         />
                                         {valid.isInValidCar && <span className='position-absolute'
@@ -674,7 +774,10 @@ const EditRoute = () => {
                                             </IconContext.Provider>
                                             <span className="ms-1">Использовать шаблон</span>
                                         </button>
-                                        <button type="reset">
+                                        <button
+                                            type="reset"
+                                            onClick={() => onReset()}
+                                        >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>
@@ -685,7 +788,7 @@ const EditRoute = () => {
                                         <div>
                                             <button
                                                 type="button"
-                                                onClick={() => setActiveField(3)}
+                                                onClick={() => setActiveField(2)}
                                                 className="btn btn-1 w-100 fs-11"
                                             >
                                                 <IconContext.Provider value={{className: "icon-15"}}>
@@ -733,9 +836,10 @@ const EditRoute = () => {
                                             <input
                                                 type="radio"
                                                 name="bargainType"
-                                                defaultChecked={!(data?.bargainType) || true}
+                                                checked={btnRadioBargain === 0}
+                                                onClick={e => setBtnRadioBargain(Number(e.target.value))}
                                                 value={0}
-                                                onChange={e => onRadioHandler(e, setData)}
+                                                onChange={e => onRadioHandler(e, setData, true)}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
                                                 Возможен торг
@@ -747,7 +851,8 @@ const EditRoute = () => {
                                             <input
                                                 type="radio"
                                                 name="bargainType"
-                                                defaultChecked={data?.bargainType || false}
+                                                checked={btnRadioBargain === 1}
+                                                onClick={e => setBtnRadioBargain(Number(e.target.value))}
                                                 onChange={e => onRadioHandler(e, setData, true)}
                                                 value={1}
                                             />
@@ -766,7 +871,8 @@ const EditRoute = () => {
                                         <label>
                                             <input
                                                 type="radio"
-                                                defaultChecked={!(data?.calculateType) || true}
+                                                checked={btnRadioCalculate === 0}
+                                                onClick={e => setBtnRadioCalculate(Number(e.target.value))}
                                                 name="calculateType"
                                                 onChange={e => onRadioHandler(e, setData, true)}
                                                 value={0}
@@ -781,8 +887,9 @@ const EditRoute = () => {
                                             <input
                                                 type="radio"
                                                 name="calculateType"
-                                                defaultChecked={data?.calculateType || false}
-                                                onChange={e => onRadioHandler(e, setData)}
+                                                checked={btnRadioCalculate === 1}
+                                                onClick={e => setBtnRadioCalculate(Number(e.target.value))}
+                                                onChange={e => onRadioHandler(e, setData, true)}
                                                 value={1}
                                             />
                                             <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
@@ -891,7 +998,10 @@ const EditRoute = () => {
                                             </IconContext.Provider>
                                             <span className="ms-1">Использовать шаблон</span>
                                         </button>
-                                        <button type="reset">
+                                        <button
+                                            type="reset"
+                                            onClick={() => onReset()}
+                                        >
                                             <IconContext.Provider value={{className: "icon-15"}}>
                                                 <VscChromeClose/>
                                             </IconContext.Provider>
@@ -1309,6 +1419,7 @@ const EditRoute = () => {
                             </button>
                         </aside>
                         <CustomModal
+                            className='modal__savePattern'
                             isShow={showModalSave}
                             setIsShow={setShowModalSave}
                             centered={false}
@@ -1316,69 +1427,87 @@ const EditRoute = () => {
                             closeButton={true}
                         >
                             <div>
-                                <div>
-                                    <div>
-                                        <h3>Сохранить шаблон маршрута</h3>
-                                        <form className="fs-12">
-                                            <label className="mb-2">Название шаблона</label>
-                                            <input
-                                                type="text"
-                                                className="mb-3"
-                                                placeholder="Название"
-                                                style={{borderColor: valid.isInValidNameTemplate && 'red'}}
-                                                onChange={(e) => {
-                                                    setDataTemplate(prevState => ({
-                                                        ...prevState,
-                                                        templateName: e.target.value
-                                                    }))
-                                                    resetFieldVal(e, 'isInValidNameTemplate')
-                                                }}
-                                            />
-                                            {valid.isInValidNameTemplate &&
-                                                <span
-                                                    style={{color: valid.isInValidNameTemplate && 'red'}}
-                                                >
+                                {alertForSavePattern &&
+                                    <div className='d-flex justify-content-center'>
+                                        <Alert
+                                            show={isShowAlert}
+                                            className='end-0 m-0 p-2'
+                                            variant='success'
+                                        >
+                                            <span>Сохранено</span>
+                                        </Alert>
+                                    </div>
+                                }
+                                {alertForSavePattern === false &&
+                                    <div className='d-flex justify-content-center'><Alert
+                                        show={isShowAlert}
+                                        className='end-0 m-0 p-2'
+                                        variant='danger'
+                                    >
+                                        <span>Ошибка</span>
+                                    </Alert>
+                                    </div>
+                                }
+                                <h3>Сохранить шаблон маршрута</h3>
+                                <form className="fs-12">
+                                    <label className="mb-2">Название шаблона</label>
+                                    <input
+                                        type="text"
+                                        className="mb-3"
+                                        placeholder="Название"
+                                        style={{borderColor: valid.isInValidNameTemplate && 'red'}}
+                                        onChange={(e) => {
+                                            setDataTemplate(prevState => ({
+                                                ...prevState,
+                                                templateName: e.target.value
+                                            }))
+                                            resetFieldVal(e, 'isInValidNameTemplate')
+                                        }}
+                                    />
+                                    {valid.isInValidNameTemplate &&
+                                        <span
+                                            style={{color: valid.isInValidNameTemplate && 'red'}}
+                                        >
                                                     Введите название шаблона
                                                 </span>
-                                            }
-                                            <label className="mb-2">Примечание</label>
-                                            <input
-                                                type="text"
-                                                className="mb-3"
-                                                placeholder="Примечание"
-                                                onChange={e => setDataTemplate(prevState => ({
-                                                    ...prevState,
-                                                    note: e.target.value
-                                                }))}
-                                            />
-                                            <div className="row row-cols-sm-2 mt-4">
-                                                <div className="mb-3 mb-sm-0">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-1 w-100"
-                                                        onClick={() => setShowUseTemplate(false)}
-                                                    >
-                                                        Отмена
-                                                    </button>
-                                                </div>
-                                                <div>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-2 w-100"
-                                                        onClick={(e) => {
-                                                            saveTemplate()
-                                                        }}
-                                                    >
-                                                        Сохранить
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    }
+                                    <label className="mb-2">Примечание</label>
+                                    <input
+                                        type="text"
+                                        className="mb-3"
+                                        placeholder="Примечание"
+                                        onChange={e => setDataTemplate(prevState => ({
+                                            ...prevState,
+                                            note: e.target.value
+                                        }))}
+                                    />
+                                    <div className="row row-cols-sm-2 mt-4">
+                                        <div className="mb-3 mb-sm-0">
+                                            <button
+                                                type="button"
+                                                className="btn btn-1 w-100"
+                                                onClick={() => setShowUseTemplate(false)}
+                                            >
+                                                Отмена
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                type="button"
+                                                className="btn btn-2 w-100"
+                                                onClick={(e) => {
+                                                    saveTemplate()
+                                                }}
+                                            >
+                                                Сохранить
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </CustomModal>
                         <CustomModal
+                            className='modal__patternRoute'
                             isShow={showUseTemplate}
                             setIsShow={setShowUseTemplate}
                             centered={false}
@@ -1408,8 +1537,7 @@ const EditRoute = () => {
                                                                     loadingRadius: item?.route?.loadingRadius,
                                                                     toRoute: item?.route?.toRoute,
                                                                     unloadingRadius: item?.route?.unloadingRadius,
-                                                                    date: item?.route?.date,
-
+                                                                    dateForInput: item?.route?.date,
                                                                     dateDays: item?.route?.dateDays,
                                                                     dateType: item?.route?.dateType,
                                                                     datePeriodType: item?.route?.dateType,
@@ -1449,6 +1577,30 @@ const EditRoute = () => {
                                             className="btn btn-1 fs-12 mx-auto mt-4"
                                         >
                                             Закрыть
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </CustomModal>
+                        <CustomModal
+                            className='modal__routeErrorValid'
+                            isShow={showModalValidation}
+                            setIsShow={setShowModalValidation}
+                            closeButton={true}
+                            size={'lg'}
+                        >
+                            <div>
+                                <div className='text-center'>
+                                    <span className='fs-12'>
+                                        Для размещения объявления заполните все обязательные поля
+                                    </span>
+                                    <div className='mt-4'>
+                                        <button
+                                            className='btn btn-2 w-100 h-100 fs-11 text-uppercase px-3'
+                                            type='button'
+                                            onClick={() => setShowModalValidation(false)}
+                                        >
+                                            ПОНЯТНО
                                         </button>
                                     </div>
                                 </div>

@@ -117,44 +117,6 @@ export const Footer = () => {
         </div> */}
       </footer>
       {/* Modal */}
-      <div className="modal fade" id="report" tabIndex="-1" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-body">
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-              >
-                <IoCloseOutline />
-              </button>
-              <form>
-                <textarea
-                  placeholder="Опишите вашу жалобу"
-                  rows="3"
-                  className="mb-4"
-                ></textarea>
-                <div className="row row-cols-2">
-                  <div>
-                    <button
-                      type="button"
-                      data-bs-dismiss="modal"
-                      className="btn btn-1 w-100"
-                    >
-                      Отменить
-                    </button>
-                  </div>
-                  <div>
-                    <button type="button" className="btn btn-2 w-100">
-                      Подать жалобу
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div
         className="modal fade"
