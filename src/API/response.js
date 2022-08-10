@@ -36,7 +36,7 @@ const getIncomingsCargoResponses = (axiosPrivate, userId) => {
     }
 }
 
-const getOutgoingRouteResponses = (axiosPrivate, userId) => {
+const getOutgoingsRouteResponses = (axiosPrivate, userId) => {
     try {
         const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_ROUTE}/${userId}`)
         return response.data
@@ -45,7 +45,7 @@ const getOutgoingRouteResponses = (axiosPrivate, userId) => {
     }
 }
 
-const getOutgoingCargoResponses = (axiosPrivate, userId) => {
+const getOutgoingsCargoResponses = (axiosPrivate, userId) => {
     try {
         const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_CARGO}/${userId}`)
         return response.data
@@ -95,8 +95,8 @@ export {
     rejectResponse,
     getIncomingsRouteResponses,
     getIncomingsCargoResponses,
-    getOutgoingRouteResponses,
-    getOutgoingCargoResponses,
+    getOutgoingsRouteResponses,
+    getOutgoingsCargoResponses,
     getInProcessRouteResponses,
     getInProcessCargoResponses,
     getCompletedRouteResponses,
