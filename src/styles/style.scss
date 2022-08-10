@@ -3233,6 +3233,11 @@ footer {
       padding: 0 2.5em 2.5em 2.5em;
     }
   }
+  &__inUserProfile {
+    .modal-header {
+      display: none;
+    }
+  }
 }
 
 .offcanvas {

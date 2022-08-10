@@ -1,17 +1,31 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { IoShieldCheckmarkSharp } from 'react-icons/io5';
-import { MdModeEdit } from "react-icons/md";
+import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+import {IoShieldCheckmarkSharp} from 'react-icons/io5';
+import {MdModeEdit} from "react-icons/md";
+import {useSelector} from "react-redux";
+import {getUserInfo} from "../../API/profile";
 
 export default function UserProfile() {
+
+    const currentUser = useSelector(state => state.currentUser.data.user)
+    const [user, setUser] = useState({})
+
+    const uploadPhoto = () => user.avatar && `https://api.eritrans.ru/uploads/./${user.avatar}`
+
+    useEffect(() => {
+        getUserInfo(currentUser?.id)
+            .then(res => setUser(res.data.body))
+    }, [currentUser])
+
     return (
         <div className='box p-4 p-xl-5'>
-            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span className='green fs-15 me-2'>⟵</span> Назад</Link>
+            <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span
+                className='green fs-15 me-2'>⟵</span> Назад</Link>
             <h1 className='dark-blue text-center d-lg-none'>Мой профиль</h1>
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>
                     <div className='profile-picture mx-auto mb-4 mb-sm-5'>
-                        <img src="/img/users/no-photo.png" alt="ООО НТК"/>
+                        <img src={uploadPhoto() ?? "/img/users/no-photo.png"} alt="ООО НТК" style={{borderRadius: 50 + "%"}}/>
                     </div>
                 </div>
                 <div className='col-md-8'>
@@ -20,69 +34,74 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Тип аккаунта:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Грузовладелец-перевозчик</div>
-                        </div>
-                        
-                        {/* Только для юр лиц start */}
-                        <div className='col-sm-4 mb-1 mb-sm-0'>
-                            <div className='gray-2 title-font fw-5'>Название компании:</div>
-                        </div>
-                        <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>ООО НТК</div>
+                            <div>{user.roleForUser}</div>
                         </div>
 
-                        <div className='col-sm-4 mb-1 mb-sm-0'>
-                            <div className='gray-2 title-font fw-5'>ИНН:</div>
-                        </div>
-                        <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>027363360430</div>
-                        </div>
+                        {/* Только для юр лиц start */}
+                        {user.subject &&
+                            <>
+                                <div className='col-sm-4 mb-1 mb-sm-0'>
+                                    <div className='gray-2 title-font fw-5'>Название компании:</div>
+                                </div>
+                                <div className='col-sm-8 mb-3 mb-sm-0'>
+                                    <div>{user.companyName}</div>
+                                </div>
+
+                                <div className='col-sm-4 mb-1 mb-sm-0'>
+                                    <div className='gray-2 title-font fw-5'>ИНН:</div>
+                                </div>
+                                <div className='col-sm-8 mb-3 mb-sm-0'>
+                                    <div>{user.taxIdentificationNumber}</div>
+                                </div>
+                            </>
+                        }
                         {/* Только для юр лиц end */}
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Имя:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Эльвира</div>
+                            <div>{user.firstName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Фамилия:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Наумова</div>
+                            <div>{user.lastName}</div>
                         </div>
-                        
+
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Email:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Email@mail</div>
+                            <div>{user.email}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Телефон:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>+ 7 969 152 36 95</div>
+                            <div>{user.phone}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Город:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>Казань</div>
+                            <div>{user.city}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className='d-flex flex-column flex-md-row align-items-center justify-content-end title-font blue fs-12 fw-5 mt-3 mt-sm-5'>
+            <div
+                className='d-flex flex-column flex-md-row align-items-center justify-content-end title-font blue fs-12 fw-5 mt-3 mt-sm-5'>
                 <button type='button' className='d-flex align-items-center'>
-                    <IoShieldCheckmarkSharp />
+                    <IoShieldCheckmarkSharp/>
                     <span className='ms-2'>Подтвердить профиль</span>
                 </button>
                 <Link to="edit" className='d-flex align-items-center mt-3 mt-md-0 ms-md-5'>
-                    <MdModeEdit />  
+                    <MdModeEdit/>
                     <span className='ms-2'>Редактировать профиль</span>
                 </Link>
             </div>

@@ -3162,6 +3162,9 @@ footer .payment-methods img:not(:first-child) {
 .modal__routeErrorValid .modal-body {
   padding: 0 2.5em 2.5em 2.5em;
 }
+.modal__inUserProfile .modal-header {
+  display: none;
+}
 
 .offcanvas {
   z-index: 2000;
