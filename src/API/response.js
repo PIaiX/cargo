@@ -89,3 +89,16 @@ const getCompletedCargoResponses = (axiosPrivate, userId) => {
         console.log(error)
     }
 }
+
+export {
+    acceptResponse,
+    rejectResponse,
+    getIncomingsRouteResponses,
+    getIncomingsCargoResponses,
+    getOutgoingRouteResponses,
+    getOutgoingCargoResponses,
+    getInProcessRouteResponses,
+    getInProcessCargoResponses,
+    getCompletedRouteResponses,
+    getCompletedCargoResponses
+}
