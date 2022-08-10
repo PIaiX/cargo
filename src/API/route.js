@@ -30,7 +30,7 @@ export const getRoutePage = async (id,axiosPrivate) => {
     }
 }
 
-export const getUserRoutes = async (limit,page,userId, axiosPrivate) => {
+export const getUserRoutes = async (axiosPrivate, userId, page,limit ) => {
     try {
         const response = axiosPrivate.post(`${site}${apiRoutes.ROUTE_NOT_ARCHIVE}/${userId}`, {limit,page, orderBy:'desc'})
         return response

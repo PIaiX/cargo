@@ -38,3 +38,13 @@ export const getUserInfo = async (userId) => {
         console.log(error)
     }
 }
+
+export const reportUser = async (axiosPrivate, ids) =>{
+    try {
+        const response = await axiosPrivate.post(`${site}${apiRoutes.REPORT_USER}`, ids)
+        return response
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}

@@ -6,7 +6,7 @@ export default function UserContacts(props) {
     const [visible, setVisibility] = useState(false);
 
     const uploadPhoto = (img) => {
-        const site = 'https://api.eritrans.ru/upload'
+        const site = 'https://api.eritrans.ru/uploads/./'
         if(img === null) {
             return '/img/users/no-photo.png'
         } else {
@@ -24,8 +24,8 @@ export default function UserContacts(props) {
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">
                 <h4 className="text-left text-md-center mt-md-4 mb-2 mb-sm-3">
-                    <NavLink to={`/personal-account/view-profile/${props?.id}`}>
-                        {props.title}
+                    <NavLink to={`/view-profile/${props?.id}`}>
+                        {props?.subject ? props?.company : props.title}
                     </NavLink>
                 </h4>
                 {

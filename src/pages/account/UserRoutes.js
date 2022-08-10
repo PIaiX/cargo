@@ -34,7 +34,7 @@ const UserRoutes = () => {
     const [routeId, setRouteId] = useState(null)
 
     useEffect(() => {
-        getUserRoutes(routesPagination.pageLimit, routesPagination.currentPage, currentUser?.id, axiosPrivate)
+        getUserRoutes( axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
             .then(r => setRoutes(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
@@ -57,7 +57,7 @@ const UserRoutes = () => {
 
     const onDeleteRoute = (id) => {
         deleteRoute(id, axiosPrivate).then(() => {
-                if (tab === 'active') getUserRoutes(routesPagination.pageLimit, routesPagination.currentPage, currentUser?.id, axiosPrivate)
+                if (tab === 'active') getUserRoutes(axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
                     .then(r => setRoutes(prevState => ({
                         ...prevState,
                         data: r?.data?.body?.data,
@@ -92,7 +92,7 @@ const UserRoutes = () => {
                         isLoading: true
                     })))
                     .catch(error => console.log(error))
-                getUserRoutes(routesPagination.pageLimit, routesPagination.currentPage, currentUser?.id, axiosPrivate)
+                getUserRoutes(axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
                     .then(r => setRoutes(prevState => ({
                         ...prevState,
                         data: r?.data?.body?.data,

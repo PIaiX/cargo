@@ -27,6 +27,7 @@ import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 import EditRoute from "../pages/EditRoute";
+import ViewAccount from "../pages/account/ViewAccount";
 
 export default function AppRouter() {
 
@@ -68,7 +69,10 @@ const Wrapper = ({children}) => {
               <Route path=':id' element={<EditRoute/>}/>
             </Route>
             <Route path="my-topics" element={<ForumMyTopics />} />
-            <Route path="personal-account/*" element={<PersonalAccount />} />
+            <Route path='personal-account/*' element={<PersonalAccount/>}/>
+            <Route path='view-profile' element={<ViewAccount/>}>
+              <Route path=':id' element={<ViewAccount/>}/>
+            </Route>
             <Route path="document/:docID" element={<Document />} />
           </Route>
           <Route path="*" element={<NotFound />} />
