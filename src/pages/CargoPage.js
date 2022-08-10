@@ -17,7 +17,6 @@ import {IconContext} from "react-icons";
 import {Swiper} from 'swiper/react';
 import SwiperCore, {Navigation, Pagination} from 'swiper';
 import {useParams} from 'react-router-dom';
-import useAxiosPrivate from '../hooks/axiosPrivate';
 import {getCargo} from '../API/cargo';
 import {getDateUI, getTimeUI} from '../helpers/formatingDate';
 import {getRoute, icons} from '../helpers/cargo';
@@ -26,7 +25,6 @@ import Loader from '../components/Loader';
 SwiperCore.use([Navigation, Pagination]);
 
 export default function CargoPage() {
-    const axiosPrivate = useAxiosPrivate()
     const {id} = useParams()
     const [cargo, setCargo] = useState({
         isLoading: false,
@@ -40,13 +38,17 @@ export default function CargoPage() {
             .catch(error => setCargo(prev => ({...prev, isLoading: true, error})))
     }, [id])
 
+    useEffect(() => {
+        console.log(cargo)
+    }, [cargo])
+
     return (
         <main className="bg-white">
             {
                 cargo.isLoading
                     ? <section id="sec-8" className="container py-4 py-sm-5">
                         <div className="d-flex align-items-center justify-content-between mb-4 mb-sm-5">
-                            <h1 className="mb-0">Груз № {cargo?.item?.id} {getRoute(cargo?.item)}</h1>
+                            <h1 className="mb-0">Груз № {cargo?.item?.id} {getRoute(cargo?.item, true)}</h1>
                             <div className="dropdown d-block d-md-none">
                                 <button type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                         className="dropdown-toggle">
@@ -128,7 +130,7 @@ export default function CargoPage() {
                                                 </IconContext.Provider>
                                                 <span className="fw-5 me-2">Дата: </span>
                                                 <time>
-                                                    {getDateUI(item.date)}
+                                                    {item.date ? getDateUI(item.date) : 'не указано'}
                                                 </time>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
@@ -137,7 +139,7 @@ export default function CargoPage() {
                                                 </IconContext.Provider>
                                                 <span className="fw-5 me-2">Время загрузки: </span>
                                                 <time>
-                                                    {getTimeUI(item.timeFrom)} - {getTimeUI(item.timeTo)}
+                                                    {(item.timeFrom && item.timeTo) ? `${getTimeUI(item.timeFrom)} - ${getTimeUI(item.timeTo)}` : 'не указано'}
                                                 </time>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
@@ -145,7 +147,16 @@ export default function CargoPage() {
                                                     <IoLocationSharp/>
                                                 </IconContext.Provider>
                                                 <span className="fw-5 me-2">Место загрузки: </span>
-                                                <span>г. {item.town}, {item.address}</span>
+                                                <span>
+                                                    {(item.town && item.address)
+                                                        ? `г. ${item.town}, ${item.address}`
+                                                        : item.town
+                                                            ? `г. ${item.town}`
+                                                            : item.address
+                                                                ? item.address
+                                                                : 'не указано'
+                                                    }
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -166,24 +177,33 @@ export default function CargoPage() {
                                                 </IconContext.Provider>
                                                 <span className="fw-5 me-2">Дата: </span>
                                                 <time>
-                                                    {getDateUI(item.dateFrom)} - {getDateUI(item.dateTo)}
+                                                    {(item.dateFrom && item.dateTo) ? `${getDateUI(item.dateFrom)} - ${getDateUI(item.dateTo)}` : 'не указано'}
                                                 </time>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                                     <IoTimeOutline/>
                                                 </IconContext.Provider>
-                                                <span className="fw-5 me-2">Время загрузки: </span>
+                                                <span className="fw-5 me-2">Время разгрузки: </span>
                                                 <time>
-                                                    {getTimeUI(item.timeFrom)}-{getTimeUI(item.timeTo)}
+                                                    {(item.timeFrom && item.timeTo) ? `${getTimeUI(item.timeFrom)} - ${getTimeUI(item.timeTo)}` : 'не указано'}
                                                 </time>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <IconContext.Provider value={{className: "gray-4 icon me-2 me-sm-3"}}>
                                                     <IoLocationSharp/>
                                                 </IconContext.Provider>
-                                                <span className="fw-5 me-2">Место загрузки: </span>
-                                                <span>г. {item.town}, {item.address}</span>
+                                                <span className="fw-5 me-2">Место разгрузки: </span>
+                                                <span>
+                                                    {(item.town && item.address)
+                                                        ? `г. ${item.town}, ${item.address}`
+                                                        : item.town
+                                                            ? `г. ${item.town}`
+                                                            : item.address
+                                                                ? item.address
+                                                                : 'не указано'
+                                                    }
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -200,35 +220,38 @@ export default function CargoPage() {
                                         <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                                             <div className="d-flex flex-wrap align-items-center">
                                                 <span className="fw-5 me-2">Тип груза: </span>
-                                                <span>{item?.type?.name}</span>
+                                                <span>{item?.type?.name || 'не указано'}</span>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Объем: </span>
-                                                <span>{item?.capacity} м<sup>3</sup></span>
+                                                <span>{item.capacity || 'не указано'} м<sup>3</sup></span>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Вес: </span>
-                                                <span>{item?.weight} т</span>
+                                                <span>{item.weight || 'не указано'} т</span>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Габариты: </span>
-                                                <span>{item?.width}/{item?.height}/{item?.length} м</span>
+                                                <span>{(item.width && item.height && item.length) ? `${item?.width}/${item?.height}/${item?.length} м` : 'не указано'}</span>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Упаковка: </span>
-                                                <span>{item?.packageType} {item?.packageCount} шт</span>
+                                                <span>{(item.packageType && item.packageCount) ? `${item?.packageType} ${item?.packageCount} шт` : 'не указано'}</span>
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Особые пометки: </span>
-                                                {icons.map(i => {
-                                                    return (i.id === item.noteType) && <div
-                                                        key={i.id}
-                                                        className="d-flex align-items-center ms-1"
-                                                    >
-                                                        <span>{i.text}</span>
-                                                        {i.element && <div className="icon ms-1">{i.element}</div>}
-                                                    </div>
-                                                })}
+                                                {item.noteType
+                                                    ? icons.map(i => {
+                                                        return (i.id === item.noteType) && <div
+                                                            key={i.id}
+                                                            className="d-flex align-items-center ms-1"
+                                                        >
+                                                            <span>{i.text}</span>
+                                                            {i.element && <div className="icon ms-1">{i.element}</div>}
+                                                        </div>
+                                                    })
+                                                    : 'нет'
+                                                }
                                             </div>
                                             <div className="d-flex flex-wrap align-items-center mt-2 mt-sm-3">
                                                 <span className="fw-5 me-2">Требования к машине: </span>
