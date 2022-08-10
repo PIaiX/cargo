@@ -131,19 +131,22 @@ export default function Header() {
         <nav>
           <ul>
             <li>
-              <NavLink to="/">Главная</NavLink>
+              <NavLink to="/" onClick={() => setIsShowOffcanvas(false)}>Главная</NavLink>
             </li>
             <li>
-              <NavLink to="/search">Поиск</NavLink>
+              <NavLink to="/search" onClick={() => setIsShowOffcanvas(false)}>Поиск</NavLink>
             </li>
             <li>
-              <NavLink to="/forum">Форум</NavLink>
+              <NavLink to="/forum" onClick={() => setIsShowOffcanvas(false)}>Форум</NavLink>
             </li>
             <li>
-              <NavLink to="">Информация</NavLink>
+              <NavLink to="" onClick={() => setIsShowOffcanvas(false)}>Информация</NavLink>
             </li>
             <li>
-              <NavLink to="" onClick={() => setIsShowModal(true)}>
+              <NavLink to="" onClick={() => {
+                setIsShowOffcanvas(false)
+                setIsShowModal(true)
+              }}>
                 Задать вопрос
               </NavLink>
             </li>

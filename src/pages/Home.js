@@ -248,7 +248,7 @@ export default function Home() {
                                         <CargoCard
                                             id={item.id}
                                             title={item?.type?.name}
-                                            route={getRoute(item)}
+                                            route={getRoute(item, true)}
                                             notesType={getNotesType(item?.items)}
                                             capacity={getGeneralCapacity(item?.items)}
                                             weight={getGeneralWeight(item?.items)}
