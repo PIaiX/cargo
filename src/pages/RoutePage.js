@@ -59,7 +59,7 @@ export default function RoutePage() {
     }, [data])
 
     useEffect(() => {
-        searchRoute(1, 6, {onlyVerified: false, ...citys})
+       (citys?.toRoute?.length > 2 && citys?.fromRoute?.length > 2) && searchRoute(1, 6, {onlyVerified: false, ...citys})
             .then(res => setSearchRoutes(res?.data))
             .catch(error => console.log(error))
     }, [citys])
@@ -115,7 +115,6 @@ export default function RoutePage() {
         (currentUser && data?.route) &&setDataReport(prevState => ({...prevState, fromId: currentUser?.id, routeId: data?.route?.id}))
     }, [currentUser, data?.route?.id])
 
-    console.log(data)
     return (
         <main className="bg-white">
             <section id="sec-8" className="container py-4 py-sm-5">
@@ -167,6 +166,8 @@ export default function RoutePage() {
                             className="order-1 order-md-3 mb-4 mb-md-0"
                             img={data?.user?.avatar}
                             title={data?.user?.fullName}
+                            company={data?.user?.companyName}
+                            subject={data?.user?.subject}
                             contacts={[{phone: data?.user?.phone}]}
                             id={data?.user?.id}
                         />
