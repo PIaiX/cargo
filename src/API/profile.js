@@ -11,18 +11,28 @@ export const getAccountType = async () => {
     }
 }
 
-export const updateUserInfo = async (id, formData, axiosPrivate) => {
+export const updateUserInfo = async (axiosPrivate, id, formData, ) => {
     try {
-        const response = await axiosPrivate.patch(`${site}${apiRoutes.UPDATE_USER}/${id}`, formData)
+        const response = await axiosPrivate.patch(`${site}${apiRoutes.ACTIONS_USER}/${id}`, formData)
+        return response
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+export const deleteUserAvatar = async (axiosPrivate, id ) => {
+    try {
+        const response = await axiosPrivate.delete(`${site}${apiRoutes.DELETE_AVATAR}/${id}`)
         return response
     } catch (error) {
         console.log(error)
     }
 }
 
-export const deleteUserAvatar = async (id, axiosPrivate) => {
+export const getUserInfo = async (userId) => {
     try {
-        const response = await axiosPrivate.delete(`${site}${apiRoutes.DELETE_AVATAR}/${id}`)
+        const response = await axios.get(`${site}${apiRoutes.ACTIONS_USER}/${userId}`)
         return response
     } catch (error) {
         console.log(error)

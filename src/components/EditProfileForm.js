@@ -1,131 +1,153 @@
 import React, {useEffect, useState} from 'react';
 import ImageUploading from "react-images-uploading";
-import CustomSelect from "./utilities/CustomSelect";
-import ValidateWrapper from "./utilities/ValidateWrapper";
 import NumberFormat from "react-number-format";
-import {NavLink} from "react-router-dom";
-import {useForm} from "react-hook-form";
+import {NavLink, useNavigate} from "react-router-dom";
 import {deleteUserAvatar, getAccountType} from "../API/profile";
 import {updateUserInfo} from "../API/profile";
 import useAxiosPrivate from "../hooks/axiosPrivate";
 import {useSelector} from "react-redux";
+import AsyncSelect from "react-select/async";
+import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
+import CustomModal from "./utilities/CustomModal";
 
 const EditProfileForm = () => {
 
+    const navigate = useNavigate()
     const currentUser = useSelector(state => state.currentUser.data.user)
     const axiosPrivate = useAxiosPrivate()
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
-    const [entity, setEntity] = useState('entity');
+    const [selectAccType, setSelectAccType] = useState(null)
+    const [btnSubjectType, setBtnSubjectType] = useState(0)
     const [accType, setAccType] = useState({
         data: [],
-        arrayType: [],
+        forSelect: [],
     })
-    const [typeInitialForm, setTypeInitialForm] = useState(
-        {
+    const [data, setData] = useState({
+        avatar: '',
+        city: '',
+        companyName: '',
+        email: '',
+        firstName: '',
+        fullName: '',
+        lastName: '',
+        phone: '',
+        roleId: '',
+        subject: '',
+        taxIdentificationNumber: '',
+    })
 
-            nameOfCompany: '',
-            INN: '',
-            accTypeValue: '',
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            city: '',
-        }
-    )
-
+    useEffect(() => {
+        setData({
+            avatar: currentUser?.avatar,
+            city: currentUser?.city,
+            companyName: currentUser?.companyName,
+            email: currentUser?.email,
+            firstName: currentUser?.firstName,
+            fullName: currentUser?.fullName,
+            lastName: currentUser?.lastName,
+            phone: currentUser?.phone,
+            roleId: currentUser?.roleId,
+            subject: currentUser?.subject,
+            taxIdentificationNumber: currentUser?.taxIdentificationNumber,
+        })
+        setBtnSubjectType(Number(currentUser?.subject))
+        setSelectAccType({value: currentUser?.roleId, label: currentUser?.roleForUser})
+        setImages((currentUser?.avatar !== null || undefined) ? [{data_url: uploadPhoto()}] : [{data_url: '/img/users/no-photo.png'}])
+    }, [currentUser])
 
     useEffect(() => {
         getAccountType()
             .then(info => setAccType(prevState =>
-                ({...prevState, data: info, arrayType: info.map(i => i.name)})))
+                ({...prevState, data: info, forSelect: info.map(i => ({label: i.name, value: i.id}))})))
             .catch(error => console.log(error))
     }, [])
-
 
     const maxNumber = 1;
     const handleChange = e => {
         let val = e.target.value;
-        setEntity(val);
+        setBtnSubjectType(Number(val))
     };
 
     const onChange = (imageList, addUpdateIndex) => {
         setImages(imageList)
     };
-    
+
     useEffect(() => {
         (images?.length === 0) && setImages([{data_url: '/img/users/no-photo.png'}])
     }, [images?.length])
 
-    const {
-        register,
-        formState: {errors},
-        handleSubmit,
-    } = useForm({
-        mode: 'onSubmit',
-        reValidateMode: 'onSubmit',
-        defaultValues: {
-            ...typeInitialForm
-        }
-    })
+    const submitForm = (e) => {
+        e.preventDefault()
 
-    useEffect(() => {
-        (entity === 'entity')
-            ? setTypeInitialForm({
-                subject: true,
-                companyName: currentUser.companyName || '',
-                taxIdentificationNumber: currentUser.taxIdentificationNumber || '',
-                firstName: currentUser.firstName || '',
-                lastName: currentUser.lastName || '',
-                email: currentUser.email || '',
-                phone: currentUser.phone || '',
-                city: currentUser.city || '',
-            })
-            : setTypeInitialForm({
-                subject: false,
-                firstName: currentUser.firstName || '',
-                lastName: currentUser.lastName || '',
-                email: currentUser.email || '',
-                phone: currentUser.phone || '',
-                city: currentUser.city || '',
-            })
-    }, [entity, currentUser])
-
-    const submitForm = () => {
+        const avatar = images[0]?.file;
+        const req = {...data, avatar};
+        (avatar === undefined) && delete req?.avatar;
         const formData = new FormData()
-        const avatar = images[0]?.file
-        const request = (avatar === undefined) ? {...typeInitialForm} : {...typeInitialForm, avatar}
 
-        for (const key in request) {
-            formData.append(key, request[key])
+        for (const key in req) {
+            formData.append(key, req[key])
         }
-        try {
-           const response = updateUserInfo(37, formData, axiosPrivate)
-            console.log(response)
-        } catch (error) {
-            console.log(error)
-        }
+        updateUserInfo(axiosPrivate, currentUser?.id, formData, )
+                .then(() => {
+                    setShowCompleteFix({
+                        show: true,
+                        complete: true
+                    })
+                    setTimeout(() => {
+                        setShowCompleteFix({
+                            show: false,
+                            complete: null
+                        })
+                        navigate('/personal-account/profile')
+                    }, 1400)
+                })
+                .catch(() => {
+                    setShowCompleteFix({
+                        show: true,
+                        complete: false
+                    })
+                })
     }
 
+    useEffect(() => {
+        if (data?.subject === 0) {
+            delete data?.companyName
+            delete data?.taxIdentificationNumber
+        }
+    }, [data])
+
     const deleteAvatar = () => {
-        try{
-            const response = deleteUserAvatar(37, axiosPrivate)
-            console.log(response)
+        try {
+            deleteUserAvatar(axiosPrivate, currentUser?.id)
         } catch (error) {
             console.log(error)
         }
     }
 
     const uploadPhoto = () => {
-        return currentUser.avatar && `https://eritrans.ru/uploads/./${currentUser.avatar}`
+        return currentUser?.avatar && `https://api.eritrans.ru/uploads/./${currentUser.avatar}`
     }
 
-    console.log(typeInitialForm)
+    const loadOptions = async (searchKey) => {
+        const defaultValue = data?.roleId
+        setSelectAccType(accType?.forSelect?.find(item => item.value === defaultValue))
+
+        if (!searchKey) {
+            return await accType?.forSelect;
+        } else {
+            return await accType?.forSelect?.filter(item => item.label.includes(searchKey));
+        }
+    }
+
+    const [showCompleteFix, setShowCompleteFix] = useState({
+        show: false,
+        complete: null
+    })
 
     return (
         <form
             className="form-profile"
-            onSubmit={handleSubmit(submitForm)}
+            onSubmit={submitForm}
         >
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>
@@ -145,12 +167,11 @@ const EditProfileForm = () => {
                                   isDragging,
                                   dragProps,
                               }) => (
-                                // write your building UI
                                 <div className="upload__image-wrapper">
                                     <div className="imgs-box">
                                         {imageList.map((image, index) => (
                                             <div key={index} className="image-item">
-                                                <img src={uploadPhoto() || image['data_url']} alt="" width="100"/>
+                                                <img src={image['data_url']} alt="" width="100"/>
                                                 <div className="image-item__btn-wrapper">
                                                     <button
                                                         type="button"
@@ -189,37 +210,37 @@ const EditProfileForm = () => {
                 <div className='col-md-8'>
                     {currentUser &&
                         <fieldset className='row row-cols-xxl-2 g-3 g-sm-4 mb-4 mb-sm-5'>
-                        <div>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="entity"
-                                    value="individual"
-                                    defaultChecked={!currentUser.subject}
-                                    onChange={(e) => {
-                                        handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, subject: false}))
-                                    }}
-                                />
-                                <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Физическое лицо</span>
-                            </label>
-                        </div>
-                        <div>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="entity"
-                                    value="entity"
-                                    defaultChecked={currentUser.subject}
-                                    onChange={(e) => {
-                                        handleChange(e)
-                                        setTypeInitialForm(prevState => ({...prevState, subject: true}))
-                                    }}
-                                />
-                                <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Юридическое лицо</span>
-                            </label>
-                        </div>
-                    </fieldset>
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="subject"
+                                        value={0}
+                                        checked={btnSubjectType === 0}
+                                        onChange={(e) => {
+                                            onRadioHandler(e, setData, true)
+                                        }}
+                                        onClick={e => handleChange(e)}
+                                    />
+                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Физическое лицо</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="subject"
+                                        value={1}
+                                        checked={btnSubjectType === 1}
+                                        onChange={(e) => {
+                                            onRadioHandler(e, setData, true)
+                                        }}
+                                        onClick={e => handleChange(e)}
+                                    />
+                                    <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">Юридическое лицо</span>
+                                </label>
+                            </div>
+                        </fieldset>
                     }
 
                     <fieldset className='row g-sm-4 mb-sm-4'>
@@ -227,84 +248,52 @@ const EditProfileForm = () => {
                             <div className='gray-2 title-font fw-5 fs-12'>Тип аккаунта:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <CustomSelect
-                                className="inp w-100 fs-12"
-                                name="account-type"
-                                checkedOptions={[typeInitialForm?.accTypeText || currentUser.roleForUser]}
-                                options={accType?.arrayType}
-                                align="left"
-                                callback={({title, value}) => {
-                                    setTypeInitialForm(prevState => {
-                                        return {
-                                            ...prevState,
-                                            'accTypeText': title,
-                                            'roleId': value + 2
-                                        }
-                                    })
+                            <AsyncSelect
+                                className="fs-12 w-100"
+                                classNamePrefix="react-select"
+                                placeholder={"Выберите..."}
+                                loadOptions={loadOptions}
+                                defaultOptions={accType.forSelect}
+                                value={selectAccType && accType.forSelect?.find(item => item.value === selectAccType.value)}
+                                onChange={val => {
+                                    setSelectAccType({value: val.value, label: val.label})
+                                    setData(prevState => ({
+                                        ...prevState,
+                                        roleId: val.value
+                                    }))
                                 }}
                             />
                         </div>
                     </fieldset>
                     {
                         /* Только для юр лиц */
-                        (entity === 'entity') &&
+                        (btnSubjectType === 1) &&
                         <fieldset className='row g-sm-4 mb-sm-4'>
                             <div className='col-sm-4 mb-1 mb-sm-0'>
                                 <div className='gray-2 title-font fw-5 fs-12'>Название компании:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <ValidateWrapper error={errors?.companyName}>
-                                    <input
-                                        type="text"
-                                        className='fs-12'
-                                        placeholder='Название компании'
-                                        value={typeInitialForm?.companyName}
-                                        {...register('companyName', {
-                                            required: 'Поле обязательно к заполнению',
-                                            minLength: {
-                                                value: 1,
-                                                message: 'Минимальная длина 1 символ'
-                                            },
-                                            maxLength: {
-                                                value: 50,
-                                                message: "Максимальная длина 50 символов"
-                                            }
-                                        })}
-                                        onChange={(e) =>
-                                            setTypeInitialForm(prevState =>
-                                                ({...prevState, 'companyName': e.target.value}))
-                                        }
-                                    />
-                                </ValidateWrapper>
+                                <input
+                                    type="text"
+                                    className='fs-12'
+                                    name='companyName'
+                                    placeholder='Название компании'
+                                    value={data?.companyName}
+                                    onChange={e => onInputHandler(e, setData)}
+                                />
                             </div>
                             <div className='col-sm-4 mb-1 mb-sm-0'>
                                 <div className='gray-2 title-font fw-5 fs-12'>ИНН:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <ValidateWrapper error={errors?.taxIdentificationNumber}>
-                                    <input
-                                        type="number"
-                                        className='fs-12'
-                                        placeholder='ИНН'
-                                        value={typeInitialForm?.taxIdentificationNumber}
-                                        {...register('taxIdentificationNumber', {
-                                            required: 'Поле обязательно к заполнению',
-                                            minLength: {
-                                                value: 1,
-                                                message: 'Минимум 10 цифр'
-                                            },
-                                            maxLength: {
-                                                value: 10,
-                                                message: 'Максимум 10 цифр'
-                                            },
-
-                                        })}
-                                        onChange={(e) => {
-                                            setTypeInitialForm(prevState =>
-                                                ({...prevState, 'taxIdentificationNumber': e.target.value}))
-                                        }}
-                                    />
-                                </ValidateWrapper>
+                                <input
+                                    type="number"
+                                    className='fs-12'
+                                    placeholder='ИНН'
+                                    name='taxIdentificationNumber'
+                                    value={data?.taxIdentificationNumber}
+                                    onChange={e => onInputHandler(e, setData)}
+                                />
                             </div>
                         </fieldset>
                     }
@@ -313,100 +302,55 @@ const EditProfileForm = () => {
                             <div className='gray-2 title-font fw-5 fs-12'>Имя:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <ValidateWrapper error={errors?.firstName}>
-                                <input
-                                    type="text"
-                                    className='fs-12'
-                                    placeholder='Имя'
-                                    value={typeInitialForm?.firstName}
-                                    {...register('firstName', {
-                                        required: "Поле обязательно к заполнению",
-                                        minLength: {
-                                            value: 2,
-                                            message: 'Минимальная длина поля 2 символа'
-                                        },
-                                        maxLength: {
-                                            value: 50,
-                                            message: 'Максимальная длина поля 50 символов'
-                                        }
-                                    })}
-                                    onChange={(e) => {
-                                        setTypeInitialForm(prevState =>
-                                            ({...prevState, 'firstName': e.target.value})
-                                        )
-                                    }}
-                                />
-                            </ValidateWrapper>
+                            <input
+                                type="text"
+                                className='fs-12'
+                                placeholder='Имя'
+                                value={data?.firstName}
+                                onChange={e => onInputHandler(e, setData)}
+                            />
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5 fs-12'>Фамилия:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <ValidateWrapper error={errors?.lastName}>
-                                <input
-                                    type="text"
-                                    className='fs-12'
-                                    placeholder='Фамилия'
-                                    value={typeInitialForm?.lastName}
-                                    {...register('lastName', {
-                                        required: 'Поле обязательно к заполнению',
-                                        minLength: {
-                                            value: 1,
-                                            message: 'Минимальная длина поля 2 символа'
-                                        },
-                                        maxLength: {
-                                            value: 50,
-                                            message: 'Максимальная длина поля 50 символов'
-                                        }
-                                    })}
-                                    onChange={(e) => {
-                                        setTypeInitialForm(prevState => ({...prevState, 'lastName': e.target.value}))
-                                    }}
-                                />
-                            </ValidateWrapper>
+                            <input
+                                type="text"
+                                className='fs-12'
+                                placeholder='Фамилия'
+                                value={data?.lastName}
+                                onChange={e => onInputHandler(e, setData)}
+                            />
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5 fs-12'>Email:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <ValidateWrapper error={errors?.email}>
-                                <input
-                                    type="email"
-                                    className='fs-12'
-                                    placeholder='Email'
-                                    value={typeInitialForm?.email}
-                                    {...register('email', {
-                                        required: 'Поле обязательно к заполнению',
-                                        pattern: {
-                                            value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                            message: 'укажите правильный формат электронной почты'
-                                        }
-                                    })}
-                                    onChange={(e) => {
-                                        setTypeInitialForm(prevState => ({...prevState, 'email': e.target.value}))
-                                    }}
-                                />
-                            </ValidateWrapper>
+                            <input
+                                type="email"
+                                className='fs-12'
+                                placeholder='Email'
+                                value={data?.email}
+                                onChange={e => onInputHandler(e, setData)}
+                            />
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5 fs-12'>Телефон:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <ValidateWrapper error={errors?.phone}>
-                                <NumberFormat
-                                    placeholder="Телефон"
-                                    format="+7##########"
-                                    className='fs-12'
-                                    value={typeInitialForm?.phone}
-                                    onValueChange={(values) => {
-                                        const {formattedValue, value} = values
-                                        setTypeInitialForm(prevState => ({...prevState, 'phone': formattedValue}))
-                                    }}
-                                />
-                            </ValidateWrapper>
+                            <NumberFormat
+                                placeholder="Телефон"
+                                format="+7##########"
+                                className='fs-12'
+                                value={data?.phone}
+                                onValueChange={(values) => {
+                                    const {formattedValue, value} = values
+                                    setData(prevState => ({...prevState, phone: formattedValue}))
+                                }}
+                            />
                             <div className='fs-08 gray-4'>Этот номер будет виден другим пользователям сайта</div>
                         </div>
 
@@ -414,28 +358,13 @@ const EditProfileForm = () => {
                             <div className='gray-2 title-font fw-5 fs-12'>Город:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <ValidateWrapper error={errors?.city}>
-                                <input
-                                    type="text"
-                                    className='fs-12'
-                                    placeholder='Город'
-                                    value={typeInitialForm?.city}
-                                    {...register('city', {
-                                        required: 'Поле обязательно для заполнения',
-                                        minLength: {
-                                            value: 2,
-                                            message: 'Минимум 2 символа'
-                                        },
-                                        maxLength: {
-                                            value: 50,
-                                            message: 'Максимум 50 символов'
-                                        }
-                                    })}
-                                    onChange={(e) => {
-                                        setTypeInitialForm(prevState => ({...prevState, 'city': e.target.value}))
-                                    }}
-                                />
-                            </ValidateWrapper>
+                            <input
+                                type="text"
+                                className='fs-12'
+                                placeholder='Город'
+                                value={data?.city}
+                                onChange={e => onInputHandler(e, setData)}
+                            />
                         </div>
                     </fieldset>
 
@@ -456,6 +385,24 @@ const EditProfileForm = () => {
                     </div>
                 </div>
             </div>
+            <CustomModal
+                className='modal__inUserProfile'
+                isShow={showCompleteFix.show}
+                setIsShow={setShowCompleteFix}
+                closeButton={false}
+                size={'sm'}
+            >
+                {showCompleteFix.complete === true &&
+                    <div className='text-center'>
+                        <span className='fs-12'>Изменения успешно применены переход на страницу профиля</span>
+                    </div>
+                }
+                {showCompleteFix.complete === false &&
+                    <div className='text-center'>
+                        <span  className='fs-12'>Введены не верные данные или произошла ошибка</span>
+                    </div>
+                }
+            </CustomModal>
         </form>
     );
 };

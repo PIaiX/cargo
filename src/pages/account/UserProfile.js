@@ -3,13 +3,20 @@ import {Link} from 'react-router-dom';
 import {IoShieldCheckmarkSharp} from 'react-icons/io5';
 import {MdModeEdit} from "react-icons/md";
 import {useSelector} from "react-redux";
+import {getUserInfo} from "../../API/profile";
 
 export default function UserProfile() {
+
     const currentUser = useSelector(state => state.currentUser.data.user)
-    console.log(currentUser)
-    const uploadPhoto = () => {
-       return currentUser.avatar && `https://eritrans.ru/uploads/./${currentUser.avatar}`
-    }
+    const [user, setUser] = useState({})
+
+    const uploadPhoto = () => user.avatar && `https://api.eritrans.ru/uploads/./${user.avatar}`
+
+    useEffect(() => {
+        getUserInfo(currentUser?.id)
+            .then(res => setUser(res.data.body))
+    }, [currentUser])
+
     return (
         <div className='box p-4 p-xl-5'>
             <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span
@@ -27,24 +34,24 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Тип аккаунта:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.roleForUser}</div>
+                            <div>{user.roleForUser}</div>
                         </div>
 
                         {/* Только для юр лиц start */}
-                        {currentUser.subject &&
+                        {user.subject &&
                             <>
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>Название компании:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>{currentUser.companyName}</div>
+                                    <div>{user.companyName}</div>
                                 </div>
 
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>ИНН:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>{currentUser.taxIdentificationNumber}</div>
+                                    <div>{user.taxIdentificationNumber}</div>
                                 </div>
                             </>
                         }
@@ -54,35 +61,35 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Имя:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.firstName}</div>
+                            <div>{user.firstName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Фамилия:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.lastName}</div>
+                            <div>{user.lastName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Email:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.email}</div>
+                            <div>{user.email}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Телефон:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.phone}</div>
+                            <div>{user.phone}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Город:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{currentUser.city}</div>
+                            <div>{user.city}</div>
                         </div>
                     </div>
                 </div>

@@ -10,6 +10,8 @@ export default {
     
     // user
     ACCOUNT_TYPES: "/user/accountTypes",
+    ACTIONS_USER: "/user",
+    DELETE_AVATAR: "/user/deleteAvatar",
     
     // news
     NEWS: "/news",
@@ -53,5 +55,5 @@ export default {
     // reports
     REPORT_ROUTE: '/report/route',
     REPORT_CARGO: '/report/cargo',
-    REPORT_USER: '/report/user'
+    REPORT_USER: '/report/user',
 }
