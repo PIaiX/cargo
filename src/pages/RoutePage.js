@@ -167,6 +167,8 @@ export default function RoutePage() {
                             className="order-1 order-md-3 mb-4 mb-md-0"
                             img={data?.user?.avatar}
                             title={data?.user?.fullName}
+                            company={data?.user?.companyName}
+                            subject={data?.user?.subject}
                             contacts={[{phone: data?.user?.phone}]}
                             id={data?.user?.id}
                         />
