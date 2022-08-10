@@ -145,7 +145,7 @@ const UserRoutes = () => {
             </div>
             {tab === "active" &&
                 <>
-                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
+                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4 d-flex justify-content-center">
                         {routes.isLoading
                             ? routes?.data?.length
                                 ? routes?.data.map((i, index) => (

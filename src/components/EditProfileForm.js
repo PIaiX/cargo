@@ -144,6 +144,8 @@ const EditProfileForm = () => {
         complete: null
     })
 
+    console.log(data)
+
     return (
         <form
             className="form-profile"
@@ -306,6 +308,7 @@ const EditProfileForm = () => {
                                 type="text"
                                 className='fs-12'
                                 placeholder='Имя'
+                                name='firstName'
                                 value={data?.firstName}
                                 onChange={e => onInputHandler(e, setData)}
                             />
@@ -319,6 +322,7 @@ const EditProfileForm = () => {
                                 type="text"
                                 className='fs-12'
                                 placeholder='Фамилия'
+                                name='lastName'
                                 value={data?.lastName}
                                 onChange={e => onInputHandler(e, setData)}
                             />
@@ -332,6 +336,7 @@ const EditProfileForm = () => {
                                 type="email"
                                 className='fs-12'
                                 placeholder='Email'
+                                name='email'
                                 value={data?.email}
                                 onChange={e => onInputHandler(e, setData)}
                             />
@@ -345,6 +350,7 @@ const EditProfileForm = () => {
                                 placeholder="Телефон"
                                 format="+7##########"
                                 className='fs-12'
+                                name='phone'
                                 value={data?.phone}
                                 onValueChange={(values) => {
                                     const {formattedValue, value} = values
@@ -362,6 +368,7 @@ const EditProfileForm = () => {
                                 type="text"
                                 className='fs-12'
                                 placeholder='Город'
+                                name='city'
                                 value={data?.city}
                                 onChange={e => onInputHandler(e, setData)}
                             />
