@@ -1,89 +1,89 @@
 import apiRoutes from "./config/apiRoutes";
 
-const acceptResponse = (axiosPrivate, id) => {
+const acceptResponse = async (axiosPrivate, id) => {
     try {
-        const response = axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACTIONS}/${id}`)
+        const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACTIONS}/${id}`)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const rejectResponse = (axiosPrivate, id) => {
+const rejectResponse = async (axiosPrivate, id) => {
     try {
-        const response = axiosPrivate.delete(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACTIONS}/${id}`)
+        const response = await axiosPrivate.delete(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACTIONS}/${id}`)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getIncomingsRouteResponses = (axiosPrivate, userId) => {
+const getIncomingsRouteResponses = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INCOMINGS_ROUTE}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INCOMINGS_ROUTE}/${userId}`, {page, limit})
+        return response.data.body
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getIncomingsCargoResponses = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INCOMINGS_CARGO}/${userId}`, {page, limit})
+        return response.data.body
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getOutgoingsRouteResponses = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_ROUTE}/${userId}`, {page, limit})
+        return response.data.body
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getOutgoingsCargoResponses = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_CARGO}/${userId}`, {page, limit})
+        return response.data.body
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getInProcessRouteResponses = async (axiosPrivate, userId) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_ROUTE}/${userId}`)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getIncomingsCargoResponses = (axiosPrivate, userId) => {
+const getInProcessCargoResponses = async (axiosPrivate, userId) => {
     try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INCOMINGS_CARGO}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_CARGO}/${userId}`)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getOutgoingsRouteResponses = (axiosPrivate, userId) => {
+const getCompletedRouteResponses = async (axiosPrivate, userId) => {
     try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_ROUTE}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_COMPLETED_ROUTE}/${userId}`)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getOutgoingsCargoResponses = (axiosPrivate, userId) => {
+const getCompletedCargoResponses = async (axiosPrivate, userId) => {
     try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_OUTGOINGS_CARGO}/${userId}`)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const getInProcessRouteResponses = (axiosPrivate, userId) => {
-    try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_ROUTE}/${userId}`)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const getInProcessCargoResponses = (axiosPrivate, userId) => {
-    try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_CARGO}/${userId}`)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const getCompletedRouteResponses = (axiosPrivate, userId) => {
-    try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_COMPLETED_ROUTE}/${userId}`)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const getCompletedCargoResponses = (axiosPrivate, userId) => {
-    try {
-        const response = axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_COMPLETED_CARGO}/${userId}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_COMPLETED_CARGO}/${userId}`)
         return response.data
     } catch (error) {
         console.log(error)

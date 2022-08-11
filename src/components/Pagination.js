@@ -77,8 +77,8 @@ export default function Pagination(
         setStartingPage(1);
     };
 
-    return (
-        <nav className={className ?? ''}>
+    return itemsAmount
+        ? <nav className={className ?? ''}>
             <ul className="pagination">
                 <li className="page-item" onClick={handleSelectPrevPage}>
                     <div
@@ -160,5 +160,5 @@ export default function Pagination(
                 </li>
             </ul>
         </nav>
-    );
+        : null
 }

@@ -49,8 +49,8 @@ export default {
     UPDATE_NAME_TEMP: '/template',
 
     // response
-    RESPONSE_INCOMINGS_ROUTE: '/response/incomings/route',
-    RESPONSE_INCOMINGS_CARGO: '/response/incomings/cargo',
+    RESPONSE_INCOMINGS_ROUTE: '/response/incumings/route',
+    RESPONSE_INCOMINGS_CARGO: '/response/incumings/cargo',
     RESPONSE_OUTGOINGS_ROUTE: '/response/outgoings/route',
     RESPONSE_OUTGOINGS_CARGO: '/response/outgoings/cargo',
     RESPONSE_INPROCESS_ROUTE: '/response/inProcess/route',
