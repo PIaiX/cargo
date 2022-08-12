@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {NavLink, Link} from "react-router-dom";
 import {IconContext} from "react-icons";
 import {MdMenu} from "react-icons/md";
@@ -19,12 +19,22 @@ export default function Header() {
 
     const {
         register,
-        formState: {errors},
-        handleSubmit
+        formState: {isSubmitSuccessful,errors},
+        handleSubmit,
+        reset
     } = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
     })
+
+    useEffect(() => {
+        reset({
+            name: '',
+            email:'',
+            description: ''
+        })
+        setIsShowModal(false)
+    }, [isSubmitSuccessful])
 
     return (
         <>
