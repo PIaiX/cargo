@@ -65,4 +65,7 @@ export default {
     REPORT_ROUTE: '/report/route',
     REPORT_CARGO: '/report/cargo',
     REPORT_USER: '/report/user',
+
+    //question
+    QUESTION_ASK: '/question'
 }
