@@ -148,10 +148,23 @@ export default function Responses() {
         idDelete && rejectResponse(axiosPrivate, idDelete)
             .then(() => {
                 setTimeout(() => {
-                    sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    (subTab === 'cargo' && tab === 'active') && sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
                 }, 300)
                 setTimeout(() => {
-                    sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    (subTab === 'route' && tab === 'active') && sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+            })
+            .catch()
+    }, [idDelete])
+
+    useEffect(() => {
+        idDelete && rejectResponse(axiosPrivate, idDelete)
+            .then(() => {
+                setTimeout(() => {
+                    (subTab === 'cargo' && tab === 'archive') && sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+                setTimeout(() => {
+                    (subTab === 'route' && tab === 'archive') && sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
                 }, 300)
             })
             .catch()
