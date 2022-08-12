@@ -1,6 +1,5 @@
-import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
-import { useLayoutEffect } from "react";
+import React, {useLayoutEffect} from "react";
+import {Route, Routes, useLocation} from "react-router-dom";
 import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -22,62 +21,66 @@ import ResetPassword2 from "../pages/ResetPassword2";
 import Forum from "../pages/Forum";
 import PersonalAccount from "../pages/account/PersonalAccount";
 import Document from "../pages/account/Document";
-import ForumMyTopics from "../pages/ForumMyTopics";
+import ForumMyTopics from "../components/ForumMyTopics";
 import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 import EditRoute from "../pages/EditRoute";
 import ViewAccount from "../pages/account/ViewAccount";
+import ForumTopics from '../components/ForumTopics';
 
 export default function AppRouter() {
 
-const Wrapper = ({children}) => {
+    const Wrapper = ({children}) => {
         const {pathname} = useLocation();
         useLayoutEffect(() => document.documentElement.scrollTo(0, 0), [pathname]);
         return children
-} 
-  return (
-    <Wrapper>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-            {/* Роуты доступные всем пользователям */}
-          <Route index element={<Home />} />
-          <Route path="search" element={<Search />} />
-          <Route path="cargo-page/:id" element={<CargoPage />} />
-          <Route path="all-news" element={<AllNews />} />
-          <Route path="news/:slug" element={<ArticleFull />} />
-          <Route path="forum" element={<Forum />} />
-          <Route path="forum-section/:id" element={<ForumTopicChat />} />
-            {/* Роуты доступные не зареганным пользователям */}
-          <Route element={<AuthRoutes />}>
-            <Route path="login" element={<Login />} />
-            <Route path="registration" element={<Registration />} />
-            <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="reset-password-2" element={<ResetPassword2 />} />
-          </Route>
-            {/* Роуты доступные только зареганным пользователям */}
-          <Route element={<ProtectedRoutes />}>
-            <Route path="route-page" element={<RoutePage />}>
-              <Route path=':id' element={<RoutePage/>}/>
-            </Route>
-            <Route path="add-cargo" element={<AddCargo />} />
-            <Route path="add-car" element={<AddCar />} />
-            <Route path="add-route" element={<AddRoute />} />
-            <Route path="edit-car/:id" element={<EditCar />} />
-            <Route path="edit-cargo/:id" element={<EditCargo />} />
-            <Route path="edit-route" element={<EditRoute/>}>
-              <Route path=':id' element={<EditRoute/>}/>
-            </Route>
-            <Route path="my-topics" element={<ForumMyTopics />} />
-            <Route path='personal-account/*' element={<PersonalAccount/>}/>
-            <Route path='view-profile' element={<ViewAccount/>}>
-              <Route path=':id' element={<ViewAccount/>}/>
-            </Route>
-            <Route path="document/:docID" element={<Document />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </Wrapper>
-  )
+    }
+    return (
+        <Wrapper>
+            <Routes>
+                <Route path="/" element={<Layout/>}>
+                    {/* Роуты доступные всем пользователям */}
+                    <Route index element={<Home/>}/>
+                    <Route path="search" element={<Search/>}/>
+                    <Route path="cargo-page/:id" element={<CargoPage/>}/>
+                    <Route path="all-news" element={<AllNews/>}/>
+                    <Route path="news/:slug" element={<ArticleFull/>}/>
+                    <Route path="forum" element={<Forum/>}>
+                        <Route index element={<ForumTopics/>}/>
+                        <Route path="my-topics" element={<ForumTopics/>}/>
+                    </Route>
+                    <Route path="forum-section/:id" element={<ForumTopicChat/>}/>
+                    {/* Роуты доступные не зареганным пользователям */}
+                    <Route element={<AuthRoutes/>}>
+                        <Route path="login" element={<Login/>}/>
+                        <Route path="registration" element={<Registration/>}/>
+                        <Route path="reset-password" element={<ResetPassword/>}/>
+                        <Route path="reset-password-2" element={<ResetPassword2/>}/>
+                    </Route>
+                    {/* Роуты доступные только зареганным пользователям */}
+                    <Route element={<ProtectedRoutes/>}>
+                        <Route path="route-page" element={<RoutePage/>}>
+                            <Route path=':id' element={<RoutePage/>}/>
+                        </Route>
+                        <Route path="add-cargo" element={<AddCargo/>}/>
+                        <Route path="add-car" element={<AddCar/>}/>
+                        <Route path="add-route" element={<AddRoute/>}/>
+                        <Route path="edit-car/:id" element={<EditCar/>}/>
+                        <Route path="edit-cargo/:id" element={<EditCargo/>}/>
+                        <Route path="edit-route" element={<EditRoute/>}>
+                            <Route path=':id' element={<EditRoute/>}/>
+                        </Route>
+                        {/*<Route path="my-topics" element={<ForumMyTopics />} />*/}
+                        <Route path='personal-account/*' element={<PersonalAccount/>}/>
+                        <Route path='view-profile' element={<ViewAccount/>}>
+                            <Route path=':id' element={<ViewAccount/>}/>
+                        </Route>
+                        <Route path="document/:docID" element={<Document/>}/>
+                    </Route>
+                    <Route path="*" element={<NotFound/>}/>
+                </Route>
+            </Routes>
+        </Wrapper>
+    )
 }

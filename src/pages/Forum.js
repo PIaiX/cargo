@@ -1,41 +1,79 @@
-import React, {useState, useEffect} from "react";
-import {Link, NavLink} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
 import ForumWidget from "../components/ForumWidget";
-import ForumSection from "../components/ForumSection";
-import CustomSelect from "../components/utilities/CustomSelect";
 import {IconContext} from "react-icons";
-import {
-    IoSearch,
-    IoAddCircleSharp,
-} from "react-icons/io5";
-import {BsFillInfoSquareFill, BsFillChatRightTextFill} from "react-icons/bs";
-import fakeForumSections from "../dummyData/forumSections.json";
-import Pagination from "../components/Pagination";
+import {IoAddCircleSharp, IoSearch,} from "react-icons/io5";
+import {BsFillChatRightTextFill, BsFillInfoSquareFill} from "react-icons/bs";
 import CustomModal from '../components/utilities/CustomModal';
 import usePagination from '../hooks/pagination';
-import useSearchInput from '../hooks/searchInput';
+import {getStatistics, paginateUserTopics, searchTopics} from '../API/topic';
+import Loader from '../components/Loader';
+import useDebounce from '../hooks/debounce';
+import useAxiosPrivate from '../hooks/axiosPrivate';
+import {useSelector} from 'react-redux';
 
 const initialPageLimit = 10;
 
 export default function Forum() {
-    const { pageLimit, setPageLimit, currentPage, setCurrentPage, startingPage, setStartingPage} = usePagination(initialPageLimit)
-    const [itemsAmount, setItemsAmount] = useState(fakeForumSections.length || 0)
-    const [forumSections, setForumSections] = useState([]);
+    const axiosPrivate = useAxiosPrivate()
+    const userId = useSelector(state => state?.currentUser?.data?.user?.id)
+    const {pathname} = useLocation()
+    const [search, setSearch] = useState('')
+    const debouncedSearch = useDebounce(search, 300)
     const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
-    const {searchValue, setSearchValue, foundItems} = useSearchInput(fakeForumSections, 'title')
-
-    //Make API call in the future, fetching actual forum data
+    const topicsPagination = usePagination(initialPageLimit)
+    const [shownItems, setShownItems] = useState([])
+    const [topics, setTopics] = useState({
+        isLoading: false,
+        error: null,
+        meta: null,
+        items: []
+    })
+    const [userTopics, setUserTopics] = useState({
+        isLoading: false,
+        error: null,
+        meta: null,
+        items: []
+    })
+    const [statistic, setStatistic] = useState({
+        isLoading: false,
+        error: null,
+        item: null
+    })
 
     useEffect(() => {
+        const value = debouncedSearch && debouncedSearch.trim()
 
-        const startIdx = (currentPage - 1) * pageLimit;
-        const endIdx = startIdx + pageLimit;
-        const paginated = foundItems.slice(startIdx, endIdx);
+        if (pathname === '/forum') setShownItems(topics)
+        if (value && (pathname === '/forum/my-topics')) setShownItems(topics)
+        if (!value && (pathname === '/forum/my-topics')) setShownItems(userTopics)
+    }, [pathname, topics, userTopics, debouncedSearch])
 
-        setForumSections(paginated);
-        setItemsAmount(foundItems.length)
+    useEffect(() => topicsPagination.setCurrentPage(1), [pathname, debouncedSearch])
 
-    }, [currentPage, pageLimit, foundItems]);
+    useEffect(() => {
+        getStatistics()
+            .then(result => setStatistic(prev => ({...prev, isLoading: true, item: result})))
+            .catch(error => setStatistic(prev => ({...prev, isLoading: true, error})))
+    }, [])
+
+    useEffect(() => {
+        searchTopics(topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch)
+            .then(result => setTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
+            .catch(error => setTopics(prev => ({...prev, isLoading: true, error})))
+    }, [topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch])
+
+    useEffect(() => {
+        userId && paginateUserTopics(axiosPrivate, userId, topicsPagination.currentPage, topicsPagination.pageLimit)
+            .then(result => setUserTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
+            .catch(error => setUserTopics(prev => ({...prev, isLoading: true, error})))
+    }, [topicsPagination.currentPage, topicsPagination.pageLimit, userId])
+
+    // useEffect(() => debouncedSearch && debouncedSearch.trim() && setShownItems(topics), [debouncedSearch])
+
+    useEffect(() => {
+        console.log('ut', userTopics)
+    }, [userTopics])
 
     return (
         <main className="bg-white py-4 py-sm-5">
@@ -52,13 +90,13 @@ export default function Forum() {
 
                 <div className="row flex-lg-row-reverse">
                     <div className="col-lg-3">
-                        <NavLink to="/my-topics" className="d-flex justify-content-end align-items-center mb-3 fs-12">
+                        <NavLink to="my-topics" className="d-flex justify-content-end align-items-center mb-3 fs-12">
                             <IconContext.Provider
                                 value={{className: "icon-10 blue", title: "Мои темы"}}
                             >
                                 <BsFillChatRightTextFill/>
                             </IconContext.Provider>
-                            <span className="ms-2 blue">Мои темы (2)</span>
+                            <span className="ms-2 blue">Мои темы ({userTopics?.items?.length || 0})</span>
                         </NavLink>
 
                         <button
@@ -78,11 +116,10 @@ export default function Forum() {
                             <input
                                 type="search"
                                 placeholder="Поиск по форуму"
-                                value={searchValue}
+                                value={search}
                                 onChange={e => {
-                                    setSearchValue(e.target.value)
-                                    setStartingPage(1)
-                                    setCurrentPage(1)
+                                    setSearch(e.target.value)
+                                    topicsPagination.setCurrentPage(1)
                                 }}
                             />
                             <button>
@@ -93,90 +130,46 @@ export default function Forum() {
                                 </IconContext.Provider>
                             </button>
                         </form>
-                        <h5 className="d-none d-lg-block mb-1">Статистика портала</h5>
-                        <div className="stat d-none d-lg-block title-font p-3 mb-4">
-                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
-                                <div className="gray-3 fw-4 me-4">Темы:</div>
-                                <div className="fw-5">213</div>
-                            </div>
-                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
-                                <div className="gray-3 me-4">Сообщения:</div>
-                                <div className="fw-5">12 213</div>
-                            </div>
-                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
-                                <div className="gray-3 me-4">Пользователи:</div>
-                                <div className="fw-5">813</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <div className="gray-3 me-4">Новая тема:</div>
-                                <div className="fw-5 flex-1 text-truncate blue">
-                                    Название темы Название темы Название темы
-                                </div>
-                            </div>
-                        </div>
+                        {statistic.isLoading
+                            ? statistic.item
+                                ? <>
+                                    <h5 className="d-none d-lg-block mb-1">Статистика портала</h5>
+                                    <div className="stat d-none d-lg-block title-font p-3 mb-4">
+                                        {statistic?.item?.topicCount && (
+                                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                                <div className="gray-3 fw-4 me-4">Темы:</div>
+                                                <div className="fw-5">{statistic.item.topicCount}</div>
+                                            </div>
+                                        )}
+                                        {statistic?.item?.messagesCount && (
+                                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                                <div className="gray-3 me-4">Сообщения:</div>
+                                                <div className="fw-5">{statistic.item.messagesCount}</div>
+                                            </div>
+                                        )}
+                                        {statistic?.item?.usersWithTopics && (
+                                            <div className="d-flex justify-content-between mb-2 mb-xl-3">
+                                                <div className="gray-3 me-4">Пользователи:</div>
+                                                <div className="fw-5">{statistic.item.usersWithTopics}</div>
+                                            </div>
+                                        )}
+                                        {statistic?.item?.lastTopicTitle && (
+                                            <div className="d-flex justify-content-between">
+                                                <div className="gray-3 me-4">Новая тема:</div>
+                                                <div className="fw-5 flex-1 text-truncate blue">
+                                                    {statistic.item.lastTopicTitle}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                                : <div className="p-5"></div>
+                            : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
+                        }
                         <ForumWidget className="d-none d-lg-block"/>
                     </div>
-                    <div className="col-lg-9">
-                        <div className="d-flex justify-content-end mb-3">
-                            <Pagination
-                                // Количество тем на странице
-                                pageLimit={pageLimit}
-                                // Текущая страница
-                                currentPage={currentPage}
-                                setCurrentPage={setCurrentPage}
-                                // Лимит отображаемых страниц при 3 будет 123...6 при 6 будет 123456
-                                pagesDisplayedLimit={3}
-                                // Длинна массива тем
-                                itemsAmount={itemsAmount}
-                                // Стартовая страница
-                                startingPage={startingPage}
-                                setStartingPage={setStartingPage}
-                            />
-                        </div>
-                        <div className="forum-header">
-                            <div className="icon"/>
-                            <div className="text">Название темы</div>
-                            <div className="messages">Сообщений</div>
-                            <div className="latest">Последнее сообщение</div>
-                        </div>
-                        {
-                            forumSections.map((section) => (
-                                <ForumSection
-                                    key={section.id}
-                                    id={section.id}
-                                    title={section.title}
-                                    info={section.info}
-                                    topics={section.topics}
-                                    messages={section.messages}
-                                    latest={section.latest}
-                                />
-                            ))
-                        }
-                        <div className="d-flex align-items-center justify-content-between mt-4">
-                            <Pagination
-                                callback={pages => !(pages.includes(currentPage)) && setCurrentPage(startingPage)}
-                                pageLimit={pageLimit}
-                                currentPage={currentPage}
-                                setCurrentPage={setCurrentPage}
-                                pagesDisplayedLimit={3}
-                                itemsAmount={itemsAmount}
-                                startingPage={startingPage}
-                                setStartingPage={setStartingPage}
-                            />
-                            <div className="d-flex align-items-center">
-                                <span className="d-none d-sm-block me-2">показать</span>
-                                <CustomSelect
-                                    className="inp"
-                                    name="items-count"
-                                    options={['10', '15', '20']}
-                                    checkedOptions={[`${pageLimit}`]}
-                                    callback={({title}) => setPageLimit(+title)}
-                                    align="right"
-                                />
-                                <span className="ms-2 d-none d-md-block">тем на странице</span>
-                            </div>
-                        </div>
-                    </div>
+                    {/* ForumTopics */}
+                    <Outlet context={[shownItems, topicsPagination]}/>
                 </div>
                 <div className="row">
                     <div className="col-lg-9">

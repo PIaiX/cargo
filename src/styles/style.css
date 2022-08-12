@@ -3800,4 +3800,10 @@ footer .payment-methods img:not(:first-child) {
   z-index: 100;
 }
 
+.forum-widget__date {
+  color: #01BFC4;
+  font-size: 1.1em;
+  line-height: normal;
+}
+
 /*# sourceMappingURL=style.css.map */
