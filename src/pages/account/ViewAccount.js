@@ -13,7 +13,6 @@ import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from "../.
 import CargoCard from "../../components/CargoCard";
 import Loader from "../../components/Loader";
 import {useSelector} from "react-redux";
-import CustomModal from "../../components/utilities/CustomModal";
 import {Alert} from "react-bootstrap";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -56,7 +55,7 @@ export default function ViewAccount() {
         if (img === null) {
             return '/img/users/no-photo.png'
         } else {
-            return `${site}${img}`
+            return img && `${site}${img}`
         }
     }
 
@@ -72,7 +71,7 @@ export default function ViewAccount() {
                 {alertReport.complete &&
                     <Alert
                         show={alertReport.show}
-                        className='position-absolute m-0 p-2 alertreportuser'
+                        className='position-absolute m-0 p-2 alert-report-user'
                         variant='success'
                     >
                         <span>Жалоба отправлена</span>
@@ -81,7 +80,7 @@ export default function ViewAccount() {
                 {alertReport.complete === false &&
                     <Alert
                         show={alertReport.show}
-                        className='position-absolute m-0 p-2 alertreportuser'
+                        className='position-absolute m-0 p-2 alert-report-user'
                         variant='danger'
                     >
                         <span>Жалоба отправлена</span>

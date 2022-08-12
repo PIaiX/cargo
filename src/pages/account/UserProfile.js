@@ -8,14 +8,8 @@ import {getUserInfo} from "../../API/profile";
 export default function UserProfile() {
 
     const currentUser = useSelector(state => state.currentUser.data.user)
-    const [user, setUser] = useState({})
 
-    const uploadPhoto = () => user.avatar && `https://api.eritrans.ru/uploads/./${user.avatar}`
-
-    useEffect(() => {
-        getUserInfo(currentUser?.id)
-            .then(res => setUser(res.data.body))
-    }, [currentUser])
+    const uploadPhoto = () => currentUser.avatar && `https://api.eritrans.ru/uploads/./${currentUser.avatar}`
 
     return (
         <div className='box p-4 p-xl-5'>
@@ -34,24 +28,24 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Тип аккаунта:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.roleForUser}</div>
+                            <div>{currentUser.roleForUser}</div>
                         </div>
 
                         {/* Только для юр лиц start */}
-                        {user.subject &&
+                        {currentUser.subject &&
                             <>
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>Название компании:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>{user.companyName}</div>
+                                    <div>{currentUser.companyName}</div>
                                 </div>
 
                                 <div className='col-sm-4 mb-1 mb-sm-0'>
                                     <div className='gray-2 title-font fw-5'>ИНН:</div>
                                 </div>
                                 <div className='col-sm-8 mb-3 mb-sm-0'>
-                                    <div>{user.taxIdentificationNumber}</div>
+                                    <div>{currentUser.taxIdentificationNumber}</div>
                                 </div>
                             </>
                         }
@@ -61,35 +55,35 @@ export default function UserProfile() {
                             <div className='gray-2 title-font fw-5'>Имя:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.firstName}</div>
+                            <div>{currentUser.firstName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Фамилия:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.lastName}</div>
+                            <div>{currentUser.lastName}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Email:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.email}</div>
+                            <div>{currentUser.email}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Телефон:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.phone}</div>
+                            <div>{currentUser.phone}</div>
                         </div>
 
                         <div className='col-sm-4 mb-1 mb-sm-0'>
                             <div className='gray-2 title-font fw-5'>Город:</div>
                         </div>
                         <div className='col-sm-8 mb-3 mb-sm-0'>
-                            <div>{user.city}</div>
+                            <div>{currentUser.city}</div>
                         </div>
                     </div>
                 </div>

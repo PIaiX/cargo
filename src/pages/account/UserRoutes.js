@@ -128,7 +128,7 @@ const UserRoutes = () => {
                         className={tab === "active" ? "active tab-btn" : "tab-btn"}
                         onClick={() => setTab("active")}
                     >
-                        {`Активные объявления (${routes?.meta?.total})`}
+                        {`Активные объявления (${routes?.meta?.total ? routes.meta.total : '0'})`}
                     </button>
                     <button
                         type="button"
@@ -139,13 +139,13 @@ const UserRoutes = () => {
                         }
                         onClick={() => setTab("archive")}
                     >
-                        Архив ({archiveRoutes?.meta?.total})
+                        {`Архив (${archiveRoutes?.meta?.total ? archiveRoutes.meta.total : '0'})`}
                     </button>
                 </div>
             </div>
             {tab === "active" &&
                 <>
-                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4 d-flex justify-content-center">
+                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
                         {routes.isLoading
                             ? routes?.data?.length
                                 ? routes?.data.map((i, index) => (
@@ -161,7 +161,7 @@ const UserRoutes = () => {
                                             notes="cold"
                                             carType={i.carBodyType?.name}
                                             dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}
-                                            date={(i.dateType === false) ? "постоянно" : 'единожды'}
+                                            date={i.dateType? "постоянно" : 'единожды'}
                                             url={`/route-page/${i.id}`}
                                             profileView='active'
                                             callbackForDelete={(id) => {
@@ -177,7 +177,7 @@ const UserRoutes = () => {
                                     </div>
                                 ))
                                 : <h6 className='text-center w-100 p-5'>У вас пока нет маршрутов</h6>
-                            : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
+                            : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
                     {(routes?.data?.length > 0) && (
@@ -228,7 +228,7 @@ const UserRoutes = () => {
                                     </div>
                                 ))
                                 : <h6 className='text-center w-100 p-5'>У вас пока нет маршрутов</h6>
-                            : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
+                            : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
                     {(archiveRoutes?.data?.length > 0) && (
