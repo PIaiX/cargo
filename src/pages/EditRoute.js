@@ -59,8 +59,8 @@ const EditRoute = () => {
             unloadingRadius: curRoute?.unloadingRadius,
             dateForInput: curRoute?.date,
             dateDays: curRoute?.dateDays,
-            dateType: curRoute?.dateType,
-            datePeriodType: curRoute?.dateType,
+            dateType: Number(curRoute?.dateType),
+            datePeriodType: curRoute?.datePeriodType,
             bargainType: curRoute?.bargainType,
             calculateType: curRoute?.calculateType,
             vatPrice: curRoute?.vatPrice,
@@ -123,7 +123,7 @@ const EditRoute = () => {
             setValid({...valid, isInValidFirstName: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
@@ -193,7 +193,7 @@ const EditRoute = () => {
             setValid({...valid, isInValidNameTemplate: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
@@ -286,6 +286,10 @@ const EditRoute = () => {
     const currentDate = () => {
         return new Date().toISOString().slice(0, 10)
     }
+
+    useEffect(() => {
+        (data?.date === 'Invalid Date') && delete data?.date
+    }, [data?.date])
 
     const [showModalValidation, setShowModalValidation] = useState(false)
 
@@ -1300,25 +1304,22 @@ const EditRoute = () => {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={(data?.dateType !== undefined) ? "filled" : ""}
+                                            className={((data?.dateType !== undefined) && (data?.date || data?.datePeriodType)) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>
                                         <div className="fs-09">
-                                            {data?.dateType === 0
+                                            {data?.dateType
                                                 ?
                                                 <>
-                                                    <span className="me-1">Единожды:</span>
-                                                    <span className="me-1">{data?.date}</span>
-                                                    <span>+ {data?.days} дней</span>
+                                                    <span>Постоянно: {(data?.datePeriodType === 0) && "по рабочим дням"}{data?.datePeriodType === 1 && 'ежедневно'}{data?.datePeriodType === 2 && "через день"}</span>
                                                 </>
                                                 :
                                                 <>
-                                                    <span>Постоянно</span>
-                                                    {data?.loadingPeriodType === '0' && <span> По рабочим дням</span>}
-                                                    {data?.loadingPeriodType === '1' && <span> По выходным</span>}
-                                                    {data?.loadingPeriodType === '2' && <span> Ежедневно</span>}
-                                                    {data?.loadingPeriodType === '3' && <span> Через день</span>}
+                                                    <span className="me-1">Единожды:</span>
+                                                    <span
+                                                        className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
+                                                    <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
                                                 </>
                                             }
                                         </div>
@@ -1538,7 +1539,7 @@ const EditRoute = () => {
                                                                     unloadingRadius: item?.route?.unloadingRadius,
                                                                     dateForInput: item?.route?.date,
                                                                     dateDays: item?.route?.dateDays,
-                                                                    dateType: item?.route?.dateType,
+                                                                    dateType: Number(item?.route?.dateType),
                                                                     datePeriodType: item?.route?.dateType,
                                                                     bargainType: item?.route?.bargainType,
                                                                     calculateType: item?.route?.calculateType,

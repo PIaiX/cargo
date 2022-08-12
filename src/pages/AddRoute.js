@@ -274,6 +274,10 @@ export default function AddRoute() {
     }
 
     useEffect(() => {
+        (data?.date === 'Invalid Date') && delete data?.date
+    }, [data?.date])
+
+    useEffect(() => {
         getDate(data?.dateForInput)
     }, [data?.dateForInput])
 
@@ -1231,21 +1235,23 @@ export default function AddRoute() {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={(data?.dateType !== undefined) ? "filled" : ""}
+                                            className={((data?.dateType !== undefined) && (data?.date || data?.datePeriodType)) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>
                                         <div className="fs-09">
-                                            {data?.dateType === 0
+                                            {data?.dateType
                                                 ?
                                                 <>
-                                                    <span className="me-1">Единожды:</span>
-                                                    <span
-                                                        className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
-                                                    <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
+                                                    <span>Постоянно: {(data?.datePeriodType === 0) && "по рабочим дням"}{data?.datePeriodType === 1 && 'ежедневно'}{data?.datePeriodType === 2 && "через день"}</span>
                                                 </>
                                                 :
-                                                <span>Постоянно {data?.datePeriodTypeForUser}</span>
+                                                <>
+                                                <span className="me-1">Единожды:</span>
+                                                <span
+                                                className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
+                                                <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
+                                                </>
                                             }
                                         </div>
                                     </li>
@@ -1472,7 +1478,7 @@ export default function AddRoute() {
                                                         carId: item?.route?.carId,
                                                         carName: item?.route?.car?.name,
                                                         dateDays: item?.route?.dateDays,
-                                                        dateType: item?.route?.dateType,
+                                                        dateType: Number(item?.route?.dateType),
                                                         datePeriodType: +item?.route?.datePeriodType,
                                                         datePeriodTypeForUser: item?.route?.datePeriodTypeForUser,
                                                         bargainType: item?.route?.bargainType,
