@@ -210,10 +210,6 @@ export default function InWork() {
         }
     }, [tab, subTabs, forMeCargosInProcess.meta.total, forMeRoutesInProcess.meta.total, forMeRoutesComplete.meta.total, forMeCargosComplete.meta.total])
 
-
-
-    console.log(paginationItemsAmount)
-    console.log(inWorkPag)
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
             <Link
