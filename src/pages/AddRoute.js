@@ -163,7 +163,7 @@ export default function AddRoute() {
             setValid({...valid, isInValidNameTemplate: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {

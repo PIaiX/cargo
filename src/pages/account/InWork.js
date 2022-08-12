@@ -16,7 +16,7 @@ import {useSelector} from "react-redux";
 import {Tab, Tabs} from "react-bootstrap";
 import Loader from "../../components/Loader";
 
-const initialPageLimit = 1;
+const initialPageLimit = 6;
 
 export default function InWork() {
 
@@ -188,23 +188,29 @@ export default function InWork() {
     }, [idDelete])
 
     useEffect(() => {
-        if (subTabs === 'cargo' && tab === 'active') {
+        if ((subTabs === 'cargo') && (tab === 'active')) {
             setPaginationItemsAmount(forMeCargosInProcess.meta.total || 0)
             inWorkPag.setCurrentPage(1)
+            inWorkPag.setStartingPage(1)
         }
-        if (subTabs === 'route' && tab === 'active') {
+        if ((subTabs === 'route') && (tab === 'active')) {
             setPaginationItemsAmount(forMeRoutesInProcess.meta.total || 0)
             inWorkPag.setCurrentPage(1)
+            inWorkPag.setStartingPage(1)
         }
-        if (subTabs === 'cargo' && tab === 'archive') {
+        if ((subTabs === 'cargo') && (tab === 'archive')) {
             setPaginationItemsAmount(forMeCargosComplete.meta.total || 0)
             inWorkPag.setCurrentPage(1)
+            inWorkPag.setStartingPage(1)
         }
-        if (subTabs === 'route' && tab === 'archive') {
+        if((subTabs === 'route') && (tab === 'archive')) {
             setPaginationItemsAmount(forMeRoutesComplete.meta.total || 0)
             inWorkPag.setCurrentPage(1)
+            inWorkPag.setStartingPage(1)
         }
-    }, [tab, subTabs, forMeCargosInProcess.meta.total, forMeRoutesInProcess.meta.total, forMeCargosComplete.meta.total, forMeRoutesComplete.meta.total])
+    }, [tab, subTabs, forMeCargosInProcess.meta.total, forMeRoutesInProcess.meta.total, forMeRoutesComplete.meta.total, forMeCargosComplete.meta.total])
+
+
 
     console.log(paginationItemsAmount)
     console.log(inWorkPag)
@@ -254,8 +260,11 @@ export default function InWork() {
                 >
                     {
                         currentUser?.roleId !== 3 &&
-                        <Tab eventKey="cargo"
-                             title={`Грузы (${forMeCargosInProcess?.meta?.total ? forMeCargosInProcess?.meta?.total : '0'})`}>
+                        <Tab
+                            eventKey="cargo"
+                            title={`Грузы (${forMeCargosInProcess?.meta?.total ? forMeCargosInProcess?.meta?.total : '0'})`}
+
+                        >
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeCargosInProcess.isLoading
                                     ? forMeCargosInProcess.data.length
@@ -284,8 +293,11 @@ export default function InWork() {
                     }
                     {
                         currentUser?.roleId !== 2 &&
-                        <Tab eventKey="route"
-                             title={`Маршруты (${forMeRoutesInProcess?.meta?.total ? forMeRoutesInProcess?.meta?.total : '0'})`}>
+                        <Tab
+                            eventKey="route"
+                            title={`Маршруты (${forMeRoutesInProcess?.meta?.total ? forMeRoutesInProcess?.meta?.total : '0'})`}
+                            onClick={() => inWorkPag.setCurrentPage(1)}
+                        >
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeRoutesInProcess.isLoading
                                     ? forMeRoutesInProcess.data.length
@@ -294,6 +306,7 @@ export default function InWork() {
                                                 <ResponseCard
                                                     inWork={true}
                                                     id={cargo.id}
+                                                    userId={cargo.user.id}
                                                     type={cargo.status}
                                                     name={cargo.user.fullName}
                                                     company={cargo.companyName}
@@ -331,6 +344,7 @@ export default function InWork() {
                                                 <ResponseCard
                                                     inWork={true}
                                                     id={route.id}
+                                                    userId={route.user.id}
                                                     type={route.status}
                                                     name={route.user.fullName}
                                                     company={route.companyName}
@@ -356,6 +370,7 @@ export default function InWork() {
                                                 <ResponseCard
                                                     inWork={true}
                                                     id={cargo.id}
+                                                    userId={cargo.user.id}
                                                     type={cargo.status}
                                                     name={cargo.user.fullName}
                                                     company={cargo.companyName}

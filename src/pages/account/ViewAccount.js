@@ -13,7 +13,6 @@ import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from "../.
 import CargoCard from "../../components/CargoCard";
 import Loader from "../../components/Loader";
 import {useSelector} from "react-redux";
-import CustomModal from "../../components/utilities/CustomModal";
 import {Alert} from "react-bootstrap";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -56,7 +55,7 @@ export default function ViewAccount() {
         if (img === null) {
             return '/img/users/no-photo.png'
         } else {
-            return `${site}${img}`
+            return img && `${site}${img}`
         }
     }
 
@@ -72,7 +71,7 @@ export default function ViewAccount() {
                 {alertReport.complete &&
                     <Alert
                         show={alertReport.show}
-                        className='position-absolute m-0 p-2 alertreportuser'
+                        className='position-absolute m-0 p-2 alert-report-user'
                         variant='success'
                     >
                         <span>Жалоба отправлена</span>
@@ -81,7 +80,7 @@ export default function ViewAccount() {
                 {alertReport.complete === false &&
                     <Alert
                         show={alertReport.show}
-                        className='position-absolute m-0 p-2 alertreportuser'
+                        className='position-absolute m-0 p-2 alert-report-user'
                         variant='danger'
                     >
                         <span>Жалоба отправлена</span>
@@ -186,7 +185,7 @@ export default function ViewAccount() {
                 <h4 className='text-center text-uppercase mb-2 mb-sm-3 mb-lg-4'>объявления Пользователя</h4>
                 <div className='position-relative mb-4 mb-lg-5'>
                     {(routes?.isLoading || cargos?.isLoading) ?
-                        (routes?.routes.length > 0 || cargos?.cargos.length > 0) ?
+                        (routes?.routes?.length > 0 || cargos?.cargos?.length > 0) ?
                             <Swiper className="swiper-4"
                                     spaceBetween={4}
                                     slidesPerView={2}

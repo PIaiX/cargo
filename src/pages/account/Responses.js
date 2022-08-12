@@ -16,7 +16,7 @@ import {
 import Loader from '../../components/Loader';
 import Pagination from '../../components/Pagination';
 
-const initialPageLimit = 1;
+const initialPageLimit = 6;
 
 export default function Responses() {
     const axiosPrivate = useAxiosPrivate()
@@ -124,7 +124,7 @@ export default function Responses() {
 
     useEffect(() => {
         responsesPagination.setCurrentPage(1)
-
+        responsesPagination.setStartingPage(1)
         if ((tab === 'active') && (subTab === 'cargo')) setPaginationItemsAmount(incomingsCargoResponses?.meta?.total || 0)
         if ((tab === 'active') && (subTab === 'route')) setPaginationItemsAmount(incomingsRouteResponses?.meta?.total || 0)
         if ((tab === 'archive') && (subTab === 'cargo')) setPaginationItemsAmount(outgoingsCargoResponses?.meta?.total || 0)

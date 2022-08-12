@@ -130,7 +130,6 @@ const EditRoute = () => {
                     delete data?.datePeriodType
                 }
                 const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
-                console.log(response)
             } catch (error) {
                 console.log(error)
             }
