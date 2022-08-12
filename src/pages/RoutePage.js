@@ -91,8 +91,6 @@ export default function RoutePage() {
             })
     }
 
-    console.log(data)
-
     useEffect(() => {
         alertResponse.alertShow && setTimeout(() => setAlertResponse(prevState => ({
             ...prevState,

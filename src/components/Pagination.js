@@ -77,11 +77,6 @@ export default function Pagination(
         setStartingPage(1);
     };
 
-    console.log(pageLimit,
-        currentPage,
-        itemsAmount,
-        startingPage)
-
     return itemsAmount
         ? <nav className={className ?? ''}>
             <ul className="pagination">

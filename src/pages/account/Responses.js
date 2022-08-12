@@ -53,11 +53,6 @@ export default function Responses() {
         items: []
     })
 
-    console.log(incomingsCargoResponses)
-    console.log(incomingsRouteResponses)
-    console.log(outgoingsRouteResponses)
-    console.log(outgoingsCargoResponses)
-
     const sendIncomingsCargoRequest = (page, limit) => {
         getIncomingsCargoResponses(axiosPrivate, userId, page, limit)
             .then(result => setIncomingsCargoResponses(prev => ({
