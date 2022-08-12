@@ -185,7 +185,7 @@ export default function ViewAccount() {
                 <h4 className='text-center text-uppercase mb-2 mb-sm-3 mb-lg-4'>объявления Пользователя</h4>
                 <div className='position-relative mb-4 mb-lg-5'>
                     {(routes?.isLoading || cargos?.isLoading) ?
-                        (routes?.routes.length > 0 || cargos?.cargos.length > 0) ?
+                        (routes?.routes?.length > 0 || cargos?.cargos?.length > 0) ?
                             <Swiper className="swiper-4"
                                     spaceBetween={4}
                                     slidesPerView={2}

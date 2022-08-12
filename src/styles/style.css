@@ -1097,9 +1097,6 @@ main.bg-gray {
     padding: 0.75em;
   }
 }
-.card-mini__wrapper {
-  height: 100%;
-}
 .card-mini .title {
   white-space: nowrap;
   overflow: hidden;
