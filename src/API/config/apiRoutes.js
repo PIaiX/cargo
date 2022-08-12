@@ -58,6 +58,8 @@ export default {
     RESPONSE_COMPLETED_ROUTE: '/response/completed/route',
     RESPONSE_COMPLETED_CARGO: '/response/completed/cargo',
     RESPONSE_ACTIONS: '/response',
+    RESPONSE_ACCEPT: '/response/accept',
+    RESPONSE_COMPLETE: '/response/complete',
 
     // reports
     REPORT_ROUTE: '/report/route',

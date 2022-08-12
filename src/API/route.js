@@ -117,15 +117,6 @@ export const getCountRoutes = async () => {
     }
 }
 
-export const acceptResponse = async (axiosPrivate, routeId) => {
-    try {
-        const response = axiosPrivate.patch(`${site}${apiRoutes.ACCEPT_RESPONSE}/${routeId}`)
-        return response
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 export const reportRoute = async (axiosPrivate, payloads) => {
     try {
         return axiosPrivate.post(`${site}${apiRoutes.REPORT_ROUTE}`, payloads)

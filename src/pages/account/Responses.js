@@ -6,15 +6,17 @@ import {useSelector} from 'react-redux';
 import useAxiosPrivate from '../../hooks/axiosPrivate';
 import usePagination from '../../hooks/pagination';
 import {
+    acceptResponse,
+    completeResponse,
     getIncomingsCargoResponses,
     getIncomingsRouteResponses,
     getOutgoingsCargoResponses,
-    getOutgoingsRouteResponses
+    getOutgoingsRouteResponses, rejectResponse
 } from '../../API/response';
 import Loader from '../../components/Loader';
 import Pagination from '../../components/Pagination';
 
-const initialPageLimit = 6;
+const initialPageLimit = 1;
 
 export default function Responses() {
     const axiosPrivate = useAxiosPrivate()
@@ -24,6 +26,8 @@ export default function Responses() {
     const [subTab, setSubTab] = useState('cargo')
     const responsesPagination = usePagination(initialPageLimit)
     const [paginationItemsAmount, setPaginationItemsAmount] = useState(0)
+    const [idComplete, setIdComplete] = useState(null)
+    const [idDelete, setIdDelete] = useState(null)
     const [incomingsCargoResponses, setIncomingsCargoResponses] = useState({
         isLoading: false,
         error: null,
@@ -49,13 +53,18 @@ export default function Responses() {
         items: []
     })
 
+    console.log(incomingsCargoResponses)
+    console.log(incomingsRouteResponses)
+    console.log(outgoingsRouteResponses)
+    console.log(outgoingsCargoResponses)
+
     const sendIncomingsCargoRequest = (page, limit) => {
         getIncomingsCargoResponses(axiosPrivate, userId, page, limit)
             .then(result => setIncomingsCargoResponses(prev => ({
                 ...prev,
                 isLoading: true,
-                meta: result?.meta,
-                items: result?.data
+                meta: result?.body?.meta,
+                items: result?.body?.data
             })))
             .catch(error => setIncomingsCargoResponses(prev => ({...prev, isLoading: true, error})))
     }
@@ -65,8 +74,8 @@ export default function Responses() {
             .then(result => setIncomingsRouteResponses(prev => ({
                 ...prev,
                 isLoading: true,
-                meta: result?.meta,
-                items: result?.data
+                meta: result?.body?.meta,
+                items: result?.body?.data
             })))
             .catch(error => setIncomingsRouteResponses(prev => ({...prev, isLoading: true, error})))
     }
@@ -76,8 +85,8 @@ export default function Responses() {
             .then(result => setOutgoingsCargoResponses(prev => ({
                 ...prev,
                 isLoading: true,
-                meta: result?.meta,
-                items: result?.data
+                meta: result?.body?.meta,
+                items: result?.body?.data
             })))
             .catch(error => setOutgoingsCargoResponses(prev => ({...prev, isLoading: true, error})))
     }
@@ -87,8 +96,8 @@ export default function Responses() {
             .then(result => setOutgoingsRouteResponses(prev => ({
                 ...prev,
                 isLoading: true,
-                meta: result?.meta,
-                items: result?.data
+                meta: result?.body?.meta,
+                items: result?.body?.data
             })))
             .catch(error => setOutgoingsRouteResponses(prev => ({...prev, isLoading: true, error})))
     }
@@ -98,7 +107,18 @@ export default function Responses() {
         sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
         sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
         sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
-    }, [userId, responsesPagination.currentPage, responsesPagination.pageLimit])
+    }, [])
+    
+    useEffect(() => {
+        (subTab === 'cargo' && tab === 'active' && incomingsCargoResponses.isLoading) &&
+            sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (subTab === 'route' && tab === 'active' && incomingsCargoResponses.isLoading) &&
+            sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (subTab === 'cargo' && tab === 'archive') &&
+            sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (subTab === 'route' && tab === 'archive') &&
+            sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+    }, [responsesPagination.currentPage, responsesPagination.pageLimit])
 
     useEffect(() => setSubTab(() => ((roleId === 3) && 'route') || 'cargo'), [roleId])
 
@@ -109,11 +129,33 @@ export default function Responses() {
         if ((tab === 'active') && (subTab === 'route')) setPaginationItemsAmount(incomingsRouteResponses?.meta?.total || 0)
         if ((tab === 'archive') && (subTab === 'cargo')) setPaginationItemsAmount(outgoingsCargoResponses?.meta?.total || 0)
         if ((tab === 'archive') && (subTab === 'route')) setPaginationItemsAmount(outgoingsRouteResponses?.meta?.total || 0)
-    }, [tab, subTab])
+    }, [tab, subTab, incomingsCargoResponses?.meta?.total, incomingsRouteResponses?.meta?.total, outgoingsCargoResponses?.meta?.total, outgoingsRouteResponses?.meta?.total])
 
     useEffect(() => {
-        console.log(incomingsCargoResponses)
-    }, [incomingsCargoResponses])
+        idComplete && acceptResponse(axiosPrivate, idComplete)
+            .then(() => {
+                setTimeout(() => {
+                    sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+                setTimeout(() => {
+                    sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+            })
+            .catch()
+    }, [idComplete])
+
+    useEffect(() => {
+        idDelete && rejectResponse(axiosPrivate, idDelete)
+            .then(() => {
+                setTimeout(() => {
+                    sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+                setTimeout(() => {
+                    sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                }, 300)
+            })
+            .catch()
+    }, [idDelete])
 
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
@@ -130,7 +172,11 @@ export default function Responses() {
                     className={tab === "active" ? "active tab-btn" : "tab-btn"}
                     onClick={() => setTab("active")}
                 >
-                    Мне откликнулись ({incomingsCargoResponses?.meta?.total + incomingsRouteResponses?.meta?.total})
+                    {roleId === 2 ? `Мне откликнулись (${incomingsCargoResponses?.meta?.total ? incomingsCargoResponses?.meta?.total : '0'})` : ''}
+                    {roleId === 3 ? `Мне откликнулись (${incomingsRouteResponses?.meta?.total ? incomingsRouteResponses?.meta?.total : '0'})` : ''}
+                    {roleId === 4 ? `Мне откликнулись (${(incomingsRouteResponses?.meta?.total && incomingsCargoResponses?.meta?.total)
+                        ? incomingsRouteResponses?.meta?.total + incomingsCargoResponses?.meta?.total
+                        : (incomingsRouteResponses?.meta?.total || incomingsCargoResponses?.meta?.total)})` : ''}
                 </button>
                 <button
                     type="button"
@@ -141,16 +187,21 @@ export default function Responses() {
                     }
                     onClick={() => setTab("archive")}
                 >
-                    Вы откликнулись ({outgoingsCargoResponses?.meta?.total + outgoingsRouteResponses?.meta?.total})
+                    {roleId === 2 ? `Вы откликнулись (${outgoingsCargoResponses?.meta?.total ? outgoingsCargoResponses?.meta?.total : '0'})` : ''}
+                    {roleId === 3 ? `Вы откликнулись (${outgoingsRouteResponses?.meta?.total ? outgoingsRouteResponses?.meta?.total : '0'})` : ''}
+                    {roleId === 4 ? `Вы откликнулись (${(outgoingsRouteResponses?.meta?.total && outgoingsCargoResponses?.meta?.total)
+                        ? outgoingsRouteResponses?.meta?.total + outgoingsCargoResponses?.meta?.total
+                        : (outgoingsRouteResponses?.meta?.total || outgoingsCargoResponses?.meta?.total)})` : ''}
                 </button>
             </div>
             <Tabs
                 activeKey={subTab}
-                className="responses-tabs"
+                className="responses-tabs mb-3"
                 onSelect={eventKey => setSubTab(eventKey)}
             >
                 {!(roleId === 3) && (
-                    <Tab eventKey="cargo" title={`Грузы (${tab === 'active' ? incomingsCargoResponses?.meta?.total : outgoingsCargoResponses?.meta?.total})`}>
+                    <Tab eventKey="cargo"
+                         title={`Грузы (${tab === 'active' ? incomingsCargoResponses?.meta?.total : outgoingsCargoResponses?.meta?.total})`}>
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
                                 ? incomingsCargoResponses.isLoading
@@ -158,39 +209,49 @@ export default function Responses() {
                                         ? incomingsCargoResponses.items.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
-                                                    inWork={item.inWork}
-                                                    type={item.type}
-                                                    name={item.name}
-                                                    company={item.company}
-                                                    img={item.img}
-                                                    text={item.text}
+                                                    inWork={false}
+                                                    id={item.id}
+                                                    type={item.status}
+                                                    userId={item.user.id}
+                                                    subject={item.user.subject}
+                                                    name={item.user.fullName}
+                                                    company={item.user.companyName}
+                                                    img={item.user.avatar}
+                                                    callbackComplete={id => setIdComplete(id)}
+                                                    callbackDelete={id => setIdDelete(id)}
                                                 />
                                             </div>
                                         ))
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
-                                    : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
+                                    :
+                                    <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                                 : outgoingsCargoResponses.isLoading
                                     ? outgoingsCargoResponses?.items?.length
                                         ? outgoingsCargoResponses.items.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
-                                                    inWork={item.inWork}
-                                                    type={item.type}
-                                                    name={item.name}
-                                                    company={item.company}
-                                                    img={item.img}
-                                                    text={item.text}
+                                                    inWork={false}
+                                                    id={item.id}
+                                                    type={2}
+                                                    userId={item.user.id}
+                                                    subject={item.user.subject}
+                                                    name={item.user.fullName}
+                                                    company={item.user.companyName}
+                                                    img={item.user.avatar}
+                                                    callbackDelete={id => setIdDelete(id)}
                                                 />
                                             </div>
                                         ))
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
-                                    : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
+                                    :
+                                    <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                             }
                         </div>
                     </Tab>
                 )}
                 {!(roleId === 2) && (
-                    <Tab eventKey="route" title={`Маршруты (${tab === 'active' ? incomingsRouteResponses?.meta?.total : outgoingsRouteResponses?.meta?.total})`}>
+                    <Tab eventKey="route"
+                         title={`Маршруты (${tab === 'active' ? incomingsRouteResponses?.meta?.total : outgoingsRouteResponses?.meta?.total})`}>
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
                                 ? incomingsRouteResponses.isLoading
@@ -198,33 +259,42 @@ export default function Responses() {
                                         ? incomingsRouteResponses.items.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
-                                                    inWork={item.inWork}
-                                                    type={item.type}
-                                                    name={item.name}
-                                                    company={item.company}
-                                                    img={item.img}
-                                                    text={item.text}
+                                                    inWork={false}
+                                                    id={item.id}
+                                                    type={item.status}
+                                                    userId={item.user.id}
+                                                    subject={item.user.subject}
+                                                    name={item.user.fullName}
+                                                    company={item.user.companyName}
+                                                    img={item.user.avatar}
+                                                    callbackComplete={id => setIdComplete(id)}
+                                                    callbackDelete={id => setIdDelete(id)}
                                                 />
                                             </div>
                                         ))
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
-                                    : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
+                                    :
+                                    <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                                 : outgoingsRouteResponses.isLoading
                                     ? outgoingsRouteResponses?.items?.length
                                         ? outgoingsRouteResponses.items.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
-                                                    inWork={item.inWork}
-                                                    type={item.type}
-                                                    name={item.name}
-                                                    company={item.company}
-                                                    img={item.img}
-                                                    text={item.text}
+                                                    inWork={false}
+                                                    id={item.id}
+                                                    type={2}
+                                                    userId={item.user.id}
+                                                    subject={item.user.subject}
+                                                    name={item.user.fullName}
+                                                    company={item.user.companyName}
+                                                    img={item.user.avatar}
+                                                    callbackDelete={id => setIdDelete(id)}
                                                 />
                                             </div>
                                         ))
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
-                                    : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
+                                    :
+                                    <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                             }
                         </div>
                     </Tab>

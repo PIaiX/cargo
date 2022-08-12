@@ -21,6 +21,7 @@ import currentUser from "../store/reducers/currentUser";
 import {useSelector} from "react-redux";
 import {Alert} from "react-bootstrap";
 import CustomModal from "../components/utilities/CustomModal";
+import {createResponse} from "../API/response";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -75,7 +76,7 @@ export default function RoutePage() {
     })
 
     const response = () => {
-        currentUser && acceptResponse(axiosPrivate, data?.route?.id)
+        currentUser && createResponse(axiosPrivate, {routeId: data?.route?.id, userId: currentUser?.id})
             .then(() => setAlertResponse(prevState => ({
                 ...prevState,
                 alertShow: true,
@@ -89,6 +90,8 @@ export default function RoutePage() {
                 }))
             })
     }
+
+    console.log(data)
 
     useEffect(() => {
         alertResponse.alertShow && setTimeout(() => setAlertResponse(prevState => ({
