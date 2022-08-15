@@ -7,6 +7,7 @@ export default {
     FORGOT_PASSWORD_CODE_VERIFY: "/auth/forgotPassword/codeVerify",
     FORGOT_PASSWORD: "/auth/forgotPassword",
     REFRESH_TOKEN: "/auth/refreshToken",
+    LOGOUT: "/auth/logout",
     
     // user
     ACCOUNT_TYPES: "/user/accountTypes",

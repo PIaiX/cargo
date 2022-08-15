@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import {IoShieldCheckmarkSharp} from 'react-icons/io5';
 import {MdModeEdit} from "react-icons/md";
 import {useSelector} from "react-redux";
-import {getUserInfo} from "../../API/profile";
 
 export default function UserProfile() {
 

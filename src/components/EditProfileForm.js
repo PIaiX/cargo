@@ -124,7 +124,8 @@ const EditProfileForm = () => {
         }
     }, [data])
 
-    const deleteAvatar = () => {
+    const deleteAvatar = (e) => {
+        e.preventDefault()
         try {
             deleteUserAvatar(axiosPrivate, currentUser?.id)
         } catch (error) {
@@ -193,9 +194,10 @@ const EditProfileForm = () => {
                                                         Загрузить фото
                                                     </button>
                                                     <button
-                                                        onClick={() => {
+                                                        type='button'
+                                                        onClick={(e) => {
                                                             onImageRemove(index)
-                                                            deleteAvatar()
+                                                            deleteAvatar(e)
                                                         }}
                                                     >
                                                         <img
