@@ -34,7 +34,7 @@ const UserRoutes = () => {
     const [routeId, setRouteId] = useState(null)
 
     useEffect(() => {
-        getUserRoutes( axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
+        (currentUser.roleId !== 2) && getUserRoutes( axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
             .then(r => setRoutes(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
@@ -42,10 +42,10 @@ const UserRoutes = () => {
                 isLoading: true
             })))
             .catch(error => console.log(error))
-    }, [currentUser, routesPagination.pageLimit, routesPagination.currentPage])
+    }, [currentUser,  currentUser.roleId, routesPagination.pageLimit, routesPagination.currentPage])
 
     useEffect(() => {
-        getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
+        (currentUser.roleId !== 2) && getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
             .then(r => setArchiveRoutes(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
