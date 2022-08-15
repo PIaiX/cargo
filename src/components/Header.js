@@ -51,7 +51,8 @@ export default function Header() {
                         <NavLink to="/">Главная</NavLink>
                         <NavLink to="/search">Поиск</NavLink>
                         <NavLink to="/forum">Форум</NavLink>
-                        <a href="/">Информация</a>
+                        <NavLink to='/information-pay'>Оплата</NavLink>
+                        <NavLink to='/contacts'>Контакты</NavLink>
                         <button
                             className="header__button"
                             type="button"
@@ -170,7 +171,10 @@ export default function Header() {
                             <NavLink to="/forum" onClick={() => setIsShowOffcanvas(false)}>Форум</NavLink>
                         </li>
                         <li>
-                            <NavLink to="" onClick={() => setIsShowOffcanvas(false)}>Информация</NavLink>
+                            <NavLink to='/information-pay' onClick={() => setIsShowOffcanvas(false)}>Оплата</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/contacts' onClick={() => setIsShowOffcanvas(false)}>Контакты</NavLink>
                         </li>
                         <li>
                             <NavLink to="" onClick={() => {

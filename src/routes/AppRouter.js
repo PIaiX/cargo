@@ -28,6 +28,8 @@ import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 import EditRoute from "../pages/EditRoute";
 import ViewAccount from "../pages/account/ViewAccount";
+import InformationAboutPay from "../pages/InformationAboutPay";
+import Contacts from "../pages/Contacts";
 
 export default function AppRouter() {
 
@@ -48,6 +50,8 @@ const Wrapper = ({children}) => {
           <Route path="news/:slug" element={<ArticleFull />} />
           <Route path="forum" element={<Forum />} />
           <Route path="forum-section/:id" element={<ForumTopicChat />} />
+          <Route path="information-pay" element={<InformationAboutPay />}/>
+          <Route path="contacts" element={<Contacts />} />
             {/* Роуты доступные не зареганным пользователям */}
           <Route element={<AuthRoutes />}>
             <Route path="login" element={<Login />} />

@@ -2718,7 +2718,6 @@ article.full figure figcaption p {
   background-color: #fff;
   border-radius: 8px;
   border: 1px solid #BDBDBD;
-  cursor: pointer;
 }
 #sec-12 .docs-preview:hover, #sec-12 .docs-preview:focus,
 #sec-12 .patterns-preview:hover,
@@ -3822,6 +3821,42 @@ footer .payment-methods img:not(:first-child) {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.pay-information {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 0 4em 0 4em;
+  font-size: initial;
+}
+.pay-information a {
+  color: #038CB8;
+}
+
+.contacts {
+  font-size: initial;
+}
+.contacts__first ul {
+  line-height: 2em;
+  margin: 1em;
+  padding: 0;
+  text-align: center;
+}
+.contacts__first ul li {
+  list-style-type: none;
+}
+.contacts__first ul li a {
+  color: #038CB8;
+}
+.contacts__second ul {
+  line-height: 2em;
+  margin: 1em;
+  padding: 0;
+  text-align: center;
+}
+.contacts__second ul li {
+  list-style-type: none;
 }
 
 /*# sourceMappingURL=style.css.map */
