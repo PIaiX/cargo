@@ -1,6 +1,6 @@
 import React from "react";
-import {Routes, Route, useLocation} from "react-router-dom";
-import {useLayoutEffect} from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -22,7 +22,7 @@ import ResetPassword2 from "../pages/ResetPassword2";
 import Forum from "../pages/Forum";
 import PersonalAccount from "../pages/account/PersonalAccount";
 import Document from "../pages/account/Document";
-import ForumMyTopics from "../pages/ForumMyTopics";
+import ForumMyTopics from "../components/ForumMyTopics";
 import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
@@ -31,10 +31,11 @@ import ViewAccount from "../pages/account/ViewAccount";
 import InformationAboutPay from "../pages/InformationAboutPay";
 import Contacts from "../pages/Contacts";
 import RoleFilter from "./RoleFilter";
+import ForumTopics from '../components/ForumTopics';
 
 export default function AppRouter() {
 
-    const Wrapper = ({children}) => {
+const Wrapper = ({children}) => {
         const {pathname} = useLocation();
         useLayoutEffect(() => document.documentElement.scrollTo(0, 0), [pathname]);
         return children
@@ -49,7 +50,10 @@ export default function AppRouter() {
                     <Route path="cargo-page/:id" element={<CargoPage/>}/>
                     <Route path="all-news" element={<AllNews/>}/>
                     <Route path="news/:slug" element={<ArticleFull/>}/>
-                    <Route path="forum" element={<Forum/>}/>
+                    <Route path="forum" element={<Forum/>}>
+                      <Route index element={<ForumTopics/>}/>
+                      <Route path="my-topics" element={<ForumTopics/>}/>
+                    </Route>
                     <Route path="forum-section/:id" element={<ForumTopicChat/>}/>
                     <Route path="information-pay" element={<InformationAboutPay/>}/>
                     <Route path="contacts" element={<Contacts/>}/>

@@ -8,7 +8,7 @@ export default {
     FORGOT_PASSWORD: "/auth/forgotPassword",
     REFRESH_TOKEN: "/auth/refreshToken",
     LOGOUT: "/auth/logout",
-    
+
     // user
     ACCOUNT_TYPES: "/user/accountTypes",
     ACTIONS_USER: "/user",
@@ -66,7 +66,21 @@ export default {
     REPORT_ROUTE: '/report/route',
     REPORT_CARGO: '/report/cargo',
     REPORT_USER: '/report/user',
+    REPORT_TOPIC: '/report/topic',
+    REPORT_TOPIC_MESSAGE: '/report/topicMessage',
 
     //question
-    QUESTION_ASK: '/question'
+    QUESTION_ASK: '/question',
+
+    // topic
+    TOPIC_PAGINATE: '/topic/paginate',
+    TOPIC_SEARCH: '/topic/search',
+    TOPIC_STATISTICS: '/topic/statistics',
+    TOPIC_USER_PAGINATE: '/topic/user',
+    TOPIC_LIKE: '/topic/like',
+    TOPIC_MESSAGE_ACTIONS: '/topic/message',
+    TOPIC_MESSAGE_CREATE: '/topic/message/create',
+    TOPIC_MESSAGE_LIKE: '/topic/message/like',
+    TOPIC_MESSAGE_PAGINATE: '/topic/message/paginateLastMessages',
+    TOPIC_ACTIONS: '/topic',
 }
