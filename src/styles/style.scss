@@ -3310,6 +3310,7 @@ footer {
   opacity: 1;
   background: unset;
   color: $green;
+  z-index: $modal-z-index;
 
   &:hover, &:focus {
     opacity: 1;
@@ -3875,6 +3876,10 @@ footer {
       border-color: red;
     }
 
+    textarea {
+      border-color: red;
+    }
+
     .react-select__control {
       border-color: red !important;
     }
@@ -3949,4 +3954,11 @@ footer {
   color: $green;
   font-size: 1.1em;
   line-height: normal;
+}
+
+.submit-alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }

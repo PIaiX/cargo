@@ -56,6 +56,8 @@ export default {
     REPORT_ROUTE: '/report/route',
     REPORT_CARGO: '/report/cargo',
     REPORT_USER: '/report/user',
+    REPORT_TOPIC: '/report/topic',
+    REPORT_TOPIC_MESSAGE: '/report/topicMessage',
 
     // topic
     TOPIC_PAGINATE: '/topic/paginate',
@@ -64,6 +66,7 @@ export default {
     TOPIC_USER_PAGINATE: '/topic/user',
     TOPIC_LIKE: '/topic/like',
     TOPIC_MESSAGE_ACTIONS: '/topic/message',
+    TOPIC_MESSAGE_CREATE: '/topic/message/create',
     TOPIC_MESSAGE_LIKE: '/topic/message/like',
     TOPIC_MESSAGE_PAGINATE: '/topic/message/paginateLastMessages',
     TOPIC_ACTIONS: '/topic',

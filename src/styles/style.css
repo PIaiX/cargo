@@ -3226,6 +3226,7 @@ footer .payment-methods img:not(:first-child) {
   opacity: 1;
   background: unset;
   color: #01BFC4;
+  z-index: 2000;
 }
 .btn-close:hover, .btn-close:focus {
   opacity: 1;
@@ -3741,6 +3742,9 @@ footer .payment-methods img:not(:first-child) {
 .validate-wrapper_error input {
   border-color: red;
 }
+.validate-wrapper_error textarea {
+  border-color: red;
+}
 .validate-wrapper_error .react-select__control {
   border-color: red !important;
 }
@@ -3804,6 +3808,13 @@ footer .payment-methods img:not(:first-child) {
   color: #01BFC4;
   font-size: 1.1em;
   line-height: normal;
+}
+
+.submit-alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

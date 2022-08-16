@@ -38,7 +38,7 @@ const ForumTopics = () => {
                             info={item?.description}
                             topics={item?.topics}
                             messages={item?.messagesCount}
-                            latest={getDateUI(item?.lastMessage?.updatedAt)}
+                            latest={item?.lastMessage ? getDateUI(item?.lastMessage?.updatedAt) : null}
                             userName={item?.user?.firstName}
                         />
                     ))
@@ -62,7 +62,10 @@ const ForumTopics = () => {
                         name="items-count"
                         options={['10', '15', '20']}
                         checkedOptions={[topicsPagination.pageLimit]}
-                        callback={({title}) => topicsPagination.setPageLimit(+title)}
+                        callback={({title}) => {
+                            topicsPagination.setCurrentPage(1)
+                            topicsPagination.setPageLimit(+title)
+                        }}
                         align="right"
                     />
                     <span className="ms-2 d-none d-md-block">тем на странице</span>

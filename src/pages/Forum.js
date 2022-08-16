@@ -6,11 +6,13 @@ import {IoAddCircleSharp, IoSearch,} from "react-icons/io5";
 import {BsFillChatRightTextFill, BsFillInfoSquareFill} from "react-icons/bs";
 import CustomModal from '../components/utilities/CustomModal';
 import usePagination from '../hooks/pagination';
-import {getStatistics, paginateUserTopics, searchTopics} from '../API/topic';
+import {createTopic, getStatistics, paginateUserTopics, searchTopics} from '../API/topic';
 import Loader from '../components/Loader';
 import useDebounce from '../hooks/debounce';
 import useAxiosPrivate from '../hooks/axiosPrivate';
 import {useSelector} from 'react-redux';
+import CreateTopicForm from '../components/CreateTopicForm';
+import Alert from 'react-bootstrap/Alert';
 
 const initialPageLimit = 10;
 
@@ -18,11 +20,14 @@ export default function Forum() {
     const axiosPrivate = useAxiosPrivate()
     const userId = useSelector(state => state?.currentUser?.data?.user?.id)
     const {pathname} = useLocation()
+
     const [search, setSearch] = useState('')
     const debouncedSearch = useDebounce(search, 300)
-    const [isShowCreateTheme, setIsShowCreateTheme] = useState(false);
+
     const topicsPagination = usePagination(initialPageLimit)
-    const [shownItems, setShownItems] = useState([])
+    const userTopicsPagination = usePagination(initialPageLimit)
+    const [shownPagination, setShownPagination] = useState({})
+
     const [topics, setTopics] = useState({
         isLoading: false,
         error: null,
@@ -35,21 +40,48 @@ export default function Forum() {
         meta: null,
         items: []
     })
+    const [shownItems, setShownItems] = useState([])
+
+    const [isShowCreateTopic, setIsShowCreateTopic] = useState(false);
     const [statistic, setStatistic] = useState({
         isLoading: false,
         error: null,
         item: null
     })
+    const [createTopicPayloads, setCreateTopicPayloads] = useState({})
+
+    const initialSubmitAlert = {
+        variant: 'success',
+        isShow: false
+    }
+    const [submitAlert, setSubmitAlert] = useState(initialSubmitAlert)
+
+    const submitHandler = (data) => {
+        setCreateTopicPayloads(prev => ({...prev, ...data}))
+        setIsShowCreateTopic(false)
+    }
 
     useEffect(() => {
         const value = debouncedSearch && debouncedSearch.trim()
 
-        if (pathname === '/forum') setShownItems(topics)
-        if (value && (pathname === '/forum/my-topics')) setShownItems(topics)
-        if (!value && (pathname === '/forum/my-topics')) setShownItems(userTopics)
+        if (pathname === '/forum') {
+            setShownItems(topics)
+            setShownPagination(topicsPagination)
+        }
+        if (value && (pathname === '/forum/my-topics')) {
+            setShownItems(topics)
+            setShownPagination(topicsPagination)
+        }
+        if (!value && (pathname === '/forum/my-topics')) {
+            setShownItems(userTopics)
+            setShownPagination(userTopicsPagination)
+        }
     }, [pathname, topics, userTopics, debouncedSearch])
 
-    useEffect(() => topicsPagination.setCurrentPage(1), [pathname, debouncedSearch])
+    useEffect(() => {
+        topicsPagination.setCurrentPage(1)
+        userTopicsPagination.setCurrentPage(1)
+    }, [pathname, debouncedSearch])
 
     useEffect(() => {
         getStatistics()
@@ -67,9 +99,17 @@ export default function Forum() {
         userId && paginateUserTopics(axiosPrivate, userId, topicsPagination.currentPage, topicsPagination.pageLimit)
             .then(result => setUserTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
             .catch(error => setUserTopics(prev => ({...prev, isLoading: true, error})))
-    }, [topicsPagination.currentPage, topicsPagination.pageLimit, userId])
+    }, [userTopicsPagination.currentPage, userTopicsPagination.pageLimit, userId])
 
-    // useEffect(() => debouncedSearch && debouncedSearch.trim() && setShownItems(topics), [debouncedSearch])
+    useEffect(() => {
+        Object.keys(createTopicPayloads).length && createTopic(axiosPrivate, userId, createTopicPayloads)
+            .then(() => setSubmitAlert(prev => ({...prev, variant: 'success', isShow: true})))
+            .catch(() => setSubmitAlert(prev => ({...prev, variant: 'danger', isShow: true})))
+    }, [createTopicPayloads, userId])
+
+    useEffect(() => {
+        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 5000)
+    }, [submitAlert])
 
     useEffect(() => {
         console.log('ut', userTopics)
@@ -77,6 +117,9 @@ export default function Forum() {
 
     return (
         <main className="bg-white py-4 py-sm-5">
+            <Alert className='submit-alert' variant={submitAlert.variant} show={submitAlert.isShow}>
+                {(submitAlert.variant === 'success') ? 'Тема была успешно создана' : 'Возникла ошибка при создании темы'}
+            </Alert>
             <section className="container" id="sec-11">
                 <nav aria-label="breadcrumb" className="mb-3">
                     <ol className="breadcrumb">
@@ -102,7 +145,7 @@ export default function Forum() {
                         <button
                             type="button"
                             className="btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex"
-                            onClick={() => setIsShowCreateTheme(prevState => !prevState)}
+                            onClick={() => setIsShowCreateTopic(prevState => !prevState)}
                         >
                             <IconContext.Provider
                                 value={{className: "icon-15 white", title: "Создать тему"}}
@@ -117,10 +160,7 @@ export default function Forum() {
                                 type="search"
                                 placeholder="Поиск по форуму"
                                 value={search}
-                                onChange={e => {
-                                    setSearch(e.target.value)
-                                    topicsPagination.setCurrentPage(1)
-                                }}
+                                onChange={e => setSearch(e.target.value)}
                             />
                             <button>
                                 <IconContext.Provider
@@ -169,7 +209,7 @@ export default function Forum() {
                         <ForumWidget className="d-none d-lg-block"/>
                     </div>
                     {/* ForumTopics */}
-                    <Outlet context={[shownItems, topicsPagination]}/>
+                    <Outlet context={[shownItems, shownPagination]}/>
                 </div>
                 <div className="row">
                     <div className="col-lg-9">
@@ -197,37 +237,13 @@ export default function Forum() {
             </section>
 
             <CustomModal
-                isShow={isShowCreateTheme}
-                setIsShow={setIsShowCreateTheme}
+                isShow={isShowCreateTopic}
+                setIsShow={setIsShowCreateTopic}
                 closeButton={true}
-                size='lg'
+                centered={true}
+                size={'lg'}
             >
-                <h3>Новая тема</h3>
-                <form className="fs-12">
-                    <label className="mb-2">Название темы</label>
-                    <input
-                        type="text"
-                        className="mb-4"
-                        placeholder="Придумайте название темы"
-                    />
-                    <label className="mb-2">Текст темы</label>
-                    <textarea rows="5" placeholder="Ваша история или вопрос"/>
-                    <div className="row flex-sm-row-reverse mt-4">
-                        <div className="col-sm-5">
-                            <button type="submit" className="btn btn-2 w-100">
-                                Сохранить
-                            </button>
-                        </div>
-                        <div className="col-sm-7 mt-2 mt-sm-0">
-                            <div className="fs-09 text-center">
-                                Нажимая на кнопку “Создать тему”, вы соглашаетесь с{" "}
-                                <a className="blue" href="/">
-                                    правилами публикации
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <CreateTopicForm submitHandler={submitHandler}/>
             </CustomModal>
         </main>
     );

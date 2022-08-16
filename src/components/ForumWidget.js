@@ -19,15 +19,19 @@ export default function ForumWidget(props) {
             .catch(error => setMessages(prev => ({...prev, isLoading: true, error})))
     }, [])
 
+    useEffect(() => {
+        console.log(messages)
+    }, [messages])
+
     return messages.isLoading
         ? messages?.items?.length
             ? <aside className={props.className}>
                 <h5 className='mb-1'>Сообщения на форуме</h5>
                 <div className='forum-widget'>
                     {messages.items.map(item => (
-                        <div className='message'>
+                        <div className='message' key={item.id}>
                             <ReactTimeAgo className="forum-widget__date" date={Date.parse(item.createdAt)} locale="ru-RU"/>
-                            <h5>Тема сообщения</h5>
+                            <h5>{item?.topic?.title || 'Без темы'}</h5>
                             <div className='text'>
                                 <span className='author'>
                                     {item?.user?.firstName || 'Имя не указано'}&nbsp;

@@ -12,7 +12,12 @@ const paginateTopics = async (page, limit) => {
 
 const searchTopics = async (page, limit, query, orderBy = 'asc') => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_SEARCH}`, {page, limit, query, orderBy})
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_SEARCH}`, {
+            page,
+            limit,
+            query,
+            orderBy
+        })
         return response?.data?.body
     } catch (error) {
         console.log(error)
@@ -30,7 +35,10 @@ const getStatistics = async () => {
 
 const paginateUserTopics = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_USER_PAGINATE}/${userId}`, {page, limit})
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_USER_PAGINATE}/${userId}`, {
+            page,
+            limit
+        })
         return response?.data?.body
     } catch (error) {
         console.log(error)
@@ -46,37 +54,43 @@ const likeTopic = async (axiosPrivate) => {
     }
 }
 
-const createTopic = async (axiosPrivate) => {
+const createTopic = async (axiosPrivate, userId, payloads = {}) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}`, {
+            ...payloads,
+            userId
+        })
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getTopic = async () => {
+const getTopic = async (id, userId) => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}`)
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}/${id}/${userId}`)
+        return response?.data?.body
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const createTopicMessage = async (axiosPrivate, payloads) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_CREATE}`, payloads)
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const createTopicMessage = async (axiosPrivate) => {
+const paginateTopicMessages = async (topicId, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_ACTIONS}`)
-        return response.data
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-const paginateTopicMessage = async () => {
-    try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_ACTIONS}`)
-        return response.data
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_ACTIONS}/${topicId}/${userId}`, {
+            page,
+            limit
+        })
+        return response?.data?.body
     } catch (error) {
         console.log(error)
     }
@@ -84,7 +98,11 @@ const paginateTopicMessage = async () => {
 
 const paginateLastMessages = async (page, limit, orderBy) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_PAGINATE}`, {page, limit, orderBy})
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_PAGINATE}`, {
+            page,
+            limit,
+            orderBy
+        })
         return response?.data?.body
     } catch (error) {
         console.log(error)
@@ -100,4 +118,36 @@ const likeTopicMessage = async (axiosPrivate) => {
     }
 }
 
-export {paginateTopics, searchTopics, getStatistics, paginateUserTopics, likeTopic, createTopic, getTopic, createTopicMessage, paginateTopicMessage, paginateLastMessages, likeTopicMessage}
+const reportTopic = async (axiosPrivate, payloads) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.REPORT_TOPIC}`, payloads)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const reportTopicMessage = async (axiosPrivate, payloads) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.REPORT_TOPIC_MESSAGE}`, payloads)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export {
+    paginateTopics,
+    searchTopics,
+    getStatistics,
+    paginateUserTopics,
+    likeTopic,
+    createTopic,
+    getTopic,
+    createTopicMessage,
+    paginateTopicMessages,
+    paginateLastMessages,
+    likeTopicMessage,
+    reportTopic,
+    reportTopicMessage
+}
