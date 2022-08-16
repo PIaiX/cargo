@@ -3211,6 +3211,10 @@ footer {
     }
     .modal-body {
       padding: 0 2.5em 2.5em 2.5em;
+      .items{
+        height: 30em;
+        overflow: auto;
+      }
     }
   }
   &__savePattern {

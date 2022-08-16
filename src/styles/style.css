@@ -3141,6 +3141,10 @@ footer .payment-methods img:not(:first-child) {
 .modal__patternRoute .modal-body {
   padding: 0 2.5em 2.5em 2.5em;
 }
+.modal__patternRoute .modal-body .items {
+  height: 30em;
+  overflow: auto;
+}
 .modal__savePattern .modal-header {
   height: 5em;
   padding: 1em 1em 0 1em;

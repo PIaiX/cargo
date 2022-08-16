@@ -14,8 +14,8 @@ export const optionsLoading = [
 ];
 export const optionsLoadingPeriodType = [
     { value: 0, label: 'По рабочим дням' },
-    { value: 1, label: 'Ежедневно' },
-    { value: 2, label: 'Через день' },
+    { value: 1, label: 'По выходным' },
+    { value: 2, label: 'Ежедневно' },
 ];
 export const optionsLoadingDays = [
     { value: 1, label: '1 дн.' },

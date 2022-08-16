@@ -22,7 +22,7 @@ export default function RoleFilter() {
             location.pathname === `/edit-route/${id}`
         )) {
         return <Outlet/>
-    } else if (currentUser.roleId === 4) {
+    } else if (currentUser.roleId === 1 || currentUser.roleId === 4) {
         return <Outlet/>
     } else {
         return <Navigate to='/'/>

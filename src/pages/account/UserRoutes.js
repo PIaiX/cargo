@@ -103,6 +103,20 @@ const UserRoutes = () => {
             })
             .catch(error => console.log(error))
     }
+    
+    useEffect(() => {
+        if(routes.data.length === 0) {
+            routesPagination.setCurrentPage(1)
+            routesPagination.setStartingPage(1)
+        }
+    }, [routes.data.length])
+
+    useEffect(() => {
+        if(archiveRoutes?.data?.length === 0) {
+            archiveRoutesPag.setStartingPage(1)
+            archiveRoutesPag.setCurrentPage(1)
+        }
+    }, [archiveRoutes?.data?.length])
 
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
@@ -180,7 +194,7 @@ const UserRoutes = () => {
                             : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
-                    {(routes?.data?.length > 0) && (
+                    {(routes?.meta?.total > 0) && (
                         <Pagination
                             className='mt-4'
                             pageLimit={routesPagination.pageLimit}
@@ -231,7 +245,7 @@ const UserRoutes = () => {
                             : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
-                    {(archiveRoutes?.data?.length > 0) && (
+                    {(archiveRoutes?.meta?.total > 0) && (
                         <Pagination
                             className='mt-4'
                             pageLimit={archiveRoutesPag.pageLimit}

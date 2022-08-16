@@ -21,7 +21,7 @@ export default function UserPatterns() {
     const [filterCargo, setFilterCargo] = useState([])
     const currentUser = useSelector(state => state?.currentUser?.data?.user)
     const axiosPrivate = useAxiosPrivate()
-    const [RoutesTemplates, setRoutesTemplates] = useState({
+    const [routesTemplates, setRoutesTemplates] = useState({
         data: [],
         meta: [],
         isLoading: false
@@ -107,6 +107,13 @@ export default function UserPatterns() {
         }
     }, [isShowAlert])
 
+    useEffect(() => {
+        if(routesTemplates.data.length === 0) {
+            routeTemplatesPag.setCurrentPage(1)
+            routeTemplatesPag.setStartingPage(1)
+        }
+    }, [routesTemplates.data.length])
+
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
             <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span
@@ -118,7 +125,7 @@ export default function UserPatterns() {
                     className={(tab === 'routes') ? 'active tab-btn' : 'tab-btn'}
                     onClick={() => setTab('routes')}
                 >
-                    Маршруты ({RoutesTemplates?.meta?.total})
+                    Маршруты ({routesTemplates?.meta?.total})
                 </button>
                 <button
                     type='button'
@@ -145,9 +152,9 @@ export default function UserPatterns() {
                 }
             </div>
             {(tab === 'routes') &&
-            RoutesTemplates?.isLoading
-                ? RoutesTemplates?.data?.length
-                    ? RoutesTemplates?.data?.map((i, index) => (
+            routesTemplates?.isLoading
+                ? routesTemplates?.data?.length
+                    ? routesTemplates?.data?.map((i, index) => (
                         <div key={index}>
                             <Pattern
                                 id={i.id}
@@ -197,13 +204,13 @@ export default function UserPatterns() {
                 ))
             }
             {tab === 'routes' &&
-                (RoutesTemplates?.data?.length > 0) &&
+                (routesTemplates?.data?.length > 0) &&
                 <Pagination
                     pageLimit={routeTemplatesPag.pageLimit}
                     currentPage={routeTemplatesPag.currentPage}
                     setCurrentPage={routeTemplatesPag.setCurrentPage}
                     pagesDisplayedLimit={3}
-                    itemsAmount={RoutesTemplates?.meta?.total || 0}
+                    itemsAmount={routesTemplates?.meta?.total || 0}
                     startingPage={routeTemplatesPag.startingPage}
                     setStartingPage={routeTemplatesPag.setStartingPage}
                 />

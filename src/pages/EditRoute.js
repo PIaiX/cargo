@@ -4,7 +4,6 @@ import {IconContext} from "react-icons";
 import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
 import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
-import Select from "react-select";
 import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilities/data";
 import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
@@ -69,7 +68,6 @@ const EditRoute = () => {
             contacts: curRoute?.contacts,
             note: curRoute?.note,
             carId: curRoute?.carId,
-            date: getDate(data?.dateForInput)
         }))
         setBtnRadioDate(Number(curRoute?.dateType))
         setBtnRadioCalculate(Number(curRoute?.calculateType))
@@ -77,8 +75,12 @@ const EditRoute = () => {
         setSelectCar({value: curRoute?.carId, label: curRoute?.carName})
         setSelectPeriodType({value: curRoute?.datePeriodType, label: curRoute?.datePeriodTypeForUser})
         setSelectDays({value: curRoute?.dateDays, label: `${curRoute?.dateDays} дн.`})
-    }, [contactsInfo, curRoute, currentUser, data?.dateForInput])
+    }, [contactsInfo, curRoute, currentUser])
 
+    useEffect(() => {
+        setData(prevState => ({...prevState, date: getDate(data?.dateForInput)}))
+    }, [data?.dateForInput])
+    console.log(data)
     const fields = {
         isInValidFromRoute: false,
         isInValidToRoute: false,
@@ -138,7 +140,10 @@ const EditRoute = () => {
 
     const onReset = () => {
         setData({
-            userId: currentUser?.id
+            userId: currentUser?.id,
+            dateType: 0,
+            bargainType: 0,
+            calculateType: 0,
         })
         setContactsArray([]);
     };
@@ -293,6 +298,7 @@ const EditRoute = () => {
 
     const [showModalValidation, setShowModalValidation] = useState(false)
 
+    console.log(selectDays)
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
@@ -315,35 +321,35 @@ const EditRoute = () => {
                         <div className="mobile-indicators d-flex d-lg-none">
                             <button
                                 type="button"
-                                /*className={checkFieldset("route") ? "active" : ""}*/
+                                style={{background: (data?.toRoute && data?.fromRoute) && '#01BFC4'}}
                                 onClick={() => setActiveField(1)}
                             >
                                 1
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("date") ? "active" : ""}*/
+                                style={{background: (data?.date || data?.datePeriodType) && '#01BFC4'}}
                                 onClick={() => setActiveField(2)}
                             >
                                 2
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("aboutCar") ? "active" : ""}*/
+                                style={{background: (data?.carId) && '#01BFC4'}}
                                 onClick={() => setActiveField(3)}
                             >
                                 3
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("payment") ? "active" : ""}*/
+                                style={{background: (data?.prepayment) && '#01BFC4'}}
                                 onClick={() => setActiveField(4)}
                             >
                                 4
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("contacts") ? "active" : ""}*/
+                                style={{background: (data?.contacts?.find(i => i.phone && i.firstName)) && '#01BFC4'}}
                                 onClick={() => setActiveField(5)}
                             >
                                 5
@@ -1304,7 +1310,7 @@ const EditRoute = () => {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={((data?.dateType !== undefined) && (data?.date || data?.datePeriodType)) ? "filled" : ""}
+                                            className={((data?.dateType !== undefined) && (data?.date || data?.datePeriodType || data?.datePeriodType === 0)) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>
@@ -1528,7 +1534,7 @@ const EditRoute = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-1 fs-09 px-2 px-sm-4 ms-2"
-                                                        onClick={() =>
+                                                        onClick={() => {
                                                             setData(prevState => (
                                                                 {
                                                                     ...prevState,
@@ -1539,6 +1545,8 @@ const EditRoute = () => {
                                                                     unloadingRadius: item?.route?.unloadingRadius,
                                                                     dateForInput: item?.route?.date,
                                                                     dateDays: item?.route?.dateDays,
+                                                                    carId: item?.route?.carId,
+                                                                    carName: item?.route?.car?.name,
                                                                     dateType: Number(item?.route?.dateType),
                                                                     datePeriodType: item?.route?.dateType,
                                                                     bargainType: item?.route?.bargainType,
@@ -1548,7 +1556,14 @@ const EditRoute = () => {
                                                                     prepayment: item?.route?.prepayment,
                                                                     contacts: item?.route?.contacts,
                                                                     note: item?.route?.note,
-                                                                }))}
+                                                                }))
+                                                            setBtnRadioDate(Number(item?.route?.dateType))
+                                                            setBtnRadioCalculate(Number(item?.route?.calculateType))
+                                                            setBtnRadioBargain(Number(item?.route?.bargainType))
+                                                            setSelectCar({value: item?.route?.carId, label: item?.route?.car?.carName})
+                                                            setSelectPeriodType({value: item?.route?.datePeriodType, label: item?.route?.datePeriodTypeForUser})
+                                                            setSelectDays({value: item?.route?.dateDays, label: `${item?.route?.dateDays} дн.`})
+                                                        }}
                                                     >
                                                         Выбрать
                                                     </button>

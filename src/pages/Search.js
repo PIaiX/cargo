@@ -92,6 +92,7 @@ export default function Search() {
                         <Select
                             name="sort"
                             className="w-100"
+                            classNamePrefix="react-select"
                             options={initialSorting}
                             value={initialSorting.length && initialSorting.filter(item => item.value === filters.orderBy)}
                             onChange={val => setFilters(prev => ({...prev, orderBy: val.value}))}
