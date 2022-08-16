@@ -4,7 +4,6 @@ import {IconContext} from "react-icons";
 import {IoChevronBackOutline, IoChevronForwardOutline, IoNewspaperOutline, IoTrash} from "react-icons/io5";
 import {VscChromeClose} from "react-icons/vsc";
 import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
-import Select from "react-select";
 import {optionsLoadingDays, optionsLoadingPeriodType} from "../components/utilities/data";
 import {Link} from "react-scroll";
 import {useSelector} from "react-redux";
@@ -59,8 +58,8 @@ const EditRoute = () => {
             unloadingRadius: curRoute?.unloadingRadius,
             dateForInput: curRoute?.date,
             dateDays: curRoute?.dateDays,
-            dateType: curRoute?.dateType,
-            datePeriodType: curRoute?.dateType,
+            dateType: Number(curRoute?.dateType),
+            datePeriodType: curRoute?.datePeriodType,
             bargainType: curRoute?.bargainType,
             calculateType: curRoute?.calculateType,
             vatPrice: curRoute?.vatPrice,
@@ -69,7 +68,6 @@ const EditRoute = () => {
             contacts: curRoute?.contacts,
             note: curRoute?.note,
             carId: curRoute?.carId,
-            date: getDate(data?.dateForInput)
         }))
         setBtnRadioDate(Number(curRoute?.dateType))
         setBtnRadioCalculate(Number(curRoute?.calculateType))
@@ -77,7 +75,11 @@ const EditRoute = () => {
         setSelectCar({value: curRoute?.carId, label: curRoute?.carName})
         setSelectPeriodType({value: curRoute?.datePeriodType, label: curRoute?.datePeriodTypeForUser})
         setSelectDays({value: curRoute?.dateDays, label: `${curRoute?.dateDays} дн.`})
-    }, [contactsInfo, curRoute, currentUser, data?.dateForInput])
+    }, [contactsInfo, curRoute, currentUser])
+
+    useEffect(() => {
+        setData(prevState => ({...prevState, date: getDate(data?.dateForInput)}))
+    }, [data?.dateForInput])
 
     const fields = {
         isInValidFromRoute: false,
@@ -123,14 +125,13 @@ const EditRoute = () => {
             setValid({...valid, isInValidFirstName: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
                     delete data?.datePeriodType
                 }
                 const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
-                console.log(response)
             } catch (error) {
                 console.log(error)
             }
@@ -139,7 +140,10 @@ const EditRoute = () => {
 
     const onReset = () => {
         setData({
-            userId: currentUser?.id
+            userId: currentUser?.id,
+            dateType: 0,
+            bargainType: 0,
+            calculateType: 0,
         })
         setContactsArray([]);
     };
@@ -194,7 +198,7 @@ const EditRoute = () => {
             setValid({...valid, isInValidNameTemplate: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
@@ -288,6 +292,10 @@ const EditRoute = () => {
         return new Date().toISOString().slice(0, 10)
     }
 
+    useEffect(() => {
+        (data?.date === 'Invalid Date') && delete data?.date
+    }, [data?.date])
+
     const [showModalValidation, setShowModalValidation] = useState(false)
 
     return (
@@ -312,35 +320,35 @@ const EditRoute = () => {
                         <div className="mobile-indicators d-flex d-lg-none">
                             <button
                                 type="button"
-                                /*className={checkFieldset("route") ? "active" : ""}*/
+                                style={{background: (data?.toRoute && data?.fromRoute) && '#01BFC4'}}
                                 onClick={() => setActiveField(1)}
                             >
                                 1
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("date") ? "active" : ""}*/
+                                style={{background: (data?.date || data?.datePeriodType) && '#01BFC4'}}
                                 onClick={() => setActiveField(2)}
                             >
                                 2
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("aboutCar") ? "active" : ""}*/
+                                style={{background: (data?.carId) && '#01BFC4'}}
                                 onClick={() => setActiveField(3)}
                             >
                                 3
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("payment") ? "active" : ""}*/
+                                style={{background: (data?.prepayment) && '#01BFC4'}}
                                 onClick={() => setActiveField(4)}
                             >
                                 4
                             </button>
                             <button
                                 type="button"
-                                /*className={checkFieldset("contacts") ? "active" : ""}*/
+                                style={{background: (data?.contacts?.find(i => i.phone && i.firstName)) && '#01BFC4'}}
                                 onClick={() => setActiveField(5)}
                             >
                                 5
@@ -1301,25 +1309,22 @@ const EditRoute = () => {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={(data?.dateType !== undefined) ? "filled" : ""}
+                                            className={((data?.dateType !== undefined) && (data?.date || data?.datePeriodType || data?.datePeriodType === 0)) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>
                                         <div className="fs-09">
-                                            {data?.dateType === 0
+                                            {data?.dateType
                                                 ?
                                                 <>
-                                                    <span className="me-1">Единожды:</span>
-                                                    <span className="me-1">{data?.date}</span>
-                                                    <span>+ {data?.days} дней</span>
+                                                    <span>Постоянно: {(data?.datePeriodType === 0) && "по рабочим дням"}{data?.datePeriodType === 1 && 'ежедневно'}{data?.datePeriodType === 2 && "через день"}</span>
                                                 </>
                                                 :
                                                 <>
-                                                    <span>Постоянно</span>
-                                                    {data?.loadingPeriodType === '0' && <span> По рабочим дням</span>}
-                                                    {data?.loadingPeriodType === '1' && <span> По выходным</span>}
-                                                    {data?.loadingPeriodType === '2' && <span> Ежедневно</span>}
-                                                    {data?.loadingPeriodType === '3' && <span> Через день</span>}
+                                                    <span className="me-1">Единожды:</span>
+                                                    <span
+                                                        className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
+                                                    <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
                                                 </>
                                             }
                                         </div>
@@ -1528,7 +1533,7 @@ const EditRoute = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-1 fs-09 px-2 px-sm-4 ms-2"
-                                                        onClick={() =>
+                                                        onClick={() => {
                                                             setData(prevState => (
                                                                 {
                                                                     ...prevState,
@@ -1539,7 +1544,9 @@ const EditRoute = () => {
                                                                     unloadingRadius: item?.route?.unloadingRadius,
                                                                     dateForInput: item?.route?.date,
                                                                     dateDays: item?.route?.dateDays,
-                                                                    dateType: item?.route?.dateType,
+                                                                    carId: item?.route?.carId,
+                                                                    carName: item?.route?.car?.name,
+                                                                    dateType: Number(item?.route?.dateType),
                                                                     datePeriodType: item?.route?.dateType,
                                                                     bargainType: item?.route?.bargainType,
                                                                     calculateType: item?.route?.calculateType,
@@ -1548,7 +1555,14 @@ const EditRoute = () => {
                                                                     prepayment: item?.route?.prepayment,
                                                                     contacts: item?.route?.contacts,
                                                                     note: item?.route?.note,
-                                                                }))}
+                                                                }))
+                                                            setBtnRadioDate(Number(item?.route?.dateType))
+                                                            setBtnRadioCalculate(Number(item?.route?.calculateType))
+                                                            setBtnRadioBargain(Number(item?.route?.bargainType))
+                                                            setSelectCar({value: item?.route?.carId, label: item?.route?.car?.carName})
+                                                            setSelectPeriodType({value: item?.route?.datePeriodType, label: item?.route?.datePeriodTypeForUser})
+                                                            setSelectDays({value: item?.route?.dateDays, label: `${item?.route?.dateDays} дн.`})
+                                                        }}
                                                     >
                                                         Выбрать
                                                     </button>

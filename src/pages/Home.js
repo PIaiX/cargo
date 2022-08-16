@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import ArticleCard from "../components/ArticleCard";
 import {IoChevronBackSharp, IoChevronForwardSharp} from "react-icons/io5";
 import {Swiper, SwiperSlide} from "swiper/react";
@@ -19,7 +19,7 @@ SwiperCore.use([Navigation, Pagination]);
 export default function Home() {
     const selectedCity = useSelector(state => state?.selectedCity?.city)
     const [cargoCount, setCargoCount] = useState(null)
-    const [countRoute, setCountRoute] = useState([])
+    const [countRoute, setCountRoute] = useState(null)
     const [cargoSwiperItems, setCargoSwiperItems] = useState({
         isLoading: false,
         error: null,
@@ -129,19 +129,20 @@ export default function Home() {
                             className={`col-lg-4 col-xxl-3 d-flex flex-lg-column justify-content-between mt-4 mt-lg-0 cargo-count ${!cargoCount ? 'cargo-count_hasnt' : ''}`}
                         >
                             <div className="box text-center">
-                                {cargoCount && <>
-                                    <div className="title-font dark-blue fw-9 fs-25 mb-2">
-                                        {cargoCount}
-                                    </div>
-                                    <div className="fs-12 mb-3">Грузов доставленно</div>
-                                </>}
+                                {cargoCount &&
+                                    <>
+                                        <div className="title-font dark-blue fw-9 fs-25 mb-2">
+                                            {cargoCount}
+                                        </div>
+                                        <div className="fs-12 mb-3">Грузов доставленно</div>
+                                    </>
+                                }
                                 <Link to="add-cargo" className="btn btn-1 fs-12 w-100 px-2">
                                     Добавить груз
                                 </Link>
                             </div>
                             <div className="box text-center">
-                                {
-                                    countRoute &&
+                                {countRoute &&
                                     <>
                                         <div className="title-font dark-blue fw-9 fs-25 mb-2">
                                             {countRoute}
@@ -149,7 +150,7 @@ export default function Home() {
                                         <div className="fs-12 mb-3">Маршрутов на сайте</div>
                                     </>
                                 }
-                                <Link to="add-car" className="btn btn-1 fs-12 w-100 px-2">
+                                <Link to="add-route" className="btn btn-1 fs-12 w-100 px-2">
                                     Добавить маршрут
                                 </Link>
                             </div>
@@ -275,77 +276,78 @@ export default function Home() {
                 : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
             }
 
-            <section className="sec-3 container mb-6">
-                <h2>Машины в Вашем городе</h2>
-                <div className="position-relative mb-4">
-                    <Swiper
-                        className="swiper-4"
-                        spaceBetween={4}
-                        slidesPerView={2}
-                        freeMode={true}
-                        breakpoints={{
-                            576: {
-                                slidesPerView: 2,
-                                spaceBetween: 10,
-                            },
-                            768: {
-                                slidesPerView: 3,
-                                spaceBetween: 8,
-                            },
-                            992: {
-                                slidesPerView: 3,
-                                spaceBetween: 16,
-                            },
-                            1400: {
-                                slidesPerView: 4,
-                                spaceBetween: 20,
-                            },
-                        }}
-                        pagination={{
-                            el: ".swiper-pagination",
-                            type: "bullets",
-                            clickable: true,
-                        }}
-                        navigation={{
-                            nextEl: ".swiper-button-next",
-                            prevEl: ".swiper-button-prev",
-                        }}
-                    >
-                        {routes?.isLoading
-                            ? routes?.data.map((route, index) => (
-                                <SwiperSlide key={index}>
-                                    <RouteCard
-                                        id={route.id}
-                                        title={`${route.fromRoute} - ${route.toRoute}`}
-                                        route={`${route.fromRoute} - ${route.toRoute}`}
-                                        size={route.car?.capacity}
-                                        carrying={route.car?.carrying}
-                                        carType={route.carBodyType?.name}
-                                        dimensions={`${route.car?.length}/${route.car?.width}/${route.car?.height}`}
-                                        date={route.dateType ? 'единожды' : 'постоянно'}
-                                        inProfile={false}
-                                    />
-                                </SwiperSlide>
-                            ))
-                            : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
-                        }
-
-                        <div className="swiper-button-prev">
-                            <IoChevronBackSharp/>
+            {routes?.isLoading
+                ? (routes.data.length > 0)
+                    ? <section className="sec-3 container mb-6">
+                        <h2>Маршруты в Вашем городе</h2>
+                        <div className="position-relative mb-4">
+                            <Swiper
+                                className="swiper-4"
+                                spaceBetween={4}
+                                slidesPerView={2}
+                                freeMode={true}
+                                breakpoints={{
+                                    576: {
+                                        slidesPerView: 2,
+                                        spaceBetween: 10,
+                                    },
+                                    768: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 8,
+                                    },
+                                    992: {
+                                        slidesPerView: 3,
+                                        spaceBetween: 16,
+                                    },
+                                    1400: {
+                                        slidesPerView: 4,
+                                        spaceBetween: 20,
+                                    },
+                                }}
+                                pagination={{
+                                    el: ".swiper-pagination",
+                                    type: "bullets",
+                                    clickable: true,
+                                }}
+                                navigation={{
+                                    nextEl: ".swiper-button-next",
+                                    prevEl: ".swiper-button-prev",
+                                }}
+                            >
+                                {routes?.data.map((route, index) => (
+                                    <SwiperSlide key={index}>
+                                        <RouteCard
+                                            id={route.id}
+                                            title={`${route.fromRoute} - ${route.toRoute}`}
+                                            route={`${route.fromRoute} - ${route.toRoute}`}
+                                            size={route.car?.capacity}
+                                            carrying={route.car?.carrying}
+                                            carType={route.carBodyType?.name}
+                                            dimensions={`${route.car?.length}/${route.car?.width}/${route.car?.height}`}
+                                            date={route.dateType ? 'единожды' : 'постоянно'}
+                                            inProfile={false}
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                                <div className="swiper-button-prev">
+                                    <IoChevronBackSharp/>
+                                </div>
+                                <div className="swiper-button-next">
+                                    <IoChevronForwardSharp/>
+                                </div>
+                                <div className="swiper-pagination"></div>
+                            </Swiper>
                         </div>
-                        <div className="swiper-button-next">
-                            <IoChevronForwardSharp/>
-                        </div>
-                        <div className="swiper-pagination"></div>
-                    </Swiper>
-                </div>
-                <button
-                    type="button"
-                    className="btn btn-2 fs-12 text-uppercase mx-auto"
-                >
-                    Найти МАШИНУ
-                </button>
-            </section>
+                        <NavLink
+                            to='/search'
+                            className="btn btn-2 fs-12 text-uppercase mx-auto"
+                        >
+                            Найти МАШИНУ
+                        </NavLink>
+                    </section>
+                    : null
+                : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
+            }
 
             <section id="sec-4" className="mb-6">
                 <div className="container h-100 d-flex align-items-center">

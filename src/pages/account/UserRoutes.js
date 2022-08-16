@@ -34,7 +34,7 @@ const UserRoutes = () => {
     const [routeId, setRouteId] = useState(null)
 
     useEffect(() => {
-        getUserRoutes( axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
+        (currentUser.roleId !== 2) && getUserRoutes( axiosPrivate, currentUser?.id, routesPagination.currentPage, routesPagination.pageLimit)
             .then(r => setRoutes(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
@@ -42,10 +42,10 @@ const UserRoutes = () => {
                 isLoading: true
             })))
             .catch(error => console.log(error))
-    }, [currentUser, routesPagination.pageLimit, routesPagination.currentPage])
+    }, [currentUser,  currentUser.roleId, routesPagination.pageLimit, routesPagination.currentPage])
 
     useEffect(() => {
-        getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
+        (currentUser.roleId !== 2) && getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
             .then(r => setArchiveRoutes(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
@@ -103,6 +103,20 @@ const UserRoutes = () => {
             })
             .catch(error => console.log(error))
     }
+    
+    useEffect(() => {
+        if(routes.data.length === 0) {
+            routesPagination.setCurrentPage(1)
+            routesPagination.setStartingPage(1)
+        }
+    }, [routes.data.length])
+
+    useEffect(() => {
+        if(archiveRoutes?.data?.length === 0) {
+            archiveRoutesPag.setStartingPage(1)
+            archiveRoutesPag.setCurrentPage(1)
+        }
+    }, [archiveRoutes?.data?.length])
 
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
@@ -128,7 +142,7 @@ const UserRoutes = () => {
                         className={tab === "active" ? "active tab-btn" : "tab-btn"}
                         onClick={() => setTab("active")}
                     >
-                        {`Активные объявления (${routes?.meta?.total})`}
+                        {`Активные объявления (${routes?.meta?.total ? routes.meta.total : '0'})`}
                     </button>
                     <button
                         type="button"
@@ -139,13 +153,13 @@ const UserRoutes = () => {
                         }
                         onClick={() => setTab("archive")}
                     >
-                        Архив ({archiveRoutes?.meta?.total})
+                        {`Архив (${archiveRoutes?.meta?.total ? archiveRoutes.meta.total : '0'})`}
                     </button>
                 </div>
             </div>
             {tab === "active" &&
                 <>
-                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4 d-flex justify-content-center">
+                    <div className="row row-cols-2 row-cols-xxl-3 g-1 g-sm-3 g-md-4">
                         {routes.isLoading
                             ? routes?.data?.length
                                 ? routes?.data.map((i, index) => (
@@ -161,7 +175,7 @@ const UserRoutes = () => {
                                             notes="cold"
                                             carType={i.carBodyType?.name}
                                             dimensions={`${i.car?.height}/${i.car?.width}/${i.car?.length}`}
-                                            date={(i.dateType === false) ? "постоянно" : 'единожды'}
+                                            date={i.dateType? "постоянно" : 'единожды'}
                                             url={`/route-page/${i.id}`}
                                             profileView='active'
                                             callbackForDelete={(id) => {
@@ -177,10 +191,10 @@ const UserRoutes = () => {
                                     </div>
                                 ))
                                 : <h6 className='text-center w-100 p-5'>У вас пока нет маршрутов</h6>
-                            : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
+                            : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
-                    {(routes?.data?.length > 0) && (
+                    {(routes?.meta?.total > 0) && (
                         <Pagination
                             className='mt-4'
                             pageLimit={routesPagination.pageLimit}
@@ -228,10 +242,10 @@ const UserRoutes = () => {
                                     </div>
                                 ))
                                 : <h6 className='text-center w-100 p-5'>У вас пока нет маршрутов</h6>
-                            : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
+                            : <div className='w-100 d-flex justify-content-center'><Loader color='#545454'/></div>
                         }
                     </div>
-                    {(archiveRoutes?.data?.length > 0) && (
+                    {(archiveRoutes?.meta?.total > 0) && (
                         <Pagination
                             className='mt-4'
                             pageLimit={archiveRoutesPag.pageLimit}

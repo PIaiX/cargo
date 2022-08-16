@@ -29,7 +29,7 @@ const CargoCard = (props) => {
                     {(props?.notesType?.length > 0) && (
                         <div className="fs-11 d-flex align-items-center flex-wrap mt-1 mt-sm-2 card-mini__notes">
                             <span className="fw-5">Особые пометки:</span>
-                            <div className="d-flex align-items-center">
+                            <div className="d-flex align-items-center flex-wrap">
                                 {props.notesType.map(item => (
                                     icons.map(i => {
                                         return (i.id === item) && <div

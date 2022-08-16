@@ -27,19 +27,19 @@ export const Footer = () => {
                   <Link to="/">ГЛАВНАЯ</Link>
                 </li>
                 <li>
-                  <Link to="/">ИНФОРМАЦИЯ</Link>
+                  <Link to="/information-pay">ОПЛАТА</Link>
                 </li>
                 <li>
                   <Link to="/search">ПОИСК</Link>
                 </li>
                 <li>
-                  <Link to="/">ЗАДАТЬ ВОПРОС</Link>
+                  <Link to="/contacts">КОНТАКТЫ</Link>
                 </li>
                 <li>
                   <Link to="/forum">ФОРУМ</Link>
                 </li>
                 <li>
-                  <Link to="/">ЛИЧНЫЙ КАБИНЕТ</Link>
+                  <Link to="/personal-account">ЛИЧНЫЙ КАБИНЕТ</Link>
                 </li>
               </ul>
             </div>

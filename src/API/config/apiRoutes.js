@@ -7,7 +7,8 @@ export default {
     FORGOT_PASSWORD_CODE_VERIFY: "/auth/forgotPassword/codeVerify",
     FORGOT_PASSWORD: "/auth/forgotPassword",
     REFRESH_TOKEN: "/auth/refreshToken",
-    
+    LOGOUT: "/auth/logout",
+
     // user
     ACCOUNT_TYPES: "/user/accountTypes",
     ACTIONS_USER: "/user",
@@ -49,8 +50,17 @@ export default {
     UPDATE_NAME_TEMP: '/template',
 
     // response
-    ACCEPT_RESPONSE: '/response/accept',
-    DELETE_RESPONSE: 'response',
+    RESPONSE_INCOMINGS_ROUTE: '/response/incumings/route',
+    RESPONSE_INCOMINGS_CARGO: '/response/incumings/cargo',
+    RESPONSE_OUTGOINGS_ROUTE: '/response/outgoings/route',
+    RESPONSE_OUTGOINGS_CARGO: '/response/outgoings/cargo',
+    RESPONSE_INPROCESS_ROUTE: '/response/inProcess/route',
+    RESPONSE_INPROCESS_CARGO: '/response/inProcess/cargo',
+    RESPONSE_COMPLETED_ROUTE: '/response/completed/route',
+    RESPONSE_COMPLETED_CARGO: '/response/completed/cargo',
+    RESPONSE_ACTIONS: '/response',
+    RESPONSE_ACCEPT: '/response/accept',
+    RESPONSE_COMPLETE: '/response/complete',
 
     // reports
     REPORT_ROUTE: '/report/route',
@@ -58,6 +68,9 @@ export default {
     REPORT_USER: '/report/user',
     REPORT_TOPIC: '/report/topic',
     REPORT_TOPIC_MESSAGE: '/report/topicMessage',
+
+    //question
+    QUESTION_ASK: '/question',
 
     // topic
     TOPIC_PAGINATE: '/topic/paginate',

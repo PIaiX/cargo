@@ -21,6 +21,7 @@ import currentUser from "../store/reducers/currentUser";
 import {useSelector} from "react-redux";
 import {Alert} from "react-bootstrap";
 import CustomModal from "../components/utilities/CustomModal";
+import {createResponse} from "../API/response";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -75,7 +76,7 @@ export default function RoutePage() {
     })
 
     const response = () => {
-        currentUser && acceptResponse(axiosPrivate, data?.route?.id)
+        currentUser && createResponse(axiosPrivate, {routeId: data?.route?.id, userId: currentUser?.id})
             .then(() => setAlertResponse(prevState => ({
                 ...prevState,
                 alertShow: true,
@@ -203,18 +204,18 @@ export default function RoutePage() {
                         </div>
                         <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                             <div>
-                                {!(data?.route?.dateType)
-                                    ? <span className="fw-5">Единожды</span>
-                                    : <span className="fw-5">Постоянно</span>
+                                {data?.route?.dateType
+                                    ? <span className="fw-5">Постоянно</span>
+                                    : <span className="fw-5">Единожды</span>
                                 }:
-                                {data?.route?.dateType === false
+                                {data?.route?.dateType
                                     ?
-                                    <>
-                                        <span> {data?.route?.date}</span>
-                                        <span> + {data?.route?.dateDays} дней</span>
-                                    </>
-                                    :
                                     <span> {data?.route?.datePeriodTypeForUser}</span>
+                                    :
+                                    <>
+                                    <span> {data?.route?.date}</span>
+                                    <span> + {data?.route?.dateDays} дней</span>
+                                    </>
                                 }
                             </div>
                         </div>
@@ -249,7 +250,7 @@ export default function RoutePage() {
 
                         <div
                             className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                            <div className='d-flex'>
+                            <div className='d-flex align-items-center'>
                                 <button
                                     type="button"
                                     className="btn btn-1 fs-12"

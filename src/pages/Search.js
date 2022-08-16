@@ -5,7 +5,7 @@ import SearchForm from '../components/SearchForm';
 import {searchCargo} from '../API/cargo';
 import {searchRoute} from '../API/route';
 import CargoCard from '../components/CargoCard';
-import {getRoute} from '../helpers/cargo';
+import {getNotesType, getRoute} from '../helpers/cargo';
 import Loader from '../components/Loader';
 import RouteCard from '../components/RouteCard';
 import Select from 'react-select'
@@ -92,6 +92,7 @@ export default function Search() {
                         <Select
                             name="sort"
                             className="w-100"
+                            classNamePrefix="react-select"
                             options={initialSorting}
                             value={initialSorting.length && initialSorting.filter(item => item.value === filters.orderBy)}
                             onChange={val => setFilters(prev => ({...prev, orderBy: val.value}))}
@@ -113,7 +114,7 @@ export default function Search() {
                                         id={item.id}
                                         title={item?.type?.name}
                                         route={getRoute(item)}
-                                        notesType={notesType}
+                                        notesType={getNotesType(item.items)}
                                         capacity={generalCapacity}
                                         weight={generalWeight}
                                     />

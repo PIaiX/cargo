@@ -13,6 +13,7 @@ import UserPatterns from '../pages/account/UserPatterns';
 import UserDocuments from '../pages/account/UserDocuments';
 import PersonalAccountLayout from '../pages/account/PersonalAccountLayout';
 import UserRoutes from "../pages/account/UserRoutes";
+import RoleFilter from "./RoleFilter";
 
 const PersonalAccountRouter = ({isMobile}) => {
 
@@ -26,9 +27,11 @@ const PersonalAccountRouter = ({isMobile}) => {
                 <Route path="profile" element={<UserProfile/>}/>
                 <Route path="view-profile" element={<ViewAccount/>}/>
                 <Route path="profile/edit" element={<ProfileEdit/>}/>
-                <Route path="user-cars" element={<UserCars/>}/>
-                <Route path="user-cargo" element={<UserCargo/>}/>
-                <Route path="user-routes" element={<UserRoutes/>}/>
+                <Route element={<RoleFilter/>}>
+                    <Route path="user-cargo" element={<UserCargo/>}/>
+                    <Route path="user-cars" element={<UserCars/>}/>
+                    <Route path="user-routes" element={<UserRoutes/>}/>
+                </Route>
                 <Route path="responses" element={<Responses/>}/>
                 <Route path="in-work" element={<InWork/>}/>
                 <Route path="tariffs" element={<Tariffs/>}/>

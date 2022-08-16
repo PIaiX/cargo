@@ -1,5 +1,6 @@
-import React, {useLayoutEffect} from "react";
-import {Route, Routes, useLocation} from "react-router-dom";
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import AuthRoutes from "./AuthRoutes";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -27,11 +28,14 @@ import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
 import EditRoute from "../pages/EditRoute";
 import ViewAccount from "../pages/account/ViewAccount";
+import InformationAboutPay from "../pages/InformationAboutPay";
+import Contacts from "../pages/Contacts";
+import RoleFilter from "./RoleFilter";
 import ForumTopics from '../components/ForumTopics';
 
 export default function AppRouter() {
 
-    const Wrapper = ({children}) => {
+const Wrapper = ({children}) => {
         const {pathname} = useLocation();
         useLayoutEffect(() => document.documentElement.scrollTo(0, 0), [pathname]);
         return children
@@ -47,10 +51,12 @@ export default function AppRouter() {
                     <Route path="all-news" element={<AllNews/>}/>
                     <Route path="news/:slug" element={<ArticleFull/>}/>
                     <Route path="forum" element={<Forum/>}>
-                        <Route index element={<ForumTopics/>}/>
-                        <Route path="my-topics" element={<ForumTopics/>}/>
+                      <Route index element={<ForumTopics/>}/>
+                      <Route path="my-topics" element={<ForumTopics/>}/>
                     </Route>
                     <Route path="forum-section/:id" element={<ForumTopicChat/>}/>
+                    <Route path="information-pay" element={<InformationAboutPay/>}/>
+                    <Route path="contacts" element={<Contacts/>}/>
                     {/* Роуты доступные не зареганным пользователям */}
                     <Route element={<AuthRoutes/>}>
                         <Route path="login" element={<Login/>}/>
@@ -63,15 +69,17 @@ export default function AppRouter() {
                         <Route path="route-page" element={<RoutePage/>}>
                             <Route path=':id' element={<RoutePage/>}/>
                         </Route>
-                        <Route path="add-cargo" element={<AddCargo/>}/>
-                        <Route path="add-car" element={<AddCar/>}/>
-                        <Route path="add-route" element={<AddRoute/>}/>
-                        <Route path="edit-car/:id" element={<EditCar/>}/>
-                        <Route path="edit-cargo/:id" element={<EditCargo/>}/>
-                        <Route path="edit-route" element={<EditRoute/>}>
-                            <Route path=':id' element={<EditRoute/>}/>
+                        <Route element={<RoleFilter/>}>
+                            <Route path="add-cargo" element={<AddCargo/>}/>
+                            <Route path="add-car" element={<AddCar/>}/>
+                            <Route path="add-route" element={<AddRoute/>}/>
+                            <Route path="edit-car/:id" element={<EditCar/>}/>
+                            <Route path="edit-cargo/:id" element={<EditCargo/>}/>
+                            <Route path="edit-route" element={<EditRoute/>}>
+                                <Route path=':id' element={<EditRoute/>}/>
+                            </Route>
                         </Route>
-                        {/*<Route path="my-topics" element={<ForumMyTopics />} />*/}
+                        <Route path="my-topics" element={<ForumMyTopics/>}/>
                         <Route path='personal-account/*' element={<PersonalAccount/>}/>
                         <Route path='view-profile' element={<ViewAccount/>}>
                             <Route path=':id' element={<ViewAccount/>}/>

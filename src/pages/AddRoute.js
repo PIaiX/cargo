@@ -56,11 +56,11 @@ export default function AddRoute() {
 
     const [valid, setValid] = useState(fields);
 
-    const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
-    const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50
-    const isInValidDateType = data?.dateType === undefined
-    const isInValidCar = data?.carId === undefined
-    const isInValidPrepayment = data?.prepayment === undefined || data?.prepayment > 100 || data?.prepayment < 0
+    const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50;
+    const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50;
+    const isInValidDateType = data?.dateType === undefined;
+    const isInValidCar = data?.carId === undefined;
+    const isInValidPrepayment = data?.prepayment === undefined || data?.prepayment > 100 || data?.prepayment < 0;
     const isInValidPhone =
         (data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').length > 12)
         || !(data?.contacts?.map(i => i.phone)[0].replace(/\s/g, '').includes('+7'))
@@ -114,6 +114,9 @@ export default function AddRoute() {
     const onReset = () => {
         setData({
             userId: currentUser?.id,
+            dateType: 0,
+            bargainType: 0,
+            calculateType: 0,
         })
         setContactsArray([]);
     };
@@ -163,7 +166,7 @@ export default function AddRoute() {
             setValid({...valid, isInValidNameTemplate: true})
         } else {
             try {
-                if (data?.dateType === true) {
+                if (data?.dateType === 1) {
                     delete data?.date
                     delete data?.dateDays
                 } else {
@@ -274,6 +277,10 @@ export default function AddRoute() {
     }
 
     useEffect(() => {
+        (data?.date === 'Invalid Date') && delete data?.date
+    }, [data?.date])
+
+    useEffect(() => {
         getDate(data?.dateForInput)
     }, [data?.dateForInput])
 
@@ -308,7 +315,7 @@ export default function AddRoute() {
                             </button>
                             <button
                                 type="button"
-                                style={{background: (data?.dateType === 0 || data?.dateType === 1) && '#01BFC4'}}
+                                style={{background: (data?.date || data?.datePeriodType) && '#01BFC4'}}
                                 onClick={() => setActiveField(2)}
                             >
                                 2
@@ -576,9 +583,12 @@ export default function AddRoute() {
                                                             <input
                                                                 type="date"
                                                                 name="date"
+                                                                style={{height: 38 + 'px'}}
                                                                 min={currentDate()}
                                                                 defaultValue={data?.dateForInput}
-                                                                onChange={e => getDate(e.target.value)}
+                                                                onChange={e => {
+                                                                    getDate(e.target.value)
+                                                                }}
                                                             />
                                                         </label>
                                                         <span className="mx-2 mx-xxl-3">+</span>
@@ -588,7 +598,7 @@ export default function AddRoute() {
                                                             data-warning="false"
                                                         >
                                                             <AsyncSelect
-                                                                className="fs-12 w-100"
+                                                                className="w-100"
                                                                 classNamePrefix="react-select"
                                                                 placeholder={"Выберите..."}
                                                                 loadOptions={loadOptions3}
@@ -625,12 +635,11 @@ export default function AddRoute() {
                     </span>
                                                     </label>
                                                     <div
-                                                        data-label="loadingPeriodType"
                                                         data-warning="false"
                                                         className={`${data.dateType !== 0 ? '' : 'disabled'} `}
                                                     >
                                                         <AsyncSelect
-                                                            className="fs-12 w-100"
+                                                            className="w-100"
                                                             classNamePrefix="react-select"
                                                             placeholder={"Выберите..."}
                                                             loadOptions={loadOptions2}
@@ -1074,7 +1083,7 @@ export default function AddRoute() {
                                                         resetFieldVal(e, 'isInValidPhone')
                                                     }}
                                                     style={{borderColor: valid.isInValidPhone && 'red'}}
-                                                    placeholder="+ 7 (962) 458 65 79"
+                                                    placeholder="+ 79624586579"
                                                     className="w-100 fs-12"
                                                 />
                                                 {valid.isInValidPhone && <span className='position-absolute'
@@ -1231,21 +1240,23 @@ export default function AddRoute() {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={(data?.dateType !== undefined) ? "filled" : ""}
+                                            className={(data?.date || data?.datePeriodType) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>
                                         <div className="fs-09">
-                                            {data?.dateType === 0
+                                            {data?.dateType
                                                 ?
+                                                <>
+                                                    <span>Постоянно: {(data?.datePeriodType === 0) && "по рабочим дням"}{data?.datePeriodType === 1 && 'ежедневно'}{data?.datePeriodType === 2 && "через день"}</span>
+                                                </>
+                                                :
                                                 <>
                                                     <span className="me-1">Единожды:</span>
                                                     <span
                                                         className="me-1">{(data?.date === 'Invalid Date') ? '' : data?.date}</span>
                                                     <span>{data?.days ? `+ ${data?.days} дней` : ''}</span>
                                                 </>
-                                                :
-                                                <span>Постоянно {data?.datePeriodTypeForUser}</span>
                                             }
                                         </div>
                                     </li>
@@ -1446,7 +1457,7 @@ export default function AddRoute() {
                 closeButton={true}
                 size={'lg'}
             >
-                <div>
+                <div className={`${templates?.length > 0 ? 'items' : ''}`}>
                     <div className="d-flex align-items-center">
                         <div className="flex-1">
                             {templates?.length > 0 && <h2>Выберите шаблон</h2>}
@@ -1472,7 +1483,7 @@ export default function AddRoute() {
                                                         carId: item?.route?.carId,
                                                         carName: item?.route?.car?.name,
                                                         dateDays: item?.route?.dateDays,
-                                                        dateType: item?.route?.dateType,
+                                                        dateType: Number(item?.route?.dateType),
                                                         datePeriodType: +item?.route?.datePeriodType,
                                                         datePeriodTypeForUser: item?.route?.datePeriodTypeForUser,
                                                         bargainType: item?.route?.bargainType,

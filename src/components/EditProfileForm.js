@@ -5,15 +5,18 @@ import {NavLink, useNavigate} from "react-router-dom";
 import {deleteUserAvatar, getAccountType} from "../API/profile";
 import {updateUserInfo} from "../API/profile";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import AsyncSelect from "react-select/async";
 import {onInputHandler, onRadioHandler} from "../helpers/collectForms";
 import CustomModal from "./utilities/CustomModal";
+import {setCurrentUser} from "../store/reducers/currentUser";
 
 const EditProfileForm = () => {
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const currentUser = useSelector(state => state.currentUser.data.user)
+    const currentToken = useSelector(state => state.currentUser.data.token)
     const axiosPrivate = useAxiosPrivate()
     const [images, setImages] = useState([{data_url: '/img/users/no-photo.png'}]);
     const [selectAccType, setSelectAccType] = useState(null)
@@ -87,12 +90,17 @@ const EditProfileForm = () => {
         for (const key in req) {
             formData.append(key, req[key])
         }
-        updateUserInfo(axiosPrivate, currentUser?.id, formData, )
-                .then(() => {
+        updateUserInfo(axiosPrivate, currentUser?.id, formData )
+                .then((res) => {
                     setShowCompleteFix({
                         show: true,
                         complete: true
                     })
+                    const payload = {
+                        user: res?.data?.body,
+                        token: currentToken
+                    }
+                    dispatch(setCurrentUser(payload))
                     setTimeout(() => {
                         setShowCompleteFix({
                             show: false,
@@ -116,7 +124,8 @@ const EditProfileForm = () => {
         }
     }, [data])
 
-    const deleteAvatar = () => {
+    const deleteAvatar = (e) => {
+        e.preventDefault()
         try {
             deleteUserAvatar(axiosPrivate, currentUser?.id)
         } catch (error) {
@@ -143,8 +152,6 @@ const EditProfileForm = () => {
         show: false,
         complete: null
     })
-
-    console.log(data)
 
     return (
         <form
@@ -187,9 +194,10 @@ const EditProfileForm = () => {
                                                         Загрузить фото
                                                     </button>
                                                     <button
-                                                        onClick={() => {
+                                                        type='button'
+                                                        onClick={(e) => {
                                                             onImageRemove(index)
-                                                            deleteAvatar()
+                                                            deleteAvatar(e)
                                                         }}
                                                     >
                                                         <img
