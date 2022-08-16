@@ -19,10 +19,6 @@ export default function ForumWidget(props) {
             .catch(error => setMessages(prev => ({...prev, isLoading: true, error})))
     }, [])
 
-    useEffect(() => {
-        console.log(messages)
-    }, [messages])
-
     return messages.isLoading
         ? messages?.items?.length
             ? <aside className={props.className}>

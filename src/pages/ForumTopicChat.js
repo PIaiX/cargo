@@ -19,6 +19,7 @@ import {useForm} from 'react-hook-form';
 import ValidateWrapper from '../components/utilities/ValidateWrapper';
 import useAxiosPrivate from '../hooks/axiosPrivate';
 import CustomModal from '../components/utilities/CustomModal';
+import Alert from 'react-bootstrap/Alert';
 
 export default function ForumTopicChat() {
     TimeAgo.addLocale(ru)
@@ -62,6 +63,13 @@ export default function ForumTopicChat() {
     const [replyData, setReplyData] = useState({})
     const [reportData, setReportData] = useState({})
 
+    const initialSubmitAlert = {
+        variant: 'success',
+        message: '',
+        isShow: false
+    }
+    const [submitAlert, setSubmitAlert] = useState(initialSubmitAlert)
+
     const onSubmitReply = (data) => setReplyData(prev => ({...prev, ...data}))
 
     const onSubmitReport = (data) => {
@@ -75,10 +83,23 @@ export default function ForumTopicChat() {
                 payloads.content = data.report
             }
 
-            reportTopic(axiosPrivate, payloads).then(() => {
-                reportReset({report: ''})
-                setReportData({})
-            })
+            reportTopic(axiosPrivate, payloads)
+                .then(() => {
+                    reportReset({report: ''})
+                    setReportData({})
+                    setSubmitAlert(prev => ({
+                        ...prev,
+                        variant: 'success',
+                        message: 'Жалоба успешно отправлена',
+                        isShow: true
+                    }))
+                })
+                .catch(() => setSubmitAlert(prev => ({
+                    ...prev,
+                    variant: 'danger',
+                    message: 'Не удалось отправить жалобу',
+                    isShow: true
+                })))
         }
 
         if (messages?.items?.length && reportData?.topicMessageId && userId) {
@@ -91,10 +112,23 @@ export default function ForumTopicChat() {
                 payloads.content = data.report
             }
 
-            reportTopicMessage(axiosPrivate, payloads).then(() => {
-                reportReset({report: ''})
-                setReportData({})
-            })
+            reportTopicMessage(axiosPrivate, payloads)
+                .then(() => {
+                    reportReset({report: ''})
+                    setReportData({})
+                    setSubmitAlert(prev => ({
+                        ...prev,
+                        variant: 'success',
+                        message: 'Жалоба успешно отправлена',
+                        isShow: true
+                    }))
+                })
+                .catch(() => setSubmitAlert(prev => ({
+                    ...prev,
+                    variant: 'danger',
+                    message: 'Не удалось отправить жалобу',
+                    isShow: true
+                })))
         }
     }
 
@@ -147,16 +181,29 @@ export default function ForumTopicChat() {
                 payloads.topicMessageId = replyData.topicMessageId
             }
 
-            createTopicMessage(axiosPrivate, payloads).then(() => {
-                replyReset({answer: ''})
-                setReplyData({})
-                if (chatPagination.currentPage === 1) {
-                    paginateTopicMessagesRequest(1)
-                } else {
-                    chatPagination.setCurrentPage(1)
-                    chatPagination.setStartingPage(1)
-                }
-            })
+            createTopicMessage(axiosPrivate, payloads)
+                .then(() => {
+                    replyReset({answer: ''})
+                    setReplyData({})
+                    if (chatPagination.currentPage === 1) {
+                        paginateTopicMessagesRequest(1)
+                    } else {
+                        chatPagination.setCurrentPage(1)
+                        chatPagination.setStartingPage(1)
+                    }
+                    setSubmitAlert(prev => ({
+                        ...prev,
+                        variant: 'success',
+                        message: 'Тема успешно создана',
+                        isShow: true
+                    }))
+                })
+                .catch(() => setSubmitAlert(prev => ({
+                    ...prev,
+                    variant: 'danger',
+                    message: 'Не удалось создать тему',
+                    isShow: true
+                })))
         }
     }, [replyData, userId, topic, messages])
 
@@ -174,8 +221,15 @@ export default function ForumTopicChat() {
         }
     }, [isShowReportModal])
 
+    useEffect(() => {
+        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 4000)
+    }, [submitAlert])
+
     return (<>
         <main className='bg-white py-4 py-sm-5'>
+            <Alert className='submit-alert' variant={submitAlert.variant} show={submitAlert.isShow}>
+                {submitAlert.message}
+            </Alert>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol className="breadcrumb">
@@ -210,6 +264,8 @@ export default function ForumTopicChat() {
                         ? topic?.item
                             ? <ForumComment
                                 id={topic?.item?.id}
+                                idName='topicId'
+                                userId={userId}
                                 author={{
                                     name: topic?.item?.user?.firstName || 'Имя не указано',
                                     imgURL: checkPhotoPath(topic?.item?.user?.avatar),
@@ -287,6 +343,8 @@ export default function ForumTopicChat() {
                             ? messages?.items?.map(item => (
                                 <ForumComment
                                     id={item?.id}
+                                    idName='topicMessageId'
+                                    userId={userId}
                                     key={item?.id}
                                     author={{
                                         name: item?.user?.firstName || 'Имя не указано',

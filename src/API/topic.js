@@ -45,9 +45,18 @@ const paginateUserTopics = async (axiosPrivate, userId, page, limit) => {
     }
 }
 
-const likeTopic = async (axiosPrivate) => {
+const likeTopic = async (axiosPrivate, payloads) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_LIKE}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_LIKE}`, payloads)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const resetLikeTopic = async (axiosPrivate, payloads) => {
+    try {
+        const response = await axiosPrivate.delete(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_LIKE}`, {data: payloads})
         return response.data
     } catch (error) {
         console.log(error)
@@ -109,9 +118,18 @@ const paginateLastMessages = async (page, limit, orderBy) => {
     }
 }
 
-const likeTopicMessage = async (axiosPrivate) => {
+const likeTopicMessage = async (axiosPrivate, payloads) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_LIKE}`)
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_LIKE}`, payloads)
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const resetLikeTopicMessage = async (axiosPrivate, payloads) => {
+    try {
+        const response = await axiosPrivate.delete(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_MESSAGE_LIKE}`, {data: payloads})
         return response.data
     } catch (error) {
         console.log(error)
@@ -142,12 +160,14 @@ export {
     getStatistics,
     paginateUserTopics,
     likeTopic,
+    resetLikeTopic,
     createTopic,
     getTopic,
     createTopicMessage,
     paginateTopicMessages,
     paginateLastMessages,
     likeTopicMessage,
+    resetLikeTopicMessage,
     reportTopic,
     reportTopicMessage
 }

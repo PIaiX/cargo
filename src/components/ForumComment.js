@@ -1,34 +1,78 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {IconContext} from "react-icons";
 import {MdChatBubble, MdFormatQuote, MdThumbDown, MdThumbUp} from "react-icons/md";
 import {BsFillExclamationTriangleFill} from "react-icons/bs";
 import useAxiosPrivate from '../hooks/axiosPrivate';
+import {likeTopic, likeTopicMessage, resetLikeTopic, resetLikeTopicMessage} from '../API/topic';
 
 export default function ForumComment(props) {
     const axiosPrivate = useAxiosPrivate()
-    const [likes, setLikes] = useState({count: props.likes, state: props.likeStatus})
-    const [dislikes, setDislikes] = useState({count: props.dislikes, state: props.likeStatus})
+    const [likes, setLikes] = useState(+props.likes)
+    const [dislikes, setDislikes] = useState(+props.dislikes)
+    const [likeStatus, setLikeStatus] = useState(props.likeStatus)
+
+    const getPayloads = (isLike) => ({
+        isLike,
+        userId: props.userId,
+        [props.idName]: props.id
+    })
+
+    const sendLikeRequests = (payloads) => {
+        if (props.userId) {
+            if (props.idName === 'topicId') likeTopic(axiosPrivate, payloads)
+            if (props.idName === 'topicMessageId') likeTopicMessage(axiosPrivate, payloads)
+        }
+    }
+
+    const sendResetLikeRequests = (payloads) => {
+        if (props.userId) {
+            if (props.idName === 'topicId') resetLikeTopic(axiosPrivate, payloads)
+            if (props.idName === 'topicMessageId') resetLikeTopicMessage(axiosPrivate, payloads)
+        }
+    }
 
     const likeHandler = () => {
-        if (likes.state === false && dislikes.state === false) {
-            setLikes({count: likes.count + 1, state: true})
-        } else if (likes.state === false && dislikes.state === true) {
-            setLikes({count: likes.count + 1, state: true})
-            setDislikes({count: dislikes.count - 1, state: false})
-        } else if (likes.state === true && dislikes.state === false) {
-            setLikes({count: likes.count - 1, state: false})
+        if (likeStatus) {
+            setLikes(prev => (prev > 0) ? prev - 1 : prev)
+            setLikeStatus(null)
+
+            sendResetLikeRequests(getPayloads(true))
+
+        } else if (likeStatus === false) {
+            setLikes(prev => prev + 1)
+            setDislikes(prev => (prev > 0) ? prev - 1 : prev)
+            setLikeStatus(true)
+
+            sendLikeRequests(getPayloads(true))
+
+        } else if (likeStatus === null) {
+            setLikes(prev => prev + 1)
+            setLikeStatus(true)
+
+            sendLikeRequests(getPayloads(true))
         }
     }
 
     const dislikeHandler = () => {
-        if (dislikes.state === false && likes.state === false) {
-            setDislikes({count: dislikes.count + 1, state: true})
-        } else if (dislikes.state === false && likes.state === true) {
-            setDislikes({count: dislikes.count + 1, state: true})
-            setLikes({count: likes.count - 1, state: false})
-        } else if (dislikes.state === true && likes.state === false) {
-            setDislikes({count: dislikes.count - 1, state: false})
+        if (likeStatus) {
+            setLikes(prev => (prev > 0) ? prev - 1 : prev)
+            setDislikes(prev => prev + 1)
+            setLikeStatus(false)
+
+            sendLikeRequests(getPayloads(false))
+
+        } else if (likeStatus === false) {
+            setDislikes(prev => (prev > 0) ? prev - 1 : prev)
+            setLikeStatus(null)
+
+            sendResetLikeRequests(getPayloads(false))
+
+        } else if (likeStatus === null) {
+            setDislikes(prev => prev + 1)
+            setLikeStatus(false)
+
+            sendLikeRequests(getPayloads(false))
         }
     }
 
@@ -77,7 +121,7 @@ export default function ForumComment(props) {
                     className='d-flex align-items-center mb-lg-3'
                 >
                     {
-                        (props.likeStatus === true)
+                        (likeStatus === true)
                             ? <IconContext.Provider value={{className: "icon-15 green", title: "Нравится"}}>
                                 <MdThumbUp/>
                             </IconContext.Provider>
@@ -85,14 +129,14 @@ export default function ForumComment(props) {
                                 <MdThumbUp/>
                             </IconContext.Provider>
                     }
-                    {props.likesCount && <span className='ms-1 ms-sm-2'>{props.likesCount}</span>}
+                    {(likes > 0) && <span className='ms-1 ms-sm-2'>{likes}</span>}
                 </button>
                 <button
                     type='button'
                     onClick={() => dislikeHandler()}
                     className='d-flex align-items-center mb-lg-3 ms-3 ms-sm-4 ms-lg-0'>
                     {
-                        (props.likeStatus === false)
+                        (likeStatus === false)
                             ? <IconContext.Provider value={{className: "icon-15 red", title: "Не нравится"}}>
                                 <MdThumbDown/>
                             </IconContext.Provider>
@@ -100,7 +144,7 @@ export default function ForumComment(props) {
                                 <MdThumbDown/>
                             </IconContext.Provider>
                     }
-                    {props.dislikesCount && <span className='ms-1 ms-sm-2'>{props.dislikesCount}</span>}
+                    {(dislikes > 0) && <span className='ms-1 ms-sm-2'>{dislikes}</span>}
                 </button>
                 <button
                     type='button'
