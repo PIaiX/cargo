@@ -80,7 +80,7 @@ const EditRoute = () => {
     useEffect(() => {
         setData(prevState => ({...prevState, date: getDate(data?.dateForInput)}))
     }, [data?.dateForInput])
-    console.log(data)
+
     const fields = {
         isInValidFromRoute: false,
         isInValidToRoute: false,
@@ -298,7 +298,6 @@ const EditRoute = () => {
 
     const [showModalValidation, setShowModalValidation] = useState(false)
 
-    console.log(selectDays)
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
