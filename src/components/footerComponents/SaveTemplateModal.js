@@ -1,8 +1,4 @@
 import React, { useState} from "react";
-import { IoCloseOutline } from "react-icons/io5";
-import { useDispatch} from "react-redux/es/exports";
-import { saveCargoTemplate } from "../../store/reducers/savedCargoTemplates";
-import { saveRouteTemplate } from "../../store/reducers/savedRouteTemplates";
 import FormErrorMessage from "./../utilities/FormErrorMessage";
 
 const initialFormValue = {
@@ -10,11 +6,10 @@ const initialFormValue = {
   remark: "",
 };
 
-export default function SaveTemplateModal({ type, setIsShow }) {
+export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
   const [formValue, setFormValue] = useState(initialFormValue);
   const [formError, setFormError] = useState("");
 
-  const dispatch = useDispatch();
 
   const handleFormChange = (e) => {
     setFormError("");
@@ -30,12 +25,7 @@ export default function SaveTemplateModal({ type, setIsShow }) {
     }
     setFormValue(initialFormValue);
     setFormError("");
-    if (type === "Cargo") {
-      dispatch(saveCargoTemplate(formValue));
-    }
-    if (type === "Route") {
-      dispatch(saveRouteTemplate(formValue));
-    }
+    onSubmit(formValue)
     setIsShow(false)
   };
 

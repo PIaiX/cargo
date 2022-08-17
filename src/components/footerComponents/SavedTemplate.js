@@ -1,30 +1,16 @@
 import React from "react";
 import { IconContext } from "react-icons";
 import { IoTrash } from "react-icons/io5";
-import { useDispatch } from "react-redux/es/exports";
-import { deleteCargoTemplate, setCurrentCargoTemplate } from "../../store/reducers/savedCargoTemplates";
-import { deleteRouteTemplate, setCurrentRouteTemplate } from "../../store/reducers/savedRouteTemplates";
 
-
-export default function SavedTemplate({name, remark, id, type}) {
-    const dispatch = useDispatch()
+export default function SavedTemplate({name, remark, id, setCurrentTemplate, setIsShow}) {
 
     const handleTemplateDelete = () => {
-      if(type === "Cargo"){
-        dispatch(deleteCargoTemplate(id))
-      }
-      if(type === "Car"){
-        dispatch(deleteRouteTemplate(id))
-      }
+
     }
 
     const handleSetCurrentTemplate = () => {
-      if(type === "Cargo"){
-        dispatch(setCurrentCargoTemplate(id))
-      }
-      if(type === "Car"){
-        dispatch(setCurrentRouteTemplate(id))
-      }
+      setCurrentTemplate(id)
+      setIsShow(false)
     }
 
   return (

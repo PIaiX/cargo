@@ -33,29 +33,12 @@ export default function Home() {
     const [selectFirstCity, setSelectFirstCity] = useState("");
     const [selectSecondCity, setSelectSecondCity] = useState("");
 
-<<<<<<< HEAD
-    getAllNews(1, 5, "desc")
-      .then((result) =>
-        setNews((prev) => ({
-          ...prev,
-          isLoading: true,
-          meta: result?.meta,
-          items: result?.data,
-        }))
-      )
-      .catch((error) =>
-        setNews((prev) => ({ ...prev, isLoading: true, error }))
-      );
-  }, []);
-=======
     useEffect(() => {
         getCities().then((res) => {
             if (res.status === 200) {
                 setData(res.body);
             }
         });
->>>>>>> 3f6b98d2a746e735a026a130875814054d4f7b6e
-
         getAllNews(1, 5, "desc")
             .then(result => setNews(prev => ({
                     ...prev,
@@ -69,6 +52,7 @@ export default function Home() {
             );
 
         getCargoCount().then(result => setCargoCount(result))
+
     }, []);
 
     useEffect(() => {

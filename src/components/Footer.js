@@ -455,9 +455,6 @@ export const Footer = () => {
       {/*  </div>*/}
       {/*</div>*/}
 
-      <ChooseTemplateModal type="Cargo" />
-      <ChooseTemplateModal type="Route" />
-
       {/* Offcanvas */}
       <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">
         <div className="d-flex align-items-center justify-content-center">

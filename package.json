@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/styled": "^11.10.0",
     "@fingerprintjs/fingerprintjs": "^3.3.3",
+    "@mui/material": "^5.9.3",
     "@popperjs/core": "^2.11.4",
     "@reduxjs/toolkit": "^1.8.2",
     "@testing-library/jest-dom": "^5.15.0",

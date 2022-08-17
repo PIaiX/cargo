@@ -29,4 +29,7 @@ export default {
     CARGO_ARCHIVE: "/cargo/archive",
     CARGO_UNARCHIVE: "/cargo/unArchive",
     CARGO_ACTIONS: "/cargo",
+
+    //templates
+    CARGO_TEMPLATE: "/template/cargo"
 }

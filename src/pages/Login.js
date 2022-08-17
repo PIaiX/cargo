@@ -95,13 +95,9 @@ export default function Login() {
       window.log("logged in successfully")
       return
     } catch (error) {
-<<<<<<< HEAD
       if(!error.response.data) return
       
       if(error.response.data.status === 400) {
-=======
-      if(error?.response?.data?.status === 400) {
->>>>>>> 3f6b98d2a746e735a026a130875814054d4f7b6e
         setFormErrors({
           email: apiResponseMessages.USER_NOT_FOUND,
           password: apiResponseMessages.USER_NOT_FOUND

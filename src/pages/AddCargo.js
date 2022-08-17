@@ -22,15 +22,17 @@ import {
   optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCargoFormData,
-  setCurrentCargoTemplate,
-} from "../store/reducers/savedCargoTemplates";
 import CustomModal from "../components/utilities/CustomModal";
 import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
+import ChooseTemplateModal from "../components/footerComponents/ChooseTemplateModal";
 import apiRoutes from "../API/config/apiRoutes";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import { parseCargoClientToServer } from "../helpers/parser";
+import {
+  parseCargoClientToServer,
+  parseCargoServerToClient,
+} from "../helpers/parser";
+import AlertCustom from "../components/utilities/AlertCustom";
+import { getCurrentUserCargoTemplates } from "../API/templates";
 
 const initialLoading = [
   [
@@ -315,12 +317,17 @@ const initialContactsField = [
 ];
 
 export default function AddCargo() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const ref = useRef(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
   const [isShowTemplateModal, setIsShowTemplateModal] = useState(false);
+  const [isShowChooseTemplateModal, setIsShowChooseTemplateModal] =
+    useState(false);
 
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
@@ -334,28 +341,30 @@ export default function AddCargo() {
 
   const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
 
-  const [itemTypes, setItemTypes] = useState([])
-  const [packageTypes, setPackageTypes] = useState([])
+  const [itemTypes, setItemTypes] = useState([]);
+  const [packageTypes, setPackageTypes] = useState([]);
 
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
-  const currentTemplate = useSelector(
-    (state) => state.savedCargoTemplates.currentTemplate
-  );
 
-    useEffect(() => {
-      const getOptions = async () => {
-        try {
-          const itemResponse = await axiosPrivate.get("/cargo/itemTypes")
-          const packageResponse = await axiosPrivate.get("/cargo/packageTypes")
-          setItemTypes(itemResponse.data.body)
-          setPackageTypes(packageResponse.data.body)
-        } catch (error) {
-          window.log(error)
-        }
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(undefined);
+
+  const [currentTemplate, setCurrentTemplate] = useState(null);
+  const [allCargoTemplates, setAllCargoTemplates] = useState([]);
+
+  useEffect(() => {
+    const getOptions = async () => {
+      try {
+        const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
+        const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
+        setItemTypes(itemResponse.data.body);
+        setPackageTypes(packageResponse.data.body);
+      } catch (error) {
+        window.log(error);
       }
+    };
 
-      getOptions()
-    }, [])
+    getOptions();
+  }, []);
 
   const getEntireFormValue = () => {
     const newContactsField = [
@@ -379,14 +388,28 @@ export default function AddCargo() {
   };
 
   useEffect(() => {
-    if (currentTemplate) {
-      setLoading(currentTemplate.data.loading);
-      setUnloading(currentTemplate.data.unloading);
-      setCargo(currentTemplate.data.cargo);
-      setRequirements(currentTemplate.data.requirements);
-      setPayment(currentTemplate.data.payment);
-      setContacts(currentTemplate.data.contacts);
-    }
+    const getTemplates = async () => {
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    };
+    getTemplates();
+  }, []);
+
+  useEffect(() => {
+    if(!currentTemplate) return
+
+    const newTemplate = parseCargoServerToClient(currentTemplate.cargo)
+    console.log(newTemplate)
+      setLoading(newTemplate.loading);
+      setUnloading(newTemplate.unloading);
+      setCargo(newTemplate.cargo);
+      setRequirements(newTemplate.requirements);
+      setPayment(newTemplate.payment);
+      setContacts(newTemplate.contacts);
   }, [currentTemplate]);
 
   //запись в data значений селектов (React-Select)
@@ -606,6 +629,7 @@ export default function AddCargo() {
 
   //поиск значения полей в массиве
   const getObj = (opt, state, param, i) => {
+    
     if (i !== undefined) {
       if (
         opt.find(
@@ -656,7 +680,7 @@ export default function AddCargo() {
     }
   };
   const getValArr = (state, i, param) => {
-    let val = state[i].find((obj) => obj.name === param).value;
+    let val = state[i].find((obj) => obj.name === param)?.value;
     if (val !== null && val !== undefined && val !== "") {
       return val;
     } else {
@@ -717,10 +741,23 @@ export default function AddCargo() {
 
   //добавление fieldset
   let addState = (state, func, stateName) => {
-    const checkBoxes = ["adr1", "adr2", "adr3", "adr4", "adr5", "adr6", "adr7", "adr8", "adr9", "tir", "emkt"]
+    const checkBoxes = [
+      "adr1",
+      "adr2",
+      "adr3",
+      "adr4",
+      "adr5",
+      "adr6",
+      "adr7",
+      "adr8",
+      "adr9",
+      "tir",
+      "emkt",
+    ];
     let arr = state[0];
     let clearedArr = arr.map((obj) => {
-      if(stateName && stateName === "cargo" && checkBoxes.includes(obj.name)) return { ...obj, value: false };
+      if (stateName && stateName === "cargo" && checkBoxes.includes(obj.name))
+        return { ...obj, value: false };
       return { ...obj, value: "" };
     });
     func([...state, clearedArr]);
@@ -768,38 +805,108 @@ export default function AddCargo() {
     setPayment(initialPayment);
     setContacts(initialContacts);
     setContactsField(initialContactsField);
-
-    dispatch(setCurrentCargoTemplate(null));
   };
-
-  
 
   //финальная проверка на заполнение и отправка формы
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // const isValidForm = checkAllRequiredFields();
-    // if (!isValidForm) return alert("Заполните все обязательные поля");
+    const isValidForm = checkAllRequiredFields();
+    if (!isValidForm) {
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
 
-    const result = parseCargoClientToServer(getEntireFormValue(), currentUserId);
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
+    }
+
+    const result = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId
+    );
 
     try {
-      const response = await axiosPrivate.post(apiRoutes.CARGO_CREATE, result);
-      console.log(response);
+      await axiosPrivate.post(apiRoutes.CARGO_ACTIONS, result);
+      setAlertMessage("Груз был успешно создан");
+      setAlertStatus("success");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
-      console.log("you suck at coding", error);
+      window.log(error);
     }
   };
 
-  const handleSaveTemplate = () => {
+  const checkPhoneNumber = () => {
+    const numbers = contacts.map((i) => i.phone);
+    for (let number of numbers) {
+      if (!number.startsWith("+79")) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+      if (number.length !== 12) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+    }
+    setIsValidPhoneNumber(true);
+    setAlertMessage("");
+    return true;
+  };
+
+  const handleSaveTemplate = async () => {
     const isValidForm = checkAllRequiredFields();
     if (!isValidForm) {
-      return alert("Заполните все обязательные поля");
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
+
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
     }
 
     setIsShowTemplateModal(true);
-    const data = getEntireFormValue();
-    dispatch(setCargoFormData(data));
+  };
+  
+  const submitSaveTemplate = async (templateFormData) => {
+    const cargoFormData = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId
+    );
+
+    const requestBody = {
+      templateName: templateFormData?.name,
+      templateNote: templateFormData?.remark,
+      ...cargoFormData,
+    };
+    try {
+      await axiosPrivate.post(
+        apiRoutes.CARGO_TEMPLATE,
+        requestBody
+      );
+      handleSaveTemplateNotification();
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    } catch (error) {
+      console.log(error);
+      setAlertStatus("error");
+      setAlertMessage("Повторите попытку снова");
+      setShowAlert("true");
+    }
   };
 
   //This works, but the code needs refactoring
@@ -817,15 +924,33 @@ export default function AddCargo() {
   };
 
   const getRedErrorWarning = (name, originalClasses, addedClass = "red") => {
+    if (name === "phone" && isValidPhoneNumber === false)
+      return `${originalClasses} ${addedClass}`;
+
     if (emptyRequiredFieldsArray.includes(name))
       return `${originalClasses} ${addedClass}`;
     return originalClasses;
   };
 
-  console.log(cargo[0])
+  const handleSaveTemplateNotification = () => {
+    setAlertStatus("success");
+    setAlertMessage("Шаблон был успешно сохранён");
+    setShowAlert(true);
+  };
+
+  const handleChooseTemplate = () => {
+    console.log("im happy");
+  };
 
   return (
     <main className="bg-gray">
+      <AlertCustom
+        open={showAlert}
+        variant={alertStatus}
+        onClick={() => setShowAlert(false)}
+      >
+        {alertMessage}
+      </AlertCustom>
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
         <button
           className="fs-12 fw-5 d-block mb-3 mb-sm-5 "
@@ -833,7 +958,6 @@ export default function AddCargo() {
         >
           <span className="green fs-15 me-2">⟵</span> Назад
         </button>
-
         <form
           ref={ref}
           name="myForm"
@@ -850,16 +974,15 @@ export default function AddCargo() {
             <div className="d-none d-lg-flex align-items-center fs-09">
               <button
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#usePatternCargo"
                 className="btn btn-4 p-2"
+                onClick={() => setIsShowChooseTemplateModal(true)}
               >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <IoNewspaperOutline />
                 </IconContext.Provider>
                 <span className="ms-2">Использовать шаблон</span>
               </button>
-              <button type="reset" className="btn btn-4 p-2 ms-3">
+              <button type="reset" className="btn btn-4 p-2 ms-3" onClick={() => setCurrentTemplate(null)}>
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <VscChromeClose />
                 </IconContext.Provider>
@@ -1325,15 +1448,14 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1617,15 +1739,14 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1706,7 +1827,7 @@ export default function AddCargo() {
                         name="cargoType"
                         value={getObj(
                           itemTypes.map((i) => {
-                            return {value: i.id, label: i.name}
+                            return { value: i.id, label: i.name };
                           }),
                           cargo,
                           "cargoType",
@@ -1716,7 +1837,7 @@ export default function AddCargo() {
                           handleRSelect(e, "cargoType", setCargo, cargo, index)
                         }
                         options={itemTypes.map((i) => {
-                          return {value: i.id, label: i.name}
+                          return { value: i.id, label: i.name };
                         })}
                         isSearchable={true}
                       />
@@ -1884,7 +2005,7 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         value={getObj(
                           packageTypes.map((i) => {
-                            return {value: i.id, label: i.name}
+                            return { value: i.id, label: i.name };
                           }),
                           cargo,
                           "packageType",
@@ -1900,7 +2021,7 @@ export default function AddCargo() {
                           )
                         }
                         options={packageTypes.map((i) => {
-                          return {value: i.id, label: i.name}
+                          return { value: i.id, label: i.name };
                         })}
                         isSearchable={true}
                       />
@@ -2157,15 +2278,14 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2291,15 +2411,14 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2538,15 +2657,14 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2616,7 +2734,7 @@ export default function AddCargo() {
                           <input
                             type="tel"
                             name="phone"
-                            placeholder="+ 7 (962) 458 65 79"
+                            placeholder="+79624586579"
                             value={getContact("phone", idx)}
                             onChange={(e) => fillContacts(e, idx)}
                             className={getRedErrorWarning(
@@ -2708,8 +2826,7 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
@@ -3129,8 +3246,6 @@ export default function AddCargo() {
               </button>
               <button
                 type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#savePatternCargo"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
                 onClick={handleSaveTemplate}
               >
@@ -3145,6 +3260,20 @@ export default function AddCargo() {
                 <SaveTemplateModal
                   type="Cargo"
                   setIsShow={setIsShowTemplateModal}
+                  onSubmit={submitSaveTemplate}
+                />
+              </CustomModal>
+              <CustomModal
+                isShow={isShowChooseTemplateModal}
+                setIsShow={setIsShowChooseTemplateModal}
+                size="lg"
+                closeButton={true}
+              >
+                <ChooseTemplateModal
+                  templates={allCargoTemplates}
+                  setIsShow={setIsShowChooseTemplateModal}
+                  onSubmit={handleChooseTemplate}
+                  setCurrentTemplate={setCurrentTemplate}
                 />
               </CustomModal>
             </aside>
