@@ -1,7 +1,11 @@
+import * as options from "../components/utilities/data";
+
 export const parseCargoClientToServer = (formData, currentUserId) => {
   const extractValue = (array, name) => {
     const object = array.filter((item) => item.name === name);
-    return object[0].value;
+    const result = object[0].value;
+    if (name === "carType" && result) return parseInt(result);
+    return result;
   };
 
   const formatContacts = (contacts) => {
@@ -20,7 +24,14 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
         if (i.name === "isLoadingAllDay")
           return (newItem.isAllDay = i.value ? true : false);
         if (i.name === "loadingAddress") return (newItem.address = i.value);
+        if (i.name === "loadingTown") {
+          const town = options.optionsTowns.find(
+            (item) => item.value === i.value
+          );
+          return (newItem.town = town.label);
+        }
         if (i.name === "loadingDate") {
+          if (!i.value) return i?.value;
           let formattedDate = i.value.split("-");
           let array = [];
           array[0] = formattedDate[2];
@@ -34,7 +45,6 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
           return (newItem.periodType = i.value);
         if (i.name === "loadingTimeFrom") return (newItem.timeFrom = i.value);
         if (i.name === "loadingTimeTo") return (newItem.timeTo = i.value);
-        if (i.name === "loadingTown") return (newItem.town = "Казань");
         if (i.name === "transportationType")
           return (newItem.transportationType =
             i.value === "FTL" ? false : true);
@@ -56,9 +66,15 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
       item.forEach((i) => {
         if (i.name === "isUnloadingAllDay")
           return (newItem.isAllDay = !i.value ? false : i.value);
-        if (i.name === "unloadingTown") return (newItem.town = "Казань");
+        if (i.name === "unloadingTown") {
+          const town = options.optionsTowns.find(
+            (item) => item.value === i.value
+          );
+          return (newItem.town = town.label);
+        }
         if (i.name === "unloadingAddress") return (newItem.address = i.value);
         if (i.name === "unloadingDateFrom") {
+          if (!i.value) return i?.value;
           let formattedDate = i.value.split("-");
           let array = [];
           array[0] = formattedDate[2];
@@ -68,6 +84,7 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
           return (newItem.dateFrom = result === ".." ? null : result);
         }
         if (i.name === "unloadingDateTo") {
+          if (!i.value) return i?.value;
           let formattedDate = i.value.split("-");
           let array = [];
           array[0] = formattedDate[2];
@@ -124,17 +141,10 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
     noVatPrice: extractValue(formData.payment, "priceNovat"),
     note: extractValue(formData.contactsField, "remark"),
     contacts: formatContacts(formData.contacts),
-    carBodyType: extractValue(formData.requirements, "carType"),
+    carBodyTypeId: extractValue(formData.requirements, "carType"),
   };
   return formattedFormData;
 };
-
-
-
-
-
-
-
 
 export const parseCargoServerToClient = (serverData) => {
   //Cargo
@@ -168,25 +178,24 @@ export const parseCargoServerToClient = (serverData) => {
   };
 
   const getCargoValue = (value, key) => {
-    if(!value) return value
-    
-    const numbersToStrings = ["days", "cargoLoadingTypeId", ]
-    if (numbersToStrings.includes(key)) return value.toString()
+    if (!value) return value;
 
-    return value
-  }
+    const numbersToStrings = ["days", "cargoLoadingTypeId"];
+    if (numbersToStrings.includes(key)) return value.toString();
 
+    return value;
+  };
 
   //Loading
   const getFormattedLoadings = () => {
     const items = serverData?.loadings;
     const newItems = [];
-    items.forEach((itemObj) => {
+    items.forEach((itemObj, idx) => {
       const newObjArray = [];
       for (let key in itemObj) {
         const newObj = {
           name: getLoadingFieldName(key),
-          value: getLoadingValue(itemObj[key], key),
+          value: getLoadingValue(itemObj[key], key, serverData?.loadings, idx),
           required: getRequiredLoadingField(key),
         };
         newObjArray.push(newObj);
@@ -210,12 +219,23 @@ export const parseCargoServerToClient = (serverData) => {
     return key;
   };
 
-  const getLoadingValue = (value, key) => {
-    if(value === null) return value
-    if (key === "type") return value === false ? "0" : "1"
+  const getLoadingValue = (value, key, state, idx) => {
+    if (key === "periodType" || typeof value === "number"){
+      if(!value) return value
+      return value.toString();
+    }
+    if (value === null) return value;
+    if (key === "type") return value === false ? "0" : "1";
     if (key === "transportationType") {
       if (value === "") return value;
       return value ? "FTL/LTL" : "FTL";
+    }
+
+    if (key === "timeTo" || key === "timeFrom") {
+      const newValue = value.split(":");
+      newValue.pop();
+      const formatted = newValue.join(":");
+      return formatted;
     }
 
     if (key === "date") {
@@ -230,10 +250,20 @@ export const parseCargoServerToClient = (serverData) => {
       return result.substring(2);
     }
 
-    const numbersToStrings = ["days", "cargoLoadingTypeId", ]
-    if (numbersToStrings.includes(key)) return value.toString()
+    const numbersToStrings = ["days", "cargoLoadingTypeId"];
+    if (numbersToStrings.includes(key)) {
+      return value.toString();
+    }
 
-
+    if (key === "town") {
+      const result = getIndexForString(
+        options.optionsTowns,
+        value,
+        state[idx],
+        "loadingTown"
+      );
+      return result.town;
+    }
     return value;
   };
 
@@ -246,12 +276,17 @@ export const parseCargoServerToClient = (serverData) => {
   const getFormattedUnloadings = () => {
     const items = serverData?.unloadings;
     const newItems = [];
-    items.forEach((itemObj) => {
+    items.forEach((itemObj, idx) => {
       const newObjArray = [];
       for (let key in itemObj) {
         const newObj = {
           name: getUnloadingFieldName(key),
-          value: getUnloadingValue(itemObj[key], key),
+          value: getUnloadingValue(
+            itemObj[key],
+            key,
+            serverData?.unloadings,
+            idx
+          ),
           required: getRequiredUnloadingField(key),
         };
         newObjArray.push(newObj);
@@ -274,8 +309,8 @@ export const parseCargoServerToClient = (serverData) => {
     return key;
   };
 
-  const getUnloadingValue = (value, key) => {
-    if(!value) return value
+  const getUnloadingValue = (value, key, state, idx) => {
+    if (!value) return value;
 
     if (key === "type") return value ? "1" : "0";
     if (key === "transportationType") {
@@ -307,8 +342,25 @@ export const parseCargoServerToClient = (serverData) => {
       return result.substring(2);
     }
 
-    const numbersToStrings = ["cargoLoadingTypeId"]
-    if (numbersToStrings.includes(key)) return value.toString()
+    if (key === "timeTo" || key === "timeFrom") {
+      const newValue = value.split(":");
+      newValue.pop();
+      const formatted = newValue.join(":");
+      return formatted;
+    }
+
+    const numbersToStrings = ["cargoLoadingTypeId"];
+    if (numbersToStrings.includes(key)) return value.toString();
+
+    if (key === "town") {
+      const result = getIndexForString(
+        options.optionsTowns,
+        value,
+        state[idx],
+        "unloadingTown"
+      );
+      return result.town;
+    }
 
     return value;
   };
@@ -379,28 +431,41 @@ export const parseCargoServerToClient = (serverData) => {
       value: getFormattedContacts(),
     });
     newContactsField.push({
-      name: "remark", value: serverData?.note, required: false
-    })
+      name: "remark",
+      value: serverData?.note,
+      required: false,
+    });
 
-    return newContactsField
+    return newContactsField;
   };
 
   //Requirements
   const getFormattedRequirements = () => {
-    const newRequirements = []
+    const newRequirements = [];
     newRequirements.push({
-      name: "carType", value: serverData?.carBodyType, required: true
-    })
+      name: "carType",
+      value: serverData?.carBodyTypeId,
+      required: true,
+    });
     newRequirements.push({
-      name: "tempFrom", value: serverData?.fromTemperature, required: false
-    })
+      name: "tempFrom",
+      value: serverData?.fromTemperature,
+      required: false,
+    });
     newRequirements.push({
-      name: "tempTo", value: serverData?.toTemperature, required: true
-    })
+      name: "tempTo",
+      value: serverData?.toTemperature,
+      required: true,
+    });
 
-    return newRequirements
-  }
+    return newRequirements;
+  };
 
+  //Converting a string to index
+  const getIndexForString = (options, strValue, state) => {
+    state.town = options.find((item) => item.label === strValue)?.value;
+    return state;
+  };
 
   const newData = {
     cargo: getFormattedCargo(),
@@ -409,7 +474,7 @@ export const parseCargoServerToClient = (serverData) => {
     payment: getFormattedPayment(),
     contacts: getFormattedContacts(),
     contactsField: getFormattedContactsField(),
-    requirements: getFormattedRequirements()
+    requirements: getFormattedRequirements(),
   };
 
   return newData;

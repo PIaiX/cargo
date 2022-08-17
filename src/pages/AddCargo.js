@@ -21,7 +21,7 @@ import {
   optionsPackageType,
   optionsTowns,
 } from "../components/utilities/data";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CustomModal from "../components/utilities/CustomModal";
 import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
 import ChooseTemplateModal from "../components/footerComponents/ChooseTemplateModal";
@@ -73,7 +73,7 @@ const initialLoading = [
     },
     {
       name: "loadingTown",
-      value: optionsTowns[1].value,
+      value: "",
       required: true,
     },
     {
@@ -400,16 +400,33 @@ export default function AddCargo() {
   }, []);
 
   useEffect(() => {
-    if(!currentTemplate) return
-
-    const newTemplate = parseCargoServerToClient(currentTemplate.cargo)
-    console.log(newTemplate)
-      setLoading(newTemplate.loading);
-      setUnloading(newTemplate.unloading);
-      setCargo(newTemplate.cargo);
-      setRequirements(newTemplate.requirements);
-      setPayment(newTemplate.payment);
-      setContacts(newTemplate.contacts);
+    if (!currentTemplate) return;
+    const newTemplate = parseCargoServerToClient(currentTemplate.cargo);
+    const newLoading = newTemplate.loading.map((item) => {
+      const newItem = item.map((i) => {
+        if (i.name !== "loadingType") return i;
+        const obj = {
+          ...i,
+          value: i?.value?.id,
+        };
+        return obj;
+      });
+      return newItem
+    });
+    setLoading(newLoading);
+    setUnloading(newTemplate.unloading);
+    setCargo(newTemplate.cargo);
+    setRequirements(newTemplate.requirements);
+    setPayment(newTemplate.payment);
+    setContacts(newTemplate.contacts);
+    setContactsField([
+      { name: "contactsData", value: newTemplate.contacts },
+      {
+        name: "remark",
+        value: newTemplate.contactsField[1].value,
+        required: false,
+      },
+    ]);
   }, [currentTemplate]);
 
   //запись в data значений селектов (React-Select)
@@ -626,10 +643,8 @@ export default function AddCargo() {
       })
     );
   };
-
   //поиск значения полей в массиве
   const getObj = (opt, state, param, i) => {
-    
     if (i !== undefined) {
       if (
         opt.find(
@@ -645,17 +660,12 @@ export default function AddCargo() {
         return "";
       }
     } else {
-      if (
-        opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        )
-      ) {
-        return opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        );
-      } else {
-        return "";
+      const object = state.find((obj) => obj.name === param);
+      if (object.value) {
+        const option = opt.find((i) => i.value == object.value);
+        return option;
       }
+      return "";
     }
   };
   const getObjLabel = (opt, state, param) => {
@@ -795,8 +805,6 @@ export default function AddCargo() {
     return emptyRequiredFields;
   };
 
-  // ДОДЕЛАТЬ!!!
-  //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
   const onReset = (e) => {
     setLoading(initialLoading);
     setUnloading(initialUnloading);
@@ -807,7 +815,6 @@ export default function AddCargo() {
     setContactsField(initialContactsField);
   };
 
-  //финальная проверка на заполнение и отправка формы
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -877,7 +884,7 @@ export default function AddCargo() {
 
     setIsShowTemplateModal(true);
   };
-  
+
   const submitSaveTemplate = async (templateFormData) => {
     const cargoFormData = parseCargoClientToServer(
       getEntireFormValue(),
@@ -890,10 +897,7 @@ export default function AddCargo() {
       ...cargoFormData,
     };
     try {
-      await axiosPrivate.post(
-        apiRoutes.CARGO_TEMPLATE,
-        requestBody
-      );
+      await axiosPrivate.post(apiRoutes.CARGO_TEMPLATE, requestBody);
       handleSaveTemplateNotification();
       await getCurrentUserCargoTemplates(
         axiosPrivate,
@@ -938,9 +942,7 @@ export default function AddCargo() {
     setShowAlert(true);
   };
 
-  const handleChooseTemplate = () => {
-    console.log("im happy");
-  };
+  console.log(";lksd", loading[0])
 
   return (
     <main className="bg-gray">
@@ -982,7 +984,11 @@ export default function AddCargo() {
                 </IconContext.Provider>
                 <span className="ms-2">Использовать шаблон</span>
               </button>
-              <button type="reset" className="btn btn-4 p-2 ms-3" onClick={() => setCurrentTemplate(null)}>
+              <button
+                type="reset"
+                className="btn btn-4 p-2 ms-3"
+                onClick={() => setCurrentTemplate(null)}
+              >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <VscChromeClose />
                 </IconContext.Provider>
@@ -1455,7 +1461,10 @@ export default function AddCargo() {
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1746,7 +1755,10 @@ export default function AddCargo() {
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2285,7 +2297,10 @@ export default function AddCargo() {
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2418,7 +2433,10 @@ export default function AddCargo() {
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2664,7 +2682,10 @@ export default function AddCargo() {
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset" onClick={() => setCurrentTemplate(null)}>
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -3272,7 +3293,6 @@ export default function AddCargo() {
                 <ChooseTemplateModal
                   templates={allCargoTemplates}
                   setIsShow={setIsShowChooseTemplateModal}
-                  onSubmit={handleChooseTemplate}
                   setCurrentTemplate={setCurrentTemplate}
                 />
               </CustomModal>
