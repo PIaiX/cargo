@@ -126,8 +126,6 @@ const EditProfileForm = () => {
         }
     }, [btnSubjectType])
 
-    console.log(data)
-
     const deleteAvatar = (e) => {
         e.preventDefault()
         try {
