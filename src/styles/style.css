@@ -3216,6 +3216,7 @@ footer .payment-methods img:not(:first-child) {
 }
 
 .btn-close {
+  z-index: 2000;
   position: absolute;
   top: 0px;
   right: 0px;

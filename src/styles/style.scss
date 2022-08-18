@@ -3305,6 +3305,7 @@ footer {
 }
 
 .btn-close {
+  z-index: $modal-z-index;
   position: absolute;
   top: 0px;
   right: 0px;

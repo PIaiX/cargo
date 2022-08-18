@@ -38,10 +38,7 @@ const SearchForm = ({type, submitHandler}) => {
     useEffect(() => {
         getCities().then(res => setCities(res?.body))
         getItemTypes(axiosPrivate)
-            .then(res => {
-                console.log(res)
-                res?.length && setCargoTypes(res.map(item => ({value: item.id, label: item.name})))
-            })
+            .then(res => res?.length && setCargoTypes(res.map(item => ({value: item.id, label: item.name}))))
             .catch(() => setCargoTypes([]))
         getCarTypes(axiosPrivate)
             .then(res => res?.length && setCarTypes(res.map(item => ({value: item.id, label: item.name}))))

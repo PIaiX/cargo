@@ -108,12 +108,8 @@ export default function Forum() {
     }, [createTopicPayloads, userId])
 
     useEffect(() => {
-        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 5000)
+        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 4000)
     }, [submitAlert])
-
-    useEffect(() => {
-        console.log('ut', userTopics)
-    }, [userTopics])
 
     return (
         <main className="bg-white py-4 py-sm-5">
