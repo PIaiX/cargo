@@ -993,6 +993,8 @@ export default function AddCargo() {
     return newArray;
   };
 
+  console.log("cargo state", cargo);
+
   return (
     <main className="bg-gray">
       <AlertCustom

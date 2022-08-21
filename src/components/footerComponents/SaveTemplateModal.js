@@ -66,10 +66,9 @@ export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
         <div className="row row-cols-sm-2">
           <div className="mb-3 mb-sm-0">
             <button
-              type="reset"
-              data-bs-dismiss="modal"
               className="btn btn-1 w-100"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 setFormValue(initialFormValue);
                 setFormError("");
                 setIsShow(false);
