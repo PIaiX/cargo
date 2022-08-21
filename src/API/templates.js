@@ -9,9 +9,8 @@ export const getCurrentUserCargoTemplates = async (
   try {
     const response = await axiosPrivate.post(
       `${apiRoutes.CARGO_TEMPLATE}/${currentUserId}`,
-      { page: pageNumber, limit: 7, orderBy: "desc" }
+      { page: pageNumber, limit: 4, orderBy: "desc" }
     );
-    console.log(response.data);
     callback(response.data.body.data);
   } catch (error) {
     console.log(error);

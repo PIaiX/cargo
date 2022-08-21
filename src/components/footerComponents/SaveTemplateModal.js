@@ -23,7 +23,7 @@ export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
       return;
     }
     if (formValue.remark !== "" && formValue.remark.length < 2) {
-      setFormError("Примечание не может быть короче 2 символов");
+      setFormError("Примечание может быть пустым, либо не короче 2 символов");
       return;
     }
     setFormValue(initialFormValue);

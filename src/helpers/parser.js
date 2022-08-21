@@ -185,7 +185,6 @@ export const parseCargoServerToClient = (serverData) => {
 
   const getCargoValue = (value, key) => {
     if (key === "noteType") {
-      console.log("notesValue", value);
       if (!value) return "0";
       return value.toString();
     }
@@ -203,6 +202,7 @@ export const parseCargoServerToClient = (serverData) => {
     const items = serverData?.loadings;
     const newItems = [];
     items.forEach((itemObj, idx) => {
+      delete itemObj["loadingType"];
       const newObjArray = [];
       for (let key in itemObj) {
         const newObj = {
@@ -232,11 +232,15 @@ export const parseCargoServerToClient = (serverData) => {
   };
 
   const getLoadingValue = (value, key, state, idx) => {
+    if (key === "cargoLoadingTypeId") {
+      return value;
+    }
     if (key === "periodType" || typeof value === "number") {
       if (!value) return value;
       return value.toString();
     }
     if (value === null) return value;
+
     if (key === "type") return value === false ? "0" : "1";
     if (key === "transportationType") {
       if (value === "") return value;
@@ -262,7 +266,7 @@ export const parseCargoServerToClient = (serverData) => {
       return result.substring(2);
     }
 
-    const numbersToStrings = ["days", "cargoLoadingTypeId"];
+    const numbersToStrings = ["days"];
     if (numbersToStrings.includes(key)) {
       return value.toString();
     }
@@ -291,6 +295,7 @@ export const parseCargoServerToClient = (serverData) => {
     const items = serverData?.unloadings;
     const newItems = [];
     items.forEach((itemObj, idx) => {
+      delete itemObj["loadingType"];
       const newObjArray = [];
       for (let key in itemObj) {
         const newObj = {
@@ -325,6 +330,10 @@ export const parseCargoServerToClient = (serverData) => {
 
   const getUnloadingValue = (value, key, state, idx) => {
     if (!value) return value;
+
+    if (key === "cargoLoadingTypeId") {
+      return value;
+    }
 
     if (key === "type") return value ? "1" : "0";
     if (key === "transportationType") {
@@ -362,9 +371,6 @@ export const parseCargoServerToClient = (serverData) => {
       const formatted = newValue.join(":");
       return formatted;
     }
-
-    const numbersToStrings = ["cargoLoadingTypeId"];
-    if (numbersToStrings.includes(key)) return value.toString();
 
     if (key === "town") {
       const result = getIndexForString(
@@ -490,6 +496,5 @@ export const parseCargoServerToClient = (serverData) => {
     contactsField: getFormattedContactsField(),
     requirements: getFormattedRequirements(),
   };
-
   return newData;
 };

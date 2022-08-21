@@ -343,6 +343,7 @@ export default function AddCargo() {
 
   const [itemTypes, setItemTypes] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState([]);
 
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
 
@@ -356,8 +357,10 @@ export default function AddCargo() {
       try {
         const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
         const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
+        const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
         setItemTypes(itemResponse.data.body);
         setPackageTypes(packageResponse.data.body);
+        setLoadingTypes(loadingResponse.data.body);
       } catch (error) {
         window.log(error);
       }
@@ -402,18 +405,8 @@ export default function AddCargo() {
   useEffect(() => {
     if (!currentTemplate) return;
     const newTemplate = parseCargoServerToClient(currentTemplate.cargo);
-    const newLoading = newTemplate.loading.map((item) => {
-      const newItem = item.map((i) => {
-        if (i.name !== "loadingType") return i;
-        const obj = {
-          ...i,
-          value: i?.value?.id,
-        };
-        return obj;
-      });
-      return newItem;
-    });
-    setLoading(newLoading);
+
+    setLoading(newTemplate.loading);
     setUnloading(newTemplate.unloading);
     setCargo(newTemplate.cargo);
     setRequirements(newTemplate.requirements);
@@ -429,7 +422,6 @@ export default function AddCargo() {
     ]);
   }, [currentTemplate]);
 
-  //запись в data значений селектов (React-Select)
   let handleRSelect = (e, name, func, list, i) => {
     if (i !== undefined) {
       func(
@@ -459,7 +451,7 @@ export default function AddCargo() {
       );
     }
   };
-  //main input changes handler
+
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
     let inputVal =
@@ -931,7 +923,6 @@ export default function AddCargo() {
     invalidFields = [...invalidFields, ...checkFieldset(requirements)];
     invalidFields = [...invalidFields, ...checkFieldset(payment)];
     invalidFields = [...invalidFields, ...checkAllProps(contacts)];
-    console.log("empty", invalidFields);
     setEmptyRequiredFieldsArray(invalidFields);
     return invalidFields.length === 0;
   };
@@ -951,7 +942,7 @@ export default function AddCargo() {
     setShowAlert(true);
   };
 
-  console.log("cargo state", payment);
+  console.log("unloading state", unloading);
 
   return (
     <main className="bg-gray">
@@ -1431,7 +1422,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="loadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           loading,
                           "loadingType",
                           index
@@ -1445,7 +1438,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1725,7 +1720,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="unloadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           unloading,
                           "unloadingType",
                           index
@@ -1739,7 +1736,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
