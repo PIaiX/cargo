@@ -112,7 +112,13 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
       const newItem = {};
       item.forEach((i) => {
         if (i.name === "unloadingAddress") return (newItem.address = i.value);
-        if (i.name === "notes") return (newItem.noteType = i.value);
+        if (i.name === "notes") {
+          if (i.value === "0" || !i.value) {
+            console.log("dfdfsdfsdf", i.value);
+            return (newItem.noteType = null);
+          }
+          return (newItem.noteType = i.value);
+        }
         if (i.name === "cargoType") return (newItem.cargoItemTypeId = i.value);
         if (i.name === "cargoItemPackageTypeId")
           return (newItem.cargoItemTypeId = i.value);
@@ -178,6 +184,12 @@ export const parseCargoServerToClient = (serverData) => {
   };
 
   const getCargoValue = (value, key) => {
+    if (key === "noteType") {
+      console.log("notesValue", value);
+      if (!value) return "0";
+      return value.toString();
+    }
+
     if (!value) return value;
 
     const numbersToStrings = ["days", "cargoLoadingTypeId"];
@@ -220,8 +232,8 @@ export const parseCargoServerToClient = (serverData) => {
   };
 
   const getLoadingValue = (value, key, state, idx) => {
-    if (key === "periodType" || typeof value === "number"){
-      if(!value) return value
+    if (key === "periodType" || typeof value === "number") {
+      if (!value) return value;
       return value.toString();
     }
     if (value === null) return value;
@@ -268,7 +280,9 @@ export const parseCargoServerToClient = (serverData) => {
   };
 
   const getRequiredLoadingField = (key) => {
-    const requiredFields = ["type", "periodType", "town"];
+    // const requiredFields = ["type", "periodType", "town"];
+    //TODO: is periodType required though?
+    const requiredFields = ["type", "town"];
     return requiredFields.includes(key) ? true : false;
   };
 
@@ -455,7 +469,7 @@ export const parseCargoServerToClient = (serverData) => {
     newRequirements.push({
       name: "tempTo",
       value: serverData?.toTemperature,
-      required: true,
+      required: false,
     });
 
     return newRequirements;

@@ -411,7 +411,7 @@ export default function AddCargo() {
         };
         return obj;
       });
-      return newItem
+      return newItem;
     });
     setLoading(newLoading);
     setUnloading(newTemplate.unloading);
@@ -523,7 +523,7 @@ export default function AddCargo() {
     }
   };
   let fillDataArr = (e, func, list, i) => {
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let inputVal = e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
@@ -618,7 +618,7 @@ export default function AddCargo() {
   let toggleParams = (e, func, list, i) => {
     //нужно прикрутить очистку инпутов и селекта
     let inputVal = e.target.value;
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let addParams = e.target.dataset.add.split(" ");
     let delParams = e.target.dataset.del.split(" ");
 
@@ -629,6 +629,7 @@ export default function AddCargo() {
             if (obj.name === inputName) {
               return { ...obj, value: inputVal };
             } else if (addParams.includes(obj.name)) {
+              //TODO. Think about it. Is it required or not, the field below this comment
               return { ...obj, required: true };
             } else if (delParams.includes(obj.name)) {
               delParams.map((item) => clearInput(item));
@@ -750,27 +751,9 @@ export default function AddCargo() {
   };
 
   //добавление fieldset
-  let addState = (state, func, stateName) => {
-    const checkBoxes = [
-      "adr1",
-      "adr2",
-      "adr3",
-      "adr4",
-      "adr5",
-      "adr6",
-      "adr7",
-      "adr8",
-      "adr9",
-      "tir",
-      "emkt",
-    ];
-    let arr = state[0];
-    let clearedArr = arr.map((obj) => {
-      if (stateName && stateName === "cargo" && checkBoxes.includes(obj.name))
-        return { ...obj, value: false };
-      return { ...obj, value: "" };
-    });
-    func([...state, clearedArr]);
+  let addState = (state, callback, stateName) => {
+    const newState = [...state, ...stateName];
+    callback(newState);
   };
   //удаление fieldset
   let delState = (state, func, index) => {
@@ -942,7 +925,7 @@ export default function AddCargo() {
     setShowAlert(true);
   };
 
-  console.log(";lksd", loading[0])
+  console.log("cargo state", cargo);
 
   return (
     <main className="bg-gray">
@@ -1085,7 +1068,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -1172,7 +1155,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -1367,7 +1350,7 @@ export default function AddCargo() {
                       <label className="mb-2 mb-xl-3">
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1384,7 +1367,7 @@ export default function AddCargo() {
                       <label>
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL/LTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1440,7 +1423,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(loading, setLoading)}
+                onClick={() => addState(loading, setLoading, initialLoading)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -1734,7 +1717,9 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(unloading, setUnloading)}
+                onClick={() =>
+                  addState(unloading, setUnloading, initialUnloading)
+                }
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -2276,7 +2261,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(cargo, setCargo, "cargo")}
+                onClick={() => addState(cargo, setCargo, initialCargo)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -2554,34 +2539,6 @@ export default function AddCargo() {
                     </label>
                   </div>
                 </div>
-                {/* {getVal(payment, "paymentType") === "0" && (
-                  <div className="row align-items-center mb-4">
-                    <div className="col-sm-3 mb-2 mb-sm-0">
-                      <div
-                        data-label="cash"
-                        data-warning="false"
-                        className="title-font fs-12 fw-5"
-                      >
-                        Наличными
-                      </div>
-                    </div>
-                    <div className="col-sm-9">
-                      <div className="row gx-2 gx-sm-4">
-                        <div className="col-8 col-sm-5 col-xl-4">
-                          <input
-                            type="number"
-                            min="1"
-                            name="cash"
-                            placeholder="0"
-                            value={getVal(payment, "cash")}
-                            onChange={(e) => fillData(e, setPayment, payment)}
-                            className="price-per-km w-100 fs-12"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
