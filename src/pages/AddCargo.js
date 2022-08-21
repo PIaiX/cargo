@@ -838,7 +838,30 @@ export default function AddCargo() {
 
   const checkPhoneNumber = () => {
     const numbers = contacts.map((i) => i.phone);
+
+    const validCharachters = [
+      "+",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+    ];
+
     for (let number of numbers) {
+      const numChars = number.split("");
+      for (let num of numChars) {
+        if (!validCharachters.includes(num)) {
+          setIsValidPhoneNumber(false);
+          return false;
+        }
+      }
+
       if (!number.startsWith("+79")) {
         setIsValidPhoneNumber(false);
         return false;
@@ -1295,6 +1318,11 @@ export default function AddCargo() {
                         <div className="col-sm-5 mb-2 mb-sm-0">
                           <Select
                             classNamePrefix="react-select"
+                            className={getRedErrorWarning(
+                              "loadingTown",
+                              "",
+                              "border border-danger"
+                            )}
                             placeholder={"Выберите..."}
                             name="loadingTown"
                             value={getObj(
