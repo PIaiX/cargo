@@ -765,7 +765,10 @@ export default function AddCargo() {
   //проверка fieldset на заполнение
   const checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
-    const emptyRequiredFields = requiredArr.filter((elem) => !elem.value);
+    const emptyRequiredFields = requiredArr.filter((elem) => {
+      if (elem.name === "prepay" && elem.value === 0) return false;
+      return !elem.value;
+    });
     const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
     return fieldNamesArray;
   };
@@ -905,7 +908,7 @@ export default function AddCargo() {
     invalidFields = [...invalidFields, ...checkFieldset(requirements)];
     invalidFields = [...invalidFields, ...checkFieldset(payment)];
     invalidFields = [...invalidFields, ...checkAllProps(contacts)];
-
+    console.log("empty", invalidFields);
     setEmptyRequiredFieldsArray(invalidFields);
     return invalidFields.length === 0;
   };
@@ -925,7 +928,7 @@ export default function AddCargo() {
     setShowAlert(true);
   };
 
-  console.log("cargo state", cargo);
+  console.log("cargo state", payment);
 
   return (
     <main className="bg-gray">
