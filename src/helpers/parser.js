@@ -1,6 +1,6 @@
 import * as options from "../components/utilities/data";
 
-export const parseCargoClientToServer = (formData, currentUserId) => {
+export const parseCargoClientToServer = (formData, currentUserId, cities) => {
   const extractValue = (array, name) => {
     const object = array.filter((item) => item.name === name);
     const result = object[0].value;
@@ -25,9 +25,7 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
           return (newItem.isAllDay = i.value ? true : false);
         if (i.name === "loadingAddress") return (newItem.address = i.value);
         if (i.name === "loadingTown") {
-          const town = options.optionsTowns.find(
-            (item) => item.value === i.value
-          );
+          const town = cities.find((item) => item.value === i.value);
           return (newItem.town = town.label);
         }
         if (i.name === "loadingDate") {
@@ -67,9 +65,7 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
         if (i.name === "isUnloadingAllDay")
           return (newItem.isAllDay = !i.value ? false : i.value);
         if (i.name === "unloadingTown") {
-          const town = options.optionsTowns.find(
-            (item) => item.value === i.value
-          );
+          const town = cities.find((item) => item.value === i.value);
           return (newItem.town = town.label);
         }
         if (i.name === "unloadingAddress") return (newItem.address = i.value);
@@ -114,7 +110,6 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
         if (i.name === "unloadingAddress") return (newItem.address = i.value);
         if (i.name === "notes") {
           if (i.value === "0" || !i.value) {
-            console.log("dfdfsdfsdf", i.value);
             return (newItem.noteType = null);
           }
           return (newItem.noteType = i.value);
@@ -152,7 +147,7 @@ export const parseCargoClientToServer = (formData, currentUserId) => {
   return formattedFormData;
 };
 
-export const parseCargoServerToClient = (serverData) => {
+export const parseCargoServerToClient = (serverData, cities) => {
   //Cargo
   const getFormattedCargo = () => {
     const items = serverData?.items;
@@ -273,7 +268,7 @@ export const parseCargoServerToClient = (serverData) => {
 
     if (key === "town") {
       const result = getIndexForString(
-        options.optionsTowns,
+        cities,
         value,
         state[idx],
         "loadingTown"
@@ -374,7 +369,7 @@ export const parseCargoServerToClient = (serverData) => {
 
     if (key === "town") {
       const result = getIndexForString(
-        options.optionsTowns,
+        cities,
         value,
         state[idx],
         "unloadingTown"

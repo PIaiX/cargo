@@ -11,6 +11,7 @@ import {
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import {
   optionsCargoType,
   optionsCarType,
@@ -19,7 +20,7 @@ import {
   optionsLoadingPeriodType,
   optionsNotes,
   optionsPackageType,
-  optionsTowns,
+  defaultTownsOptions,
 } from "../components/utilities/data";
 import { useSelector } from "react-redux";
 import CustomModal from "../components/utilities/CustomModal";
@@ -33,6 +34,8 @@ import {
 } from "../helpers/parser";
 import AlertCustom from "../components/utilities/AlertCustom";
 import { getCurrentUserCargoTemplates } from "../API/templates";
+
+import { getCities } from "../API/cities";
 
 const initialLoading = [
   [
@@ -344,6 +347,8 @@ export default function AddCargo() {
   const [itemTypes, setItemTypes] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
 
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
 
@@ -351,6 +356,30 @@ export default function AddCargo() {
 
   const [currentTemplate, setCurrentTemplate] = useState(null);
   const [allCargoTemplates, setAllCargoTemplates] = useState([]);
+
+  useEffect(() => {
+    getCities().then((res) => {
+      if (res.status === 200) {
+        const citiesOptions = res.body.map((item, idx) => {
+          return {
+            value: idx.toString(),
+            label: item,
+          };
+        });
+        setCities(citiesOptions);
+
+        const newDefaultOptions = optionsTowns.map((item) => {
+          const newTown = {
+            label: item.label,
+            value: citiesOptions.find((i) => i.label === item.label).value,
+          };
+          return newTown;
+        });
+        setOptionsTowns(newDefaultOptions);
+      }
+    });
+    setCities(defaultTownsOptions);
+  }, []);
 
   useEffect(() => {
     const getOptions = async () => {
@@ -404,7 +433,7 @@ export default function AddCargo() {
 
   useEffect(() => {
     if (!currentTemplate) return;
-    const newTemplate = parseCargoServerToClient(currentTemplate.cargo);
+    const newTemplate = parseCargoServerToClient(currentTemplate.cargo, cities);
 
     setLoading(newTemplate.loading);
     setUnloading(newTemplate.unloading);
@@ -812,7 +841,8 @@ export default function AddCargo() {
 
     const result = parseCargoClientToServer(
       getEntireFormValue(),
-      currentUserId
+      currentUserId,
+      cities
     );
 
     try {
@@ -889,7 +919,8 @@ export default function AddCargo() {
   const submitSaveTemplate = async (templateFormData) => {
     const cargoFormData = parseCargoClientToServer(
       getEntireFormValue(),
-      currentUserId
+      currentUserId,
+      cities
     );
 
     const requestBody = {
@@ -942,7 +973,25 @@ export default function AddCargo() {
     setShowAlert(true);
   };
 
-  console.log("unloading state", unloading);
+  const loadOptions = (inputValue, callback) => {
+    const resultsArray = cities.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    const uniqueArray = getUniqueObjectsArray(resultsArray.splice(0, 20));
+    callback(uniqueArray);
+  };
+
+  const getUniqueObjectsArray = (initialArray) => {
+    const newArray = [];
+    const uniqueLabels = [];
+    initialArray.forEach((item) => {
+      if (!uniqueLabels.includes(item.label)) {
+        uniqueLabels.push(item.label);
+        newArray.push(item);
+      }
+    });
+    return newArray;
+  };
 
   return (
     <main className="bg-gray">
@@ -1307,17 +1356,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "loadingTown",
                               "",
                               "border border-danger"
                             )}
-                            placeholder={"Выберите..."}
                             name="loadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               loading,
                               "loadingTown",
                               index
@@ -1331,8 +1379,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
@@ -1648,17 +1699,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "unloadingTown",
                               "",
                               "border border-danger"
                             )}
-                            placeholder={"Выберите..."}
                             name="unloadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               unloading,
                               "unloadingTown",
                               index
@@ -1672,8 +1722,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
