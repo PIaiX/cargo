@@ -32,5 +32,5 @@ export default {
 
   //templates
   CARGO_TEMPLATE: "/template/cargo",
-  CARGO_ACTIONS: "/template",
+  CARGO_TEMPLATE_ACTIONS: "/template",
 };

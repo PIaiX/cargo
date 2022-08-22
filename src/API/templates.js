@@ -31,7 +31,7 @@ export const deleteTemplate = async (
       return newTemplates;
     });
     const response = await axiosPrivate.delete(
-      `${apiRoutes.CARGO_ACTIONS}/${id}`
+      `${apiRoutes.CARGO_TEMPLATE_ACTIONS}/${id}`
     );
     if (response.data.status !== 200) {
       errorCallback(currentState);

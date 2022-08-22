@@ -8,9 +8,10 @@ import axiosPrivate from "../API/axiosPrivate";
 import apiRoutes from "../API/config/apiRoutes";
 import apiResponseMessages from "../API/config/apiResponseMessages";
 import { useDispatch } from "react-redux/es/exports";
-import {setCurrentUser} from "../store/reducers/currentUser"
+import { setCurrentUser } from "../store/reducers/currentUser";
 import { useNavigate } from "react-router-dom";
 import { handleRemeberMe } from "../API/auth";
+import AlertCustom from "../components/utilities/AlertCustom";
 
 const formValueDefault = {
   accountType: undefined,
@@ -44,11 +45,7 @@ const emailSchema = Joi.object({
 
 const schema = Joi.object({
   email: emailSchemaOptions,
-  verifyCode: Joi.string()
-  .required()
-  .min(6)
-  .max(6)
-  .messages({
+  verifyCode: Joi.string().required().min(6).max(6).messages({
     "string.empty": "Код не может быть пустым",
     "string.min": `Код не может быть короче 6 символов`,
     "string.max": `Код не может быть длиннее 6 символов`,
@@ -74,12 +71,18 @@ const schema = Joi.object({
 export default function Registration() {
   const [formValue, setFormValue] = useState(formValueDefault);
   const [formErrors, setFormErrors] = useState(formErrorDefault);
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false);
   const [accountTypes, setAccountTypes] = useState([]);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState();
+  const [alertMessage, setAlertMessage] = useState("");
+
   const customSelectOptions = accountTypes.map((item) => item?.name);
 
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAccountTypes = async () => {
@@ -130,17 +133,38 @@ export default function Registration() {
       const response = await axiosPrivate.post(`${apiRoutes.EMAIL_VERIFY}`, {
         email: formValue.email,
       });
+      if (response.data?.status === 200) {
+        setAlertStatus("success");
+        setAlertMessage("Код подтверждения отправлен на почту");
+        setShowAlert(true);
+        setIsEmailVerified(true)
+      }
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.response.data.code === "VALIDATION_ERROR") {
+        setFormErrors((prev) => {
+          return { ...prev, email: apiResponseMessages.VALIDATION_ERROR };
+        });
+        return
+      }
+      if (error.response.data.code === "VERIFY_CODE_EXISTS") {
         setFormErrors((prev) => {
           return { ...prev, email: apiResponseMessages.VERIFY_CODE_EXISTS };
         });
+        return
       }
-      //TODO: Add a handle for a 500 status code error
+      setAlertStatus("error");
+      setAlertMessage("Попробуйте снова");
+      setShowAlert(true);
     }
   };
 
   const handleFormSubmit = async () => {
+    if(!isEmailVerified){
+      setAlertStatus("error");
+      setAlertMessage("Подтвердите адрес эл.почты");
+      setShowAlert(true);
+      return
+    }
     let hasError = false;
     if (!formValue.accountType) {
       setFormErrors((prev) => {
@@ -149,8 +173,11 @@ export default function Registration() {
       hasError = true;
     }
 
-    let newFormValue = {...formValue, accountType: formValue?.accountType?.id}
-    
+    let newFormValue = {
+      ...formValue,
+      accountType: formValue?.accountType?.id,
+    };
+
     const result = schema.validate(newFormValue, { abortEarly: false });
     if (result.error) {
       handleFormErrors(result.error.details);
@@ -179,18 +206,18 @@ export default function Registration() {
         token,
         user,
       };
-      handleRemeberMe(rememberMe)
+      handleRemeberMe(rememberMe);
 
       dispatch(setCurrentUser(payload));
       navigate("/");
-      return
+      return;
     } catch (error) {
-        console.log(error)
-        if (error.response.status === 400) {
+      console.log(error);
+      if (error.response.status === 400) {
         setFormErrors((prev) => {
           return { ...prev, verifyCode: apiResponseMessages.WRONG_VERIFY_CODE };
         });
-        return
+        return;
       }
     }
 
@@ -207,6 +234,13 @@ export default function Registration() {
   };
   return (
     <main className="bg-white position-relative">
+      <AlertCustom
+        open={showAlert}
+        variant={alertStatus}
+        onClick={() => setShowAlert(false)}
+      >
+        {alertMessage}
+      </AlertCustom>
       <img
         src="/img/bg/bg-entrance.jpg"
         className="entrance-bg"
@@ -216,6 +250,7 @@ export default function Registration() {
         <Link to="/" className="fs-12">
           <span className="green fs-15 me-2">⟵</span> Назад
         </Link>
+
         <div className="row gx-md-5 justify-content-between">
           <div className="col-md-6 col-lg-5 offset-lg-1">
             <h1 className="text-center dark-blue mt-3 mt-sm-4 mt-lg-5">
@@ -251,15 +286,19 @@ export default function Registration() {
                 </button>
               </label>
               <FormErrorMessage>{formErrors.email}</FormErrorMessage>
-              <label className="mt-3">Введите код</label>
-              <input
-                type="number"
-                name="verifyCode"
-                className="mt-2"
-                value={formValue.verifyCode}
-                onChange={handleFormChange}
-              />
-              <FormErrorMessage>{formErrors.verifyCode}</FormErrorMessage>
+              {isEmailVerified && (
+                <div>
+                  <label className="mt-3">Введите код</label>
+                  <input
+                    type="number"
+                    name="verifyCode"
+                    className="mt-2"
+                    value={formValue.verifyCode}
+                    onChange={handleFormChange}
+                  />
+                </div>
+              )}
+              {isEmailVerified && <FormErrorMessage>{formErrors.verifyCode}</FormErrorMessage>}
               <label className="mt-3">Пароль</label>
               <InputPassword
                 name="password"
