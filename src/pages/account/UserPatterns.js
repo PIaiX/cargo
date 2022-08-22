@@ -22,6 +22,7 @@ export default function UserPatterns() {
     const currentUser = useSelector(state => state?.currentUser?.data?.user)
     const axiosPrivate = useAxiosPrivate()
     const [routesTemplates, setRoutesTemplates] = useState({
+        error: null,
         data: [],
         meta: [],
         isLoading: false
@@ -34,14 +35,14 @@ export default function UserPatterns() {
     const [complete, setComplete] = useState(null)
 
     useEffect(() => {
-        getTemplates(axiosPrivate, currentUser?.id, routeTemplatesPag.currentPage, routeTemplatesPag.pageLimit)
+        ((currentUser?.roleId === 3) || (currentUser?.roleId === 4)) && getTemplates(axiosPrivate, currentUser?.id, routeTemplatesPag.currentPage, routeTemplatesPag.pageLimit)
             .then(r => setRoutesTemplates(prevState => ({
                 ...prevState,
                 data: r?.data?.body?.data,
                 meta: r?.data?.body?.meta,
                 isLoading: true
             })))
-            .catch(error => console.log(error))
+            .catch(error => setRoutesTemplates(prev => ({...prev, isLoading: true, error})))
     }, [currentUser, routeTemplatesPag.pageLimit, routeTemplatesPag.currentPage])
 
 
@@ -57,9 +58,6 @@ export default function UserPatterns() {
                                 meta: r?.data?.body?.meta,
                                 isLoading: true
                             }))
-                        })
-                        .catch(error => {
-                            console.log(error)
                         })
                 } else {
                     // for cargo
@@ -86,9 +84,6 @@ export default function UserPatterns() {
                             isLoading: true
                         }))
                     })
-                    .catch(error => {
-                        console.log(error)
-                    })
             }
                 setIsShowAlert(true)
                 setComplete(true)
@@ -114,6 +109,14 @@ export default function UserPatterns() {
         }
     }, [routesTemplates.data.length])
 
+    useEffect(() => {
+        if((currentUser?.roleId !== 2)) {
+            setTab('routes')
+        } else {
+            setTab('cargo')
+        }
+    }, [currentUser?.roleId])
+
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
             <Link to="/personal-account" className='fs-12 fw-5 d-block d-lg-none mb-3 mb-sm-5'><span
@@ -125,7 +128,7 @@ export default function UserPatterns() {
                     className={(tab === 'routes') ? 'active tab-btn' : 'tab-btn'}
                     onClick={() => setTab('routes')}
                 >
-                    Маршруты ({routesTemplates?.meta?.total})
+                    {(currentUser?.roleId === 3 || currentUser?.roleId === 4) && `Маршруты (${routesTemplates?.meta?.total || 0})`}
                 </button>
                 <button
                     type='button'
@@ -151,7 +154,7 @@ export default function UserPatterns() {
                     </Alert>
                 }
             </div>
-            {(tab === 'routes') &&
+            {(tab === 'routes' && (currentUser?.roleId === 3 || currentUser?.roleId === 4)) &&
             routesTemplates?.isLoading
                 ? routesTemplates?.data?.length
                     ? routesTemplates?.data?.map((i, index) => (
