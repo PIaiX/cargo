@@ -34,6 +34,9 @@ import {
 } from "../helpers/parser";
 import AlertCustom from "../components/utilities/AlertCustom";
 import { deleteTemplate, getCurrentUserCargoTemplates } from "../API/templates";
+import axios from "axios"
+
+import "react-dadata/dist/react-dadata.css";
 
 import { getCities } from "../API/cities";
 
@@ -318,6 +321,8 @@ const initialContactsField = [
     required: false,
   },
 ];
+
+const DADATA_KEY = process.env.REACT_APP_DADATA_TOKEN
 
 export default function AddCargo() {
   const [showAlert, setShowAlert] = useState(false);
@@ -981,6 +986,30 @@ export default function AddCargo() {
     callback(uniqueArray);
   };
 
+  //TODO: НУЖНО ДОДЕЛАТЬ. ОЧЕНЬ СЫРО ПОКА ЧТО
+  // REACT_APP_DADATA_TOKEN='3147beaba86e667297007de96ab40da21f44686d'
+  const loadingAddressOptions = async (inputValue, callback) => {
+    try {
+      const response = await axios.post("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", {
+        query: inputValue
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": "Token " + DADATA_KEY
+        }
+      })
+      const rawSuggestions = response.data?.suggestions
+      const newOptions = rawSuggestions.map((i, idx) => {
+        return {label: i.value, value: idx}
+      })
+      callback(newOptions)
+    } catch (error) {
+    }
+  }
+
+
+
   const getUniqueObjectsArray = (initialArray) => {
     const newArray = [];
     const uniqueLabels = [];
@@ -1403,7 +1432,7 @@ export default function AddCargo() {
                           data-label="loadingAddress"
                           data-warning="false"
                         >
-                          <input
+                          {/* <input
                             type="text"
                             className={getRedErrorWarning(
                               "loadingAddress",
@@ -1416,7 +1445,37 @@ export default function AddCargo() {
                               fillDataArr(e, setLoading, loading, index)
                             }
                             placeholder="Адрес"
-                          />
+                          /> */}
+                          <AsyncSelect
+                            classNamePrefix="react-select"
+                            className={getRedErrorWarning(
+                              "loadingAddress",
+                              "",
+                              "border border-danger"
+                            )}
+                            name="loadingAddress"
+                            // value={getObj(
+                            //   cities,
+                            //   loading,
+                            //   "loadingAddress",
+                            //   index
+                            // )}
+                            // value={{value: "2", label: "you suck at coding"}}
+                            // onChange={(e) =>
+                            //   handleRSelect(
+                            //     e,
+                            //     "loadingAddress",
+                            //     setLoading,
+                            //     loading,
+                            //     index
+                            //   )
+                            // }
+                            onChange={(e) => {
+                              console.log(e)
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={loadingAddressOptions}
+                            noOptionsMessage={() => "Не найдено"}/>
                         </div>
                       </div>
                     </div>
