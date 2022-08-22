@@ -13,6 +13,8 @@ import CustomModal from "../components/utilities/CustomModal";
 import AsyncSelect from "react-select/async";
 import {Alert} from "react-bootstrap";
 import {getCars} from '../API/car';
+import {getCities} from "../API/cities";
+import SearchInput from "../components/utilities/SearchInput";
 
 
 export default function AddRoute() {
@@ -41,6 +43,8 @@ export default function AddRoute() {
             dateType: 0,
         }
     );
+
+    const [citys, setCitys] = useState([])
 
     const fields = {
         isInValidFromRoute: false,
@@ -286,6 +290,12 @@ export default function AddRoute() {
 
     const [showModalValidation, setShowModalValidation] = useState(false)
 
+    useEffect(() => {
+        getCities().then(res => setCitys(res.body))
+    }, [])
+
+    console.log(data)
+
     return (
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
@@ -380,6 +390,7 @@ export default function AddRoute() {
                                             data-label="loading"
                                             data-warning="false"
                                             className="title-font fs-12 fw-5"
+                                            style={{color: valid.isInValidFromRoute && 'red'}}
                                         >
                                             Откуда*
                                         </label>
@@ -387,17 +398,14 @@ export default function AddRoute() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input
-                                                    type="text"
-                                                    name="fromRoute"
-                                                    value={data?.fromRoute || ''}
-                                                    style={{borderColor: valid.isInValidFromRoute && 'red'}}
-                                                    onChange={e => {
-                                                        onInputHandler(e, setData)
+                                                <SearchInput
+                                                    data={citys}
+                                                    placeHolder={'Населенный пункт'}
+                                                    value={data?.fromRoute}
+                                                    callback={(value, e) => {
+                                                        setData(prevState => ({...prevState, fromRoute: value}))
                                                         resetFieldVal(e, 'isInValidFromRoute')
                                                     }}
-                                                    placeholder="Населенный пункт"
-                                                    className="fs-12"
                                                 />
                                                 {valid.isInValidFromRoute &&
                                                     <span className='position-absolute' style={{color: 'red'}}>Поле обязательно для заполнения</span>}
@@ -437,6 +445,7 @@ export default function AddRoute() {
                                             data-label="unloading"
                                             data-warning="false"
                                             className="title-font fs-12 fw-5"
+                                            style={{color: valid.isInValidToRoute && 'red'}}
                                         >
                                             Куда*
                                         </label>
@@ -444,17 +453,14 @@ export default function AddRoute() {
                                     <div className="col-md-9">
                                         <div className="row">
                                             <div className="col-xl-6">
-                                                <input
-                                                    style={{borderColor: valid.isInValidToRoute && 'red'}}
-                                                    type="text"
-                                                    name="toRoute"
-                                                    value={data?.toRoute || ''}
-                                                    onChange={e => {
-                                                        onInputHandler(e, setData)
+                                                <SearchInput
+                                                    data={citys}
+                                                    placeHolder={'Населенный пункт'}
+                                                    value={data?.toRoute}
+                                                    callback={(value, e) => {
+                                                        setData(prevState => ({...prevState, toRoute: value}))
                                                         resetFieldVal(e, 'isInValidToRoute')
                                                     }}
-                                                    placeholder="Населенный пункт"
-                                                    className="fs-12"
                                                 />
                                                 {valid.isInValidToRoute &&
                                                     <span className='position-absolute' style={{color: 'red'}}>Поле обязательно для заполнения</span>}
