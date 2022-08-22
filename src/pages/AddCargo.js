@@ -33,7 +33,7 @@ import {
   parseCargoServerToClient,
 } from "../helpers/parser";
 import AlertCustom from "../components/utilities/AlertCustom";
-import { getCurrentUserCargoTemplates } from "../API/templates";
+import { deleteTemplate, getCurrentUserCargoTemplates } from "../API/templates";
 
 import { getCities } from "../API/cities";
 
@@ -993,7 +993,19 @@ export default function AddCargo() {
     return newArray;
   };
 
-  console.log("cargo state", cargo);
+  const handleDeleteTemplate = (id) => {
+    const handleError = (state) => {
+      setAllCargoTemplates(state);
+      setAlertStatus("error");
+      setAlertMessage(
+        "Во время удаления шаблона произошла ошибка. Попробуйте обновить страницу и попробовать снова"
+      );
+      setShowAlert(true);
+    };
+    deleteTemplate(id, allCargoTemplates, setAllCargoTemplates, handleError);
+  };
+
+  console.log(allCargoTemplates);
 
   return (
     <main className="bg-gray">
@@ -3336,6 +3348,7 @@ export default function AddCargo() {
                   templates={allCargoTemplates}
                   setIsShow={setIsShowChooseTemplateModal}
                   setCurrentTemplate={setCurrentTemplate}
+                  handleDeleteTemplate={handleDeleteTemplate}
                 />
               </CustomModal>
             </aside>
