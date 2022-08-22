@@ -1008,7 +1008,19 @@ export default function AddCargo() {
     }
   }
 
+  const updateAddressState = (event, fieldName, callback, state, index) => {
+    const newState = state.map((item, idx) => {
+      if(idx !== index) return item
+      const newStateSlice = item.map((i) => {
+        if(i.name !== fieldName) return i
+        return {...i, value: event.label}
+      })
+      return newStateSlice
+    })
+    callback(newState)
+  }
 
+  console.log("loading state", loading)
 
   const getUniqueObjectsArray = (initialArray) => {
     const newArray = [];
@@ -1471,7 +1483,7 @@ export default function AddCargo() {
                             //   )
                             // }
                             onChange={(e) => {
-                              console.log(e)
+                              updateAddressState(e, "loadingAddress", setLoading, loading, index)
                             }}
                             placeholder={"Введите адрес..."}
                             loadOptions={loadingAddressOptions}
