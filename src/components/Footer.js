@@ -3,8 +3,6 @@ import { IoCloseOutline, IoDocumentText } from "react-icons/io5";
 import { MdPerson, MdCopyright } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { Link, useNavigate } from "react-router-dom";
-import SaveTemplateModal from "./footerComponents/SaveTemplateModal";
-import ChooseTemplateModal from "./footerComponents/ChooseTemplateModal";
 import { useDispatch } from "react-redux/es/exports";
 import { logout } from "../API/auth";
 
@@ -276,9 +274,9 @@ export const Footer = () => {
                     className="btn btn-2 w-100"
                     data-bs-dismiss="modal"
                     onClick={() => {
-                      logout(dispatch)
-                      navigate("/")}
-                    }
+                      logout(dispatch);
+                      navigate("/");
+                    }}
                   >
                     Выйти
                   </button>
@@ -416,11 +414,6 @@ export const Footer = () => {
       {/*    </div>*/}
       {/*  </div>*/}
       {/*</div>*/}
-
-      <ChooseTemplateModal type="Cargo" />
-      <ChooseTemplateModal type="Route" />
-      <SaveTemplateModal type="Cargo" />
-      <SaveTemplateModal type="Route" />
 
       {/* Offcanvas */}
       <div className="offcanvas offcanvas-top" tabIndex="-1" id="warning">

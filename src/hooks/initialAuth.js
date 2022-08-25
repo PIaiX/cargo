@@ -11,7 +11,7 @@ const useInitialAuth = () => {
 
   useEffect(() => {
     const getToken = async () => {
-      if(rememberMe === "false"){
+      if(rememberMe === false){
         setIsLoading(false)
         return logout(dispatch)
       } 

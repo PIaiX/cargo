@@ -18,7 +18,7 @@ import {
   optionsLoadingPeriodType,
   optionsNotes,
   optionsPackageType,
-  optionsTowns,
+  defaultTownsOptions as optionsTowns,
 } from "../components/utilities/data";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -312,7 +312,7 @@ const initialContactsField = [
 export default function AddCargo() {
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
   const [loading, setLoading] = useState(initialLoading);
@@ -782,7 +782,7 @@ export default function AddCargo() {
   return (
     <main className="bg-gray">
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
-      <button
+        <button
           onClick={() => navigate(-1)}
           className="fs-12 fw-5 d-block mb-3 mb-sm-5"
         >

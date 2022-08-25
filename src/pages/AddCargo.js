@@ -11,6 +11,7 @@ import {
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import {
   optionsCargoType,
   optionsCarType,
@@ -19,17 +20,26 @@ import {
   optionsLoadingPeriodType,
   optionsNotes,
   optionsPackageType,
-  optionsTowns,
+  defaultTownsOptions,
 } from "../components/utilities/data";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setCargoFormData,
-  setCurrentCargoTemplate,
-} from "../store/reducers/savedCargoTemplates";
+import { useSelector } from "react-redux";
 import CustomModal from "../components/utilities/CustomModal";
 import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
+import ChooseTemplateModal from "../components/footerComponents/ChooseTemplateModal";
 import apiRoutes from "../API/config/apiRoutes";
 import useAxiosPrivate from "../hooks/axiosPrivate";
+import {
+  parseCargoClientToServer,
+  parseCargoServerToClient,
+} from "../helpers/parser";
+import AlertCustom from "../components/utilities/AlertCustom";
+import { deleteTemplate, getCurrentUserCargoTemplates } from "../API/templates";
+import axios from "axios";
+import { fetchAddressSuggestions } from "../API/cargo";
+
+import "react-dadata/dist/react-dadata.css";
+
+import { getCities } from "../API/cities";
 
 const initialLoading = [
   [
@@ -70,7 +80,7 @@ const initialLoading = [
     },
     {
       name: "loadingTown",
-      value: optionsTowns[1].value,
+      value: "",
       required: true,
     },
     {
@@ -169,7 +179,7 @@ const initialCargo = [
       required: false,
     },
     {
-      name: "packageType",
+      name: "cargoPackageType",
       value: "",
       required: false,
     },
@@ -185,7 +195,7 @@ const initialCargo = [
     },
     {
       name: "adr1",
-      value: true,
+      value: false,
       required: false,
     },
     {
@@ -314,12 +324,17 @@ const initialContactsField = [
 ];
 
 export default function AddCargo() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const ref = useRef(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
   const [isShowTemplateModal, setIsShowTemplateModal] = useState(false);
+  const [isShowChooseTemplateModal, setIsShowChooseTemplateModal] =
+    useState(false);
 
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
@@ -333,10 +348,59 @@ export default function AddCargo() {
 
   const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
 
+  const [itemTypes, setItemTypes] = useState([]);
+  const [packageTypes, setPackageTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
+
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
-  const currentTemplate = useSelector(
-    (state) => state.savedCargoTemplates.currentTemplate
-  );
+
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(undefined);
+
+  const [currentTemplate, setCurrentTemplate] = useState(null);
+  const [allCargoTemplates, setAllCargoTemplates] = useState([]);
+
+  useEffect(() => {
+    getCities().then((res) => {
+      if (res.status === 200) {
+        const citiesOptions = res.body.map((item, idx) => {
+          return {
+            value: idx.toString(),
+            label: item,
+          };
+        });
+        setCities(citiesOptions);
+
+        const newDefaultOptions = optionsTowns.map((item) => {
+          const newTown = {
+            label: item.label,
+            value: citiesOptions.find((i) => i.label === item.label).value,
+          };
+          return newTown;
+        });
+        setOptionsTowns(newDefaultOptions);
+      }
+    });
+    setCities(defaultTownsOptions);
+  }, []);
+
+  useEffect(() => {
+    const getOptions = async () => {
+      try {
+        const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
+        const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
+        const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
+        setItemTypes(itemResponse.data.body);
+        setPackageTypes(packageResponse.data.body);
+        setLoadingTypes(loadingResponse.data.body);
+      } catch (error) {
+        window.log(error);
+      }
+    };
+
+    getOptions();
+  }, []);
 
   const getEntireFormValue = () => {
     const newContactsField = [
@@ -360,17 +424,37 @@ export default function AddCargo() {
   };
 
   useEffect(() => {
-    if (currentTemplate) {
-      setLoading(currentTemplate.data.loading);
-      setUnloading(currentTemplate.data.unloading);
-      setCargo(currentTemplate.data.cargo);
-      setRequirements(currentTemplate.data.requirements);
-      setPayment(currentTemplate.data.payment);
-      setContacts(currentTemplate.data.contacts);
-    }
+    const getTemplates = async () => {
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    };
+    getTemplates();
+  }, []);
+
+  useEffect(() => {
+    if (!currentTemplate) return;
+    const newTemplate = parseCargoServerToClient(currentTemplate.cargo, cities);
+
+    setLoading(newTemplate.loading);
+    setUnloading(newTemplate.unloading);
+    setCargo(newTemplate.cargo);
+    setRequirements(newTemplate.requirements);
+    setPayment(newTemplate.payment);
+    setContacts(newTemplate.contacts);
+    setContactsField([
+      { name: "contactsData", value: newTemplate.contacts },
+      {
+        name: "remark",
+        value: newTemplate.contactsField[1].value,
+        required: false,
+      },
+    ]);
   }, [currentTemplate]);
 
-  //запись в data значений селектов (React-Select)
   let handleRSelect = (e, name, func, list, i) => {
     if (i !== undefined) {
       func(
@@ -400,7 +484,7 @@ export default function AddCargo() {
       );
     }
   };
-  //main input changes handler
+
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
     let inputVal =
@@ -464,7 +548,7 @@ export default function AddCargo() {
     }
   };
   let fillDataArr = (e, func, list, i) => {
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let inputVal = e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
@@ -559,7 +643,7 @@ export default function AddCargo() {
   let toggleParams = (e, func, list, i) => {
     //нужно прикрутить очистку инпутов и селекта
     let inputVal = e.target.value;
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let addParams = e.target.dataset.add.split(" ");
     let delParams = e.target.dataset.del.split(" ");
 
@@ -570,6 +654,7 @@ export default function AddCargo() {
             if (obj.name === inputName) {
               return { ...obj, value: inputVal };
             } else if (addParams.includes(obj.name)) {
+              //TODO. Think about it. Is it required or not, the field below this comment
               return { ...obj, required: true };
             } else if (delParams.includes(obj.name)) {
               delParams.map((item) => clearInput(item));
@@ -584,7 +669,6 @@ export default function AddCargo() {
       })
     );
   };
-
   //поиск значения полей в массиве
   const getObj = (opt, state, param, i) => {
     if (i !== undefined) {
@@ -602,17 +686,12 @@ export default function AddCargo() {
         return "";
       }
     } else {
-      if (
-        opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        )
-      ) {
-        return opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        );
-      } else {
-        return "";
+      const object = state.find((obj) => obj.name === param);
+      if (object.value) {
+        const option = opt.find((i) => i.value == object.value);
+        return option;
       }
+      return "";
     }
   };
   const getObjLabel = (opt, state, param) => {
@@ -637,7 +716,7 @@ export default function AddCargo() {
     }
   };
   const getValArr = (state, i, param) => {
-    let val = state[i].find((obj) => obj.name === param).value;
+    let val = state[i].find((obj) => obj.name === param)?.value;
     if (val !== null && val !== undefined && val !== "") {
       return val;
     } else {
@@ -697,12 +776,9 @@ export default function AddCargo() {
   };
 
   //добавление fieldset
-  let addState = (state, func) => {
-    let arr = state[0];
-    let clearedArr = arr.map((obj) => {
-      return { ...obj, value: "" };
-    });
-    func([...state, clearedArr]);
+  let addState = (state, callback, stateName) => {
+    const newState = [...state, ...stateName];
+    callback(newState);
   };
   //удаление fieldset
   let delState = (state, func, index) => {
@@ -714,7 +790,10 @@ export default function AddCargo() {
   //проверка fieldset на заполнение
   const checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
-    const emptyRequiredFields = requiredArr.filter((elem) => !elem.value);
+    const emptyRequiredFields = requiredArr.filter((elem) => {
+      if (elem.name === "prepay" && elem.value === 0) return false;
+      return !elem.value;
+    });
     const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
     return fieldNamesArray;
   };
@@ -737,8 +816,6 @@ export default function AddCargo() {
     return emptyRequiredFields;
   };
 
-  // ДОДЕЛАТЬ!!!
-  //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
   const onReset = (e) => {
     setLoading(initialLoading);
     setUnloading(initialUnloading);
@@ -747,164 +824,129 @@ export default function AddCargo() {
     setPayment(initialPayment);
     setContacts(initialContacts);
     setContactsField(initialContactsField);
-
-    dispatch(setCurrentCargoTemplate(null));
   };
 
-  const formatDataBeforeSend = (formData) => {
-    const extractValue = (array, name) => {
-      const object = array.filter((item) => item.name === name);
-      return object[0].value;
-    };
-
-    const formatContacts = (contacts) => {
-      return contacts.map((item) => {
-        return { phone: item.phone, firstName: item.name };
-      });
-    };
-
-    const formatLoadings = (loadings) => {
-      const formattedLoadings = [];
-      loadings.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "frequency")
-            return (newItem.type = i.value === "0" ? false : true);
-          if (i.name === "isLoadingAllDay") return (newItem.isAllDay = i.value ? true : false);
-          if (i.name === "loadingAddress") return (newItem.address = i.value);
-          if (i.name === "loadingDate") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.date = array.join("."));
-          }
-          if (i.name === "loadingDays") return (newItem.days = i.value);
-          if (i.name === "loadingPeriodType")
-            return (newItem.periodType = i.value);
-          if (i.name === "loadingTimeFrom") return (newItem.timeFrom = i.value);
-          if (i.name === "loadingTimeTo") return (newItem.timeTo = i.value);
-          if (i.name === "loadingTown") return (newItem.town = "Казань");
-          if (i.name === "transportationType")
-            return (newItem.transportaionType =
-              i.value === "FTL" ? false : true);
-          if (i.name === "loadingType")
-            return (newItem.cargoLoadingTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedLoadings.push(newItem);
-      });
-
-      return formattedLoadings;
-    };
-
-    const formatUnloadings = (unloadings) => {
-      const formattedUnloadings = [];
-      unloadings.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "isUnloadingAllDay")
-            return (newItem.isAllDay = !i.value ? false : i.value);
-          if (i.name === "unloadingTown") return (newItem.town = "Казань");
-          if (i.name === "unloadingAddress") return (newItem.address = i.value);
-          if (i.name === "unloadingDateFrom") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.dateFrom = array.join("."));
-          }
-          if (i.name === "unloadingDateTo") {
-            let formattedDate = i.value.split("-");
-            let array = [];
-            array[0] = formattedDate[2];
-            array[1] = formattedDate[1];
-            array[2] = formattedDate[0];
-            return (newItem.dateTo = array.join("."));
-          }
-          if (i.name === "unloadingTimeFrom")
-            return (newItem.timeFrom = i.value);
-          if (i.name === "unloadingTimeTo") return (newItem.timeTo = i.value);
-          if (i.name === "unloadingType")
-            return (newItem.cargoLoadingTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedUnloadings.push(newItem);
-      });
-
-      return formattedUnloadings;
-    };
-
-    const formatCargo = (cargo) => {
-      const formattedCargo = [];
-      cargo.forEach((item) => {
-        const newItem = {};
-        item.forEach((i) => {
-          if (i.name === "unloadingAddress") return (newItem.address = i.value);
-          if (i.name === "notes") return (newItem.noteType = i.value);
-          if (i.name === "cargoType")
-            return (newItem.cargoItemTypeId = i.value);
-          if (i.name === "cargoItemPackageTypeId")
-            return (newItem.cargoItemTypeId = i.value);
-
-          newItem[i.name] = i.value;
-        });
-        formattedCargo.push(newItem);
-      });
-
-      return formattedCargo;
-    };
-
-    const formattedFormData = {
-      loadings: formatLoadings(formData.loading),
-      unloadings: formatUnloadings(formData.unloading),
-      items: formatCargo(formData.cargo),
-      prepayment: extractValue(formData.payment, "prepay"),
-      userId: currentUserId,
-      bargainType:
-        extractValue(formData.payment, "bargain") === "0" ? true : false,
-      calculateType:
-        extractValue(formData.payment, "paymentType") === "0" ? true : false,
-      fromTemperature: extractValue(formData.requirements, "tempFrom"),
-      toTemperature: extractValue(formData.requirements, "tempTo"),
-      vatPrice: extractValue(formData.payment, "priceVat"),
-      noVatPrice: extractValue(formData.payment, "priceNovat"),
-      note: extractValue(formData.contactsField, "remark"),
-      contacts: formatContacts(formData.contacts),
-    };
-    return formattedFormData;
-  };
-
-  //финальная проверка на заполнение и отправка формы
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // const isValidForm = checkAllRequiredFields();
-    // if (!isValidForm) return alert("Заполните все обязательные поля");
+    const isValidForm = checkAllRequiredFields();
+    if (!isValidForm) {
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
 
-    const result = formatDataBeforeSend(getEntireFormValue());
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
+    }
+
+    const result = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId,
+      cities
+    );
 
     try {
-      const response = await axiosPrivate.post(apiRoutes.CARGO_CREATE, result);
-      console.log(response);
+      await axiosPrivate.post(apiRoutes.CARGO_ACTIONS, result);
+      setAlertMessage("Груз был успешно создан");
+      setAlertStatus("success");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     } catch (error) {
-      console.log("you suck at coding", error);
+      window.log(error);
     }
   };
 
-  const handleSaveTemplate = () => {
+  const checkPhoneNumber = () => {
+    const numbers = contacts.map((i) => i.phone);
+
+    const validCharachters = [
+      "+",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+    ];
+
+    for (let number of numbers) {
+      const numChars = number.split("");
+      for (let num of numChars) {
+        if (!validCharachters.includes(num)) {
+          setIsValidPhoneNumber(false);
+          return false;
+        }
+      }
+
+      if (!number.startsWith("+79")) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+      if (number.length !== 12) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+    }
+    setIsValidPhoneNumber(true);
+    setAlertMessage("");
+    return true;
+  };
+
+  const handleSaveTemplate = async () => {
     const isValidForm = checkAllRequiredFields();
     if (!isValidForm) {
-      return alert("Заполните все обязательные поля");
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
+
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
     }
 
     setIsShowTemplateModal(true);
-    const data = getEntireFormValue();
-    dispatch(setCargoFormData(data));
+  };
+
+  const submitSaveTemplate = async (templateFormData) => {
+    const cargoFormData = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId,
+      cities
+    );
+
+    const requestBody = {
+      templateName: templateFormData?.name,
+      templateNote: templateFormData?.remark,
+      ...cargoFormData,
+    };
+    try {
+      await axiosPrivate.post(apiRoutes.CARGO_TEMPLATE, requestBody);
+      handleSaveTemplateNotification();
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    } catch (error) {
+      console.log(error);
+      setAlertStatus("error");
+      setAlertMessage("Повторите попытку снова");
+      setShowAlert("true");
+    }
   };
 
   //This works, but the code needs refactoring
@@ -916,19 +958,85 @@ export default function AddCargo() {
     invalidFields = [...invalidFields, ...checkFieldset(requirements)];
     invalidFields = [...invalidFields, ...checkFieldset(payment)];
     invalidFields = [...invalidFields, ...checkAllProps(contacts)];
-
     setEmptyRequiredFieldsArray(invalidFields);
     return invalidFields.length === 0;
   };
 
   const getRedErrorWarning = (name, originalClasses, addedClass = "red") => {
+    if (name === "phone" && isValidPhoneNumber === false)
+      return `${originalClasses} ${addedClass}`;
+
     if (emptyRequiredFieldsArray.includes(name))
       return `${originalClasses} ${addedClass}`;
     return originalClasses;
   };
 
+  const handleSaveTemplateNotification = () => {
+    setAlertStatus("success");
+    setAlertMessage("Шаблон был успешно сохранён");
+    setShowAlert(true);
+  };
+
+  const loadOptions = (inputValue, callback) => {
+    const resultsArray = cities.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    const uniqueArray = getUniqueObjectsArray(resultsArray.splice(0, 20));
+    callback(uniqueArray);
+  };
+
+  const updateAddressState = (event, fieldName, callback, state, index) => {
+    const newState = state.map((item, idx) => {
+      if (idx !== index) return item;
+      const newStateSlice = item.map((i) => {
+        if (i.name !== fieldName) return i;
+        return { ...i, value: event.label };
+      });
+      return newStateSlice;
+    });
+    callback(newState);
+  };
+
+  const getAddressValue = (state, index, fieldName) => {
+    const result = getValArr(state, index, fieldName)
+    
+    if(!result) return null
+    return {value: result, label: result}
+  };
+
+  const getUniqueObjectsArray = (initialArray) => {
+    const newArray = [];
+    const uniqueLabels = [];
+    initialArray.forEach((item) => {
+      if (!uniqueLabels.includes(item.label)) {
+        uniqueLabels.push(item.label);
+        newArray.push(item);
+      }
+    });
+    return newArray;
+  };
+
+  const handleDeleteTemplate = (id) => {
+    const handleError = (state) => {
+      setAllCargoTemplates(state);
+      setAlertStatus("error");
+      setAlertMessage(
+        "Во время удаления шаблона произошла ошибка. Попробуйте обновить страницу и попробовать снова"
+      );
+      setShowAlert(true);
+    };
+    deleteTemplate(id, allCargoTemplates, setAllCargoTemplates, handleError);
+  };
+
   return (
     <main className="bg-gray">
+      <AlertCustom
+        open={showAlert}
+        variant={alertStatus}
+        onClick={() => setShowAlert(false)}
+      >
+        {alertMessage}
+      </AlertCustom>
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
         <button
           className="fs-12 fw-5 d-block mb-3 mb-sm-5 "
@@ -936,7 +1044,6 @@ export default function AddCargo() {
         >
           <span className="green fs-15 me-2">⟵</span> Назад
         </button>
-
         <form
           ref={ref}
           name="myForm"
@@ -953,16 +1060,19 @@ export default function AddCargo() {
             <div className="d-none d-lg-flex align-items-center fs-09">
               <button
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#usePatternCargo"
                 className="btn btn-4 p-2"
+                onClick={() => setIsShowChooseTemplateModal(true)}
               >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <IoNewspaperOutline />
                 </IconContext.Provider>
                 <span className="ms-2">Использовать шаблон</span>
               </button>
-              <button type="reset" className="btn btn-4 p-2 ms-3">
+              <button
+                type="reset"
+                className="btn btn-4 p-2 ms-3"
+                onClick={() => setCurrentTemplate(null)}
+              >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <VscChromeClose />
                 </IconContext.Provider>
@@ -1059,7 +1169,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -1146,7 +1256,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -1281,12 +1391,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
-                            placeholder={"Выберите..."}
+                            className={getRedErrorWarning(
+                              "loadingTown",
+                              "",
+                              "border border-danger"
+                            )}
                             name="loadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               loading,
                               "loadingTown",
                               index
@@ -1300,8 +1414,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
@@ -1309,19 +1426,27 @@ export default function AddCargo() {
                           data-label="loadingAddress"
                           data-warning="false"
                         >
-                          <input
-                            type="text"
+                          <AsyncSelect
+                            classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "loadingAddress",
                               "",
                               "border border-danger"
                             )}
                             name="loadingAddress"
-                            value={getValArr(loading, index, "loadingAddress")}
-                            onChange={(e) =>
-                              fillDataArr(e, setLoading, loading, index)
-                            }
-                            placeholder="Адрес"
+                            value={getAddressValue(loading, index, "loadingAddress")}
+                            onChange={(e) => {
+                              updateAddressState(
+                                e,
+                                "loadingAddress",
+                                setLoading,
+                                loading,
+                                index
+                              );
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                       </div>
@@ -1341,7 +1466,7 @@ export default function AddCargo() {
                       <label className="mb-2 mb-xl-3">
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1358,7 +1483,7 @@ export default function AddCargo() {
                       <label>
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL/LTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1391,7 +1516,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="loadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           loading,
                           "loadingType",
                           index
@@ -1405,7 +1532,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1414,7 +1543,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(loading, setLoading)}
+                onClick={() => addState(loading, setLoading, initialLoading)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -1428,15 +1557,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1611,17 +1742,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "unloadingTown",
                               "",
                               "border border-danger"
                             )}
-                            placeholder={"Выберите..."}
                             name="unloadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               unloading,
                               "unloadingTown",
                               index
@@ -1635,8 +1765,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
@@ -1644,23 +1777,27 @@ export default function AddCargo() {
                           data-label="unloadingAddress"
                           data-warning="false"
                         >
-                          <input
-                            type="text"
-                            name="unloadingAddress"
+                          <AsyncSelect
+                            classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "unloadingAddress",
-                              "col-sm-7",
+                              "",
                               "border border-danger"
                             )}
-                            value={getValArr(
-                              unloading,
-                              index,
-                              "unloadingAddress"
-                            )}
-                            onChange={(e) =>
-                              fillDataArr(e, setUnloading, unloading, index)
-                            }
-                            placeholder="Адрес"
+                            name="unloadingAddress"
+                            value={getAddressValue(unloading, index, "unloadingAddress")}
+                            onChange={(e) => {
+                              updateAddressState(
+                                e,
+                                "unloadingAddress",
+                                setUnloading,
+                                unloading,
+                                index
+                              );
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                       </div>
@@ -1683,7 +1820,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="unloadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           unloading,
                           "unloadingType",
                           index
@@ -1697,7 +1836,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1706,7 +1847,9 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(unloading, setUnloading)}
+                onClick={() =>
+                  addState(unloading, setUnloading, initialUnloading)
+                }
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -1720,15 +1863,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1808,7 +1953,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="cargoType"
                         value={getObj(
-                          optionsCargoType,
+                          itemTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           cargo,
                           "cargoType",
                           index
@@ -1816,7 +1963,9 @@ export default function AddCargo() {
                         onChange={(e) =>
                           handleRSelect(e, "cargoType", setCargo, cargo, index)
                         }
-                        options={optionsCargoType}
+                        options={itemTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1969,7 +2118,7 @@ export default function AddCargo() {
                   <div className="row align-items-center mb-4">
                     <div className="col-md-3 mb-3 mb-md-0">
                       <div
-                        data-label="packageType"
+                        data-label="cargoPackageType"
                         data-warning="false"
                         className="title-font fs-12 fw-5"
                       >
@@ -1979,24 +2128,28 @@ export default function AddCargo() {
                     <div className="col-md-9 fs-12 d-flex align-items-center">
                       <Select
                         classNamePrefix="react-select"
-                        name="packageType"
+                        name="cargoPackageType"
                         placeholder={"Выберите..."}
                         value={getObj(
-                          optionsPackageType,
+                          packageTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           cargo,
-                          "packageType",
+                          "cargoPackageType",
                           index
                         )}
                         onChange={(e) =>
                           handleRSelect(
                             e,
-                            "packageType",
+                            "cargoPackageType",
                             setCargo,
                             cargo,
                             index
                           )
                         }
-                        options={optionsPackageType}
+                        options={packageTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                       <IconContext.Provider
@@ -2057,7 +2210,7 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR1"
+                              name="adr1"
                               value={getValArr(cargo, index, "adr1")}
                               checked={getValArr(cargo, index, "adr1")}
                               onChange={(e) =>
@@ -2238,7 +2391,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(cargo, setCargo)}
+                onClick={() => addState(cargo, setCargo, initialCargo)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -2252,15 +2405,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2386,15 +2541,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2512,34 +2669,6 @@ export default function AddCargo() {
                     </label>
                   </div>
                 </div>
-                {/* {getVal(payment, "paymentType") === "0" && (
-                  <div className="row align-items-center mb-4">
-                    <div className="col-sm-3 mb-2 mb-sm-0">
-                      <div
-                        data-label="cash"
-                        data-warning="false"
-                        className="title-font fs-12 fw-5"
-                      >
-                        Наличными
-                      </div>
-                    </div>
-                    <div className="col-sm-9">
-                      <div className="row gx-2 gx-sm-4">
-                        <div className="col-8 col-sm-5 col-xl-4">
-                          <input
-                            type="number"
-                            min="1"
-                            name="cash"
-                            placeholder="0"
-                            value={getVal(payment, "cash")}
-                            onChange={(e) => fillData(e, setPayment, payment)}
-                            className="price-per-km w-100 fs-12"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
@@ -2633,15 +2762,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2711,7 +2842,7 @@ export default function AddCargo() {
                           <input
                             type="tel"
                             name="phone"
-                            placeholder="+ 7 (962) 458 65 79"
+                            placeholder="+79624586579"
                             value={getContact("phone", idx)}
                             onChange={(e) => fillContacts(e, idx)}
                             className={getRedErrorWarning(
@@ -2803,8 +2934,7 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
@@ -3022,13 +3152,13 @@ export default function AddCargo() {
                             {getObjLabel(optionsCargoType, arr, "cargoType")}
                           </span>
                         )}
-                        {getValArr(cargo, index, "packageType") && (
+                        {getValArr(cargo, index, "cargoPackageType") && (
                           <span className="me-1">
                             ,{" "}
                             {getObjLabel(
                               optionsPackageType,
                               arr,
-                              "packageType"
+                              "cargoPackageType"
                             )}
                           </span>
                         )}
@@ -3224,8 +3354,6 @@ export default function AddCargo() {
               </button>
               <button
                 type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#savePatternCargo"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
                 onClick={handleSaveTemplate}
               >
@@ -3240,6 +3368,20 @@ export default function AddCargo() {
                 <SaveTemplateModal
                   type="Cargo"
                   setIsShow={setIsShowTemplateModal}
+                  onSubmit={submitSaveTemplate}
+                />
+              </CustomModal>
+              <CustomModal
+                isShow={isShowChooseTemplateModal}
+                setIsShow={setIsShowChooseTemplateModal}
+                size="lg"
+                closeButton={true}
+              >
+                <ChooseTemplateModal
+                  templates={allCargoTemplates}
+                  setIsShow={setIsShowChooseTemplateModal}
+                  setCurrentTemplate={setCurrentTemplate}
+                  handleDeleteTemplate={handleDeleteTemplate}
                 />
               </CustomModal>
             </aside>
