@@ -13,18 +13,12 @@ export const optionsLoading = [
   { value: "11", label: "боковая с 2-х сторон" },
 ];
 export const optionsLoadingPeriodType = [
-  { value: "0", label: "По рабочим дням" },
-  { value: "1", label: "По выходным" },
-  { value: "2", label: "Ежедневно" },
-  { value: "3", label: "Через день" },
+  { value: 0, label: "По рабочим дням" },
+  { value: 1, label: "По выходным" },
+  { value: 2, label: "Ежедневно" },
+  { value: 3, label: "Через день" },
 ];
-// export const optionsLoadingDays = [
-//   { value: "0", label: "0 дн." },
-//   { value: "1", label: "1 дн." },
-//     { value: 0, label: 'По рабочим дням' },
-//     { value: 1, label: 'По выходным' },
-//     { value: 2, label: 'Ежедневно' },
-// ];
+
 export const optionsLoadingDays = [
     { value: 1, label: '1 дн.' },
     { value: 2, label: '2 дн.' },

@@ -227,12 +227,14 @@ export default function AddRoute() {
 
     const [selectPeriodType, setSelectPeriodType] = useState(null)
 
+    console.log(selectPeriodType)
+    console.log(data)
     useEffect(() => {
         setSelectPeriodType({
             value: data?.datePeriodType,
             label: data?.datePeriodTypeForUser
         })
-    }, [data])
+    }, [data?.datePeriodType, data?.datePeriodTypeForUser])
 
     const loadOptions2 = async (searchKey) => {
 
@@ -635,8 +637,8 @@ export default function AddRoute() {
                                                             onClick={e => setBtnRadioDate(Number(e.target.value))}
                                                         />
                                                         <span className="title-font fs-12 fw-5 ms-2 ms-xl-3">
-                    Постоянно
-                    </span>
+                                                            Постоянно
+                                                        </span>
                                                     </label>
                                                     <div
                                                         data-warning="false"
