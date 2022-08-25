@@ -30,4 +30,17 @@ const getRoute = (data, isOnlyExtreme) => {
     return (loadings && unloadings) ? loadings.concat(unloadings).join(' - ') : null
 }
 
-export {icons, getRoute}
+const getGeneralCapacity = (items) => items && items.reduce((acc, currentValue) => acc + currentValue?.capacity, 0)
+
+const getGeneralWeight = (items) => items && items.reduce((acc, currentValue) => acc + currentValue?.weight, 0)
+
+const getNotesType = (items) => {
+    const makeUniq = (arr) => [...new Set(arr)]
+
+    const notesType = items && items.map(i => i.noteType).filter(i => i != null)
+    const uniqNotesType = makeUniq(notesType)
+
+    return uniqNotesType
+}
+
+export {icons, getRoute, getGeneralCapacity, getGeneralWeight, getNotesType}

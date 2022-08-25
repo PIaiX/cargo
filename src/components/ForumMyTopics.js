@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import ForumWidget from '../components/ForumWidget';
-import CustomSelect from '../components/utilities/CustomSelect';
+import ForumWidget from './ForumWidget';
+import CustomSelect from './utilities/CustomSelect';
 import { Link } from 'react-router-dom';
 import { IconContext  } from "react-icons";
 import { IoSearch, IoAddCircleSharp } from 'react-icons/io5';
 import { BsFillInfoSquareFill } from "react-icons/bs";
-import ForumTopic from '../components/ForumTopic';
+import ForumTopic from './ForumTopic';
 import fakeForumSections from '../dummyData/forumSections.json';
 import debounce from '../hooks/debounce';
-import CustomModal from '../components/utilities/CustomModal';
-import Pagination from '../components/Pagination';
+import CustomModal from './utilities/CustomModal';
+import Pagination from './Pagination';
 
 export default function ForumMyTopics() {
     // pagination data

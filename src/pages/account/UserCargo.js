@@ -9,7 +9,7 @@ import useAxiosPrivate from '../../hooks/axiosPrivate';
 import CargoCard from '../../components/CargoCard';
 import Loader from '../../components/Loader';
 import Pagination from '../../components/Pagination';
-import {getRoute} from '../../helpers/cargo';
+import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from '../../helpers/cargo';
 import CustomModal from '../../components/utilities/CustomModal';
 
 const initialPageLimit = 9;
@@ -36,13 +36,13 @@ export default function UserCargo() {
         data: []
     })
 
-    const getCargoReqest = (page, limit) => {
+    const sendCargoReqest = (page, limit) => {
         getNotArchivedCargo(axiosPrivate, userId, page, limit)
             .then(result => setCargo(prev => ({...prev, isLoading: true, meta: result?.meta, data: result?.data})))
             .catch(error => setCargo(prev => ({...prev, isLoading: true, error})))
     }
 
-    const getArchivedCargoRequest = (page, limit) => {
+    const sendArchivedCargoRequest = (page, limit) => {
         getArchivedCargo(axiosPrivate, userId, page, limit)
             .then(result => setArchivedCargo(prev => ({
                 ...prev,
@@ -57,33 +57,33 @@ export default function UserCargo() {
         await deleteCargo(axiosPrivate, cargoAction?.id)
 
         if (tab === 'active') {
-            getCargoReqest(1, initialPageLimit)
+            sendCargoReqest(1, initialPageLimit)
             cargoPagination.setCurrentPage(1)
         } else {
-            getArchivedCargoRequest(1, initialPageLimit)
+            sendArchivedCargoRequest(1, initialPageLimit)
             archivedCargoPagination.setCurrentPage(1)
         }
 
         setCargoAction(null)
     }
 
-    const onRevovery = async () => {
+    const onRecovery = async () => {
         await unArchiveCargo(axiosPrivate, cargoAction?.id)
 
-        getCargoReqest(1, initialPageLimit)
+        sendCargoReqest(1, initialPageLimit)
         cargoPagination.setCurrentPage(1)
-        getArchivedCargoRequest(1, initialPageLimit)
+        sendArchivedCargoRequest(1, initialPageLimit)
         archivedCargoPagination.setCurrentPage(1)
 
         setCargoAction(null)
     }
 
     useEffect(() => {
-        getCargoReqest(cargoPagination.currentPage, cargoPagination.pageLimit)
+        sendCargoReqest(cargoPagination.currentPage, cargoPagination.pageLimit)
     }, [userId, cargoPagination.currentPage, cargoPagination.pageLimit])
 
     useEffect(() => {
-        getArchivedCargoRequest(archivedCargoPagination.currentPage, archivedCargoPagination.pageLimit)
+        sendArchivedCargoRequest(archivedCargoPagination.currentPage, archivedCargoPagination.pageLimit)
     }, [userId, archivedCargoPagination.currentPage, archivedCargoPagination.pageLimit])
 
     useEffect(() => !isShowCardModal && setCargoAction(null), [isShowCardModal])
@@ -134,25 +134,21 @@ export default function UserCargo() {
                             cargo.isLoading
                                 ? cargo?.data?.length
                                     ? cargo?.data?.length && cargo.data.map(item => {
-                                    const notesType = item?.items?.map(i => i.noteType)
-                                    const generalCapacity = item?.items?.reduce((acc, currentValue) => acc + currentValue?.capacity, 0)
-                                    const generalWeight = item?.items?.reduce((acc, currentValue) => acc + currentValue?.weight, 0)
-
-                                    return <CargoCard
-                                        key={item.id}
-                                        id={item.id}
-                                        title={item?.type?.name}
-                                        route={getRoute(item)}
-                                        notesType={notesType}
-                                        capacity={generalCapacity}
-                                        weight={generalWeight}
-                                        callback={({id, type}) => {
-                                            setCargoAction({id, type})
-                                            setIsShowCardModal(true)
-                                        }}
-                                        hasActions
-                                    />
-                                })
+                                        return <CargoCard
+                                            key={item.id}
+                                            id={item.id}
+                                            title={item?.type?.name}
+                                            route={getRoute(item, true)}
+                                            notesType={getNotesType(item?.items)}
+                                            capacity={getGeneralCapacity(item?.items)}
+                                            weight={getGeneralWeight(item?.items)}
+                                            callback={({id, type}) => {
+                                                setCargoAction({id, type})
+                                                setIsShowCardModal(true)
+                                            }}
+                                            hasActions
+                                        />
+                                    })
                                     : <h6 className="text-center w-100 p-5">У вас пока нет грузов</h6>
                                 : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                         }
@@ -245,7 +241,7 @@ export default function UserCargo() {
                                 type="button"
                                 className="btn btn-1 w-100 px-4 mb-3 mb-sm-0"
                                 onClick={() => {
-                                    onRevovery()
+                                    onRecovery()
                                     setIsShowCardModal(false)
                                 }}
                             >

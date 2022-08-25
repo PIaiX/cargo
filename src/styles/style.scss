@@ -1188,6 +1188,7 @@ main {
 /* SECTION 3 */
 /* card */
 .card-mini {
+  overflow: hidden;
   border-radius: .5em;
   background: #FFF;
   box-shadow: 1px 4px 9px rgba($green, 0.34);
@@ -1203,6 +1204,11 @@ main {
   }
   @media (max-width: 575px) {
     padding: .75em;
+  }
+
+  // .card-mini__wrapper
+  &__wrapper {
+    //height: 100%;
   }
 
   .title {
@@ -2730,7 +2736,7 @@ article {
     background-color: #fff;
     border-radius: $radius;
     border: 1px solid $gray-4;
-    cursor: pointer;
+
 
     &:hover, &:focus {
       border: 1px solid $green;
@@ -3180,6 +3186,63 @@ footer {
       align-items: center;
     }
   }
+  &__deleteRoute {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0;
+    }
+  }
+  &__unArchive {
+    .modal-header {
+      height: 4em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0;
+    }
+  }
+  &__patternRoute {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+      .items{
+        height: 30em;
+        overflow: auto;
+      }
+    }
+  }
+  &__savePattern {
+    .modal-header {
+      height: 5em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+    }
+  }
+  &__routeErrorValid {
+    .modal-content {
+      border-radius: 7px;
+    }
+    .modal-header {
+      height: 4em;
+      padding: 1em 1em 0 1em;
+    }
+    .modal-body {
+      padding: 0 2.5em 2.5em 2.5em;
+    }
+  }
+  &__inUserProfile {
+    .modal-header {
+      display: none;
+    }
+  }
 }
 
 .offcanvas {
@@ -3242,6 +3305,7 @@ footer {
 }
 
 .btn-close {
+  z-index: $modal-z-index;
   position: absolute;
   top: 0px;
   right: 0px;
@@ -3357,7 +3421,7 @@ footer {
   width: 100%;
   max-width: 100%;
   position: relative;
-  z-index: $select-z-index;
+
 
   &__toggle {
     width: 100%;
@@ -3417,7 +3481,6 @@ footer {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
     border-radius: 4px;
     z-index: $select-z-index;
-    padding: 0.5rem 0;
 
     &[data-alignment="right"] {
       left: unset;
@@ -3861,4 +3924,106 @@ footer {
 .add-cargo_hidden-count {
   justify-content: end !important;
   gap: 10px;
+}
+
+.type-select {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  &__checkbox {
+    label > input {
+      margin-right: 20px;
+    }
+  }
+}
+
+.cargo-count {
+
+  &_hasnt {
+    justify-content: end !important;
+    gap: 20px
+  }
+}
+
+.alert-report-user {
+  right: 5em;
+  z-index: 100;
+}
+
+.forum-widget__date {
+  color: $green;
+  font-size: 1.1em;
+  line-height: normal;
+}
+
+.submit-alert {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.profile-picture {
+  width: 240px;
+  height: 240px;
+  max-width: 100%;
+  border-radius: 50%;
+  border: 1px solid $gray-5;
+  background-color: #fff;
+  @media (max-width: 1399px) {
+    width: 200px;
+    height: 200px;
+  }
+  @media (max-width: 1199px) {
+    width: 170px;
+    height: 170px;
+  }
+
+  img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.pay-information {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 0 4em 0 4em;
+  font-size: initial;
+  a {
+    color: $blue;
+  }
+}
+
+.contacts {
+  font-size: initial;
+  &__first {
+    ul {
+      line-height: 2em;
+      margin: 1em;
+      padding: 0;
+      text-align: center;
+      li {
+        list-style-type: none;
+        a {
+          color: $blue;
+        }
+      }
+    }
+  }
+  &__second {
+    ul {
+      line-height: 2em;
+      margin: 1em;
+      padding: 0;
+      text-align: center;
+      li {
+        list-style-type: none;
+      }
+    }
+  }
 }

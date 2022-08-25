@@ -4,7 +4,6 @@ import {IoAddCircleSharp} from "react-icons/io5";
 import {Link} from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/pagination";
-import userCars from '../../dummyData/userCars.json'
 import {deleteCar, getCars} from '../../API/car';
 import {useSelector} from 'react-redux';
 import useAxiosPrivate from '../../hooks/axiosPrivate';
@@ -67,7 +66,7 @@ export default function UserCars() {
                         type="button"
                         className="active tab-btn"
                     >
-                        {`Мои машины (${userCars.length})`}
+                        {`Мои машины (${cars?.items?.length || 0})`}
                     </button>
                 </div>
             </div>

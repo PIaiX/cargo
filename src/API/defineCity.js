@@ -1,11 +1,19 @@
 import axios from 'axios';
+import defineIP from './defineIP';
 
-export async function defineCity() {
+const defineCity = async () => {
     try {
-        const response = await axios.post('http://ip-api.com/json/?lang=ru&fields=city')
-        return response.data?.city;
-    } catch(err) {
-        console.log(err)
+        const ipAddress = await defineIP()
+        const response = await axios.post(`https://suggestions.dadata.ru/suggestions/api/4_1/rs/iplocate/address?ip=${ipAddress}`, {}, {
+            headers: {
+                "Authorization": `Token ${process.env.REACT_APP_DADATA_TOKEN}`
+            }
+        })
+        return response?.data?.location?.data?.city;
+    } catch(error) {
+        console.log(error)
         return 'Москва'
     }
 }
+
+export default defineCity

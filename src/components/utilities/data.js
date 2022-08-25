@@ -18,9 +18,24 @@ export const optionsLoadingPeriodType = [
   { value: "2", label: "Ежедневно" },
   { value: "3", label: "Через день" },
 ];
+// export const optionsLoadingDays = [
+//   { value: "0", label: "0 дн." },
+//   { value: "1", label: "1 дн." },
+//     { value: 0, label: 'По рабочим дням' },
+//     { value: 1, label: 'По выходным' },
+//     { value: 2, label: 'Ежедневно' },
+// ];
 export const optionsLoadingDays = [
-  { value: "0", label: "0 дн." },
-  { value: "1", label: "1 дн." },
+    { value: 1, label: '1 дн.' },
+    { value: 2, label: '2 дн.' },
+    { value: 3, label: '3 дн.' },
+    { value: 4, label: '4 дн.' },
+    { value: 5, label: '5 дн.' },
+    { value: 6, label: '6 дн.' },
+    { value: 7, label: '7 дн.' },
+    { value: 8, label: '8 дн.' },
+    { value: 9, label: '9 дн.' },
+    { value: 10, label: '10 дн.' },
 ];
 export const optionsPackageType = [
   { value: "1", label: "не указано" },

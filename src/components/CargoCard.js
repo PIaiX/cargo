@@ -7,10 +7,10 @@ import {icons} from '../helpers/cargo';
 const CargoCard = (props) => {
 
     return (
-        <div>
+        <div className="card-mini__wrapper">
             <div className={`card-mini ${props.className ?? ''}`}>
                 <div>
-                    <div className="title mb-2 mb-sm-3">{props.title}</div>
+                    {props.id && <div className="title mb-2 mb-sm-3">Груз № {props.id}</div>}
                     {props.route && (
                         <div className="fs-11 mt-1 mt-sm-2">
                             <span className="fw-5">Маршут:</span> <span>{props.route}</span>
@@ -26,20 +26,25 @@ const CargoCard = (props) => {
                             <span className="fw-5">Общий вес:</span> {props.weight}
                         </div>
                     )}
-                    <div className="fs-11 d-flex align-items-center flex-wrap mt-1 mt-sm-2">
-                        <span className="fw-5">Особые пометки:</span>
-                        {props?.notesType?.length && props.notesType.map(item => (
-                            icons.map(i => {
-                                return (i.id === item) && <div
-                                    key={i.id}
-                                    className="d-flex align-items-center ms-1"
-                                >
-                                    <span>{i.text}</span>
-                                    {i.element && <div className="icon ms-1">{i.element}</div>}
-                                </div>
-                            })
-                        ))}
-                    </div>
+                    {(props?.notesType?.length > 0) && (
+                        <div className="fs-11 d-flex align-items-center flex-wrap mt-1 mt-sm-2 card-mini__notes">
+                            <span className="fw-5">Особые пометки:</span>
+                            <div className="d-flex align-items-center flex-wrap">
+                                {props.notesType.map(item => (
+                                    icons.map(i => {
+                                        return (i.id === item) && <div
+                                            key={i.id}
+                                            className="d-flex align-items-center ms-1"
+                                        >
+                                            <span>{i.text}</span>
+                                            {i.element && <div className="icon ms-1">{i.element}</div>}
+                                        </div>
+                                    })
+                                ))}
+                            </div>
+                        </div>
+                    )
+                    }
                 </div>
                 <NavLink to={`/cargo-page/${props.id}`} className="btn btn-1 mt-2 mt-sm-4 mt-xl-5">
                     Перейти
