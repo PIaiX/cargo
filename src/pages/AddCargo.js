@@ -34,7 +34,8 @@ import {
 } from "../helpers/parser";
 import AlertCustom from "../components/utilities/AlertCustom";
 import { deleteTemplate, getCurrentUserCargoTemplates } from "../API/templates";
-import axios from "axios"
+import axios from "axios";
+import { fetchAddressSuggestions } from "../API/cargo";
 
 import "react-dadata/dist/react-dadata.css";
 
@@ -321,8 +322,6 @@ const initialContactsField = [
     required: false,
   },
 ];
-
-const DADATA_KEY = process.env.REACT_APP_DADATA_TOKEN
 
 export default function AddCargo() {
   const [showAlert, setShowAlert] = useState(false);
@@ -986,41 +985,24 @@ export default function AddCargo() {
     callback(uniqueArray);
   };
 
-  //TODO: НУЖНО ДОДЕЛАТЬ. ОЧЕНЬ СЫРО ПОКА ЧТО
-  // REACT_APP_DADATA_TOKEN='3147beaba86e667297007de96ab40da21f44686d'
-  const loadingAddressOptions = async (inputValue, callback) => {
-    try {
-      const response = await axios.post("https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/address", {
-        query: inputValue
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Authorization": "Token " + DADATA_KEY
-        }
-      })
-      const rawSuggestions = response.data?.suggestions
-      const newOptions = rawSuggestions.map((i, idx) => {
-        return {label: i.value, value: idx}
-      })
-      callback(newOptions)
-    } catch (error) {
-    }
-  }
-
   const updateAddressState = (event, fieldName, callback, state, index) => {
     const newState = state.map((item, idx) => {
-      if(idx !== index) return item
+      if (idx !== index) return item;
       const newStateSlice = item.map((i) => {
-        if(i.name !== fieldName) return i
-        return {...i, value: event.label}
-      })
-      return newStateSlice
-    })
-    callback(newState)
-  }
+        if (i.name !== fieldName) return i;
+        return { ...i, value: event.label };
+      });
+      return newStateSlice;
+    });
+    callback(newState);
+  };
 
-  console.log("loading state", loading)
+  const getAddressValue = (state, index, fieldName) => {
+    const result = getValArr(state, index, fieldName)
+    
+    if(!result) return null
+    return {value: result, label: result}
+  };
 
   const getUniqueObjectsArray = (initialArray) => {
     const newArray = [];
@@ -1444,20 +1426,6 @@ export default function AddCargo() {
                           data-label="loadingAddress"
                           data-warning="false"
                         >
-                          {/* <input
-                            type="text"
-                            className={getRedErrorWarning(
-                              "loadingAddress",
-                              "",
-                              "border border-danger"
-                            )}
-                            name="loadingAddress"
-                            value={getValArr(loading, index, "loadingAddress")}
-                            onChange={(e) =>
-                              fillDataArr(e, setLoading, loading, index)
-                            }
-                            placeholder="Адрес"
-                          /> */}
                           <AsyncSelect
                             classNamePrefix="react-select"
                             className={getRedErrorWarning(
@@ -1466,28 +1434,20 @@ export default function AddCargo() {
                               "border border-danger"
                             )}
                             name="loadingAddress"
-                            // value={getObj(
-                            //   cities,
-                            //   loading,
-                            //   "loadingAddress",
-                            //   index
-                            // )}
-                            // value={{value: "2", label: "you suck at coding"}}
-                            // onChange={(e) =>
-                            //   handleRSelect(
-                            //     e,
-                            //     "loadingAddress",
-                            //     setLoading,
-                            //     loading,
-                            //     index
-                            //   )
-                            // }
+                            value={getAddressValue(loading, index, "loadingAddress")}
                             onChange={(e) => {
-                              updateAddressState(e, "loadingAddress", setLoading, loading, index)
+                              updateAddressState(
+                                e,
+                                "loadingAddress",
+                                setLoading,
+                                loading,
+                                index
+                              );
                             }}
                             placeholder={"Введите адрес..."}
-                            loadOptions={loadingAddressOptions}
-                            noOptionsMessage={() => "Не найдено"}/>
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
+                          />
                         </div>
                       </div>
                     </div>
@@ -1817,23 +1777,27 @@ export default function AddCargo() {
                           data-label="unloadingAddress"
                           data-warning="false"
                         >
-                          <input
-                            type="text"
-                            name="unloadingAddress"
+                          <AsyncSelect
+                            classNamePrefix="react-select"
                             className={getRedErrorWarning(
                               "unloadingAddress",
-                              "col-sm-7",
+                              "",
                               "border border-danger"
                             )}
-                            value={getValArr(
-                              unloading,
-                              index,
-                              "unloadingAddress"
-                            )}
-                            onChange={(e) =>
-                              fillDataArr(e, setUnloading, unloading, index)
-                            }
-                            placeholder="Адрес"
+                            name="unloadingAddress"
+                            value={getAddressValue(unloading, index, "unloadingAddress")}
+                            onChange={(e) => {
+                              updateAddressState(
+                                e,
+                                "unloadingAddress",
+                                setUnloading,
+                                unloading,
+                                index
+                              );
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                       </div>
