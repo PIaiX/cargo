@@ -118,13 +118,13 @@ const EditProfileForm = () => {
     }
 
     useEffect(() => {
-        if (btnSubjectType === 0) {
+        if (btnSubjectType === 0 || Number(currentUser.subject) === 0) {
             delete data?.companyName
             delete data?.taxIdentificationNumber
-        } else if(btnSubjectType === 1){
+        } else if(btnSubjectType === 1 || Number(currentUser.subject) === 1){
             setData(prevState => ({...prevState, companyName: currentUser.companyName, taxIdentificationNumber: currentUser.taxIdentificationNumber}))
         }
-    }, [btnSubjectType])
+    }, [btnSubjectType, currentUser, data?.companyName, data?.taxIdentificationNumber])
 
     const deleteAvatar = (e) => {
         e.preventDefault()
