@@ -246,10 +246,10 @@ export const optionsDays = [
   { value: "10", label: "10 дн." },
 ];
 export const optionsNotes = [
-  { value: "0", label: "Нет" },
-  { value: "1", label: "Режим" },
-  { value: "2", label: "Хрупкое" },
-  { value: "3", label: "Негабаритные" },
+  { value: null, label: "Нет" },
+  { value: "0", label: "Режим" },
+  { value: "1", label: "Хрупкое" },
+  { value: "2", label: "Негабаритные" },
 ];
 export const defaultTownsOptions = [
   { value: "0", label: "Москва" },

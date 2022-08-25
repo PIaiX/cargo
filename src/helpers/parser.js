@@ -109,14 +109,14 @@ export const parseCargoClientToServer = (formData, currentUserId, cities) => {
       item.forEach((i) => {
         if (i.name === "unloadingAddress") return (newItem.address = i.value);
         if (i.name === "notes") {
-          if (i.value === "0" || !i.value) {
+          if (!i.value) {
             return (newItem.noteType = null);
           }
           return (newItem.noteType = i.value);
         }
         if (i.name === "cargoType") return (newItem.cargoItemTypeId = i.value);
-        if (i.name === "cargoItemPackageTypeId")
-          return (newItem.cargoItemTypeId = i.value);
+        if (i.name === "cargoPackageType")
+          return (newItem.cargoItemPackageTypeId = i.value);
 
         newItem[i.name] = i.value;
       });
@@ -167,8 +167,10 @@ export const parseCargoServerToClient = (serverData, cities) => {
     return newItems;
   };
 
+
   const getCargoFieldName = (key) => {
     if (key === "cargoItemTypeId") return "cargoType";
+    if (key === "cargoItemPackageTypeId") return "cargoPackageType";
     if (key === "noteType") return "notes";
     return key;
   };
@@ -180,7 +182,7 @@ export const parseCargoServerToClient = (serverData, cities) => {
 
   const getCargoValue = (value, key) => {
     if (key === "noteType") {
-      if (!value) return "0";
+      if (value === null) return null;
       return value.toString();
     }
 

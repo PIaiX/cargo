@@ -179,7 +179,7 @@ const initialCargo = [
       required: false,
     },
     {
-      name: "packageType",
+      name: "cargoPackageType",
       value: "",
       required: false,
     },
@@ -2118,7 +2118,7 @@ export default function AddCargo() {
                   <div className="row align-items-center mb-4">
                     <div className="col-md-3 mb-3 mb-md-0">
                       <div
-                        data-label="packageType"
+                        data-label="cargoPackageType"
                         data-warning="false"
                         className="title-font fs-12 fw-5"
                       >
@@ -2128,20 +2128,20 @@ export default function AddCargo() {
                     <div className="col-md-9 fs-12 d-flex align-items-center">
                       <Select
                         classNamePrefix="react-select"
-                        name="packageType"
+                        name="cargoPackageType"
                         placeholder={"Выберите..."}
                         value={getObj(
                           packageTypes.map((i) => {
                             return { value: i.id, label: i.name };
                           }),
                           cargo,
-                          "packageType",
+                          "cargoPackageType",
                           index
                         )}
                         onChange={(e) =>
                           handleRSelect(
                             e,
-                            "packageType",
+                            "cargoPackageType",
                             setCargo,
                             cargo,
                             index
@@ -3152,13 +3152,13 @@ export default function AddCargo() {
                             {getObjLabel(optionsCargoType, arr, "cargoType")}
                           </span>
                         )}
-                        {getValArr(cargo, index, "packageType") && (
+                        {getValArr(cargo, index, "cargoPackageType") && (
                           <span className="me-1">
                             ,{" "}
                             {getObjLabel(
                               optionsPackageType,
                               arr,
-                              "packageType"
+                              "cargoPackageType"
                             )}
                           </span>
                         )}
