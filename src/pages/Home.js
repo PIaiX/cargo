@@ -33,11 +33,6 @@ export default function Home() {
     });
 
     useEffect(() => {
-        getCities().then((res) => {
-            if (res.status === 200) {
-                setData(res.body);
-            }
-        });
         getCountRoutes().then(res => setCountRoute(res?.data?.body))
         getCargoCount().then(res => res && setCargoCount(res))
         getAllNews(1, 5, "desc")
@@ -52,9 +47,6 @@ export default function Home() {
             .catch((error) =>
                 setNews((prev) => ({...prev, isLoading: true, error}))
             );
-
-        // getCargoCount().then(result => setCargoCount(result))
-
     }, []);
 
     const [routes, setRoutes] = useState({
