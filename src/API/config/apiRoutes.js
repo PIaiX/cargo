@@ -38,6 +38,7 @@ export default {
   CARGO_UNARCHIVE: "/cargo/unArchive",
   CARGO_ACTIONS: "/cargo",
 
+
   // route
   ROUTE_COUNT: "/route/count",
   ROUTE_SEARCH: "/route/search",

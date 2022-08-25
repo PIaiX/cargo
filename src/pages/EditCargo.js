@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-scroll";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   IoAddCircle,
   IoChevronBackOutline,
@@ -10,6 +11,7 @@ import {
 import { VscChromeClose } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
 import {
   optionsCargoType,
   optionsCarType,
@@ -18,14 +20,27 @@ import {
   optionsLoadingPeriodType,
   optionsNotes,
   optionsPackageType,
-  defaultTownsOptions as optionsTowns,
+  defaultTownsOptions,
 } from "../components/utilities/data";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import CustomModal from "../components/utilities/CustomModal";
+import SaveTemplateModal from "../components/footerComponents/SaveTemplateModal";
+import ChooseTemplateModal from "../components/footerComponents/ChooseTemplateModal";
+import apiRoutes from "../API/config/apiRoutes";
+import useAxiosPrivate from "../hooks/axiosPrivate";
 import {
-  setCargoFormData,
-  setCurrentCargoTemplate,
-} from "../store/reducers/savedCargoTemplates";
-import { useNavigate } from "react-router-dom";
+  parseCargoClientToServer,
+  parseCargoServerToClient,
+} from "../helpers/parser";
+import AlertCustom from "../components/utilities/AlertCustom";
+import { deleteTemplate, getCurrentUserCargoTemplates } from "../API/templates";
+import { fetchAddressSuggestions } from "../API/cargo";
+
+import "react-dadata/dist/react-dadata.css";
+
+import { getCargo, updateCargo } from "../API/cargo";
+
+import { getCities } from "../API/cities";
 
 const initialLoading = [
   [
@@ -66,7 +81,7 @@ const initialLoading = [
     },
     {
       name: "loadingTown",
-      value: optionsTowns[1].value,
+      value: "",
       required: true,
     },
     {
@@ -165,7 +180,7 @@ const initialCargo = [
       required: false,
     },
     {
-      name: "packageType",
+      name: "cargoPackageType",
       value: "",
       required: false,
     },
@@ -180,57 +195,57 @@ const initialCargo = [
       required: false,
     },
     {
-      name: "ADR1",
-      value: true,
-      required: false,
-    },
-    {
-      name: "ADR2",
+      name: "adr1",
       value: false,
       required: false,
     },
     {
-      name: "ADR3",
+      name: "adr2",
       value: false,
       required: false,
     },
     {
-      name: "ADR4",
+      name: "adr3",
       value: false,
       required: false,
     },
     {
-      name: "ADR5",
+      name: "adr4",
       value: false,
       required: false,
     },
     {
-      name: "ADR6",
+      name: "adr5",
       value: false,
       required: false,
     },
     {
-      name: "ADR7",
+      name: "adr6",
       value: false,
       required: false,
     },
     {
-      name: "ADR8",
+      name: "adr7",
       value: false,
       required: false,
     },
     {
-      name: "ADR9",
+      name: "adr8",
       value: false,
       required: false,
     },
     {
-      name: "TIR",
+      name: "adr9",
       value: false,
       required: false,
     },
     {
-      name: "EKMT",
+      name: "tir",
+      value: false,
+      required: false,
+    },
+    {
+      name: "ekmt",
       value: false,
       required: false,
     },
@@ -310,9 +325,70 @@ const initialContactsField = [
 ];
 
 export default function AddCargo() {
+  const params = useParams()
+
+  const [cargoData, setCargoData] = useState(null)
+  
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    getCities().then((res) => {
+      if (res.status === 200) {
+        const citiesOptions = res.body.map((item, idx) => {
+          return {
+            value: idx.toString(),
+            label: item,
+          };
+        });
+        setCities(citiesOptions);
+
+        const newDefaultOptions = optionsTowns.map((item) => {
+          const newTown = {
+            label: item.label,
+            value: citiesOptions.find((i) => i.label === item.label).value,
+          };
+          return newTown;
+        });
+        setOptionsTowns(newDefaultOptions);
+      }
+    });
+    setCities(defaultTownsOptions);
+  }, []);
+
+  useEffect(() => {
+    getCargo(params.id).then((data) => {
+      const formattedData = parseCargoServerToClient(data, cities)
+    setLoading(formattedData.loading);
+    setUnloading(formattedData.unloading);
+    setCargo(formattedData.cargo);
+    setRequirements(formattedData.requirements);
+    setPayment(formattedData.payment);
+    setContacts(formattedData.contacts);
+    setContactsField([
+      { name: "contactsData", value: formattedData.contacts },
+      {
+        name: "remark",
+        value: formattedData.contactsField[1].value,
+        required: false,
+      },
+    ]);
+    })
+
+  }, [cities])
+
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const ref = useRef(null);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
+
+  const [isShowTemplateModal, setIsShowTemplateModal] = useState(false);
+  const [isShowChooseTemplateModal, setIsShowChooseTemplateModal] =
+    useState(false);
+
   const [activeField, setActiveField] = useState(1); //для мобильных устройств
 
   const [loading, setLoading] = useState(initialLoading);
@@ -323,9 +399,36 @@ export default function AddCargo() {
   const [contacts, setContacts] = useState(initialContacts);
   const [contactsField, setContactsField] = useState(initialContactsField);
 
-  const currentTemplate = useSelector(
-    (state) => state.savedCargoTemplates.currentTemplate
-  );
+  const [emptyRequiredFieldsArray, setEmptyRequiredFieldsArray] = useState([]);
+
+  const [itemTypes, setItemTypes] = useState([]);
+  const [packageTypes, setPackageTypes] = useState([]);
+  const [loadingTypes, setLoadingTypes] = useState([]);
+  const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
+
+  const currentUserId = useSelector((state) => state.currentUser.data.user.id);
+
+  const [isValidPhoneNumber, setIsValidPhoneNumber] = useState(undefined);
+
+  const [currentTemplate, setCurrentTemplate] = useState(null);
+  const [allCargoTemplates, setAllCargoTemplates] = useState([]);
+
+  useEffect(() => {
+    const getOptions = async () => {
+      try {
+        const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
+        const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
+        const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
+        setItemTypes(itemResponse.data.body);
+        setPackageTypes(packageResponse.data.body);
+        setLoadingTypes(loadingResponse.data.body);
+      } catch (error) {
+        window.log(error);
+      }
+    };
+
+    getOptions();
+  }, []);
 
   const getEntireFormValue = () => {
     const newContactsField = [
@@ -349,17 +452,37 @@ export default function AddCargo() {
   };
 
   useEffect(() => {
-    if (currentTemplate) {
-      setLoading(currentTemplate.data.loading);
-      setUnloading(currentTemplate.data.unloading);
-      setCargo(currentTemplate.data.cargo);
-      setRequirements(currentTemplate.data.requirements);
-      setPayment(currentTemplate.data.payment);
-      setContacts(currentTemplate.data.contacts);
-    }
-  }, [currentTemplate]);
+    const getTemplates = async () => {
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    };
+    getTemplates();
+  }, []);
 
-  //запись в data значений селектов (React-Select)
+  useEffect(() => {
+    if (!currentTemplate) return;
+    const newTemplate = parseCargoServerToClient(currentTemplate.cargo, cities);
+
+    setLoading(newTemplate.loading);
+    setUnloading(newTemplate.unloading);
+    setCargo(newTemplate.cargo);
+    setRequirements(newTemplate.requirements);
+    setPayment(newTemplate.payment);
+    setContacts(newTemplate.contacts);
+    setContactsField([
+      { name: "contactsData", value: newTemplate.contacts },
+      {
+        name: "remark",
+        value: newTemplate.contactsField[1].value,
+        required: false,
+      },
+    ]);
+  }, [currentTemplate, cargoData]);
+
   let handleRSelect = (e, name, func, list, i) => {
     if (i !== undefined) {
       func(
@@ -389,7 +512,7 @@ export default function AddCargo() {
       );
     }
   };
-  //main input changes handler
+
   let fillData = (e, func, list) => {
     let inputName = e.target.name;
     let inputVal =
@@ -453,7 +576,7 @@ export default function AddCargo() {
     }
   };
   let fillDataArr = (e, func, list, i) => {
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let inputVal = e.target.value.trim();
     let clearState = e.target.dataset.clear;
 
@@ -548,7 +671,7 @@ export default function AddCargo() {
   let toggleParams = (e, func, list, i) => {
     //нужно прикрутить очистку инпутов и селекта
     let inputVal = e.target.value;
-    let inputName = e.target.name;
+    let inputName = e.target.name.split(" ")[0];
     let addParams = e.target.dataset.add.split(" ");
     let delParams = e.target.dataset.del.split(" ");
 
@@ -559,6 +682,7 @@ export default function AddCargo() {
             if (obj.name === inputName) {
               return { ...obj, value: inputVal };
             } else if (addParams.includes(obj.name)) {
+              //TODO. Think about it. Is it required or not, the field below this comment
               return { ...obj, required: true };
             } else if (delParams.includes(obj.name)) {
               delParams.map((item) => clearInput(item));
@@ -573,7 +697,6 @@ export default function AddCargo() {
       })
     );
   };
-
   //поиск значения полей в массиве
   const getObj = (opt, state, param, i) => {
     if (i !== undefined) {
@@ -591,17 +714,12 @@ export default function AddCargo() {
         return "";
       }
     } else {
-      if (
-        opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        )
-      ) {
-        return opt.find(
-          (obj) => obj.value === state.find((obj) => obj.name === param).value
-        );
-      } else {
-        return "";
+      const object = state.find((obj) => obj.name === param);
+      if (object.value) {
+        const option = opt.find((i) => i.value == object.value);
+        return option;
       }
+      return "";
     }
   };
   const getObjLabel = (opt, state, param) => {
@@ -626,7 +744,7 @@ export default function AddCargo() {
     }
   };
   const getValArr = (state, i, param) => {
-    let val = state[i].find((obj) => obj.name === param).value;
+    let val = state[i].find((obj) => obj.name === param)?.value;
     if (val !== null && val !== undefined && val !== "") {
       return val;
     } else {
@@ -686,12 +804,9 @@ export default function AddCargo() {
   };
 
   //добавление fieldset
-  let addState = (state, func) => {
-    let arr = state[0];
-    let clearedArr = arr.map((obj) => {
-      return { ...obj, value: "" };
-    });
-    func([...state, clearedArr]);
+  let addState = (state, callback, stateName) => {
+    const newState = [...state, ...stateName];
+    callback(newState);
   };
   //удаление fieldset
   let delState = (state, func, index) => {
@@ -701,39 +816,34 @@ export default function AddCargo() {
   };
 
   //проверка fieldset на заполнение
-  let checkFieldset = (state) => {
+  const checkFieldset = (state) => {
     let requiredArr = state.filter((item) => item.required === true);
-    return requiredArr.every(
-      (elem) =>
-        elem.value !== null && elem.value !== undefined && elem.value !== ""
-    );
+    const emptyRequiredFields = requiredArr.filter((elem) => {
+      if (elem.name === "prepay" && elem.value === 0) return false;
+      return !elem.value;
+    });
+    const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
+    return fieldNamesArray;
   };
-  let checkFieldsetArr = (state) => {
+
+  const checkFieldsetArr = (state) => {
     let requiredArr = state.flatMap((arr) =>
       arr.filter((item) => item.required === true)
     );
-    return requiredArr.every(
-      (elem) =>
-        elem.value !== null && elem.value !== undefined && elem.value !== ""
-    );
-  };
-  let checkAllProps = (state) => {
-    let requiredProps = state.flatMap((obj) => {
-      let arr = [];
-      for (let key in obj) {
-        if (key !== "index") {
-          arr.push(obj[key]);
-        }
-      }
-      return arr;
-    });
-    return requiredProps.every(
-      (elem) => elem !== null && elem !== undefined && elem !== ""
-    );
+    const emptyRequiredFields = requiredArr.filter((elem) => !elem.value);
+    const fieldNamesArray = emptyRequiredFields.map((item) => item.name);
+    return fieldNamesArray;
   };
 
-  // ДОДЕЛАТЬ!!!
-  //очищение data при событии reset - ПРОВЕРИТЬ (не очищать стейт у радиокнопок и чекбоксов)
+  const checkAllProps = (state) => {
+    const data = state[0];
+    const emptyRequiredFields = [];
+    for (let key in data) {
+      if (!data[key] && key !== "index") emptyRequiredFields.push(key);
+    }
+    return emptyRequiredFields;
+  };
+
   const onReset = (e) => {
     setLoading(initialLoading);
     setUnloading(initialUnloading);
@@ -742,53 +852,226 @@ export default function AddCargo() {
     setPayment(initialPayment);
     setContacts(initialContacts);
     setContactsField(initialContactsField);
-
-    dispatch(setCurrentCargoTemplate(null));
   };
 
-  //финальная проверка на заполнение и отправка формы
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     const isValidForm = checkAllRequiredFields();
-    if (!isValidForm) return alert("Заполните все обязательные поля");
+    if (!isValidForm) {
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
 
-    //Make an API call in the future sending the data to the server
-    console.log(getEntireFormValue());
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
+    }
+
+    const result = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId,
+      cities
+    );
+      console.log("data sent out", result)
+    try {
+      await updateCargo(axiosPrivate, params.id, result)
+      setAlertMessage("Груз был успешно отредактирован");
+      setAlertStatus("success");
+      setShowAlert(true);
+      setTimeout(() => {
+        navigate(-1);
+      }, 2000);
+    } catch (error) {
+      window.log(error);
+    }
   };
 
-  const handleSaveTemplate = () => {
-    const data = getEntireFormValue();
-    dispatch(setCargoFormData(data));
+  const checkPhoneNumber = () => {
+    const numbers = contacts.map((i) => i.phone);
+
+    const validCharachters = [
+      "+",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+    ];
+
+    for (let number of numbers) {
+      const numChars = number.split("");
+      for (let num of numChars) {
+        if (!validCharachters.includes(num)) {
+          setIsValidPhoneNumber(false);
+          return false;
+        }
+      }
+
+      if (!number.startsWith("+79")) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+      if (number.length !== 12) {
+        setIsValidPhoneNumber(false);
+        return false;
+      }
+    }
+    setIsValidPhoneNumber(true);
+    setAlertMessage("");
+    return true;
+  };
+
+  const handleSaveTemplate = async () => {
+    const isValidForm = checkAllRequiredFields();
+    if (!isValidForm) {
+      setAlertMessage("Заполните все обязательные поля!");
+      return setShowAlert(true);
+    }
+
+    const isValidNumber = checkPhoneNumber();
+    if (!isValidNumber) {
+      setAlertMessage(
+        "Укажите номер телефона в указанном формате +79xxxxxxxxx"
+      );
+      return setShowAlert(true);
+    }
+
+    setIsShowTemplateModal(true);
+  };
+
+  const submitSaveTemplate = async (templateFormData) => {
+    const cargoFormData = parseCargoClientToServer(
+      getEntireFormValue(),
+      currentUserId,
+      cities
+    );
+
+    const requestBody = {
+      templateName: templateFormData?.name,
+      templateNote: templateFormData?.remark,
+      ...cargoFormData,
+    };
+    try {
+      await axiosPrivate.post(apiRoutes.CARGO_TEMPLATE, requestBody);
+      handleSaveTemplateNotification();
+      await getCurrentUserCargoTemplates(
+        axiosPrivate,
+        currentUserId,
+        1,
+        setAllCargoTemplates
+      );
+    } catch (error) {
+      console.log(error);
+      setAlertStatus("error");
+      setAlertMessage("Повторите попытку снова");
+      setShowAlert("true");
+    }
   };
 
   //This works, but the code needs refactoring
   const checkAllRequiredFields = () => {
-    let isValid = undefined;
-    isValid = checkFieldsetArr(loading);
-    if (!isValid) return false;
-    isValid = checkFieldsetArr(unloading);
-    if (!isValid) return false;
-    isValid = checkFieldsetArr(cargo);
-    if (!isValid) return false;
-    isValid = checkFieldset(requirements);
-    if (!isValid) return false;
-    isValid = checkFieldset(payment);
-    if (!isValid) return false;
-    isValid = checkAllProps(contacts);
-    return isValid;
+    let invalidFields = [];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(loading)];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(unloading)];
+    invalidFields = [...invalidFields, ...checkFieldsetArr(cargo)];
+    invalidFields = [...invalidFields, ...checkFieldset(requirements)];
+    invalidFields = [...invalidFields, ...checkFieldset(payment)];
+    invalidFields = [...invalidFields, ...checkAllProps(contacts)];
+    setEmptyRequiredFieldsArray(invalidFields);
+    return invalidFields.length === 0;
+  };
+
+  const getRedErrorWarning = (name, originalClasses, addedClass = "red") => {
+    if (name === "phone" && isValidPhoneNumber === false)
+      return `${originalClasses} ${addedClass}`;
+
+    if (emptyRequiredFieldsArray.includes(name))
+      return `${originalClasses} ${addedClass}`;
+    return originalClasses;
+  };
+
+  const handleSaveTemplateNotification = () => {
+    setAlertStatus("success");
+    setAlertMessage("Шаблон был успешно сохранён");
+    setShowAlert(true);
+  };
+
+  const loadOptions = (inputValue, callback) => {
+    const resultsArray = cities.filter((i) =>
+      i.label.toLowerCase().includes(inputValue.toLowerCase())
+    );
+    const uniqueArray = getUniqueObjectsArray(resultsArray.splice(0, 20));
+    callback(uniqueArray);
+  };
+
+  const updateAddressState = (event, fieldName, callback, state, index) => {
+    const newState = state.map((item, idx) => {
+      if (idx !== index) return item;
+      const newStateSlice = item.map((i) => {
+        if (i.name !== fieldName) return i;
+        return { ...i, value: event.label };
+      });
+      return newStateSlice;
+    });
+    callback(newState);
+  };
+
+  const getAddressValue = (state, index, fieldName) => {
+    const result = getValArr(state, index, fieldName)
+    
+    if(!result) return null
+    return {value: result, label: result}
+  };
+
+  const getUniqueObjectsArray = (initialArray) => {
+    const newArray = [];
+    const uniqueLabels = [];
+    initialArray.forEach((item) => {
+      if (!uniqueLabels.includes(item.label)) {
+        uniqueLabels.push(item.label);
+        newArray.push(item);
+      }
+    });
+    return newArray;
+  };
+
+  const handleDeleteTemplate = (id) => {
+    const handleError = (state) => {
+      setAllCargoTemplates(state);
+      setAlertStatus("error");
+      setAlertMessage(
+        "Во время удаления шаблона произошла ошибка. Попробуйте обновить страницу и попробовать снова"
+      );
+      setShowAlert(true);
+    };
+    deleteTemplate(id, allCargoTemplates, setAllCargoTemplates, handleError);
   };
 
   return (
     <main className="bg-gray">
+      <AlertCustom
+        open={showAlert}
+        variant={alertStatus}
+        onClick={() => setShowAlert(false)}
+      >
+        {alertMessage}
+      </AlertCustom>
       <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
         <button
+          className="fs-12 fw-5 d-block mb-3 mb-sm-5 "
           onClick={() => navigate(-1)}
-          className="fs-12 fw-5 d-block mb-3 mb-sm-5"
         >
           <span className="green fs-15 me-2">⟵</span> Назад
         </button>
-
         <form
           ref={ref}
           name="myForm"
@@ -800,21 +1083,24 @@ export default function AddCargo() {
         >
           <div className="d-flex justify-content-between align-items-center mb-5">
             <h1 className="dark-blue text-center text-uppercase mb-0">
-              Редактирование Груза
+              Добавление Груза
             </h1>
             <div className="d-none d-lg-flex align-items-center fs-09">
               <button
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#usePatternCargo"
                 className="btn btn-4 p-2"
+                onClick={() => setIsShowChooseTemplateModal(true)}
               >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <IoNewspaperOutline />
                 </IconContext.Provider>
                 <span className="ms-2">Использовать шаблон</span>
               </button>
-              <button type="reset" className="btn btn-4 p-2 ms-3">
+              <button
+                type="reset"
+                className="btn btn-4 p-2 ms-3"
+                onClick={() => setCurrentTemplate(null)}
+              >
                 <IconContext.Provider value={{ className: "icon-15" }}>
                   <VscChromeClose />
                 </IconContext.Provider>
@@ -826,42 +1112,42 @@ export default function AddCargo() {
             <div className="mobile-indicators d-flex d-lg-none">
               <button
                 type="button"
-                className={checkFieldsetArr(loading) ? "active" : ""}
+                className={!checkFieldsetArr(loading).length ? "active" : ""}
                 onClick={() => setActiveField(1)}
               >
                 1
               </button>
               <button
                 type="button"
-                className={checkFieldsetArr(unloading) ? "active" : ""}
+                className={!checkFieldsetArr(unloading).length ? "active" : ""}
                 onClick={() => setActiveField(2)}
               >
                 2
               </button>
               <button
                 type="button"
-                className={checkFieldsetArr(cargo) ? "active" : ""}
+                className={!checkFieldsetArr(cargo).length ? "active" : ""}
                 onClick={() => setActiveField(3)}
               >
                 3
               </button>
               <button
                 type="button"
-                className={checkFieldset(requirements) ? "active" : ""}
+                className={!checkFieldset(requirements).length ? "active" : ""}
                 onClick={() => setActiveField(4)}
               >
                 4
               </button>
               <button
                 type="button"
-                className={checkFieldset(payment) ? "active" : ""}
+                className={!checkFieldset(payment).length ? "active" : ""}
                 onClick={() => setActiveField(4)}
               >
                 5
               </button>
               <button
                 type="button"
-                className={checkAllProps(contacts) ? "active" : ""}
+                className={!checkAllProps(contacts).length ? "active" : ""}
                 onClick={() => setActiveField(5)}
               >
                 6
@@ -896,7 +1182,10 @@ export default function AddCargo() {
                       <div
                         data-label="frequency"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "frequency",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Дата*
                       </div>
@@ -908,7 +1197,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -937,6 +1226,11 @@ export default function AddCargo() {
                               >
                                 <input
                                   type="date"
+                                  className={getRedErrorWarning(
+                                    "loadingDate",
+                                    "",
+                                    "border border-danger"
+                                  )}
                                   name="loadingDate"
                                   value={getValArr(
                                     loading,
@@ -955,7 +1249,11 @@ export default function AddCargo() {
                                 data-warning="false"
                               >
                                 <Select
-                                  className="w-100"
+                                  className={getRedErrorWarning(
+                                    "loadingDays",
+                                    "w-100",
+                                    "border border-danger"
+                                  )}
                                   classNamePrefix="react-select"
                                   placeholder={"Выберите..."}
                                   value={getObj(
@@ -986,7 +1284,7 @@ export default function AddCargo() {
                             <label className="mb-2 mb-xl-3">
                               <input
                                 type="radio"
-                                name="frequency"
+                                name={`frequency ${index}`}
                                 onChange={(e) =>
                                   toggleParams(e, setLoading, loading, index)
                                 }
@@ -1011,7 +1309,11 @@ export default function AddCargo() {
                               }
                             >
                               <Select
-                                className="fs-12"
+                                className={getRedErrorWarning(
+                                  "loadingPeriodType",
+                                  "fs-12",
+                                  "border border-danger"
+                                )}
                                 classNamePrefix="react-select"
                                 placeholder={"Выберите..."}
                                 options={optionsLoadingPeriodType}
@@ -1105,7 +1407,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div
-                    className="row mb-4"
+                    className={getRedErrorWarning("loadingAddress", "row mb-4")}
                     data-label="loadingTown"
                     data-warning="false"
                   >
@@ -1117,12 +1419,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
-                            placeholder={"Выберите..."}
+                            className={getRedErrorWarning(
+                              "loadingTown",
+                              "",
+                              "border border-danger"
+                            )}
                             name="loadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               loading,
                               "loadingTown",
                               index
@@ -1136,8 +1442,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
@@ -1145,14 +1454,27 @@ export default function AddCargo() {
                           data-label="loadingAddress"
                           data-warning="false"
                         >
-                          <input
-                            type="text"
+                          <AsyncSelect
+                            classNamePrefix="react-select"
+                            className={getRedErrorWarning(
+                              "loadingAddress",
+                              "",
+                              "border border-danger"
+                            )}
                             name="loadingAddress"
-                            value={getValArr(loading, index, "loadingAddress")}
-                            onChange={(e) =>
-                              fillDataArr(e, setLoading, loading, index)
-                            }
-                            placeholder="Адрес"
+                            value={getAddressValue(loading, index, "loadingAddress")}
+                            onChange={(e) => {
+                              updateAddressState(
+                                e,
+                                "loadingAddress",
+                                setLoading,
+                                loading,
+                                index
+                              );
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                       </div>
@@ -1172,7 +1494,7 @@ export default function AddCargo() {
                       <label className="mb-2 mb-xl-3">
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1189,7 +1511,7 @@ export default function AddCargo() {
                       <label>
                         <input
                           type="radio"
-                          name="transportationType"
+                          name={`transportationType ${index}`}
                           value="FTL/LTL"
                           checked={
                             getValArr(loading, index, "transportationType") ===
@@ -1222,7 +1544,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="loadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           loading,
                           "loadingType",
                           index
@@ -1236,7 +1560,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1245,7 +1571,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(loading, setLoading)}
+                onClick={() => addState(loading, setLoading, initialLoading)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -1259,15 +1585,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1430,7 +1758,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div
-                    className="row mb-4"
+                    className={getRedErrorWarning("unloadingTown", "row mb-4")}
                     data-label="unloadingTown"
                     data-warning="false"
                   >
@@ -1442,12 +1770,16 @@ export default function AddCargo() {
                     <div className="col-md-9">
                       <div className="row fs-12">
                         <div className="col-sm-5 mb-2 mb-sm-0">
-                          <Select
+                          <AsyncSelect
                             classNamePrefix="react-select"
-                            placeholder={"Выберите..."}
+                            className={getRedErrorWarning(
+                              "unloadingTown",
+                              "",
+                              "border border-danger"
+                            )}
                             name="unloadingTown"
                             value={getObj(
-                              optionsTowns,
+                              cities,
                               unloading,
                               "unloadingTown",
                               index
@@ -1461,8 +1793,11 @@ export default function AddCargo() {
                                 index
                               )
                             }
-                            options={optionsTowns}
-                            isSearchable={true}
+                            placeholder={"Выберите..."}
+                            defaultOptions={optionsTowns}
+                            isLoading={cities.length === 0}
+                            loadOptions={loadOptions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                         <div
@@ -1470,18 +1805,27 @@ export default function AddCargo() {
                           data-label="unloadingAddress"
                           data-warning="false"
                         >
-                          <input
-                            type="text"
-                            name="unloadingAddress"
-                            value={getValArr(
-                              unloading,
-                              index,
-                              "unloadingAddress"
+                          <AsyncSelect
+                            classNamePrefix="react-select"
+                            className={getRedErrorWarning(
+                              "unloadingAddress",
+                              "",
+                              "border border-danger"
                             )}
-                            onChange={(e) =>
-                              fillDataArr(e, setUnloading, unloading, index)
-                            }
-                            placeholder="Адрес"
+                            name="unloadingAddress"
+                            value={getAddressValue(unloading, index, "unloadingAddress")}
+                            onChange={(e) => {
+                              updateAddressState(
+                                e,
+                                "unloadingAddress",
+                                setUnloading,
+                                unloading,
+                                index
+                              );
+                            }}
+                            placeholder={"Введите адрес..."}
+                            loadOptions={fetchAddressSuggestions}
+                            noOptionsMessage={() => "Не найдено"}
                           />
                         </div>
                       </div>
@@ -1504,7 +1848,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="unloadingType"
                         value={getObj(
-                          optionsLoading,
+                          loadingTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           unloading,
                           "unloadingType",
                           index
@@ -1518,7 +1864,9 @@ export default function AddCargo() {
                             index
                           )
                         }
-                        options={optionsLoading}
+                        options={loadingTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1527,7 +1875,9 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(unloading, setUnloading)}
+                onClick={() =>
+                  addState(unloading, setUnloading, initialUnloading)
+                }
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -1541,15 +1891,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -1629,7 +1981,9 @@ export default function AddCargo() {
                         placeholder={"Выберите..."}
                         name="cargoType"
                         value={getObj(
-                          optionsCargoType,
+                          itemTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           cargo,
                           "cargoType",
                           index
@@ -1637,7 +1991,9 @@ export default function AddCargo() {
                         onChange={(e) =>
                           handleRSelect(e, "cargoType", setCargo, cargo, index)
                         }
-                        options={optionsCargoType}
+                        options={itemTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                     </div>
@@ -1647,7 +2003,10 @@ export default function AddCargo() {
                       <div
                         data-label="weight"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "weight",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Вес*
                       </div>
@@ -1656,7 +2015,11 @@ export default function AddCargo() {
                       <div className="row">
                         <div className="col-md-4">
                           <input
-                            className="weight w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "weight",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                             type="number"
                             name="weight"
                             min="1"
@@ -1675,7 +2038,10 @@ export default function AddCargo() {
                       <div
                         data-label="capacity"
                         data-warning="false"
-                        className="title-font fs-12 fw-5"
+                        className={getRedErrorWarning(
+                          "capacity",
+                          "title-font fs-12 fw-5"
+                        )}
                       >
                         Объем*
                       </div>
@@ -1684,7 +2050,11 @@ export default function AddCargo() {
                       <div className="row">
                         <div className="col-md-4">
                           <input
-                            className="size w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "capacity",
+                              "size w-100 fs-12",
+                              "border border-danger"
+                            )}
                             type="number"
                             name="capacity"
                             min="1"
@@ -1776,7 +2146,7 @@ export default function AddCargo() {
                   <div className="row align-items-center mb-4">
                     <div className="col-md-3 mb-3 mb-md-0">
                       <div
-                        data-label="packageType"
+                        data-label="cargoPackageType"
                         data-warning="false"
                         className="title-font fs-12 fw-5"
                       >
@@ -1786,24 +2156,28 @@ export default function AddCargo() {
                     <div className="col-md-9 fs-12 d-flex align-items-center">
                       <Select
                         classNamePrefix="react-select"
-                        name="packageType"
+                        name="cargoPackageType"
                         placeholder={"Выберите..."}
                         value={getObj(
-                          optionsPackageType,
+                          packageTypes.map((i) => {
+                            return { value: i.id, label: i.name };
+                          }),
                           cargo,
-                          "packageType",
+                          "cargoPackageType",
                           index
                         )}
                         onChange={(e) =>
                           handleRSelect(
                             e,
-                            "packageType",
+                            "cargoPackageType",
                             setCargo,
                             cargo,
                             index
                           )
                         }
-                        options={optionsPackageType}
+                        options={packageTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        })}
                         isSearchable={true}
                       />
                       <IconContext.Provider
@@ -1858,15 +2232,15 @@ export default function AddCargo() {
                       </div>
                     </div>
                     <div className="col-md-9">
-                      <div className="mb-2">опасные грузы, ADR:</div>
+                      <div className="mb-2">опасные грузы, adr:</div>
                       <div className="row row-cols-3 g-3 mb-4">
                         <div>
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR1"
-                              value={getValArr(cargo, index, "ADR1")}
-                              checked={getValArr(cargo, index, "ADR1")}
+                              name="adr1"
+                              value={getValArr(cargo, index, "adr1")}
+                              checked={getValArr(cargo, index, "adr1")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1880,9 +2254,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR2"
-                              value={getValArr(cargo, index, "ADR2")}
-                              checked={getValArr(cargo, index, "ADR2")}
+                              name="adr2"
+                              value={getValArr(cargo, index, "adr2")}
+                              checked={getValArr(cargo, index, "adr2")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1896,9 +2270,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR3"
-                              value={getValArr(cargo, index, "ADR3")}
-                              checked={getValArr(cargo, index, "ADR3")}
+                              name="adr3"
+                              value={getValArr(cargo, index, "adr3")}
+                              checked={getValArr(cargo, index, "adr3")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1912,9 +2286,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR4"
-                              value={getValArr(cargo, index, "ADR4")}
-                              checked={getValArr(cargo, index, "ADR4")}
+                              name="adr4"
+                              value={getValArr(cargo, index, "adr4")}
+                              checked={getValArr(cargo, index, "adr4")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1928,9 +2302,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR5"
-                              value={getValArr(cargo, index, "ADR5")}
-                              checked={getValArr(cargo, index, "ADR5")}
+                              name="adr5"
+                              value={getValArr(cargo, index, "adr5")}
+                              checked={getValArr(cargo, index, "adr5")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1944,9 +2318,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR6"
-                              value={getValArr(cargo, index, "ADR6")}
-                              checked={getValArr(cargo, index, "ADR6")}
+                              name="adr6"
+                              value={getValArr(cargo, index, "adr6")}
+                              checked={getValArr(cargo, index, "adr6")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1960,9 +2334,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR7"
-                              value={getValArr(cargo, index, "ADR7")}
-                              checked={getValArr(cargo, index, "ADR7")}
+                              name="adr7"
+                              value={getValArr(cargo, index, "adr7")}
+                              checked={getValArr(cargo, index, "adr7")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1976,9 +2350,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR8"
-                              value={getValArr(cargo, index, "ADR8")}
-                              checked={getValArr(cargo, index, "ADR8")}
+                              name="adr8"
+                              value={getValArr(cargo, index, "adr8")}
+                              checked={getValArr(cargo, index, "adr8")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -1992,9 +2366,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="ADR9"
-                              value={getValArr(cargo, index, "ADR9")}
-                              checked={getValArr(cargo, index, "ADR9")}
+                              name="adr9"
+                              value={getValArr(cargo, index, "adr9")}
+                              checked={getValArr(cargo, index, "adr9")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2010,9 +2384,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="TIR"
-                              value={getValArr(cargo, index, "TIR")}
-                              checked={getValArr(cargo, index, "TIR")}
+                              name="tir"
+                              value={getValArr(cargo, index, "tir")}
+                              checked={getValArr(cargo, index, "tir")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2026,9 +2400,9 @@ export default function AddCargo() {
                           <label>
                             <input
                               type="checkbox"
-                              name="EKMT"
-                              value={getValArr(cargo, index, "EKMT")}
-                              checked={getValArr(cargo, index, "EKMT")}
+                              name="ekmt"
+                              value={getValArr(cargo, index, "ekmt")}
+                              checked={getValArr(cargo, index, "ekmt")}
                               onChange={(e) =>
                                 fillDataArr(e, setCargo, cargo, index)
                               }
@@ -2045,7 +2419,7 @@ export default function AddCargo() {
               ))}
               <button
                 type="button"
-                onClick={() => addState(cargo, setCargo)}
+                onClick={() => addState(cargo, setCargo, initialCargo)}
                 className="green fs-11 fw-5 mx-auto d-flex align-items-center"
               >
                 <IconContext.Provider value={{ className: "green icon-15" }}>
@@ -2059,15 +2433,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2122,14 +2498,21 @@ export default function AddCargo() {
                     <div
                       data-label="carType"
                       data-warning="false"
-                      className="title-font fs-12 fw-5"
+                      className={getRedErrorWarning(
+                        "carType",
+                        "title-font fs-12 fw-5"
+                      )}
                     >
                       Тип кузова*
                     </div>
                   </div>
                   <div className="col-md-9">
                     <Select
-                      className="fs-12 w-100"
+                      className={getRedErrorWarning(
+                        "carType",
+                        "fs-12 w-100",
+                        "border border-danger"
+                      )}
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
                       name="carType"
@@ -2186,15 +2569,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2312,34 +2697,6 @@ export default function AddCargo() {
                     </label>
                   </div>
                 </div>
-                {/* {getVal(payment, "paymentType") === "0" && (
-                  <div className="row align-items-center mb-4">
-                    <div className="col-sm-3 mb-2 mb-sm-0">
-                      <div
-                        data-label="cash"
-                        data-warning="false"
-                        className="title-font fs-12 fw-5"
-                      >
-                        Наличными
-                      </div>
-                    </div>
-                    <div className="col-sm-9">
-                      <div className="row gx-2 gx-sm-4">
-                        <div className="col-8 col-sm-5 col-xl-4">
-                          <input
-                            type="number"
-                            min="1"
-                            name="cash"
-                            placeholder="0"
-                            value={getVal(payment, "cash")}
-                            onChange={(e) => fillData(e, setPayment, payment)}
-                            className="price-per-km w-100 fs-12"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
@@ -2397,7 +2754,10 @@ export default function AddCargo() {
                     <div
                       data-label="prepay"
                       data-warning="false"
-                      className="title-font fs-12 fw-5"
+                      className={getRedErrorWarning(
+                        "prepay",
+                        "title-font fs-12 fw-5"
+                      )}
                     >
                       Предоплата*
                     </div>
@@ -2413,7 +2773,11 @@ export default function AddCargo() {
                           placeholder="0"
                           value={getVal(payment, "prepay")}
                           onChange={(e) => fillData(e, setPayment, payment)}
-                          className="percent w-100 fs-12"
+                          className={getRedErrorWarning(
+                            "prepay",
+                            "percent w-100 fs-12",
+                            "border border-danger"
+                          )}
                         />
                       </div>
                     </div>
@@ -2426,15 +2790,17 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
                       </IconContext.Provider>
                       <span className="ms-1">Использовать шаблон</span>
                     </button>
-                    <button type="reset">
+                    <button
+                      type="reset"
+                      onClick={() => setCurrentTemplate(null)}
+                    >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <VscChromeClose />
                       </IconContext.Provider>
@@ -2492,7 +2858,10 @@ export default function AddCargo() {
                           <div
                             data-label="phone"
                             data-warning="false"
-                            className="title-font fs-12 fw-5"
+                            className={getRedErrorWarning(
+                              "phone",
+                              "title-font fs-12 fw-5"
+                            )}
                           >
                             Телефон*
                           </div>
@@ -2501,17 +2870,24 @@ export default function AddCargo() {
                           <input
                             type="tel"
                             name="phone"
-                            placeholder="+ 7 (962) 458 65 79"
+                            placeholder="+79624586579"
                             value={getContact("phone", idx)}
                             onChange={(e) => fillContacts(e, idx)}
-                            className="w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "phone",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                           />
                         </div>
                         <div className="col-md-4">
                           <div
                             data-label="name"
                             data-warning="false"
-                            className="title-font fs-12 fw-5"
+                            className={getRedErrorWarning(
+                              "name",
+                              "title-font fs-12 fw-5"
+                            )}
                           >
                             Имя*
                           </div>
@@ -2523,7 +2899,11 @@ export default function AddCargo() {
                             placeholder="Имя"
                             value={getContact("name", obj.index)}
                             onChange={(e) => fillContacts(e, obj.index)}
-                            className="w-100 fs-12"
+                            className={getRedErrorWarning(
+                              "name",
+                              "w-100 fs-12",
+                              "border border-danger"
+                            )}
                           />
                         </div>
                       </div>
@@ -2582,8 +2962,7 @@ export default function AddCargo() {
                   <div className="d-flex align-items-center justify-content-between blue title-font fw-5 fs-11">
                     <button
                       type="button"
-                      data-bs-toggle="modal"
-                      data-bs-target="#usePatternCargo"
+                      onClick={() => setIsShowChooseTemplateModal(true)}
                     >
                       <IconContext.Provider value={{ className: "icon-15" }}>
                         <IoNewspaperOutline />
@@ -2619,7 +2998,7 @@ export default function AddCargo() {
                         type="submit"
                         className="btn btn-2 w-100 h-100 fs-11 text-uppercase px-3"
                       >
-                        Сохранить изменения
+                        Сохранить
                       </button>
                     </div>
                   </div>
@@ -2644,7 +3023,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(loading) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(loading).length ? "filled" : ""
+                      }
                     >
                       Загрузка
                     </Link>
@@ -2724,7 +3105,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(unloading) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(unloading).length ? "filled" : ""
+                      }
                     >
                       Разгрузка
                     </Link>
@@ -2783,7 +3166,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldsetArr(cargo) ? "filled" : ""}
+                      className={
+                        !checkFieldsetArr(cargo).length ? "filled" : ""
+                      }
                     >
                       Груз
                     </Link>
@@ -2795,13 +3180,13 @@ export default function AddCargo() {
                             {getObjLabel(optionsCargoType, arr, "cargoType")}
                           </span>
                         )}
-                        {getValArr(cargo, index, "packageType") && (
+                        {getValArr(cargo, index, "cargoPackageType") && (
                           <span className="me-1">
                             ,{" "}
                             {getObjLabel(
                               optionsPackageType,
                               arr,
-                              "packageType"
+                              "cargoPackageType"
                             )}
                           </span>
                         )}
@@ -2841,37 +3226,37 @@ export default function AddCargo() {
                             , {getObjLabel(optionsNotes, arr, "notes")}
                           </span>
                         )}
-                        {getValArr(cargo, index, "ADR1") && (
+                        {getValArr(cargo, index, "adr1") && (
                           <span className="me-1">, ADR1</span>
                         )}
-                        {getValArr(cargo, index, "ADR2") && (
+                        {getValArr(cargo, index, "adr2") && (
                           <span className="me-1">, ADR2</span>
                         )}
-                        {getValArr(cargo, index, "ADR3") && (
+                        {getValArr(cargo, index, "adr3") && (
                           <span className="me-1">, ADR3</span>
                         )}
-                        {getValArr(cargo, index, "ADR4") && (
+                        {getValArr(cargo, index, "adr4") && (
                           <span className="me-1">, ADR4</span>
                         )}
-                        {getValArr(cargo, index, "ADR5") && (
+                        {getValArr(cargo, index, "adr5") && (
                           <span className="me-1">, ADR5</span>
                         )}
-                        {getValArr(cargo, index, "ADR6") && (
+                        {getValArr(cargo, index, "adr6") && (
                           <span className="me-1">, ADR6</span>
                         )}
-                        {getValArr(cargo, index, "ADR7") && (
+                        {getValArr(cargo, index, "adr7") && (
                           <span className="me-1">, ADR7</span>
                         )}
-                        {getValArr(cargo, index, "ADR8") && (
+                        {getValArr(cargo, index, "adr8") && (
                           <span className="me-1">, ADR8</span>
                         )}
-                        {getValArr(cargo, index, "ADR9") && (
+                        {getValArr(cargo, index, "adr9") && (
                           <span className="me-1">, ADR9</span>
                         )}
-                        {getValArr(cargo, index, "TIR") && (
+                        {getValArr(cargo, index, "tir") && (
                           <span className="me-1">, TIR</span>
                         )}
-                        {getValArr(cargo, index, "EKMT") && (
+                        {getValArr(cargo, index, "ekmt") && (
                           <span className="me-1">, EKMT</span>
                         )}
                       </div>
@@ -2887,7 +3272,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldset(requirements) ? "filled" : ""}
+                      className={
+                        !checkFieldset(requirements).length ? "filled" : ""
+                      }
                     >
                       Требования к машине
                     </Link>
@@ -2919,7 +3306,7 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkFieldset(payment) ? "filled" : ""}
+                      className={!checkFieldset(payment).length ? "filled" : ""}
                     >
                       Оплата
                     </Link>
@@ -2972,7 +3359,9 @@ export default function AddCargo() {
                       offset={-80}
                       duration={300}
                       isDynamic={true}
-                      className={checkAllProps(contacts) ? "filled" : ""}
+                      className={
+                        !checkAllProps(contacts).length ? "filled" : ""
+                      }
                     >
                       Контакты
                     </Link>
@@ -2989,17 +3378,40 @@ export default function AddCargo() {
                 type="submit"
                 className="btn btn-1 text-uppercase fs-15 mx-auto mt-4 mt-xl-5"
               >
-                Сохранить изменения
+                Сохранить
               </button>
               <button
                 type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#savePatternCargo"
                 className="fs-11 mx-auto mt-2 mt-xl-3 blue"
                 onClick={handleSaveTemplate}
               >
                 Сохранить шаблон
               </button>
+              <CustomModal
+                isShow={isShowTemplateModal}
+                setIsShow={setIsShowTemplateModal}
+                size="lg"
+                closeButton={true}
+              >
+                <SaveTemplateModal
+                  type="Cargo"
+                  setIsShow={setIsShowTemplateModal}
+                  onSubmit={submitSaveTemplate}
+                />
+              </CustomModal>
+              <CustomModal
+                isShow={isShowChooseTemplateModal}
+                setIsShow={setIsShowChooseTemplateModal}
+                size="lg"
+                closeButton={true}
+              >
+                <ChooseTemplateModal
+                  templates={allCargoTemplates}
+                  setIsShow={setIsShowChooseTemplateModal}
+                  setCurrentTemplate={setCurrentTemplate}
+                  handleDeleteTemplate={handleDeleteTemplate}
+                />
+              </CustomModal>
             </aside>
           </div>
         </form>

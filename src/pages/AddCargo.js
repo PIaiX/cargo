@@ -855,7 +855,7 @@ export default function AddCargo() {
       setAlertStatus("success");
       setShowAlert(true);
       setTimeout(() => {
-        navigate("/");
+        navigate(-1);
       }, 2000);
     } catch (error) {
       window.log(error);
