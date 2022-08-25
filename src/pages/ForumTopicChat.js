@@ -132,6 +132,12 @@ export default function ForumTopicChat() {
         }
     }
 
+    const getTopicRequest = () => {
+        getTopic(id, userId)
+            .then(result => setTopic(prev => ({...prev, isLoading: true, item: result})))
+            .catch(error => setTopic(prev => ({...prev, isLoading: true, error})))
+    }
+
     const paginateTopicMessagesRequest = (page) => {
         (topic.item) && paginateTopicMessages(topic?.item?.id, userId, page, chatPagination.pageLimit)
             .then(result => setMessages(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
@@ -158,15 +164,13 @@ export default function ForumTopicChat() {
     }
 
     useEffect(() => {
-        (id && userId) && getTopic(id, userId)
-            .then(result => setTopic(prev => ({...prev, isLoading: true, item: result})))
-            .catch(error => setTopic(prev => ({...prev, isLoading: true, error})))
+        (id && userId) && getTopicRequest()
     }, [id, userId])
 
     useEffect(() => paginateTopicMessagesRequest(chatPagination.currentPage), [topic, userId, chatPagination.currentPage, chatPagination.pageLimit])
 
     useEffect(() => {
-        if (topic.item && messages?.items?.length && replyData?.answer && userId) {
+        if (topic.item && replyData?.answer && userId) {
             const payloads = {
                 description: replyData?.answer,
                 topicId: topic?.item?.id,
@@ -185,6 +189,7 @@ export default function ForumTopicChat() {
                 .then(() => {
                     replyReset({answer: ''})
                     setReplyData({})
+                    getTopicRequest()
                     if (chatPagination.currentPage === 1) {
                         paginateTopicMessagesRequest(1)
                     } else {

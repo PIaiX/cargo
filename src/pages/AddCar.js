@@ -39,6 +39,10 @@ export default function AddCar() {
     }, [])
 
     useEffect(() => {
+        console.log(responseErrors)
+    }, [responseErrors])
+
+    useEffect(() => {
         if (formData && userId) {
             setResponseErrors(null)
 
@@ -55,7 +59,12 @@ export default function AddCar() {
         }
     }, [formData])
 
-    useEffect(() => !responseErrors && resetForm(), [responseErrors])
+    useEffect(() => {
+        if(!responseErrors && formData) {
+            resetForm()
+            navigate('/personal-account/user-cars')
+        }
+    }, [responseErrors, formData])
 
     const onSubmit = (data) => setFormData(prev => ({...prev, ...data}))
 
@@ -176,20 +185,18 @@ export default function AddCar() {
                                                 control={control}
                                                 name="carBodyTypeId"
                                                 render={({field}) => (
-                                                    (carTypes.length !== 0) && (
-                                                        <AsyncSelect
-                                                            className="fs-12 w-100"
-                                                            classNamePrefix="react-select"
-                                                            placeholder={"Выберите..."}
-                                                            loadOptions={loadOptions}
-                                                            defaultOptions
-                                                            value={selectValue && carTypes.find(item => item.value === selectValue.value)}
-                                                            onChange={val => {
-                                                                setSelectValue({value: val.value, label: val.label})
-                                                                field.onChange(val.value)
-                                                            }}
-                                                        />
-                                                    )
+                                                    <AsyncSelect
+                                                        className="fs-12 w-100"
+                                                        classNamePrefix="react-select"
+                                                        placeholder={"Выберите..."}
+                                                        loadOptions={loadOptions}
+                                                        defaultOptions={carTypes}
+                                                        value={selectValue && carTypes.find(item => item.value === selectValue.value)}
+                                                        onChange={val => {
+                                                            setSelectValue({value: val.value, label: val.label})
+                                                            field.onChange(val.value)
+                                                        }}
+                                                    />
                                                 )}
                                                 rules={{required: 'выберите тип машины'}}
                                             />
@@ -498,8 +505,8 @@ export default function AddCar() {
                                             <div className="col-md-6">
                                                 <ValidateWrapper
                                                     error={errors?.pts || (responseErrors?.pts
-                                                        ? {message: 'значение должно быть уникальным'}
-                                                        : null
+                                                            ? {message: 'значение должно быть уникальным'}
+                                                            : null
                                                     )}
                                                 >
                                                     <input

@@ -181,20 +181,20 @@ export default function EditCar() {
                                                 control={control}
                                                 name="carBodyTypeId"
                                                 render={({field}) => (
-                                                    (carTypes.length !== 0) && (
+                                                    // (carTypes.length !== 0) && (
                                                         <AsyncSelect
                                                             className="fs-12 w-100"
                                                             classNamePrefix="react-select"
                                                             placeholder={"Выберите..."}
                                                             loadOptions={loadOptions}
-                                                            defaultOptions
+                                                            defaultOptions={carTypes}
                                                             value={selectValue && carTypes.find(item => item.value === selectValue.value)}
                                                             onChange={val => {
                                                                 setSelectValue({value: val.value, label: val.label})
                                                                 field.onChange(val.value)
                                                             }}
                                                         />
-                                                    )
+                                                    // )
                                                 )}
                                                 rules={{required: 'выберите тип машины'}}
                                             />

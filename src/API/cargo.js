@@ -15,16 +15,14 @@ const getCargoCount = async () => {
   }
 };
 
-const searchCargo = async () => {
+const searchCargo = async (page, limit, payloads = {}) => {
   try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_SEARCH}`
-    );
-    return response.data.body;
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_SEARCH}`, {page, limit, ...payloads})
+    return response?.data?.body
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
 
 const paginateCargo = async (city, page, limit) => {
   try {

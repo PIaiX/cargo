@@ -61,6 +61,18 @@ export default function Forum() {
         setIsShowCreateTopic(false)
     }
 
+    const searchTopicsRequest = (page, limit) => {
+        searchTopics(page, limit, debouncedSearch)
+            .then(result => setTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
+            .catch(error => setTopics(prev => ({...prev, isLoading: true, error})))
+    }
+
+    const paginateUserTopicsRequest = (page, limit) => {
+        paginateUserTopics(axiosPrivate, userId, page, limit)
+            .then(result => setUserTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
+            .catch(error => setUserTopics(prev => ({...prev, isLoading: true, error})))
+    }
+
     useEffect(() => {
         const value = debouncedSearch && debouncedSearch.trim()
 
@@ -90,20 +102,20 @@ export default function Forum() {
     }, [])
 
     useEffect(() => {
-        searchTopics(topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch)
-            .then(result => setTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
-            .catch(error => setTopics(prev => ({...prev, isLoading: true, error})))
+        searchTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch)
     }, [topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch])
 
     useEffect(() => {
-        userId && paginateUserTopics(axiosPrivate, userId, topicsPagination.currentPage, topicsPagination.pageLimit)
-            .then(result => setUserTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
-            .catch(error => setUserTopics(prev => ({...prev, isLoading: true, error})))
+        userId && paginateUserTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit)
     }, [userTopicsPagination.currentPage, userTopicsPagination.pageLimit, userId])
 
     useEffect(() => {
         Object.keys(createTopicPayloads).length && createTopic(axiosPrivate, userId, createTopicPayloads)
-            .then(() => setSubmitAlert(prev => ({...prev, variant: 'success', isShow: true})))
+            .then(() => {
+                searchTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch)
+                paginateUserTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit)
+                setSubmitAlert(prev => ({...prev, variant: 'success', isShow: true}))
+            })
             .catch(() => setSubmitAlert(prev => ({...prev, variant: 'danger', isShow: true})))
     }, [createTopicPayloads, userId])
 
@@ -122,6 +134,11 @@ export default function Forum() {
                         <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
+                        {(pathname === '/forum/my-topics') && (
+                            <li className="breadcrumb-item active">
+                                <Link to="/forum/my-topics">Мои темы</Link>
+                            </li>
+                        )}
                     </ol>
                 </nav>
 
