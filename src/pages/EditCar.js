@@ -110,7 +110,7 @@ export default function EditCar() {
         <main className="bg-gray">
             <section id="sec-9" className="container pt-4 pt-sm-5 py-lg-5">
                 <button
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("/personal-account/user-cars")}
                     className="fs-12 fw-5 d-block mb-3 mb-sm-5"
                 >
                     <span className="green fs-15 me-2">⟵</span> Назад
