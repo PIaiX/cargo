@@ -351,6 +351,7 @@ export default function AddCargo() {
   const [itemTypes, setItemTypes] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState([]);
+  const [carBodyTypes, setCarBodyTypes] = useState([])
   const [cities, setCities] = useState([]);
   const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
 
@@ -391,9 +392,11 @@ export default function AddCargo() {
         const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
         const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
         const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
+        const carTypesResponse = await axiosPrivate.get("/car/bodyTypes")
         setItemTypes(itemResponse.data.body);
         setPackageTypes(packageResponse.data.body);
         setLoadingTypes(loadingResponse.data.body);
+        setCarBodyTypes(carTypesResponse.data.body);
       } catch (error) {
         window.log(error);
       }
@@ -2488,7 +2491,9 @@ export default function AddCargo() {
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
                       name="carType"
-                      value={getObj(optionsCarType, requirements, "carType")}
+                      value={getObj(carBodyTypes.map((i) => {
+                        return { value: i.id, label: i.name };
+                      }), requirements, "carType")}
                       onChange={(e) =>
                         handleRSelect(
                           e,
@@ -2497,7 +2502,9 @@ export default function AddCargo() {
                           requirements
                         )
                       }
-                      options={optionsCarType}
+                      options={carBodyTypes.map((i) => {
+                        return { value: i.id, label: i.name };
+                      })}
                       isSearchable={true}
                     />
                   </div>
