@@ -191,8 +191,7 @@ export default function RoutePage() {
                             <h5 className="mb-0">Маршрут</h5>
                         </div>
                         <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
-                            <div><span
-                                className="green fw-5">452 км</span> {data?.route?.fromRoute} — {data?.route?.toRoute}
+                            <div>{data?.route?.fromRoute} — {data?.route?.toRoute}
                             </div>
                         </div>
 
