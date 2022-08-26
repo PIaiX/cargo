@@ -855,7 +855,7 @@ export default function AddCargo() {
       setAlertStatus("success");
       setShowAlert(true);
       setTimeout(() => {
-        navigate("/");
+        navigate(-1);
       }, 2000);
     } catch (error) {
       window.log(error);
@@ -1027,6 +1027,8 @@ export default function AddCargo() {
     };
     deleteTemplate(id, allCargoTemplates, setAllCargoTemplates, handleError);
   };
+
+  console.log("loading", loading)
 
   return (
     <main className="bg-gray">

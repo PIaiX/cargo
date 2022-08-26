@@ -9,9 +9,9 @@ const getCarTypes = async (axiosPrivate) => {
     }
 }
 
-const getCars = async (axiosPrivate, userId, page = 1, limit = '') => {
+const getCars = async (axiosPrivate, userId, page = 1, limit = '', orderBy = 'desc') => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARS}/${userId}`, {page, limit})
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CARS}/${userId}`, {page, limit, orderBy})
         return response.data.body
     } catch (error) {
         console.log(error)

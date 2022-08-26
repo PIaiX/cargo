@@ -22,7 +22,6 @@ import ResetPassword2 from "../pages/ResetPassword2";
 import Forum from "../pages/Forum";
 import PersonalAccount from "../pages/account/PersonalAccount";
 import Document from "../pages/account/Document";
-import ForumMyTopics from "../components/ForumMyTopics";
 import ForumTopicChat from "../pages/ForumTopicChat";
 import Layout from "../components/Layout";
 import NotFound from "../pages/NotFound";
@@ -79,7 +78,6 @@ const Wrapper = ({children}) => {
                                 <Route path=':id' element={<EditRoute/>}/>
                             </Route>
                         </Route>
-                        <Route path="my-topics" element={<ForumMyTopics/>}/>
                         <Route path='personal-account/*' element={<PersonalAccount/>}/>
                         <Route path='view-profile' element={<ViewAccount/>}>
                             <Route path=':id' element={<ViewAccount/>}/>
