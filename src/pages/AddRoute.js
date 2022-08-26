@@ -15,10 +15,13 @@ import {Alert} from "react-bootstrap";
 import {getCars} from '../API/car';
 import {getCities} from "../API/cities";
 import SearchInput from "../components/utilities/SearchInput";
+import {useDispatch} from "react-redux/es/exports";
+import {setAlert} from "../store/actions/alert";
 
 
 export default function AddRoute() {
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const [activeField, setActiveField] = useState(1); //для мобильных устройств
     const axiosPrivate = useAxiosPrivate()
@@ -99,11 +102,13 @@ export default function AddRoute() {
                 }
                 const response = createRoute(data, axiosPrivate)
                     .then(() => {
+                        dispatch(setAlert('success', 'Маршрут успешно добавлен'))
                         navigate('/personal-account/user-routes')
                     })
                     .catch(() => {
                         setShowModalValidation(true)
                         setIsShowAlert(true)
+                        dispatch(setAlert('danger', 'Произошла ошибка'))
                     })
             } catch (error) {
                 console.log(error)
@@ -1525,6 +1530,7 @@ export default function AddRoute() {
                                                 setBtnRadioDate(Number(item?.route?.dateType))
                                                 setBtnRadioCalculate(Number(item?.route?.calculateType))
                                                 setBtnRadioBargain(Number(item?.route?.bargainType))
+                                                setShowUseTemplate(false)
                                             }}
                                         >
                                             Выбрать

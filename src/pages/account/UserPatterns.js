@@ -66,8 +66,7 @@ export default function UserPatterns() {
                 setComplete(true)
                 setRenameRouteTemp({})
             }
-            ).catch(error => {
-            console.log(error)
+            ).catch(() => {
             setIsShowAlert(true)
             setComplete(false)
         })
@@ -89,8 +88,7 @@ export default function UserPatterns() {
                 setComplete(true)
         }
 
-        ).catch(error => {
-            console.log(error)
+        ).catch(() => {
             setIsShowAlert(true)
             setComplete(false)
         })
@@ -174,7 +172,6 @@ export default function UserPatterns() {
                                 notVatPrice={i.route.noVatPrice}
                                 prepayment={i.route.prepayment}
                                 contacts={i.route.contacts}
-                                url={`/add-route`}
                                 callbackForRename={(id) => {
                                     setIsShowModalRenameRoute(true)
                                     setIdTempRoute(id)

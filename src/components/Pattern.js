@@ -35,14 +35,6 @@ const Pattern = (props) => {
                     </button>
                     <ul className="dropdown-menu py-2">
                         <li>
-                            <NavLink
-                                type='button'
-                                to={props.url}
-                            >
-                                Открыть
-                            </NavLink>
-                        </li>
-                        <li>
                             <button
                             type='button'
                             onClick={() => props?.callbackForRename && props.callbackForRename(props.id)}
@@ -62,13 +54,6 @@ const Pattern = (props) => {
                 </div>
                 {/*des*/}
                 <div className='d-none d-md-flex'>
-                    <NavLink
-                        type='button'
-                        className='btn btn-1 fs-09'
-                        to={props.url}
-                    >
-                        Открыть
-                    </NavLink>
                     <button
                         type='button'
                         className='btn btn-1 fs-09 ms-2 ms-xxl-3'

@@ -162,7 +162,7 @@ const EditProfileForm = () => {
         >
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>
-                    <div className='profile-picture mx-auto mb-4 mb-sm-5'>
+                    <div className='profile-picture mx-auto mb-4 mb-sm-5 text-center'>
                         <ImageUploading
                             value={images}
                             onChange={onChange}
@@ -217,6 +217,7 @@ const EditProfileForm = () => {
                                 </div>
                             )}
                         </ImageUploading>
+                        <span>Фото до 1 мб</span>
                     </div>
                 </div>
                 <div className='col-md-8'>

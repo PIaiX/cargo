@@ -15,7 +15,8 @@ import {Alert} from "react-bootstrap";
 import {getCars} from '../API/car';
 import {getCities} from "../API/cities";
 import SearchInput from "../components/utilities/SearchInput";
-
+import {useDispatch} from "react-redux/es/exports";
+import {setAlert} from "../store/actions/alert";
 
 const EditRoute = () => {
 
@@ -27,6 +28,7 @@ const EditRoute = () => {
     const [btnRadioBargain, setBtnRadioBargain] = useState(0)
     const [btnRadioCalculate, setBtnRadioCalculate] = useState(0)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [contactsInfo, setContactsInfo] = useState(
         {
             id: '',
@@ -133,7 +135,17 @@ const EditRoute = () => {
                 } else {
                     delete data?.datePeriodType
                 }
-                const response = updateRoute(id, data, axiosPrivate).then(() => navigate('/personal-account/user-routes')).catch(() => setShowModalValidation(true))
+                const response = updateRoute(id, data, axiosPrivate)
+                    .then(() => {
+                        dispatch(setAlert('success', 'Маршрут успешно отредактирован'))
+                        setTimeout(() => {
+                            navigate('/personal-account/user-routes')
+                        }, 500)
+                    })
+                    .catch(() => {
+                        setShowModalValidation(true)
+                        dispatch(setAlert('danger', 'Произошла ошибка'))
+                    })
             } catch (error) {
                 console.log(error)
             }

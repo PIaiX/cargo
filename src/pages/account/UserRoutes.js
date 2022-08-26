@@ -10,11 +10,14 @@ import useAxiosPrivate from "../../hooks/axiosPrivate";
 import Loader from "../../components/Loader";
 import CustomModal from "../../components/utilities/CustomModal";
 import RouteCard from "../../components/RouteCard";
+import {useDispatch} from "react-redux/es/exports";
+import {setAlert} from "../../store/actions/alert";
 
 const initialPageLimit = 6;
 
 const UserRoutes = () => {
 
+    const dispatch = useDispatch()
     const [tab, setTab] = useState("active");
     const routesPagination = usePagination(initialPageLimit);
     const archiveRoutesPag = usePagination(initialPageLimit)
@@ -75,8 +78,11 @@ const UserRoutes = () => {
                         })))
                         .catch(error => console.log(error))
                 }
+                dispatch(setAlert('success', 'Успешно удалено'))
             }
-        )
+        ).catch(() => {
+            dispatch(setAlert('danger', 'Произошла ошибка'))
+        })
     }
 
     const [isShowRouteUnArchive, setIsShowRouteUnArchive] = useState(false)
@@ -100,8 +106,11 @@ const UserRoutes = () => {
                         isLoading: true
                     })))
                     .catch(error => console.log(error))
+                dispatch(setAlert('success', 'Успешно убрано из архива'))
             })
-            .catch(error => console.log(error))
+            .catch(() => {
+                dispatch(setAlert('danger', 'Произошла ошибка'))
+            })
     }
     
     useEffect(() => {

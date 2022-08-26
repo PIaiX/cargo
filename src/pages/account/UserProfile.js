@@ -18,7 +18,7 @@ export default function UserProfile() {
             <div className='row flex-md-row-reverse'>
                 <div className='col-md-4'>
                     <div className='profile-picture mx-auto mb-4 mb-sm-5'>
-                        <img src={uploadPhoto() ?? "/img/users/no-photo.png"} alt="ООО НТК" style={{borderRadius: 50 + "%"}}/>
+                        <img src={uploadPhoto() ?? "/img/users/no-photo.png"} alt={currentUser.fullName} style={{borderRadius: 50 + "%"}}/>
                     </div>
                 </div>
                 <div className='col-md-8'>
