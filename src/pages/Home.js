@@ -18,6 +18,7 @@ import {getDistance} from "../API/distance";
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Home() {
+    const currentUser = useSelector(state => state.currentUser.data.user)
     const selectedCity = useSelector(state => state?.selectedCity?.city)
     const [cargoCount, setCargoCount] = useState(null)
     const [countRoute, setCountRoute] = useState(null)
@@ -87,7 +88,7 @@ export default function Home() {
     }, [payloads])
 
     console.log(distance)*/
-    
+
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
@@ -158,9 +159,11 @@ export default function Home() {
                                         <div className="fs-12 mb-3">Грузов доставленно</div>
                                     </>
                                 }
-                                <Link to="add-cargo" className="btn btn-1 fs-12 w-100 px-2">
+                                {(currentUser.roleId === 2 || currentUser.roleId === 4) &&
+                                    <Link to="add-cargo" className="btn btn-1 fs-12 w-100 px-2">
                                     Добавить груз
-                                </Link>
+                                    </Link>
+                                }
                             </div>
                             <div className="box text-center">
                                 {countRoute &&
@@ -171,9 +174,11 @@ export default function Home() {
                                         <div className="fs-12 mb-3">Маршрутов на сайте</div>
                                     </>
                                 }
-                                <Link to="add-route" className="btn btn-1 fs-12 w-100 px-2">
-                                    Добавить маршрут
-                                </Link>
+                                {(currentUser.roleId === 3 || currentUser.roleId === 4) &&
+                                    <Link to="add-route" className="btn btn-1 fs-12 w-100 px-2">
+                                        Добавить маршрут
+                                    </Link>
+                                }
                             </div>
                         </div>
                     </div>
