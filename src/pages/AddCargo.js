@@ -1028,6 +1028,8 @@ export default function AddCargo() {
     deleteTemplate(id, allCargoTemplates, setAllCargoTemplates, handleError);
   };
 
+  console.log("loading", loading)
+
   return (
     <main className="bg-gray">
       <AlertCustom
