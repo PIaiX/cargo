@@ -183,6 +183,14 @@ const getPackageTypes = async (axiosPrivate) => {
     }
 }
 
+const reportCargo = async (axiosPrivate, payloads) => {
+  try {
+      return axiosPrivate.post(`${apiRoutes.REPORT_CARGO}`, payloads)
+  } catch (error) {
+      console.log(error)
+  }
+}
+
 export {
   getCargoCount,
   searchCargo,
@@ -197,4 +205,5 @@ export {
   deleteCargo,
   createCargo,
   fetchAddressSuggestions,
+  reportCargo
 };
