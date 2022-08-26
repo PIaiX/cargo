@@ -404,6 +404,7 @@ export default function AddCargo() {
   const [itemTypes, setItemTypes] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState([]);
+  const [carBodyTypes, setCarBodyTypes] = useState([])
   const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
 
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
@@ -419,9 +420,11 @@ export default function AddCargo() {
         const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
         const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
         const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
+        const carTypesResponse = await axiosPrivate.get("/car/bodyTypes")
         setItemTypes(itemResponse.data.body);
         setPackageTypes(packageResponse.data.body);
         setLoadingTypes(loadingResponse.data.body);
+        setCarBodyTypes(carTypesResponse.data.body);
       } catch (error) {
         window.log(error);
       }
@@ -2507,7 +2510,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div className="col-md-9">
-                    <Select
+                  <Select
                       className={getRedErrorWarning(
                         "carType",
                         "fs-12 w-100",
@@ -2516,7 +2519,9 @@ export default function AddCargo() {
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
                       name="carType"
-                      value={getObj(optionsCarType, requirements, "carType")}
+                      value={getObj(carBodyTypes.map((i) => {
+                        return { value: i.id, label: i.name };
+                      }), requirements, "carType")}
                       onChange={(e) =>
                         handleRSelect(
                           e,
@@ -2525,7 +2530,9 @@ export default function AddCargo() {
                           requirements
                         )
                       }
-                      options={optionsCarType}
+                      options={carBodyTypes.map((i) => {
+                        return { value: i.id, label: i.name };
+                      })}
                       isSearchable={true}
                     />
                   </div>

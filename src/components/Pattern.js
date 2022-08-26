@@ -22,8 +22,10 @@ const Pattern = (props) => {
                         </IconContext.Provider>
                     </h5>
                     {
-                        (props.car)&&
+                        (props.car) ?
                         <div className='fs-11'>{props.car?.bodyType.name}</div>
+                        :
+                        <div className='fs-11'>{props.note}</div>
                     }
                 </div>
                 {/*mobile*/}
@@ -81,12 +83,18 @@ const Pattern = (props) => {
                         </tr>
                         <tr>
                             <th>Дата:</th>
-                            <td>{props.date ? 'постоянно' : 'единожды'}</td>
+                            <td>{props.date ? 'Единожды' : 'Постоянно'}</td>
                         </tr>
-                        <tr>
+                        {props.type === "route" && (<tr>
                             <th>О&nbsp;машине:</th>
                             <td>{car && `${car?.bodyType?.name}, ${car?.name}, ${car?.carrying}Т,${car?.capacity}м3, ${car?.length}/${car?.width}/${car?.height}`}</td>
+                        </tr>)}
+                        {props.type === "cargo" && (
+                            <tr>
+                            <th>О&nbsp;грузе:</th>
+                            <td>{props.cargoInfo || "Данных о грузе не найдено ..."}</td>
                         </tr>
+                        )}
                         <tr>
                             <th>Оплата:</th>
                             <td>
