@@ -10,6 +10,8 @@ import useAxiosPrivate from '../../hooks/axiosPrivate';
 import Loader from '../../components/Loader';
 import CarCard from '../../components/CarCard';
 import CustomModal from '../../components/utilities/CustomModal';
+import {useDispatch} from 'react-redux/es/exports';
+import {setAlert} from "../../store/actions/alert"
 
 const initialPageLimit = 9;
 
@@ -25,6 +27,7 @@ export default function UserCars() {
     })
     const [isShowCardModal, setIsShowCardModal] = useState(false)
     const [carId, setCarId] = useState(null)
+    const dispatch = useDispatch()
 
     const getCarsRequest = (page, limit) => {
         getCars(axiosPrivate, userId, page, limit)
@@ -32,8 +35,10 @@ export default function UserCars() {
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
     }
 
-    const onDelete = async () => {
-        await deleteCar(axiosPrivate, carId)
+    const onDelete = () => {
+        deleteCar(axiosPrivate, carId)
+            .then(() => dispatch(setAlert('success', 'Машина удалена')))
+            .catch(() => dispatch(setAlert('danger', 'Не удалось удалить машину')))
         getCarsRequest()
     }
 
@@ -66,7 +71,7 @@ export default function UserCars() {
                         type="button"
                         className="active tab-btn"
                     >
-                        {`Мои машины (${cars?.items?.length || 0})`}
+                        {`Мои машины (${cars?.meta?.total || 0})`}
                     </button>
                 </div>
             </div>

@@ -199,8 +199,8 @@ export default function ForumTopicChat() {
                         <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
                         </li>
-                        <li className="breadcrumb-item">
-                            <Link to="/forum-topic">{topic?.item?.title || 'Без темы'}</Link>
+                        <li className="breadcrumb-item active">
+                            {topic?.item?.title || 'Без темы'}
                         </li>
                     </ol>
                 </nav>

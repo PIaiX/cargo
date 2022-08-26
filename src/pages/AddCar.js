@@ -10,6 +10,8 @@ import {Controller, useForm} from 'react-hook-form';
 import ValidateWrapper from '../components/utilities/ValidateWrapper';
 import {useNavigate} from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux/es/exports';
+import {setAlert, showNoAuthAlert} from "../store/actions/alert"
 
 export default function AddCar() {
     const userId = useSelector(state => state?.currentUser?.data?.user?.id)
@@ -18,6 +20,7 @@ export default function AddCar() {
     const [carTypes, setCarTypes] = useState([])
     const [selectValue, setSelectValue] = useState(null)
     const [responseErrors, setResponseErrors] = useState(null)
+    const dispatch = useDispatch()
 
     const {
         register,
@@ -39,10 +42,6 @@ export default function AddCar() {
     }, [])
 
     useEffect(() => {
-        console.log(responseErrors)
-    }, [responseErrors])
-
-    useEffect(() => {
         if (formData && userId) {
             setResponseErrors(null)
 
@@ -56,11 +55,15 @@ export default function AddCar() {
                         }
                     }))
                 ))
+                .catch(() => dispatch(setAlert('danger', 'Не удалось добавить машину')))
+        } else if (formData && !userId) {
+            dispatch(showNoAuthAlert())
         }
-    }, [formData])
+    }, [formData, userId])
 
     useEffect(() => {
         if(!responseErrors && formData) {
+            dispatch(setAlert('success', 'Машина добавлена'))
             resetForm()
             navigate('/personal-account/user-cars')
         }

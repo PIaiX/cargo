@@ -10,6 +10,8 @@ import {Controller, useForm} from 'react-hook-form';
 import ValidateWrapper from '../components/utilities/ValidateWrapper';
 import {useNavigate, useParams} from 'react-router-dom';
 import {useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux/es/exports';
+import {setAlert} from "../store/actions/alert"
 
 export default function EditCar() {
     const {id} = useParams()
@@ -19,6 +21,7 @@ export default function EditCar() {
     const [carTypes, setCarTypes] = useState([])
     const [selectValue, setSelectValue] = useState(null)
     const [radioBtnState, setRadioBtnState] = useState(null)
+    const dispatch = useDispatch()
 
     const {
         register,
@@ -59,7 +62,11 @@ export default function EditCar() {
             .catch(() => setCarTypes([]))
     }, [])
 
-    useEffect(() => (formData && userId) && updateCar(axiosPrivate, formData, userId), [formData, userId])
+    useEffect(() => {
+        (formData && userId) && updateCar(axiosPrivate, formData, userId)
+            .then(() => dispatch(setAlert('success', 'Данные машины были обновлены')))
+            .catch(() => dispatch(setAlert('danger', 'Не удалось обновить данные машины')))
+    }, [formData, userId])
 
     const onSubmit = (data) => setFormData(prev => ({...prev, ...data}))
     

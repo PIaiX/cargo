@@ -84,16 +84,16 @@ export default function Forum() {
             setShownPagination(topicsPagination)
         }
         if (value && (pathname === '/forum/my-topics')) {
-            setIsAuth(true)
+            !userId && setIsAuth(true)
             setShownItems(topics)
             setShownPagination(topicsPagination)
         }
         if (!value && (pathname === '/forum/my-topics')) {
-            setIsAuth(true)
+            !userId && setIsAuth(true)
             setShownItems(userTopics)
             setShownPagination(userTopicsPagination)
         }
-    }, [pathname, topics, userTopics, debouncedSearch])
+    }, [pathname, topics, userTopics, debouncedSearch, userId])
 
     useEffect(() => {
         topicsPagination.setCurrentPage(1)
@@ -134,7 +134,7 @@ export default function Forum() {
                         </li>
                         {(pathname === '/forum/my-topics') && (
                             <li className="breadcrumb-item active">
-                                <Link to="/forum/my-topics">Мои темы</Link>
+                                Мои темы
                             </li>
                         )}
                     </ol>
