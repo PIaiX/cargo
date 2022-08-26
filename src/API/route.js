@@ -57,6 +57,15 @@ export const getTemplates = async (axiosPrivate, userId, page, limit) => {
     }
 }
 
+export const getCargoTemplates = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = axiosPrivate.post(`${site}${apiRoutes.CARGO_TEMPLATE}/${userId}`, {page, limit, orderBy: 'desc'})
+        return response
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const deleteTemplate = async (templateId,axiosPrivate) => {
     try {
         return axiosPrivate.delete(`${site}${apiRoutes.DELETE_TEMPLATES}/${templateId}`)

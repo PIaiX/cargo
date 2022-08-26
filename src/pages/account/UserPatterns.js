@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import Pattern from '../../components/Pattern';
 import Pagination from "../../components/Pagination";
 import usePagination from "../../hooks/pagination";
-import {deleteTemplate, getTemplates, updateTemplateRouteName} from "../../API/route";
+import {deleteTemplate, getTemplates, getCargoTemplates, updateTemplateRouteName} from "../../API/route";
 import {useSelector} from "react-redux";
 import useAxiosPrivate from "../../hooks/axiosPrivate";
 import Loader from "../../components/Loader";
@@ -17,11 +17,16 @@ export default function UserPatterns() {
     const [tab, setTab] = useState('routes');
 
     const routeTemplatesPag = usePagination(initialPageLimit)
-    const cargoPagination = usePagination(initialPageLimit)
-    const [filterCargo, setFilterCargo] = useState([])
+    const cargoTemplatesPag = usePagination(initialPageLimit)
     const currentUser = useSelector(state => state?.currentUser?.data?.user)
     const axiosPrivate = useAxiosPrivate()
     const [routesTemplates, setRoutesTemplates] = useState({
+        error: null,
+        data: [],
+        meta: [],
+        isLoading: false
+    })
+    const [cargoTemplates, setCargoTemplates] = useState({
         error: null,
         data: [],
         meta: [],
@@ -45,6 +50,17 @@ export default function UserPatterns() {
             .catch(error => setRoutesTemplates(prev => ({...prev, isLoading: true, error})))
     }, [currentUser, routeTemplatesPag.pageLimit, routeTemplatesPag.currentPage])
 
+    useEffect(() => {
+        ((currentUser?.roleId === 2) || (currentUser?.roleId === 4)) && getCargoTemplates(axiosPrivate, currentUser?.id, cargoTemplatesPag.currentPage, cargoTemplatesPag.pageLimit)
+            .then(r => setCargoTemplates(prevState => ({
+                ...prevState,
+                data: r?.data?.body?.data,
+                meta: r?.data?.body?.meta,
+                isLoading: true
+            })))
+            .catch(error => setCargoTemplates(prev => ({...prev, isLoading: true, error})))
+    }, [currentUser, cargoTemplatesPag.pageLimit, cargoTemplatesPag.currentPage])
+
 
     const updateTemplateName = () => {
         updateTemplateRouteName(axiosPrivate, idTempRoute, currentUser?.id, renameRouteTemp)
@@ -60,7 +76,16 @@ export default function UserPatterns() {
                             }))
                         })
                 } else {
-                    // for cargo
+                    //Check if that works
+                    getCargoTemplates(axiosPrivate, currentUser?.id, cargoTemplatesPag.currentPage, cargoTemplatesPag.pageLimit)
+                        .then(r => {
+                            setCargoTemplates(prevState => ({
+                                ...prevState,
+                                data: r?.data?.body?.data,
+                                meta: r?.data?.body?.meta,
+                                isLoading: true
+                            }))
+                        })
                 }
                     setIsShowAlert(true)
                 setComplete(true)
@@ -78,6 +103,18 @@ export default function UserPatterns() {
                 getTemplates(axiosPrivate, currentUser?.id, routeTemplatesPag.currentPage, routeTemplatesPag.pageLimit)
                     .then(r => {
                         setRoutesTemplates(prevState => ({
+                            ...prevState,
+                            data: r?.data?.body?.data,
+                            meta: r?.data?.body?.meta,
+                            isLoading: true
+                        }))
+                    })
+            }
+            //Check if that works
+            if (tab === 'cargo') {
+                getCargoTemplates(axiosPrivate, currentUser?.id, cargoTemplatesPag.currentPage, cargoTemplatesPag.pageLimit)
+                    .then(r => {
+                        setCargoTemplates(prevState => ({
                             ...prevState,
                             data: r?.data?.body?.data,
                             meta: r?.data?.body?.meta,
@@ -107,7 +144,12 @@ export default function UserPatterns() {
             routeTemplatesPag.setCurrentPage(1)
             routeTemplatesPag.setStartingPage(1)
         }
-    }, [routesTemplates.data.length])
+
+        if(cargoTemplates.data.length === 0) {
+            cargoTemplatesPag.setCurrentPage(1)
+            cargoTemplatesPag.setStartingPage(1)
+        }
+    }, [routesTemplates.data.length, cargoTemplates.data.length])
 
     useEffect(() => {
         if((currentUser?.roleId !== 2)) {
@@ -116,6 +158,40 @@ export default function UserPatterns() {
             setTab('cargo')
         }
     }, [currentUser?.roleId])
+
+    const getFirstRouteForCargo = (templateId) => {
+        if(cargoTemplates?.data?.length <= 0) return ""
+        
+        const template = cargoTemplates?.data.find((item) => item.id === templateId)
+        if(!template) return
+
+        const town = template?.cargo.loadings[0]?.town
+        return town
+    }
+
+    const getLastRouteForCargo = (templateId) => {
+        if(cargoTemplates?.data?.length <= 0) return ""
+        
+        const template = cargoTemplates?.data.find((item) => item.id === templateId)
+        if(!template) return
+
+        const templateUnloadings = template?.cargo.unloadings
+        const lastUnloadingIndex = templateUnloadings.length - 1
+        const town = templateUnloadings[lastUnloadingIndex].town
+        return town   
+    }
+
+    const getCargoInfo = (templateId) => {
+        if(cargoTemplates?.data?.length <= 0) return ""
+        
+        const template = cargoTemplates?.data.find((item) => item.id === templateId)
+        if(!template) return 
+        const cargoCount = template?.cargo.items.length
+        const cargoWeight = template?.cargo.items.reduce((prevValue, currentItem) => {
+            return prevValue + currentItem.weight
+        }, 0)
+        return `Кол-во грузов: ${cargoCount}, Общий вес: ${cargoWeight}`
+    }
 
     return (
         <div className='box px-0 p-lg-4 p-xl-5'>
@@ -135,7 +211,7 @@ export default function UserPatterns() {
                     className={(tab === 'cargo') ? 'active tab-btn ms-3 ms-sm-4 ms-xl-5' : 'tab-btn ms-3 ms-sm-4 ms-xl-5'}
                     onClick={() => setTab('cargo')}
                 >
-                    Грузы (12)
+                    {(currentUser?.roleId === 2 || currentUser?.roleId === 4) && `Грузы (${cargoTemplates?.meta?.total || 0})`}
                 </button>
                 {complete && <Alert
                     show={isShowAlert}
@@ -154,13 +230,14 @@ export default function UserPatterns() {
                     </Alert>
                 }
             </div>
-            {(tab === 'routes' && (currentUser?.roleId === 3 || currentUser?.roleId === 4)) &&
+            {tab === "routes" && ((currentUser?.roleId === 3 || currentUser?.roleId === 4) &&
             routesTemplates?.isLoading
                 ? routesTemplates?.data?.length
                     ? routesTemplates?.data?.map((i, index) => (
                         <div key={index}>
                             <Pattern
                                 id={i.id}
+                                type="route"
                                 className='mb-3 mb-sm-4'
                                 title={i.name}
                                 note={i.note}
@@ -188,24 +265,43 @@ export default function UserPatterns() {
                     ))
                     : <h6 className='text-center w-100 p-5'>У вас пока нет маршрутов</h6>
                 : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
-            }
-            {(tab === 'cargo') &&
-                filterCargo.map((cargo, index) => (
-                    <div key={index}>
-                        <Pattern
-                            className='mb-3 mb-sm-4'
-                            type={cargo.type}
-                            title={cargo.title}
-                            note={cargo.note}
-                            route={cargo.route}
-                            date={cargo.date}
-                            aboute={cargo.aboute}
-                            payment={cargo.payment}
-                            contacts={cargo.contacts}
-                        />
-                    </div>
-                ))
-            }
+            )}
+            {tab === "cargo" && ((currentUser?.roleId === 2 || currentUser?.roleId === 4) &&
+            cargoTemplates?.isLoading
+                ? cargoTemplates?.data?.length
+                    ? cargoTemplates?.data?.map((i, index) => (
+                        <div key={index}>
+                            <Pattern
+                                id={i.id}
+                                type="cargo"
+                                className='mb-3 mb-sm-4'
+                                title={i.name}
+                                note={i.note}
+                                fromRoute={getFirstRouteForCargo(i.id)}
+                                date={i.cargo.loadings[0].date}
+                                toRoute={getLastRouteForCargo(i.id)}
+                                cargoInfo={getCargoInfo(i.id)}
+                                bargainType={i.cargo.bargainType}
+                                calculateType={i.cargo.calculateType}
+                                vatPrice={i.cargo.vatPrice}
+                                notVatPrice={i.cargo.noVatPrice}
+                                prepayment={i.cargo.prepayment}
+                                contacts={i.cargo.contacts}
+                                url={`/add-cargo`}
+                                callbackForRename={(id) => {
+                                    setIsShowModalRenameRoute(true)
+                                    setIdTempRoute(id)
+                                }}
+                                callbackForDelete={(id) => {
+                                    setIsShowModalDeleteTemplateRoute(true)
+                                    setIdTempRoute(id)
+                                }}
+                            />
+                        </div>
+                    ))
+                    : <h6 className='text-center w-100 p-5'>У вас пока нет грузов</h6>
+                : <div className='d-flex justify-content-center'><Loader color='#545454'/></div>
+            )}
             {tab === 'routes' &&
                 (routesTemplates?.data?.length > 0) &&
                 <Pagination
@@ -218,15 +314,17 @@ export default function UserPatterns() {
                     setStartingPage={routeTemplatesPag.setStartingPage}
                 />
             }
-            {tab === 'cargo' && <Pagination
-                pageLimit={cargoPagination.pageLimit}
-                currentPage={cargoPagination.currentPage}
-                setCurrentPage={cargoPagination.setCurrentPage}
-                pagesDisplayedLimit={3}
-                itemsAmount={5}
-                startingPage={cargoPagination.startingPage}
-                setStartingPage={cargoPagination.setStartingPage}
-            />
+            {tab === 'cargo' &&
+                (cargoTemplates?.data?.length > 0) &&
+                <Pagination
+                    pageLimit={cargoTemplatesPag.pageLimit}
+                    currentPage={cargoTemplatesPag.currentPage}
+                    setCurrentPage={cargoTemplatesPag.setCurrentPage}
+                    pagesDisplayedLimit={3}
+                    itemsAmount={cargoTemplates?.meta?.total || 0}
+                    startingPage={cargoTemplatesPag.startingPage}
+                    setStartingPage={cargoTemplatesPag.setStartingPage}
+                />
             }
             <CustomModal
                 isShow={isShowModalRenameRoute}
