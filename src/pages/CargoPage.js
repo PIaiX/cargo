@@ -38,10 +38,6 @@ export default function CargoPage() {
             .catch(error => setCargo(prev => ({...prev, isLoading: true, error})))
     }, [id])
 
-    useEffect(() => {
-        console.log(cargo)
-    }, [cargo])
-
     return (
         <main className="bg-white">
             {
@@ -73,9 +69,6 @@ export default function CargoPage() {
                                     <h5 className="mb-2 mb-lg-3">Маршрут</h5>
                                     <div className="box p-3">
                                         <div className="mb-2">
-                                        <span className="green fw-5">
-                                            452 км 
-                                        </span>
                                             {getRoute(cargo?.item)}
                                         </div>
                                     </div>

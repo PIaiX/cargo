@@ -207,12 +207,6 @@ export default function Home() {
                             </div>
                             <div
                                 className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">
-                                <button
-                                    type="button"
-                                    className="btn btn-2 mb-2 mb-sm-3 mb-md-0"
-                                >
-                                    Рассчитать расстояние
-                                </button>
                                 <div className="d-flex">
                                     <button
                                         type="button"
