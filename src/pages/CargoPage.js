@@ -98,13 +98,12 @@ export default function CargoPage() {
                                 </div>
                                 <UserContacts
                                     className="order-1 order-md-3 mb-4 mb-md-0"
-                                    type="cargo"
-                                    img="/img/users/logo.png"
-                                    title="ООО НТК"
-                                    contacts={cargo?.item?.contacts?.length ? cargo.item.contacts.map(item => ({
-                                        name: item.firstName,
-                                        phone: item.phone
-                                    })) : []}
+                                    img={cargo?.item?.user?.avatar}
+                                    title={cargo?.item?.user?.fullName}
+                                    company={cargo?.item?.user?.companyName}
+                                    subject={cargo?.item?.user?.subject}
+                                    contacts={[{phone: cargo?.item?.user?.phone}]}
+                                    id={cargo?.item?.user?.id}
                                 />
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#report"
                                         className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
