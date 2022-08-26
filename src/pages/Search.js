@@ -36,7 +36,7 @@ export default function Search() {
     const cargoPagination = usePagination(initialPageLimit)
     const carsPagination = usePagination(initialPageLimit)
 
-    const submitHandler = (formData) => formData ? setFilters(prev => ({...prev, ...formData})) : setFilters(initialFilters)
+    const submitHandler = (formData) => formData ? setFilters({...initialFilters, ...formData}) : setFilters(initialFilters)
 
     useEffect(() => setFilters(initialFilters), [searchType])
 

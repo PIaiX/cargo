@@ -77,7 +77,7 @@ const createTopic = async (axiosPrivate, userId, payloads = {}) => {
 
 const getTopic = async (id, userId) => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}/${id}/${userId}`)
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_ACTIONS}/${id}/${userId ?? ''}`)
         return response?.data?.body
     } catch (error) {
         console.log(error)

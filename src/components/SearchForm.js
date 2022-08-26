@@ -28,7 +28,7 @@ const SearchForm = ({type, submitHandler}) => {
         handleSubmit,
         control,
         reset,
-        getValues
+        getValues,
     } = useForm({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit'
@@ -53,6 +53,7 @@ const SearchForm = ({type, submitHandler}) => {
     }, [formData])
 
     const onSumbit = (data) => {
+        console.log(data)
         const tempObject = {}
         for (const key in data) {
             if ((data[key] !== '') && (data[key] !== undefined)) {
@@ -68,8 +69,8 @@ const SearchForm = ({type, submitHandler}) => {
 
     const resetForm = () => {
         reset({
-            from: '',
-            to: '',
+            fromRoute: '',
+            toRoute: '',
             date: '',
             width: '',
             length: '',
@@ -95,15 +96,16 @@ const SearchForm = ({type, submitHandler}) => {
                         <label className="title-font mb-2 mb-xl-3">Откуда</label>
                         <Controller
                             control={control}
-                            name="from"
+                            name="fromRoute"
                             render={({field}) => (
                                 <SearchInput
                                     data={cities}
                                     placeHolder={'Город отправления'}
-                                    value={() => getValues('from')}
+                                    value={field.value}
                                     callback={value => field.onChange(value)}
                                 />
-                            )}
+                            )
+                            }
                         />
                     </div>
                     <IconContext.Provider value={{className: "green icon d-none d-sm-block mx-2 mx-md-3 mb-1 mb-md-2"}}>
@@ -113,12 +115,12 @@ const SearchForm = ({type, submitHandler}) => {
                         <label className="title-font mb-2 mb-xl-3">Куда</label>
                         <Controller
                             control={control}
-                            name="to"
+                            name="toRoute"
                             render={({field}) => (
                                 <SearchInput
                                     data={cities}
                                     placeHolder={'Город назначения'}
-                                    value={() => getValues('to')}
+                                    value={field.value}
                                     callback={value => field.onChange(value)}
                                 />
                             )}

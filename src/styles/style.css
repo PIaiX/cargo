@@ -27,6 +27,7 @@ body,
   flex: 0 0 auto;
 }
 .root-wrapper .content-wrapper {
+  position: relative;
   flex: 1 0 auto;
 }
 .root-wrapper footer {
@@ -3808,10 +3809,27 @@ footer .payment-methods img:not(:first-child) {
 }
 
 .submit-alert {
-  position: absolute;
-  top: 0;
+  position: sticky;
+  top: 70px;
+  z-index: 1899;
   left: 0;
   right: 0;
+  border: unset;
+}
+@media (max-width: 1199px) {
+  .submit-alert {
+    top: 55px;
+  }
+}
+@media (max-width: 991px) {
+  .submit-alert {
+    top: 50px;
+  }
+}
+@media (max-width: 575px) {
+  .submit-alert {
+    top: 0.75em;
+  }
 }
 
 .profile-picture {

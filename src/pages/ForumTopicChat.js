@@ -19,7 +19,8 @@ import {useForm} from 'react-hook-form';
 import ValidateWrapper from '../components/utilities/ValidateWrapper';
 import useAxiosPrivate from '../hooks/axiosPrivate';
 import CustomModal from '../components/utilities/CustomModal';
-import Alert from 'react-bootstrap/Alert';
+import {useDispatch} from 'react-redux/es/exports';
+import {setAlert, showNoAuthAlert} from "../store/actions/alert"
 
 export default function ForumTopicChat() {
     TimeAgo.addLocale(ru)
@@ -28,6 +29,7 @@ export default function ForumTopicChat() {
     const userId = useSelector(state => state?.currentUser?.data?.user?.id)
     const initialPageLimit = 10
     const chatPagination = usePagination(initialPageLimit)
+    const dispatch = useDispatch()
 
     const [isShowReplyModal, setIsShowReplyModal] = useState(false)
     const [isShowReplyForm, setIsShowReplyForm] = useState(false)
@@ -63,13 +65,6 @@ export default function ForumTopicChat() {
     const [replyData, setReplyData] = useState({})
     const [reportData, setReportData] = useState({})
 
-    const initialSubmitAlert = {
-        variant: 'success',
-        message: '',
-        isShow: false
-    }
-    const [submitAlert, setSubmitAlert] = useState(initialSubmitAlert)
-
     const onSubmitReply = (data) => setReplyData(prev => ({...prev, ...data}))
 
     const onSubmitReport = (data) => {
@@ -87,19 +82,9 @@ export default function ForumTopicChat() {
                 .then(() => {
                     reportReset({report: ''})
                     setReportData({})
-                    setSubmitAlert(prev => ({
-                        ...prev,
-                        variant: 'success',
-                        message: 'Жалоба успешно отправлена',
-                        isShow: true
-                    }))
+                    dispatch(setAlert('success', 'Жалоба успешно отправлена'))
                 })
-                .catch(() => setSubmitAlert(prev => ({
-                    ...prev,
-                    variant: 'danger',
-                    message: 'Не удалось отправить жалобу',
-                    isShow: true
-                })))
+                .catch(() => dispatch(setAlert('danger', 'Не удалось отправить жалобу')))
         }
 
         if (messages?.items?.length && reportData?.topicMessageId && userId) {
@@ -116,19 +101,9 @@ export default function ForumTopicChat() {
                 .then(() => {
                     reportReset({report: ''})
                     setReportData({})
-                    setSubmitAlert(prev => ({
-                        ...prev,
-                        variant: 'success',
-                        message: 'Жалоба успешно отправлена',
-                        isShow: true
-                    }))
+                    dispatch(setAlert('success', 'Жалоба успешно отправлена'))
                 })
-                .catch(() => setSubmitAlert(prev => ({
-                    ...prev,
-                    variant: 'danger',
-                    message: 'Не удалось отправить жалобу',
-                    isShow: true
-                })))
+                .catch(() => dispatch(setAlert('danger', 'Не удалось отправить жалобу')))
         }
     }
 
@@ -164,7 +139,7 @@ export default function ForumTopicChat() {
     }
 
     useEffect(() => {
-        (id && userId) && getTopicRequest()
+        id && getTopicRequest()
     }, [id, userId])
 
     useEffect(() => paginateTopicMessagesRequest(chatPagination.currentPage), [topic, userId, chatPagination.currentPage, chatPagination.pageLimit])
@@ -196,19 +171,9 @@ export default function ForumTopicChat() {
                         chatPagination.setCurrentPage(1)
                         chatPagination.setStartingPage(1)
                     }
-                    setSubmitAlert(prev => ({
-                        ...prev,
-                        variant: 'success',
-                        message: 'Тема успешно создана',
-                        isShow: true
-                    }))
+                    dispatch(setAlert('success', 'Ответ отправлен'))
                 })
-                .catch(() => setSubmitAlert(prev => ({
-                    ...prev,
-                    variant: 'danger',
-                    message: 'Не удалось создать тему',
-                    isShow: true
-                })))
+                .catch(() => dispatch(setAlert('danger', 'Не удалось отправить ответ')))
         }
     }, [replyData, userId, topic, messages])
 
@@ -226,23 +191,13 @@ export default function ForumTopicChat() {
         }
     }, [isShowReportModal])
 
-    useEffect(() => {
-        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 4000)
-    }, [submitAlert])
-
     return (<>
         <main className='bg-white py-4 py-sm-5'>
-            <Alert className='submit-alert' variant={submitAlert.variant} show={submitAlert.isShow}>
-                {submitAlert.message}
-            </Alert>
             <section className='container' id="sec-11">
                 <nav aria-label="breadcrumb" className='mb-3'>
                     <ol className="breadcrumb">
                         <li className="breadcrumb-item">
                             <Link to="/forum">Разделы форума</Link>
-                        </li>
-                        <li className="breadcrumb-item">
-                            <Link to="/forum-section">Недобросовестные партнеры</Link>
                         </li>
                         <li className="breadcrumb-item">
                             <Link to="/forum-topic">{topic?.item?.title || 'Без темы'}</Link>
@@ -289,44 +244,47 @@ export default function ForumTopicChat() {
                             : <h6 className="text-center w-100 p-5">Тема не найдена</h6>
                         : <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>}
                     <div className='answer-to-comment'>
-                        {isShowReplyForm
-                            ? <form
-                                onSubmit={replyHandleSubmit(data => {
-                                    onSubmitReply(data)
-                                    setIsShowReplyForm(false)
-                                })}
-                                noValidate
-                            >
-                                <label htmlFor="answer-1" className='title-font fs-12 fw-5 mb-2'>Ваш ответ</label>
-                                <ValidateWrapper error={replyErrors?.answer}>
-                                <textarea
-                                    rows="6"
-                                    placeholder='Текст'
-                                    id="answer-1"
-                                    {...replyRegister('answer', {
-                                        required: 'Невозможно отправить пустой ответ'
+                        {userId
+                            ? isShowReplyForm
+                                ? <form
+                                    onSubmit={replyHandleSubmit(data => {
+                                        onSubmitReply(data)
+                                        setIsShowReplyForm(false)
                                     })}
-                                />
-                                </ValidateWrapper>
-                                <div className='d-sm-flex align-items-center justify-content-end mt-2 mt-sm-3'>
-                                    <div className='text-end fs-09 me-sm-4 mb-2 mb-sm-0'>Нажимая на кнопку
-                                        “Ответить”, вы<br/> соглашаетесь с <a href="/" className='blue'>правилами
-                                            публикации</a></div>
-                                    <button
-                                        type='submit'
-                                        className='btn btn-2 fs-12 ms-auto ms-sm-0'
-                                    >
-                                        Ответить
-                                    </button>
-                                </div>
-                            </form>
-                            : <button
-                                type='button'
-                                onClick={() => setIsShowReplyForm(true)}
-                                className='btn btn-2 fs-12 ms-auto'
-                            >
-                                Ответить на публикацию
-                            </button>}
+                                    noValidate
+                                >
+                                    <label htmlFor="answer-1" className='title-font fs-12 fw-5 mb-2'>Ваш ответ</label>
+                                    <ValidateWrapper error={replyErrors?.answer}>
+                                    <textarea
+                                        rows="6"
+                                        placeholder='Текст'
+                                        id="answer-1"
+                                        {...replyRegister('answer', {
+                                            required: 'Невозможно отправить пустой ответ'
+                                        })}
+                                    />
+                                    </ValidateWrapper>
+                                    <div className='d-sm-flex align-items-center justify-content-end mt-2 mt-sm-3'>
+                                        <div className='text-end fs-09 me-sm-4 mb-2 mb-sm-0'>Нажимая на кнопку
+                                            “Ответить”, вы<br/> соглашаетесь с <a href="/" className='blue'>правилами
+                                                публикации</a></div>
+                                        <button
+                                            type='submit'
+                                            className='btn btn-2 fs-12 ms-auto ms-sm-0'
+                                        >
+                                            Ответить
+                                        </button>
+                                    </div>
+                                </form>
+                                : <button
+                                    type='button'
+                                    onClick={() => setIsShowReplyForm(true)}
+                                    className='btn btn-2 fs-12 ms-auto'
+                                >
+                                    Ответить на публикацию
+                                </button>
+                            : null
+                        }
                     </div>
                 </div>
 

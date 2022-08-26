@@ -12,14 +12,17 @@ import useDebounce from '../hooks/debounce';
 import useAxiosPrivate from '../hooks/axiosPrivate';
 import {useSelector} from 'react-redux';
 import CreateTopicForm from '../components/CreateTopicForm';
-import Alert from 'react-bootstrap/Alert';
+import {useDispatch} from 'react-redux/es/exports';
+import {setAlert, showNoAuthAlert} from "../store/actions/alert"
 
 const initialPageLimit = 10;
 
 export default function Forum() {
+    const dispatch = useDispatch()
     const axiosPrivate = useAxiosPrivate()
     const userId = useSelector(state => state?.currentUser?.data?.user?.id)
     const {pathname} = useLocation()
+    const [isAuth, setIsAuth] = useState(false)
 
     const [search, setSearch] = useState('')
     const debouncedSearch = useDebounce(search, 300)
@@ -50,12 +53,6 @@ export default function Forum() {
     })
     const [createTopicPayloads, setCreateTopicPayloads] = useState({})
 
-    const initialSubmitAlert = {
-        variant: 'success',
-        isShow: false
-    }
-    const [submitAlert, setSubmitAlert] = useState(initialSubmitAlert)
-
     const submitHandler = (data) => {
         setCreateTopicPayloads(prev => ({...prev, ...data}))
         setIsShowCreateTopic(false)
@@ -69,7 +66,12 @@ export default function Forum() {
 
     const paginateUserTopicsRequest = (page, limit) => {
         paginateUserTopics(axiosPrivate, userId, page, limit)
-            .then(result => setUserTopics(prev => ({...prev, isLoading: true, meta: result?.meta, items: result?.data})))
+            .then(result => setUserTopics(prev => ({
+                ...prev,
+                isLoading: true,
+                meta: result?.meta,
+                items: result?.data
+            })))
             .catch(error => setUserTopics(prev => ({...prev, isLoading: true, error})))
     }
 
@@ -77,14 +79,17 @@ export default function Forum() {
         const value = debouncedSearch && debouncedSearch.trim()
 
         if (pathname === '/forum') {
+            setIsAuth(false)
             setShownItems(topics)
             setShownPagination(topicsPagination)
         }
         if (value && (pathname === '/forum/my-topics')) {
+            setIsAuth(true)
             setShownItems(topics)
             setShownPagination(topicsPagination)
         }
         if (!value && (pathname === '/forum/my-topics')) {
+            setIsAuth(true)
             setShownItems(userTopics)
             setShownPagination(userTopicsPagination)
         }
@@ -110,24 +115,17 @@ export default function Forum() {
     }, [userTopicsPagination.currentPage, userTopicsPagination.pageLimit, userId])
 
     useEffect(() => {
-        Object.keys(createTopicPayloads).length && createTopic(axiosPrivate, userId, createTopicPayloads)
+        (Object.keys(createTopicPayloads)?.length && userId) && createTopic(axiosPrivate, userId, createTopicPayloads)
             .then(() => {
                 searchTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit, debouncedSearch)
                 paginateUserTopicsRequest(topicsPagination.currentPage, topicsPagination.pageLimit)
-                setSubmitAlert(prev => ({...prev, variant: 'success', isShow: true}))
+                dispatch(setAlert('success', 'Тема успешно создана'))
             })
-            .catch(() => setSubmitAlert(prev => ({...prev, variant: 'danger', isShow: true})))
+            .catch(() => dispatch(setAlert('danger', 'Не удалось создать тему')))
     }, [createTopicPayloads, userId])
-
-    useEffect(() => {
-        if (submitAlert.isShow) setTimeout(() => setSubmitAlert(initialSubmitAlert), 4000)
-    }, [submitAlert])
 
     return (
         <main className="bg-white py-4 py-sm-5">
-            <Alert className='submit-alert' variant={submitAlert.variant} show={submitAlert.isShow}>
-                {(submitAlert.variant === 'success') ? 'Тема была успешно создана' : 'Возникла ошибка при создании темы'}
-            </Alert>
             <section className="container" id="sec-11">
                 <nav aria-label="breadcrumb" className="mb-3">
                     <ol className="breadcrumb">
@@ -158,7 +156,11 @@ export default function Forum() {
                         <button
                             type="button"
                             className="btn btn-2 w-100 mb-3 fs-12 px-3 py-2 d-flex"
-                            onClick={() => setIsShowCreateTopic(prevState => !prevState)}
+                            onClick={() => {
+                                userId
+                                    ? setIsShowCreateTopic(prevState => !prevState)
+                                    : dispatch(showNoAuthAlert())
+                            }}
                         >
                             <IconContext.Provider
                                 value={{className: "icon-15 white", title: "Создать тему"}}
@@ -222,7 +224,7 @@ export default function Forum() {
                         <ForumWidget className="d-none d-lg-block"/>
                     </div>
                     {/* ForumTopics */}
-                    <Outlet context={[shownItems, shownPagination]}/>
+                    <Outlet context={[shownItems, shownPagination, isAuth]}/>
                 </div>
                 <div className="row">
                     <div className="col-lg-9">

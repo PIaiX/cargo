@@ -15,7 +15,7 @@ const SearchInput = memo(({data, placeHolder, callback, value}) => {
         }
 
         const findValue = (value = '') => {
-            const filteredValue = value.toLowerCase().trim()
+            const filteredValue = (typeof value === 'string') && value.toLowerCase().trim()
             if (data) {
                 return data.filter(x => x.toLowerCase().startsWith(filteredValue)).slice(0, 5)
             }
