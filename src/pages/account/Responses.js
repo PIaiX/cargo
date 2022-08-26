@@ -98,11 +98,11 @@ export default function Responses() {
     }
 
     useEffect(() => {
-        sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
-        sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
-        sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
-        sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit)
-    }, [])
+        (roleId !== 3) && sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (roleId !== 2) && sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (roleId !== 3) && sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+        (roleId !== 2) && sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+    }, [roleId])
     
     useEffect(() => {
         (subTab === 'cargo' && tab === 'active' && incomingsCargoResponses.isLoading) &&
@@ -165,6 +165,62 @@ export default function Responses() {
             .catch()
     }, [idDelete])
 
+    const returnerTotalsInComing = () => {
+        if (incomingsRouteResponses.isLoading && incomingsCargoResponses.isLoading) {
+            return (incomingsRouteResponses.meta.total + incomingsCargoResponses.meta.total)
+        } else if (incomingsCargoResponses.isLoading) {
+            return incomingsCargoResponses.meta.total
+        } else if (incomingsRouteResponses.isLoading) {
+            return incomingsRouteResponses.meta.total
+        }  else {
+            return 0
+        }
+    }
+
+    const returnerTotalsOutGoing = () => {
+        if (outgoingsRouteResponses.isLoading && outgoingsCargoResponses.isLoading) {
+            return (outgoingsRouteResponses.meta.total + outgoingsCargoResponses.meta.total)
+        } else if (outgoingsCargoResponses.isLoading) {
+            return outgoingsCargoResponses.meta.total
+        } else if (outgoingsRouteResponses.isLoading) {
+            return outgoingsRouteResponses.meta.total
+        } else {
+            return 0
+        }
+    }
+
+    const forCargoInCom = () => {
+        if (tab === 'active' && incomingsCargoResponses.isLoading) {
+            return incomingsCargoResponses.meta.total
+        } else {
+            return 0
+        }
+    }
+
+    const forCargoOut = () => {
+        if (tab === 'archive' &&  outgoingsCargoResponses.isLoading) {
+            return outgoingsCargoResponses.meta.total
+        } else {
+            return 0
+        }
+    }
+
+    const forRouteInCom = () => {
+        if (tab === 'active' && incomingsRouteResponses.isLoading) {
+            return incomingsRouteResponses.meta.total
+        } else {
+            return 0
+        }
+    }
+
+    const forRouteOut = () => {
+        if (tab === 'archive' && outgoingsRouteResponses.isLoading) {
+            return outgoingsRouteResponses.meta.total
+        } else {
+            return 0
+        }
+    }
+
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
             <Link
@@ -180,11 +236,7 @@ export default function Responses() {
                     className={tab === "active" ? "active tab-btn" : "tab-btn"}
                     onClick={() => setTab("active")}
                 >
-                    {roleId === 2 ? `Мне откликнулись (${incomingsCargoResponses?.meta?.total ? incomingsCargoResponses?.meta?.total : '0'})` : ''}
-                    {roleId === 3 ? `Мне откликнулись (${incomingsRouteResponses?.meta?.total ? incomingsRouteResponses?.meta?.total : '0'})` : ''}
-                    {roleId === 4 ? `Мне откликнулись (${(incomingsRouteResponses?.meta?.total && incomingsCargoResponses?.meta?.total)
-                        ? incomingsRouteResponses?.meta?.total + incomingsCargoResponses?.meta?.total
-                        : (incomingsRouteResponses?.meta?.total || incomingsCargoResponses?.meta?.total)})` : ''}
+                    Мне откликнулись ({returnerTotalsInComing()})
                 </button>
                 <button
                     type="button"
@@ -195,11 +247,7 @@ export default function Responses() {
                     }
                     onClick={() => setTab("archive")}
                 >
-                    {roleId === 2 ? `Вы откликнулись (${outgoingsCargoResponses?.meta?.total ? outgoingsCargoResponses?.meta?.total : '0'})` : ''}
-                    {roleId === 3 ? `Вы откликнулись (${outgoingsRouteResponses?.meta?.total ? outgoingsRouteResponses?.meta?.total : '0'})` : ''}
-                    {roleId === 4 ? `Вы откликнулись (${(outgoingsRouteResponses?.meta?.total && outgoingsCargoResponses?.meta?.total)
-                        ? outgoingsRouteResponses?.meta?.total + outgoingsCargoResponses?.meta?.total
-                        : (outgoingsRouteResponses?.meta?.total || outgoingsCargoResponses?.meta?.total)})` : ''}
+                    Вы откликнулись ({returnerTotalsOutGoing()})
                 </button>
             </div>
             <Tabs
@@ -208,8 +256,10 @@ export default function Responses() {
                 onSelect={eventKey => setSubTab(eventKey)}
             >
                 {!(roleId === 3) && (
-                    <Tab eventKey="cargo"
-                         title={`Грузы (${tab === 'active' ? incomingsCargoResponses?.meta?.total : outgoingsCargoResponses?.meta?.total})`}>
+                    <Tab
+                        eventKey="cargo"
+                        title={`Грузы (${(tab === 'active' ? forCargoInCom() : forCargoOut())})`}
+                    >
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
                                 ? incomingsCargoResponses.isLoading
@@ -258,8 +308,10 @@ export default function Responses() {
                     </Tab>
                 )}
                 {!(roleId === 2) && (
-                    <Tab eventKey="route"
-                         title={`Маршруты (${tab === 'active' ? incomingsRouteResponses?.meta?.total : outgoingsRouteResponses?.meta?.total})`}>
+                    <Tab
+                        eventKey="route"
+                        title={`Маршруты (${tab === 'active' ? forRouteInCom() : forRouteOut()})`}
+                    >
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
                                 ? incomingsRouteResponses.isLoading

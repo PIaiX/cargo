@@ -65,7 +65,6 @@ export default function InWork() {
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
-            .catch(error => console.log(error))
     }, [inWorkPag.pageLimit])
 
     useEffect(() => {
@@ -75,7 +74,6 @@ export default function InWork() {
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
-            .catch(error => console.log(error))
     }, [inWorkPag.pageLimit])
 
     useEffect(() => {
@@ -85,7 +83,6 @@ export default function InWork() {
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
-            .catch()
     }, [inWorkPag.pageLimit])
 
     useEffect(() => {
@@ -95,7 +92,6 @@ export default function InWork() {
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
-            .catch()
     }, [inWorkPag.pageLimit])
 
     useEffect(() => {
@@ -208,7 +204,31 @@ export default function InWork() {
             inWorkPag.setCurrentPage(1)
             inWorkPag.setStartingPage(1)
         }
-    }, [tab, subTabs, forMeCargosInProcess.meta.total, forMeRoutesInProcess.meta.total, forMeRoutesComplete.meta.total, forMeCargosComplete.meta.total])
+    }, [tab, subTabs, forMeCargosInProcess?.meta?.total, forMeRoutesInProcess?.meta?.total, forMeRoutesComplete?.meta?.total, forMeCargosComplete?.meta?.total])
+
+    const returnerTotalsInProcess = () => {
+        if (forMeRoutesInProcess.isLoading && forMeCargosInProcess.isLoading) {
+            return (forMeRoutesInProcess.meta.total + forMeCargosInProcess.meta.total)
+        } else if (forMeCargosInProcess.isLoading) {
+            return forMeCargosInProcess.meta.total
+        } else if (forMeRoutesInProcess.isLoading) {
+            return forMeRoutesInProcess.meta.total
+        }  else {
+            return 0
+        }
+    }
+
+    const returnerTotalsComplete = () => {
+        if (forMeRoutesComplete.isLoading && forMeCargosComplete.isLoading) {
+            return (forMeRoutesComplete.meta.total + forMeCargosComplete.meta.total)
+        } else if (forMeCargosComplete.isLoading) {
+            return forMeCargosComplete.meta.total
+        } else if (forMeRoutesComplete.isLoading) {
+            return forMeRoutesComplete.meta.total
+        } else {
+            return 0
+        }
+    }
 
     return (
         <div className="box px-0 p-sm-4 p-xl-5">
@@ -225,11 +245,7 @@ export default function InWork() {
                     className={tab === "active" ? "active tab-btn" : "tab-btn"}
                     onClick={() => setTab("active")}
                 >
-                    {currentUser.roleId === 2 ? `Текущие (${forMeCargosInProcess.meta.total ? forMeCargosInProcess.meta.total : '0'})` : ''}
-                    {currentUser.roleId === 3 ? `Текущие (${forMeRoutesInProcess.meta.total ? forMeRoutesInProcess.meta.total : '0'})` : ''}
-                    {currentUser.roleId === 4 ? `Текущие (${(forMeRoutesInProcess.meta.total && forMeCargosInProcess.meta.total)
-                        ? forMeRoutesInProcess.meta.total + forMeCargosInProcess.meta.total
-                        : (forMeRoutesInProcess.meta.total || forMeCargosInProcess.meta.total)})` : ''}
+                    Текущие ({returnerTotalsInProcess()})
                 </button>
                 <button
                     type="button"
@@ -240,11 +256,7 @@ export default function InWork() {
                     }
                     onClick={() => setTab("archive")}
                 >
-                    {currentUser.roleId === 2 ? `Выполнено (${forMeCargosComplete.meta.total ? forMeCargosComplete.meta.total : '0'})` : ''}
-                    {currentUser.roleId === 3 ? `Выполнено (${forMeRoutesComplete.meta.total ? forMeRoutesComplete.meta.total : '0'})` : ''}
-                    {currentUser.roleId === 4 ? `Выполнено (${(forMeRoutesComplete.meta.total && forMeCargosComplete.meta.total)
-                        ? forMeRoutesComplete.meta.total + forMeCargosComplete.meta.total
-                        : (forMeRoutesComplete.meta.total || forMeCargosComplete.meta.total)})` : ''}
+                    Выполнено ({returnerTotalsComplete()})
                 </button>
             </div>
             {
@@ -258,7 +270,7 @@ export default function InWork() {
                         currentUser?.roleId !== 3 &&
                         <Tab
                             eventKey="cargo"
-                            title={`Грузы (${forMeCargosInProcess?.meta?.total ? forMeCargosInProcess?.meta?.total : '0'})`}
+                            title={`Грузы (${forMeCargosInProcess?.isLoading ? forMeCargosInProcess?.meta?.total : '0'})`}
 
                         >
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
@@ -295,8 +307,8 @@ export default function InWork() {
                             onClick={() => inWorkPag.setCurrentPage(1)}
                         >
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
-                                {forMeRoutesInProcess.isLoading
-                                    ? forMeRoutesInProcess.data.length
+                                {forMeRoutesInProcess?.isLoading
+                                    ? forMeRoutesInProcess?.data?.length
                                         ? forMeRoutesInProcess?.data?.map((cargo, index) => (
                                             <div key={index}>
                                                 <ResponseCard
@@ -331,10 +343,10 @@ export default function InWork() {
                 >
                     {
                         currentUser?.roleId !== 3 &&
-                        <Tab eventKey="cargo" title={`Грузы ${forMeCargosComplete?.meta?.total}`}>
+                        <Tab eventKey="cargo" title={`Грузы (${forMeCargosComplete?.meta?.total ? forMeCargosComplete.meta.total : '0'})`}>
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
-                                {forMeCargosComplete.isLoading
-                                    ? forMeCargosComplete.data.length
+                                {forMeCargosComplete?.isLoading
+                                    ? forMeCargosComplete?.data?.length
                                         ? forMeCargosComplete?.data?.map((route, index) => (
                                             <div key={index}>
                                                 <ResponseCard
@@ -357,10 +369,10 @@ export default function InWork() {
                     }
                     {
                         currentUser?.roleId !== 2 &&
-                        <Tab eventKey="route" title={`Маршруты (${forMeRoutesComplete?.meta?.total})`}>
+                        <Tab eventKey="route" title={`Маршруты (${forMeRoutesComplete?.meta?.total ? forMeRoutesComplete.meta.total : '0'})`}>
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
-                                {forMeRoutesComplete.isLoading
-                                    ? forMeRoutesComplete.data.length
+                                {forMeRoutesComplete?.isLoading
+                                    ? forMeRoutesComplete?.data?.length
                                         ? forMeRoutesComplete?.data?.map((cargo, index) => (
                                             <div key={index}>
                                                 <ResponseCard

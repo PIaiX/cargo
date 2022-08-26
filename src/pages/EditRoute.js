@@ -255,8 +255,6 @@ const EditRoute = () => {
 
     const [selectPeriodType, setSelectPeriodType] = useState(null)
 
-    console.log(selectPeriodType)
-
     const loadOptions2 = async (searchKey) => {
 
         const defaultValue = data?.datePeriodType

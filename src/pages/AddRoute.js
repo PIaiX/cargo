@@ -227,8 +227,6 @@ export default function AddRoute() {
 
     const [selectPeriodType, setSelectPeriodType] = useState(null)
 
-    console.log(selectPeriodType)
-    console.log(data)
     useEffect(() => {
         setSelectPeriodType({
             value: data?.datePeriodType,
