@@ -13,6 +13,7 @@ import CargoCard from '../components/CargoCard';
 import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from '../helpers/cargo';
 import {getCountRoutes, paginateRoutes} from "../API/route";
 import RouteCard from "../components/RouteCard";
+import {getDistance} from "../API/distance";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -66,7 +67,27 @@ export default function Home() {
             .then(res => setRoutes({isLoading: true, meta: res?.data?.body?.meta, data: res?.data?.body?.data}))
             .catch(error => console.log(error))
     }, [selectedCity])
+/*
+    const [distance, setDistance] = useState('')
+    const [payloads, setPayloads] = useState({
+        locale: 'ru',
+        points: [{
+            type: 'walking',
+            x: '49.106414',
+            y: '55.796127'
+        }, {
+            type: 'walking',
+            x: '37.617644',
+            y: '55.755819'
+        }]
+    })
 
+    useEffect(() => {
+        getDistance(payloads).then(res => setDistance(res))
+    }, [payloads])
+
+    console.log(distance)*/
+    
     return (
         <main>
             <section id="sec-1" className="py-4 py-sm-5">
