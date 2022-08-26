@@ -168,6 +168,27 @@ export default function AddRoute() {
 
         if (isInValidNameTemplate) {
             setValid({...valid, isInValidNameTemplate: true})
+        } else if (isInValidFromRoute) {
+            setValid({...valid, isInValidFromRoute: true})
+            setShowModalSave(false)
+        } else if (isInValidToRoute) {
+            setValid({...valid, isInValidToRoute: true})
+            setShowModalSave(false)
+        } else if (isInValidDateType) {
+            setValid({...valid, isInValidDateType: true})
+            setShowModalSave(false)
+        } else if (isInValidCar) {
+            setValid({...valid, isInValidCar: true})
+            setShowModalSave(false)
+        } else if (isInValidPrepayment) {
+            setValid({...valid, isInValidPrepayment: true})
+            setShowModalSave(false)
+        } else if (isInValidPhone) {
+            setValid({...valid, isInValidPhone: true})
+            setShowModalSave(false)
+        } else if (isInValidFirstName) {
+            setValid({...valid, isInValidFirstName: true})
+            setShowModalSave(false)
         } else {
             try {
                 if (data?.dateType === 1) {
@@ -180,6 +201,9 @@ export default function AddRoute() {
                     .then(() => {
                         setIsShowAlert(true)
                         setAlertForSavePattern(true)
+                        getTemplates(axiosPrivate, currentUser.id, 1)
+                            .then(r => setTemplates(r.data?.body?.data))
+                            .catch(error => console.log(error))
                     })
                     .catch(() => {
                         setAlertForSavePattern(false)
@@ -1244,7 +1268,7 @@ export default function AddRoute() {
                                             offset={-80}
                                             duration={300}
                                             isDynamic={true}
-                                            className={(data?.date || data?.datePeriodType) ? "filled" : ""}
+                                            className={(data?.date || data?.datePeriodType || data?.datePeriodType === 0) ? "filled" : ""}
                                         >
                                             Дата
                                         </Link>

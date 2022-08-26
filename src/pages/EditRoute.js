@@ -198,6 +198,27 @@ const EditRoute = () => {
 
         if (isInValidNameTemplate) {
             setValid({...valid, isInValidNameTemplate: true})
+        } else if (isInValidFromRoute) {
+            setValid({...valid, isInValidFromRoute: true})
+            setShowModalSave(false)
+        } else if (isInValidToRoute) {
+            setValid({...valid, isInValidToRoute: true})
+            setShowModalSave(false)
+        } else if (isInValidDateType) {
+            setValid({...valid, isInValidDateType: true})
+            setShowModalSave(false)
+        } else if (isInValidCar) {
+            setValid({...valid, isInValidCar: true})
+            setShowModalSave(false)
+        } else if (isInValidPrepayment) {
+            setValid({...valid, isInValidPrepayment: true})
+            setShowModalSave(false)
+        } else if (isInValidPhone) {
+            setValid({...valid, isInValidPhone: true})
+            setShowModalSave(false)
+        } else if (isInValidFirstName) {
+            setValid({...valid, isInValidFirstName: true})
+            setShowModalSave(false)
         } else {
             try {
                 if (data?.dateType === 1) {
@@ -210,6 +231,9 @@ const EditRoute = () => {
                     .then(() => {
                     setIsShowAlert(true)
                     setAlertForSavePattern(true)
+                        getTemplates(axiosPrivate, currentUser?.id, 1)
+                            .then(r => setTemplates(r.data?.body?.data))
+                            .catch(error => console.log(error))
                 })
                     .catch(() => {
                         setAlertForSavePattern(false)
