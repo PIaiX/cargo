@@ -12,7 +12,7 @@ import useAxiosPrivate from '../hooks/axiosPrivate';
 import {getCarTypes} from '../API/car';
 import {icons} from '../helpers/cargo';
 
-const SearchForm = ({type, submitHandler}) => {
+const SearchForm = ({type, submitHandler, fromMainPage, searchType}) => {
     const axiosPrivate = useAxiosPrivate()
     const {state: isCollapsedForm, setState: setIsCollapsedForm} = useMatchMedia(false, '(max-width: 767px)')
     const [cities, setCities] = useState([])
@@ -29,9 +29,10 @@ const SearchForm = ({type, submitHandler}) => {
         control,
         reset,
         getValues,
+        setValue
     } = useForm({
         mode: 'onSubmit',
-        reValidateMode: 'onSubmit'
+        reValidateMode: 'onSubmit',
     })
     const [formData, setFormData] = useState(null)
 
@@ -52,18 +53,22 @@ const SearchForm = ({type, submitHandler}) => {
         submitHandler && submitHandler(formData)
     }, [formData])
 
+    const getDate = (myDate) => {
+        const newDate = new Date(myDate)
+        return newDate.toLocaleDateString()
+    }
+
     const onSumbit = (data) => {
-        console.log(data)
         const tempObject = {}
         for (const key in data) {
             if ((data[key] !== '') && (data[key] !== undefined)) {
                 tempObject[key] = data[key]
             }
         }
-        if (data?.date) {
-            tempObject.date = getDateUI(data.date)
-        }
 
+        if (data?.date) {
+            tempObject.date = getDate(data.date)
+        }
         setFormData(tempObject)
     }
 
@@ -84,6 +89,12 @@ const SearchForm = ({type, submitHandler}) => {
         setSelectNote(null)
         setFormData(null)
     }
+    
+    useEffect(() => {
+        if(fromMainPage?.fromRoute) setValue('fromRoute', fromMainPage?.fromRoute)
+        if(fromMainPage?.toRoute) setValue('toRoute', fromMainPage?.toRoute)
+        if(fromMainPage?.date) setValue('date', fromMainPage?.dateN)
+    }, [fromMainPage?.fromRoute, fromMainPage?.toRoute, fromMainPage?.date])
 
     return (
         <form
@@ -101,7 +112,7 @@ const SearchForm = ({type, submitHandler}) => {
                                 <SearchInput
                                     data={cities}
                                     placeHolder={'Город отправления'}
-                                    value={field.value}
+                                    value={fromMainPage?.fromRoute}
                                     callback={value => field.onChange(value)}
                                 />
                             )
@@ -120,7 +131,7 @@ const SearchForm = ({type, submitHandler}) => {
                                 <SearchInput
                                     data={cities}
                                     placeHolder={'Город назначения'}
-                                    value={field.value}
+                                    value={fromMainPage?.toRoute}
                                     callback={value => field.onChange(value)}
                                 />
                             )}
@@ -301,7 +312,7 @@ const SearchForm = ({type, submitHandler}) => {
                         type="submit"
                         className="btn btn-2 fs-15 w-100 px-3"
                     >
-                        Найти грузы
+                        {searchType === 'car' ? 'Найти машину' : 'Найти грузы'}
                     </button>
                 </div>
             </div>

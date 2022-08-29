@@ -13,7 +13,7 @@ import CargoCard from '../components/CargoCard';
 import {getGeneralCapacity, getGeneralWeight, getNotesType, getRoute} from '../helpers/cargo';
 import {getCountRoutes, paginateRoutes} from "../API/route";
 import RouteCard from "../components/RouteCard";
-import {getDistance} from "../API/distance";
+import {getCities} from "../API/cities";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -22,6 +22,15 @@ export default function Home() {
     const selectedCity = useSelector(state => state?.selectedCity?.city)
     const [cargoCount, setCargoCount] = useState(null)
     const [countRoute, setCountRoute] = useState(null)
+    const [citysForSearch, setCitysForSearch] = useState({
+        fromRoute: null,
+        toRoute: null,
+        date: null,
+    })
+    const [citys, setCitys] = useState({
+        isLoading: false,
+        data: []
+    })
     const [cargoSwiperItems, setCargoSwiperItems] = useState({
         isLoading: false,
         error: null,
@@ -68,26 +77,15 @@ export default function Home() {
             .then(res => setRoutes({isLoading: true, meta: res?.data?.body?.meta, data: res?.data?.body?.data}))
             .catch(error => console.log(error))
     }, [selectedCity])
-/*
-    const [distance, setDistance] = useState('')
-    const [payloads, setPayloads] = useState({
-        locale: 'ru',
-        points: [{
-            type: 'walking',
-            x: '49.106414',
-            y: '55.796127'
-        }, {
-            type: 'walking',
-            x: '37.617644',
-            y: '55.755819'
-        }]
-    })
 
     useEffect(() => {
-        getDistance(payloads).then(res => setDistance(res))
-    }, [payloads])
+        getCities().then(res => setCitys({isLoading: true, data: res.body}))
+    }, [])
 
-    console.log(distance)*/
+    const getDate = (myDate) => {
+        const newDate = new Date(myDate)
+        return newDate.toLocaleDateString()
+    }
 
     return (
         <main>
@@ -192,34 +190,46 @@ export default function Home() {
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Откуда</div>
                                 <SearchInput
+                                    data={citys.data}
                                     placeHolder={"Город отправления"}
+                                    callback={value => setCitysForSearch(prevState => ({...prevState, fromRoute: value}))}
                                 />
                             </div>
                             <div className="col-md-4">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Куда</div>
                                 <SearchInput
+                                    data={citys.data}
+                                    callback={value => setCitysForSearch(prevState => ({...prevState, toRoute: value}))}
                                     placeHolder={"Город назначения"}
                                 />
                             </div>
                             <div className="col-md-4 col-xl-3 col-xxl-2">
                                 <div className="fs-15 fw-5 mb-1 mb-sm-3">Дата</div>
-                                <input type="date" className="fs-15" min={"2022-08-08"}/>
+                                <input
+                                    type="date"
+                                    className="fs-15"
+                                    onChange={(e) => {
+                                        setCitysForSearch(prevState => ({...prevState, dateN: e.target.value, date: getDate(e.target.value)}))
+                                    }}
+                                />
                             </div>
                             <div
                                 className="col-12 col-xl-11 col-xxl-10 d-md-flex flex-md-row-reverse justify-content-between fs-12">
                                 <div className="d-flex">
-                                    <button
-                                        type="button"
+                                    <NavLink
+                                        to='/search'
                                         className="btn btn-1 px-2 px-md-4 px-lg-5"
+                                        state={{searchType: 'car', ...citysForSearch}}
                                     >
                                         Найти машину
-                                    </button>
-                                    <button
-                                        type="button"
+                                    </NavLink>
+                                    <NavLink
+                                        to='/search'
                                         className="btn btn-1 ms-2 ms-sm-4 px-2 px-md-4 px-lg-5"
+                                        state={{searchType: 'cargo', ...citysForSearch}}
                                     >
                                         Найти груз
-                                    </button>
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>

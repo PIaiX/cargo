@@ -9,11 +9,17 @@ import {getNotesType, getRoute} from '../helpers/cargo';
 import Loader from '../components/Loader';
 import RouteCard from '../components/RouteCard';
 import Select from 'react-select'
+import {useLocation, useNavigate} from "react-router-dom";
 
 const initialPageLimit = 12
 
 export default function Search() {
-    const initialFilters = {orderBy: 'desc'}
+
+    const location = useLocation()
+    const initialFilters = {
+        orderBy: 'desc',
+        ...location.state
+    }
     const initialSorting = [
         {value: 'desc', label: 'По убыванию'},
         {value: 'asc', label: 'По возрастанию'}
@@ -39,7 +45,7 @@ export default function Search() {
     const submitHandler = (formData) => formData ? setFilters({...initialFilters, ...formData}) : setFilters(initialFilters)
 
     useEffect(() => setFilters(initialFilters), [searchType])
-
+    
     useEffect(() => {
         (searchType === 'cargo') && searchCargo(cargoPagination.currentPage, cargoPagination.pageLimit, filters)
             .then(res => setCargo(prev => ({...prev, isLoading: true, data: res?.data, meta: res?.meta})))
@@ -51,6 +57,12 @@ export default function Search() {
             .then(res => setCars(prev => ({...prev, isLoading: true, data: res?.data, meta: res?.meta})))
             .catch(error => setCars(prev => ({...prev, isLoading: true, error})))
     }, [carsPagination.currentPage, carsPagination.pageLimit, filters])
+    
+    useEffect(() => {
+        if (location?.state?.searchType) {
+            setSearchType(location?.state?.searchType)
+        }
+    }, [location?.state?.searchType])
 
     return (
         <main>
@@ -74,6 +86,8 @@ export default function Search() {
                     </button>
                 </div>
                 <SearchForm
+                    searchType={searchType}
+                    fromMainPage={location.state}
                     type={searchType}
                     submitHandler={submitHandler}
                 />
