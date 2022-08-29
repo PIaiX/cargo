@@ -14,29 +14,78 @@ import {
 } from 'react-icons/io5';
 import {IconContext} from "react-icons";
 
+import useAxiosPrivate from "../hooks/axiosPrivate";
+import {useSelector, useDispatch} from "react-redux";
+import { setAlert } from '../store/actions/alert';
 import {Swiper} from 'swiper/react';
 import SwiperCore, {Navigation, Pagination} from 'swiper';
 import {useParams} from 'react-router-dom';
-import {getCargo} from '../API/cargo';
+import {getCargo, reportCargo} from '../API/cargo';
 import {getDateUI, getTimeUI} from '../helpers/formatingDate';
 import {getRoute, icons} from '../helpers/cargo';
+import {createResponse} from "../API/response";
 import Loader from '../components/Loader';
+import {Alert} from "react-bootstrap";
+import CustomModal from "../components/utilities/CustomModal";
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default function CargoPage() {
-    const {id} = useParams()
+    const axiosPrivate = useAxiosPrivate()
+    const dispatch = useDispatch()
+    const currentUser = useSelector(state => state?.currentUser?.data?.user)
+    const {id: cargoId} = useParams()
+
     const [cargo, setCargo] = useState({
         isLoading: false,
         error: null,
         item: null
     })
 
+    const [showModalReport, setShowModalReport] = useState(false)
+    
+    const [alertResponse, setAlertResponse] = useState({
+        alertShow: false,
+        complete: null
+    })
+
+    const [alertReport, setAlertReport] = useState({
+        alertShow: false,
+        complete: null
+    })
+
+    const response = () => {
+        currentUser && createResponse(axiosPrivate, {cargoId: parseInt(cargoId), userId: currentUser?.id})
+            .then(() => dispatch(setAlert('success', 'Отклик успешно отправлен')))
+            .catch(() => dispatch(setAlert('danger', 'Не удалось отправить отклик')))
+    }
+
     useEffect(() => {
-        getCargo(id)
+        alertReport.alertShow && setTimeout(() => {
+            setShowModalReport(false)
+            setAlertReport(prevState => ({
+            ...prevState,
+            alertShow: false
+        }))}, 1500)
+    }, [alertReport.alertShow])
+
+    const [dataReport, setDataReport] = useState({
+        fromId: currentUser?.id,
+        cargoId: cargoId,
+    })
+
+    useEffect(() => {
+        alertResponse.alertShow && setTimeout(() => setAlertResponse(prevState => ({
+            ...prevState,
+            alertShow: false
+        })), 1300)
+    }, [alertResponse.alertShow])
+
+    useEffect(() => {
+        getCargo(cargoId)
             .then(result => setCargo(prev => ({...prev, isLoading: true, item: result})))
             .catch(error => setCargo(prev => ({...prev, isLoading: true, error})))
-    }, [id])
+    }, [cargoId])
 
     return (
         <main className="bg-white">
@@ -53,8 +102,9 @@ export default function CargoPage() {
                                     </IconContext.Provider>
                                 </button>
                                 <div className="dropdown-menu">
-                                    <button type="button" data-bs-toggle="modal" data-bs-target="#report"
-                                            className="gray-3 d-flex align-items-center">
+                                    <button type="button"
+                                        className="gray-3 d-flex align-items-center"
+                                        onClick={() => setShowModalReport(true)}>
                                         <IconContext.Provider value={{className: "gray-4 icon"}}>
                                             <IoWarning/>
                                         </IconContext.Provider>
@@ -98,13 +148,16 @@ export default function CargoPage() {
                                     contacts={[{phone: cargo?.item?.user?.phone}]}
                                     id={cargo?.item?.user?.id}
                                 />
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#report"
-                                        className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center">
-                                    <IconContext.Provider value={{className: "gray-4 icon"}}>
-                                        <IoWarning/>
-                                    </IconContext.Provider>
-                                    <span className="ms-2">Подать жалобу</span>
-                                </button>
+                                <button
+                            type="button"
+                            className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
+                            onClick={() => setShowModalReport(true)}
+                        >
+                            <IconContext.Provider value={{className: "gray-4 icon"}}>
+                                <IoWarning/>
+                            </IconContext.Provider>
+                            <span className="ms-2">Подать жалобу</span>
+                        </button>
                             </div>
                             <div className="col-md-7 col-xl-8 col-xxl-9">
                                 {cargo?.item?.loadings?.length && cargo.item.loadings.map((item, index) => (
@@ -265,9 +318,17 @@ export default function CargoPage() {
 
                                 <div
                                     className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                                    <button type="button" data-bs-toggle="offcanvas" data-bs-target="#warning"
-                                            className="btn btn-1 fs-12">ОТКЛИКНУТЬСЯ
-                                    </button>
+                                    <div className='d-flex align-items-center'>
+                                <button
+                                    type="button"
+                                    className="btn btn-1 fs-12"
+                                    onClick={() => {
+                                        response()
+                                    }}
+                                >
+                                    ОТКЛИКНУТЬСЯ
+                                </button>
+                            </div>
                                 </div>
                             </div>
                         </div>
@@ -394,6 +455,73 @@ export default function CargoPage() {
                 </div>
                 <button type="button" className="btn btn-2 fs-12 text-uppercase mx-auto">Найти груз</button>
             </section>
+            <CustomModal
+                className='modal__routeErrorValid'
+                isShow={showModalReport}
+                setIsShow={setShowModalReport}
+                closeButton={true}
+                centered={false}
+                size={'lg'}
+            >
+                <div>
+                    {
+                        alertReport?.complete &&
+                        <Alert
+                            show={alertReport?.alertShow}
+                            variant='success'
+                            className='end-0 m-0 p-2'
+                        >
+                            <div>
+                                <span>Жалоба отправлена</span>
+                            </div>
+                        </Alert>
+                    }
+                    {
+                        alertReport?.complete === false &&
+                        <Alert
+                            show={alertReport?.alertShow}
+                            variant='danger'
+                            className='end-0 m-0 p-2'
+                        >
+                            <div>
+                                <span>Что-то пошло не так...</span>
+                            </div>
+                        </Alert>
+                    }
+                    <form>
+                        <textarea
+                            placeholder="Опишите вашу жалобу"
+                            rows="3"
+                            className="mb-4"
+                            onChange={e => setDataReport(prevState => ({...prevState, report: e.target.value}))}
+                        />
+                        <div className="row row-cols-2">
+                            <div>
+                                <button
+                                    type="button"
+                                    className="btn btn-1 w-100"
+                                    onClick={() => setShowModalReport(false)}
+                                >
+                                    Отменить
+                                </button>
+                            </div>
+                            <div>
+                                <button
+                                    type="button"
+                                    className="btn btn-2 w-100"
+                                    onClick={() => {
+                                        reportCargo(axiosPrivate, dataReport)
+                                            .then(() => setAlertReport({alertShow: true, complete: true}))
+                                            .catch(() => setAlertReport({alertShow: true, complete: false}))
+                                    }}
+                                >
+                                    Подать жалобу
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </CustomModal>
         </main>
     )
 }
