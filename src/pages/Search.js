@@ -98,8 +98,8 @@ export default function Search() {
                     className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                     <div className="fs-15 fw-5 mb-2 mb-md-0">
                         {searchType === "cargo"
-                            ? `Найдено ${cargo?.data?.length || 0} грузов`
-                            : `Найдено ${cars?.data?.length || 0} машин`}
+                            ? `Найдено ${cargo?.meta?.total || 0} грузов`
+                            : `Найдено ${cars?.meta?.total || 0} машин`}
                     </div>
                     <div className="fs-12 ms-md-5 d-flex align-items-center">
                         <span className="me-2">Сортировать:</span>

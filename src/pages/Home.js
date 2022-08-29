@@ -295,12 +295,12 @@ export default function Home() {
                                 <div className="swiper-pagination"></div>
                             </Swiper>
                         </div>
-                        <button
-                            type="button"
+                        <NavLink
+                            to='/search'
                             className="btn btn-2 fs-12 text-uppercase mx-auto"
                         >
                             Найти груз
-                        </button>
+                        </NavLink>
                     </section>
                     : null
                 : <div className="w-100 d-flex justify-content-center p-5"><Loader color="#545454"/></div>
