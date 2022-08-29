@@ -393,11 +393,6 @@ export default function Home() {
                                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                                 sunt in culpa qui officia deserunt mollit anim id est laborum.
                             </p>
-                            <div className="mt-2">
-                                <a href="/" className="green title-font fw-5 fs-12">
-                                    Подробнее
-                                </a>
-                            </div>
                         </div>
                         <div className="col-md-6">
                             <img src="/img/img1.png" alt="" className="img-fluid"/>

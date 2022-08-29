@@ -12,6 +12,8 @@ import { setCurrentUser } from "../store/reducers/currentUser";
 import { useNavigate } from "react-router-dom";
 import { handleRemeberMe } from "../API/auth";
 import AlertCustom from "../components/utilities/AlertCustom";
+import {getCountRoutes} from "../API/route";
+import {getCargoCount} from "../API/cargo";
 
 const formValueDefault = {
   accountType: undefined,
@@ -78,6 +80,8 @@ export default function Registration() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertStatus, setAlertStatus] = useState();
   const [alertMessage, setAlertMessage] = useState("");
+  const [countRoute, setCountRoute] = useState(null)
+  const [cargoCount, setCargoCount] = useState(null)
 
   const customSelectOptions = accountTypes.map((item) => item?.name);
 
@@ -232,6 +236,12 @@ export default function Registration() {
       });
     });
   };
+
+  useEffect(() => {
+    getCountRoutes().then(res => setCountRoute(res?.data?.body))
+    getCargoCount().then(res => res && setCargoCount(res))
+  }, [])
+
   return (
     <main className="bg-white position-relative">
       <AlertCustom
@@ -356,11 +366,11 @@ export default function Registration() {
             <h4 className="mt-5">Сейчас на сайте</h4>
             <div className="d-flex justify-content-between">
               <div className="text-center">
-                <div className="title-font fw-9 fs-25 mb-2">2 512 359</div>
+                <div className="title-font fw-9 fs-25 mb-2">{cargoCount}</div>
                 <div className="fs-12">Грузов</div>
               </div>
               <div className="text-center">
-                <div className="title-font fw-9 fs-25 mb-2">12 359</div>
+                <div className="title-font fw-9 fs-25 mb-2">{countRoute}</div>
                 <div className="fs-12">Машин</div>
               </div>
             </div>
