@@ -55,6 +55,7 @@ export default function CargoPage() {
     error: null,
     item: null,
   });
+  console.log("sdfddf",cargo.item)
 
   const [showModalReport, setShowModalReport] = useState(false);
 
@@ -467,7 +468,7 @@ export default function CargoPage() {
                 <h5 className="mb-0">Примечание</h5>
               </div>
               <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
-                <div>{cargo?.note || "Примечания нет"}</div>
+                <div>{cargo?.item?.note || "Примечания нет"}</div>
               </div>
               <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
                 <div className="d-flex align-items-center">
