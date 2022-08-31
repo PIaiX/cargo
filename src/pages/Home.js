@@ -103,7 +103,6 @@ export default function Home() {
   }, [selectedCity]);
 
   useEffect(() => {
-    getCities().then((res) => setCitys({ isLoading: true, data: res.body }));
   }, []);
 
   const getDate = (myDate) => {
