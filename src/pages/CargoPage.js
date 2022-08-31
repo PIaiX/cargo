@@ -7,6 +7,7 @@ import {
   IoChevronBackSharp,
   IoChevronForwardSharp,
   IoCube,
+  IoRepeat,
   IoEllipsisVertical,
   IoLocationSharp,
   IoTimeOutline,
@@ -15,26 +16,37 @@ import {
 import { IconContext } from "react-icons";
 
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import { useSelector, useDispatch } from "react-redux";
-import { setAlert } from "../store/actions/alert";
-import { Swiper } from "swiper/react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import { useParams } from "react-router-dom";
-import { getCargo, reportCargo } from "../API/cargo";
+import { getCargo, reportCargo, searchCargo } from "../API/cargo";
 import { getDateUI, getTimeUI } from "../helpers/formatingDate";
-import { getRoute, icons } from "../helpers/cargo";
+import {
+  getGeneralCapacity,
+  getGeneralWeight,
+  getNotesType,
+  getRoute,
+  icons,
+} from "../helpers/cargo";
 import { createResponse } from "../API/response";
 import Loader from "../components/Loader";
 import { Alert } from "react-bootstrap";
 import CustomModal from "../components/utilities/CustomModal";
+import AlertCustom from "../components/utilities/AlertCustom";
+import CargoCard from "../components/CargoCard";
 
 import { optionsLoadingPeriodType } from "../components/utilities/data";
 
 SwiperCore.use([Navigation, Pagination]);
 
 export default function CargoPage() {
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertStatus, setAlertStatus] = useState("info");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const axiosPrivate = useAxiosPrivate();
-  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state?.currentUser?.data?.user);
   const { id: cargoId } = useParams();
 
@@ -56,17 +68,52 @@ export default function CargoPage() {
     complete: null,
   });
 
+  const [cities, setCities] = useState({});
+  const [searchCargoItems, setSearchCargoItems] = useState([]);
+
+  const navigate = useNavigate();
   const response = () => {
     currentUser &&
       createResponse(axiosPrivate, {
         cargoId: parseInt(cargoId),
         userId: currentUser?.id,
       })
-        .then(() => dispatch(setAlert("success", "Отклик успешно отправлен")))
-        .catch(() =>
-          dispatch(setAlert("danger", "Не удалось отправить отклик"))
-        );
+        .then(() => {
+          setAlertStatus("success");
+          setAlertMessage("Отклик успешно отправлен");
+          setShowAlert(true);
+        })
+        .catch(() => {
+          setAlertStatus("error");
+          setAlertMessage("Не удалось отправить отклик");
+          setShowAlert(true);
+        });
   };
+
+  useEffect(() => {
+    cities?.toRoute?.length > 2 &&
+      cities?.fromRoute?.length > 2 &&
+      searchCargo(1, 6, { onlyVerified: false, ...cities })
+        .then((res) => {
+          const result = res.data;
+          const newData = result.filter((i) => i.id !== cargo.item.id);
+          setSearchCargoItems(newData);
+        })
+        .catch((error) => console.log(error));
+  }, [cities]);
+
+  useEffect(() => {
+    const result = getRoute(cargo.item);
+    if (!result) return;
+
+    const splitRoute = result.split(" ");
+    const lastIdx = splitRoute.length - 1;
+
+    setCities({
+      fromRoute: splitRoute[0],
+      toRoute: splitRoute[lastIdx],
+    });
+  }, [cargo]);
 
   useEffect(() => {
     alertReport.alertShow &&
@@ -117,10 +164,15 @@ export default function CargoPage() {
     return result;
   };
 
-  console.log(cargo.item);
-
   return (
     <main className="bg-white">
+      <AlertCustom
+        open={showAlert}
+        variant={alertStatus}
+        onClick={() => setShowAlert(false)}
+      >
+        {alertMessage}
+      </AlertCustom>
       {cargo.isLoading ? (
         <section id="sec-8" className="container py-4 py-sm-5">
           <div className="d-flex align-items-center justify-content-between mb-4 mb-sm-5">
@@ -173,7 +225,7 @@ export default function CargoPage() {
                   </div>
                   <div className="d-flex justify-content-between fs-13 fw-5">
                     <div>
-                      {cargo?.item?.bargainType ? "Есть торг" : "Без торга"}
+                      {cargo?.item?.bargainType ? "Возможен торг" : "Без торга"}
                     </div>
                   </div>
                 </div>
@@ -417,7 +469,6 @@ export default function CargoPage() {
               <div className="box p-3 px-sm-4 p-lg-4 px-xl-5 mb-4 mb-lg-5">
                 <div>{cargo?.note || "Примечания нет"}</div>
               </div>
-
               <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
                 <div className="d-flex align-items-center">
                   <button
@@ -430,6 +481,26 @@ export default function CargoPage() {
                     ОТКЛИКНУТЬСЯ
                   </button>
                 </div>
+                <button
+                  type="button"
+                  className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3"
+                  onClick={() =>
+                    navigate("/search", {
+                      state: {
+                        searchType: "cargo",
+                        fromRoute: cities.toRoute,
+                        toRoute: cities.fromRoute,
+                      },
+                    })
+                  }
+                >
+                  <IconContext.Provider
+                    value={{ className: "icon me-1 me-lg-3" }}
+                  >
+                    <IoRepeat />
+                  </IconContext.Provider>
+                  <span>Поиск грузов в обратном направлении</span>
+                </button>
               </div>
             </div>
           </div>
@@ -441,126 +512,67 @@ export default function CargoPage() {
       )}
 
       <section className="sec-3 container mt-5 mb-6">
-        <h2>Похожие объявления</h2>
+        {searchCargoItems.length > 0 && <h2>Похожие объявления</h2>}
         <div className="position-relative mb-4">
-          <Swiper
-            className="swiper-4"
-            spaceBetween={4}
-            slidesPerView={2}
-            breakpoints={{
-              576: {
-                slidesPerView: 2,
-                spaceBetween: 10,
-              },
-              768: {
-                slidesPerView: 3,
-                spaceBetween: 8,
-              },
-              992: {
-                slidesPerView: 3,
-                spaceBetween: 16,
-              },
-              1400: {
-                slidesPerView: 4,
-                spaceBetween: 20,
-              },
-            }}
-            pagination={{
-              el: ".swiper-pagination",
-              type: "bullets",
-              clickable: true,
-            }}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }}
-          >
-            {/* todo: ATTENTION */}
-
-            {/*<SwiperSlide>*/}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Продукты питания" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="cold"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            {/*<SwiperSlide>*/}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Оборудование" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="fragile"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            {/*<SwiperSlide>    */}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Стройматериалы" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="none"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            {/*<SwiperSlide>*/}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Трубы" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="dimensional"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            {/*<SwiperSlide>*/}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Продукты питания" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="cold"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            {/*<SwiperSlide>*/}
-            {/*    <Card */}
-            {/*        type="cargo"*/}
-            {/*        className=""*/}
-            {/*        title="Оборудование" */}
-            {/*        route="Казань-Москва"*/}
-            {/*        size="30"*/}
-            {/*        weight="10 т"*/}
-            {/*        notes="fragile"*/}
-            {/*        url="/cargo-page"*/}
-            {/*    />*/}
-            {/*</SwiperSlide>*/}
-            <div className="swiper-button-prev">
-              <IoChevronBackSharp />
-            </div>
-            <div className="swiper-button-next">
-              <IoChevronForwardSharp />
-            </div>
-            <div className="swiper-pagination"></div>
-          </Swiper>
+          {searchCargoItems.length > 0 && (
+            <Swiper
+              className="swiper-4"
+              spaceBetween={4}
+              slidesPerView={2}
+              breakpoints={{
+                576: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                768: {
+                  slidesPerView: 3,
+                  spaceBetween: 8,
+                },
+                992: {
+                  slidesPerView: 3,
+                  spaceBetween: 16,
+                },
+                1400: {
+                  slidesPerView: 4,
+                  spaceBetween: 20,
+                },
+              }}
+              pagination={{
+                el: ".swiper-pagination",
+                type: "bullets",
+                clickable: true,
+              }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
+            >
+              {searchCargoItems.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <CargoCard
+                    id={item.id}
+                    title={item?.type?.name}
+                    route={getRoute(item, true)}
+                    notesType={getNotesType(item?.items)}
+                    capacity={getGeneralCapacity(item?.items)}
+                    weight={getGeneralWeight(item?.items)}
+                  />
+                </SwiperSlide>
+              ))}
+              <div className="swiper-button-prev">
+                <IoChevronBackSharp />
+              </div>
+              <div className="swiper-button-next">
+                <IoChevronForwardSharp />
+              </div>
+              <div className="swiper-pagination"></div>
+            </Swiper>
+          )}
         </div>
         <button
           type="button"
           className="btn btn-2 fs-12 text-uppercase mx-auto"
+          onClick={() => navigate("/search")}
         >
           Найти груз
         </button>

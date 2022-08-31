@@ -11,9 +11,9 @@ export default function AlertCustom({
   title,
   children,
 }) {
+  const defaultTitle =
+    variant === "error" ? "Что-то пошло не так..." : "Успешно!";
 
-  const defaultTitle = variant === "error" ? "Что-то пошло не так..." : "Успешно!"
-  
   return (
     <div>
       <Backdrop
@@ -21,12 +21,27 @@ export default function AlertCustom({
         open={open}
         onClick={onClick}
       >
-        <div style={{ position: "absolute", top: 10, width: "100%",padding: "0 10px", margin: "0px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <div style={{ position: "relative", minWidth: "40%"}}>
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            width: "100%",
+            padding: "0 10px",
+            margin: "0px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ position: "relative", minWidth: "50%" }}>
             <Alert severity={variant}>
-              <AlertTitle>{title ? title : defaultTitle}</AlertTitle>
+              <AlertTitle style={{ marginRight: "20px" }}>
+                {title ? title : defaultTitle}
+              </AlertTitle>
               <button type="button" className="btn-close m-1" onClick={onClick}>
-                <IoCloseOutline color={variant === "error"? "#ff3b3b" : "#28b82b"} />
+                <IoCloseOutline
+                  color={variant === "error" ? "#ff3b3b" : "#28b82b"}
+                />
               </button>
               <div>{children}</div>
             </Alert>
