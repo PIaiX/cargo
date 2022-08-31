@@ -58,6 +58,7 @@ export default function ResetPassword() {
       return { ...prev, [e.target.name]: "" };
     });
   };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     let result;
@@ -85,7 +86,7 @@ export default function ResetPassword() {
           { email: formValue.email }
         );
       } catch (error) {
-        if (error.response.data.status === 400) {
+        if (error.response.data.code === "VALIDATION_ERROR") {
           setFormError((prev) => {
             return {
               ...prev,
@@ -93,6 +94,16 @@ export default function ResetPassword() {
             };
           });
         }
+        if (error.response.data.code === "VERIFY_CODE_EXISTS") {
+          setFormError((prev) => {
+            return {
+              ...prev,
+              email: apiResponseMessages.FORGOT_PASSWORD_VERIFY_CODE_EXISTS,
+            };
+          });
+          setSmsCodeActive(true)
+        }
+        return
       }
     }
 
@@ -172,7 +183,6 @@ export default function ResetPassword() {
                   <FormErrorMessage>{formError.smsCode}</FormErrorMessage>
                 </>
               )}
-              {/* <button type='submit' className='btn btn-2 fs-12 text-uppercase w-100 mt-4'>Восстановить пароль</button> */}
               <button
                 className="btn btn-2 fs-12 text-uppercase w-100 mt-4"
                 onClick={handleFormSubmit}
