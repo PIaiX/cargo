@@ -10,6 +10,7 @@ export default function AlertCustom({
   onClick,
   title,
   children,
+  closeButton = true,
 }) {
   const defaultTitle =
     variant === "error" ? "Что-то пошло не так..." : "Успешно!";
@@ -38,11 +39,17 @@ export default function AlertCustom({
               <AlertTitle style={{ marginRight: "20px" }}>
                 {title ? title : defaultTitle}
               </AlertTitle>
-              <button type="button" className="btn-close m-1" onClick={onClick}>
-                <IoCloseOutline
-                  color={variant === "error" ? "#ff3b3b" : "#28b82b"}
-                />
-              </button>
+              {closeButton && (
+                <button
+                  type="button"
+                  className="btn-close m-1"
+                  onClick={onClick}
+                >
+                  <IoCloseOutline
+                    color={variant === "error" ? "#ff3b3b" : "#28b82b"}
+                  />
+                </button>
+              )}
               <div>{children}</div>
             </Alert>
           </div>
