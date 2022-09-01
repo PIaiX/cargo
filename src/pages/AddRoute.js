@@ -144,7 +144,7 @@ export default function AddRoute() {
 
     const getDate = (dateMe) => {
         const newDate = new Date(dateMe)
-        const re = newDate.toLocaleDateString()
+        const re = newDate.toLocaleDateString('ru-Ru')
         setData(prevState => ({
             ...prevState,
             'date': re
