@@ -52,7 +52,7 @@ const getArchivedCargo = async (axiosPrivate, userId, page, limit) => {
   try {
     const response = await axiosPrivate.post(
       `${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ARCHIVE}/${userId}`,
-      { page, limit }
+      { page, limit, orderBy: 'desc' }
     );
     return response.data.body;
   } catch (error) {
