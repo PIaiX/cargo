@@ -184,7 +184,7 @@ export default function RoutePage() {
               Маршрут № {data?.route?.id} {data?.route?.fromRoute} —{" "}
               {data?.route?.toRoute}
             </h1>
-            {(currentUser && currentToken) &&
+            {((currentUser && currentToken) && (currentUser?.id !== data?.user?.id)) &&
                 <div className="dropdown d-block d-md-none">
               <button
                 type="button"
@@ -241,7 +241,7 @@ export default function RoutePage() {
                 contacts={[{ phone: data?.user?.phone }]}
                 id={data?.user?.id}
               />
-              {(currentUser && currentToken) &&
+              {((currentUser && currentToken) && (currentUser?.id !== data?.user?.id)) &&
                   <button
                   type="button"
                   className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
@@ -336,7 +336,7 @@ export default function RoutePage() {
               </div>
 
               <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                {(currentUser && currentToken) &&
+                {((currentUser && currentToken) && (currentUser?.id !== data?.user?.id)) &&
                     <div className="d-flex align-items-center">
                       <button
                       type="button"

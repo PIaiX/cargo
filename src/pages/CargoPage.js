@@ -203,7 +203,7 @@ export default function CargoPage() {
               <h1 className="mb-0">
                 Груз № {cargo?.item?.id} {getRoute(cargo?.item, true)}
               </h1>
-              {(currentUser && currentToken) &&
+              {((currentUser && currentToken) && (currentUser?.id !== cargo?.item?.user?.id)) &&
                   <div className="dropdown d-block d-md-none">
                 <button
                     type="button"
@@ -266,7 +266,7 @@ export default function CargoPage() {
                   contacts={[{ phone: cargo?.item?.user?.phone }]}
                   id={cargo?.item?.user?.id}
                 />
-                {(currentUser && currentToken) &&
+                {((currentUser && currentToken) && (currentUser?.id !== cargo?.item?.user?.id)) &&
                     <button
                     type="button"
                     className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
@@ -500,7 +500,7 @@ export default function CargoPage() {
                   <div>{cargo?.item?.note || "Примечания нет"}</div>
                 </div>
                 <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                  {(currentUser && currentToken) &&
+                  {((currentUser && currentToken) && (currentUser?.id !== cargo?.item?.user?.id)) &&
                     <div className="d-flex align-items-center">
                       <button
                         type="button"
