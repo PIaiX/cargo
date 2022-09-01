@@ -40,7 +40,7 @@ export default function RoutePage() {
   const currentUser = useSelector((state) => state?.currentUser?.data?.user);
   const [searchRoutes, setSearchRoutes] = useState([]);
   const { id } = useParams();
-  const [citys, setCitys] = useState({});
+  const [cities, setCities] = useState({});
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertStatus, setAlertStatus] = useState("info");
@@ -66,8 +66,6 @@ export default function RoutePage() {
       });
   }, []);
 
-  console.log("df", data?.route, isLoading);
-
   useEffect(() => {
     if (!isLoading && data.route?.isArchive) {
       if (currentUser.id && currentUser.id === data.route?.userId) return;
@@ -76,19 +74,19 @@ export default function RoutePage() {
       }, 2500);
     }
 
-    setCitys({
+    setCities({
       toRoute: data?.route?.toRoute,
       fromRoute: data?.route?.fromRoute,
     });
   }, [data]);
 
   useEffect(() => {
-    citys?.toRoute?.length > 2 &&
-      citys?.fromRoute?.length > 2 &&
-      searchRoute(1, 6, { onlyVerified: false, ...citys })
+    cities?.toRoute?.length > 2 &&
+      cities?.fromRoute?.length > 2 &&
+      searchRoute(1, 6, { onlyVerified: false, ...cities })
         .then((res) => setSearchRoutes(res?.data))
         .catch((error) => console.log(error));
-  }, [citys]);
+  }, [cities]);
 
   const [alertResponse, setAlertResponse] = useState({
     alertShow: false,
@@ -348,7 +346,13 @@ export default function RoutePage() {
                 <button
                   type="button"
                   className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3"
-                  onClick={() => navigate("/search")}
+                  onClick={() => navigate("/search", {
+                    state: {
+                      searchType: "car",
+                      fromRoute: cities.toRoute,
+                      toRoute: cities.fromRoute,
+                    },
+                  })}
                 >
                   <IconContext.Provider
                     value={{ className: "icon me-1 me-lg-3" }}
