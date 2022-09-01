@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {Link, NavLink} from 'react-router-dom';
+import redirectFromPA from "../helpers/redirectFromPA";
+import {useSelector} from "react-redux";
 
 export default function UserContacts(props) {
 
     const [visible, setVisibility] = useState(false);
-
+    const currentUser = useSelector(state => state?.currentUser?.data?.user)
     const uploadPhoto = (img) => {
         const site = 'https://api.eritrans.ru/uploads/./'
         if(img === null) {
@@ -24,7 +26,7 @@ export default function UserContacts(props) {
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">
                 <h4 className="text-left text-md-center mt-md-4 mb-2 mb-sm-3">
-                    <NavLink to={`/view-profile/${props?.id}`}>
+                    <NavLink to={redirectFromPA(currentUser?.id, props?.id)}>
                         {props?.subject ? props?.company : props.title}
                     </NavLink>
                 </h4>

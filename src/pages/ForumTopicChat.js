@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import CustomSelect from "../components/utilities/CustomSelect";
 import ForumComment from "../components/ForumComment";
 import { IconContext } from "react-icons";
@@ -28,6 +28,8 @@ import CustomModal from "../components/utilities/CustomModal";
 import { useDispatch } from "react-redux/es/exports";
 import { setAlert, showNoAuthAlert } from "../store/actions/alert";
 import PublicationRules from "../components/utilities/PublicationRules";
+import currentUser from "../store/reducers/currentUser";
+import redirectInProfile from "../helpers/redirectFromPA";
 
 export default function ForumTopicChat() {
   const [isShowPublicationRules, setIsShowPublicationRules] = useState(false);
@@ -38,6 +40,7 @@ export default function ForumTopicChat() {
   const initialPageLimit = 10;
   const chatPagination = usePagination(initialPageLimit);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [isShowReplyModal, setIsShowReplyModal] = useState(false);
   const [isShowReplyForm, setIsShowReplyForm] = useState(false);
@@ -276,7 +279,7 @@ export default function ForumTopicChat() {
                   author={{
                     name: topic?.item?.user?.firstName || "Имя не указано",
                     imgURL: checkPhotoPath(topic?.item?.user?.avatar),
-                    pageURL: `/view-profile/${topic?.item?.user?.id}`,
+                    pageURL: redirectInProfile(userId, topic?.item?.user?.id),
                     post: topic?.item?.user?.roleForUser,
                   }}
                   date={getDateUI(topic?.item?.createdAt)}
@@ -373,7 +376,7 @@ export default function ForumTopicChat() {
                     author={{
                       name: item?.user?.firstName || "Имя не указано",
                       imgURL: checkPhotoPath(item?.user?.avatar),
-                      pageURL: `/view-profile/${item?.user?.id}`,
+                      pageURL: redirectInProfile(userId, item?.user?.id),
                       post: item?.user?.roleForUser,
                     }}
                     date={getDateUI(item?.createdAt)}
