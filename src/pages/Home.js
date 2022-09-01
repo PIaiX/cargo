@@ -412,6 +412,7 @@ export default function Home() {
             <NavLink
               to="/search"
               className="btn btn-2 fs-12 text-uppercase mx-auto"
+              state={{searchType: 'car'}}
             >
               Найти МАШИНУ
             </NavLink>
