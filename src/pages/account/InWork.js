@@ -28,6 +28,10 @@ export default function InWork() {
     const [idDelete, setIdDelete] = useState(null)
     const [idComplete, setIdComplete] = useState(null)
     const [paginationItemsAmount, setPaginationItemsAmount] = useState(0)
+    const [couterCompleted, setCouterCompleted] = useState({
+        totalRoute: null,
+        totalCargo: null
+    })
 
     useEffect(() => {
         (currentUser?.roleId === 2) && setSubTabs('cargo');
@@ -95,28 +99,32 @@ export default function InWork() {
     }, [inWorkPag.pageLimit])
 
     useEffect(() => {
-        (currentUser?.roleId !== 3 && subTabs === 'cargo' && tab === 'active' && forMeCargosInProcess.isLoading) && getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+        (currentUser?.roleId !== 3 && subTabs === 'cargo' && tab === 'active' && forMeCargosInProcess.isLoading) &&
+        getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
             .then(res => setForMeCargosInProcess({
                 isLoading: true,
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
             .catch(error => console.log(error));
-        (currentUser?.roleId !== 2 && subTabs === 'route' && tab === 'active' && forMeRoutesInProcess.isLoading) && getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+        (currentUser?.roleId !== 2 && subTabs === 'route' && tab === 'active' && forMeRoutesInProcess.isLoading) &&
+        getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
             .then(res => setForMeRoutesInProcess({
                 isLoading: true,
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
             .catch(error => console.log(error));
-        (currentUser?.roleId !== 2 && subTabs === 'route' && tab === 'archive') && getCompletedRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+        (currentUser?.roleId !== 2 && subTabs === 'route' && tab === 'archive') &&
+        getCompletedRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
             .then(res => setForMeRoutesComplete({
                 isLoading: true,
                 data: res?.body?.data,
                 meta: res?.body?.meta,
             }))
             .catch();
-        (currentUser?.roleId !== 3 && subTabs === 'cargo' && tab === 'archive') && getCompletedCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+        (currentUser?.roleId !== 3 && subTabs === 'cargo' && tab === 'archive') &&
+        getCompletedCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
             .then(res => setForMeCargosComplete({
                 isLoading: true,
                 data: res?.body?.data,
@@ -130,7 +138,8 @@ export default function InWork() {
             .then(() => {
                 if (subTabs === 'cargo') {
                     setTimeout(() => {
-                        (currentUser?.roleId !== 3) && getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                        (currentUser?.roleId !== 3) &&
+                        getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
                             .then(res => {
                                 setForMeCargosInProcess({
                                     isLoading: true,
@@ -138,17 +147,28 @@ export default function InWork() {
                                     meta: res?.body?.meta,
                                 })
                             })
-                            .catch(error => console.log(error))
+                        getCompletedCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                            .then(res => setForMeCargosComplete({
+                                isLoading: true,
+                                data: res?.body?.data,
+                                meta: res?.body?.meta,
+                            }))
                     }, 150)
                 } else {
                     setTimeout(() => {
-                        (currentUser?.roleId !== 2) && getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                        (currentUser?.roleId !== 2) &&
+                        getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
                             .then(res => setForMeRoutesInProcess({
                                 isLoading: true,
                                 data: res?.body?.data,
                                 meta: res?.body?.meta,
                             }))
-                            .catch(error => console.log(error))
+                        getCompletedRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                            .then(res => setForMeRoutesComplete({
+                                isLoading: true,
+                                data: res?.body?.data,
+                                meta: res?.body?.meta,
+                            }))
                     }, 150)
                 }
             })
@@ -160,7 +180,8 @@ export default function InWork() {
             .then(() => {
                 if (subTabs === 'cargo') {
                     setTimeout(() => {
-                        (currentUser?.roleId !== 3) && getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                        (currentUser?.roleId !== 3) &&
+                        getInProcessCargoResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
                             .then(res => setForMeCargosInProcess({
                                 isLoading: true,
                                 data: res?.body?.data,
@@ -170,7 +191,8 @@ export default function InWork() {
                     }, 150)
                 } else {
                     setTimeout(() => {
-                        (currentUser?.roleId !== 2) && getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
+                        (currentUser?.roleId !== 2) &&
+                        getInProcessRouteResponses(axiosPrivate, currentUser?.id, inWorkPag.currentPage, inWorkPag.pageLimit)
                             .then(res => setForMeRoutesInProcess({
                                 isLoading: true,
                                 data: res?.body?.data,
@@ -179,6 +201,7 @@ export default function InWork() {
                             .catch(error => console.log(error))
                     }, 150)
                 }
+
             })
             .catch()
     }, [idDelete])
