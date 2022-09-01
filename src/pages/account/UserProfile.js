@@ -89,10 +89,6 @@ export default function UserProfile() {
             </div>
             <div
                 className='d-flex flex-column flex-md-row align-items-center justify-content-end title-font blue fs-12 fw-5 mt-3 mt-sm-5'>
-                <button type='button' className='d-flex align-items-center'>
-                    <IoShieldCheckmarkSharp/>
-                    <span className='ms-2'>Подтвердить профиль</span>
-                </button>
                 <Link to="edit" className='d-flex align-items-center mt-3 mt-md-0 ms-md-5'>
                     <MdModeEdit/>
                     <span className='ms-2'>Редактировать профиль</span>

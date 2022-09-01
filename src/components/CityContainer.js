@@ -16,7 +16,7 @@ const CityContainer = () => {
       if (res.status === 200) {
         setCities(res.body);
       }
-    });
+    }).catch((err) => console.log(err));
   }, []);
 
   const changeCity = (title) => {

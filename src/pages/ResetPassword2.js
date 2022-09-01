@@ -121,7 +121,7 @@ export default function ResetPassword2() {
                   value={rememberMe}
                   onChange={() => setRememberMe((prev) => !prev)}
                 />
-                <span className="blue">Запомнить пароль</span>
+                <span className="blue">Запомнить меня</span>
               </label>
               <button
                 type="submit"

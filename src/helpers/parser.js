@@ -167,7 +167,6 @@ export const parseCargoServerToClient = (serverData, cities) => {
     return newItems;
   };
 
-
   const getCargoFieldName = (key) => {
     if (key === "cargoItemTypeId") return "cargoType";
     if (key === "cargoItemPackageTypeId") return "cargoPackageType";
@@ -233,7 +232,7 @@ export const parseCargoServerToClient = (serverData, cities) => {
       return value;
     }
     if (key === "periodType" || typeof value === "number") {
-      if (!value) return value;
+      if (!value && value !== 0) return value;
       return value.toString();
     }
     if (value === null) return value;

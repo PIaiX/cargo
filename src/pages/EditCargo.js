@@ -325,10 +325,8 @@ const initialContactsField = [
 ];
 
 export default function AddCargo() {
-  const params = useParams()
+  const params = useParams();
 
-  const [cargoData, setCargoData] = useState(null)
-  
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
@@ -357,25 +355,23 @@ export default function AddCargo() {
 
   useEffect(() => {
     getCargo(params.id).then((data) => {
-      const formattedData = parseCargoServerToClient(data, cities)
-    setLoading(formattedData.loading);
-    setUnloading(formattedData.unloading);
-    setCargo(formattedData.cargo);
-    setRequirements(formattedData.requirements);
-    setPayment(formattedData.payment);
-    setContacts(formattedData.contacts);
-    setContactsField([
-      { name: "contactsData", value: formattedData.contacts },
-      {
-        name: "remark",
-        value: formattedData.contactsField[1].value,
-        required: false,
-      },
-    ]);
-    })
-
-  }, [cities])
-
+      const formattedData = parseCargoServerToClient(data, cities);
+      setLoading(formattedData.loading);
+      setUnloading(formattedData.unloading);
+      setCargo(formattedData.cargo);
+      setRequirements(formattedData.requirements);
+      setPayment(formattedData.payment);
+      setContacts(formattedData.contacts);
+      setContactsField([
+        { name: "contactsData", value: formattedData.contacts },
+        {
+          name: "remark",
+          value: formattedData.contactsField[1].value,
+          required: false,
+        },
+      ]);
+    });
+  }, [cities, params.id]);
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertStatus, setAlertStatus] = useState("error");
@@ -404,7 +400,7 @@ export default function AddCargo() {
   const [itemTypes, setItemTypes] = useState([]);
   const [packageTypes, setPackageTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState([]);
-  const [carBodyTypes, setCarBodyTypes] = useState([])
+  const [carBodyTypes, setCarBodyTypes] = useState([]);
   const [optionsTowns, setOptionsTowns] = useState(defaultTownsOptions);
 
   const currentUserId = useSelector((state) => state.currentUser.data.user.id);
@@ -420,7 +416,7 @@ export default function AddCargo() {
         const itemResponse = await axiosPrivate.get("/cargo/itemTypes");
         const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
         const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
-        const carTypesResponse = await axiosPrivate.get("/car/bodyTypes")
+        const carTypesResponse = await axiosPrivate.get("/car/bodyTypes");
         setItemTypes(itemResponse.data.body);
         setPackageTypes(packageResponse.data.body);
         setLoadingTypes(loadingResponse.data.body);
@@ -484,7 +480,7 @@ export default function AddCargo() {
         required: false,
       },
     ]);
-  }, [currentTemplate, cargoData]);
+  }, [currentTemplate]);
 
   let handleRSelect = (e, name, func, list, i) => {
     if (i !== undefined) {
@@ -879,9 +875,8 @@ export default function AddCargo() {
       currentUserId,
       cities
     );
-      console.log("data sent out", result)
     try {
-      await updateCargo(axiosPrivate, params.id, result)
+      await updateCargo(axiosPrivate, params.id, result);
       setAlertMessage("Груз был успешно отредактирован");
       setAlertStatus("success");
       setShowAlert(true);
@@ -1029,10 +1024,10 @@ export default function AddCargo() {
   };
 
   const getAddressValue = (state, index, fieldName) => {
-    const result = getValArr(state, index, fieldName)
-    
-    if(!result) return null
-    return {value: result, label: result}
+    const result = getValArr(state, index, fieldName);
+
+    if (!result) return null;
+    return { value: result, label: result };
   };
 
   const getUniqueObjectsArray = (initialArray) => {
@@ -1465,7 +1460,11 @@ export default function AddCargo() {
                               "border border-danger"
                             )}
                             name="loadingAddress"
-                            value={getAddressValue(loading, index, "loadingAddress")}
+                            value={getAddressValue(
+                              loading,
+                              index,
+                              "loadingAddress"
+                            )}
                             onChange={(e) => {
                               updateAddressState(
                                 e,
@@ -1816,7 +1815,11 @@ export default function AddCargo() {
                               "border border-danger"
                             )}
                             name="unloadingAddress"
-                            value={getAddressValue(unloading, index, "unloadingAddress")}
+                            value={getAddressValue(
+                              unloading,
+                              index,
+                              "unloadingAddress"
+                            )}
                             onChange={(e) => {
                               updateAddressState(
                                 e,
@@ -2510,7 +2513,7 @@ export default function AddCargo() {
                     </div>
                   </div>
                   <div className="col-md-9">
-                  <Select
+                    <Select
                       className={getRedErrorWarning(
                         "carType",
                         "fs-12 w-100",
@@ -2519,9 +2522,13 @@ export default function AddCargo() {
                       classNamePrefix="react-select"
                       placeholder={"Выберите..."}
                       name="carType"
-                      value={getObj(carBodyTypes.map((i) => {
-                        return { value: i.id, label: i.name };
-                      }), requirements, "carType")}
+                      value={getObj(
+                        carBodyTypes.map((i) => {
+                          return { value: i.id, label: i.name };
+                        }),
+                        requirements,
+                        "carType"
+                      )}
                       onChange={(e) =>
                         handleRSelect(
                           e,

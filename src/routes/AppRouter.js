@@ -47,6 +47,7 @@ const Wrapper = ({children}) => {
                     <Route index element={<Home/>}/>
                     <Route path="search" element={<Search/>}/>
                     <Route path="cargo-page/:id" element={<CargoPage/>}/>
+                    <Route path="route-page/:id" element={<RoutePage/>}/>
                     <Route path="all-news" element={<AllNews/>}/>
                     <Route path="news/:slug" element={<ArticleFull/>}/>
                     <Route path="forum" element={<Forum/>}>
@@ -65,9 +66,6 @@ const Wrapper = ({children}) => {
                     </Route>
                     {/* Роуты доступные только зареганным пользователям */}
                     <Route element={<ProtectedRoutes/>}>
-                        <Route path="route-page" element={<RoutePage/>}>
-                            <Route path=':id' element={<RoutePage/>}/>
-                        </Route>
                         <Route element={<RoleFilter/>}>
                             <Route path="add-cargo" element={<AddCargo/>}/>
                             <Route path="add-car" element={<AddCar/>}/>
