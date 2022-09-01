@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import { acceptResponse, getRoutePage, reportRoute } from "../API/route";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import { useNavigate, useParams } from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import RouteCard from "../components/RouteCard";
 import { searchRoute } from "../API/route";
 import { useSelector } from "react-redux";
@@ -38,6 +38,7 @@ export default function RoutePage() {
   const [isLoading, setIsLoading] = useState(true);
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useSelector((state) => state?.currentUser?.data?.user);
+  const currentToken = useSelector(state => state?.currentUser?.data?.token)
   const [searchRoutes, setSearchRoutes] = useState([]);
   const { id } = useParams();
   const [citys, setCitys] = useState({});
@@ -65,8 +66,6 @@ export default function RoutePage() {
         }, 2500);
       });
   }, []);
-
-  console.log("df", data?.route, isLoading);
 
   useEffect(() => {
     if (!isLoading && data.route?.isArchive) {
@@ -185,7 +184,8 @@ export default function RoutePage() {
               Маршрут № {data?.route?.id} {data?.route?.fromRoute} —{" "}
               {data?.route?.toRoute}
             </h1>
-            <div className="dropdown d-block d-md-none">
+            {(currentUser && currentToken) &&
+                <div className="dropdown d-block d-md-none">
               <button
                 type="button"
                 data-bs-toggle="dropdown"
@@ -196,19 +196,19 @@ export default function RoutePage() {
                   <IoEllipsisVertical />
                 </IconContext.Provider>
               </button>
-              <div className="dropdown-menu">
-                <button
-                  type="button"
-                  className="gray-3 d-flex align-items-center"
-                  onClick={() => setShowModalReport(true)}
-                >
-                  <IconContext.Provider value={{ className: "gray-4 icon" }}>
-                    <IoWarning />
-                  </IconContext.Provider>
-                  <span className="ms-2">Подать жалобу</span>
-                </button>
+                  <div className="dropdown-menu">
+                      <button
+                        type="button"
+                        className="gray-3 d-flex align-items-center"
+                        onClick={() => setShowModalReport(true)}
+                    >
+                      <IconContext.Provider value={{className: "gray-4 icon"}}>
+                        <IoWarning/>
+                      </IconContext.Provider>
+                      <span className="ms-2">Подать жалобу</span>
+                    </button>
               </div>
-            </div>
+            </div>}
           </div>
           <div className="row flex-md-row-reverse">
             <div className="col-md-5 col-xl-4 col-xxl-3 d-flex flex-column">
@@ -241,16 +241,18 @@ export default function RoutePage() {
                 contacts={[{ phone: data?.user?.phone }]}
                 id={data?.user?.id}
               />
-              <button
-                type="button"
-                className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
-                onClick={() => setShowModalReport(true)}
+              {(currentUser && currentToken) &&
+                  <button
+                  type="button"
+                  className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
+                  onClick={() => setShowModalReport(true)}
               >
-                <IconContext.Provider value={{ className: "gray-4 icon" }}>
-                  <IoWarning />
+                <IconContext.Provider value={{className: "gray-4 icon"}}>
+                  <IoWarning/>
                 </IconContext.Provider>
                 <span className="ms-2">Подать жалобу</span>
               </button>
+              }
             </div>
             <div className="col-md-7 col-xl-8 col-xxl-9">
               <div className="d-flex mb-2 mb-lg-3">
@@ -334,21 +336,23 @@ export default function RoutePage() {
               </div>
 
               <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                <div className="d-flex align-items-center">
-                  <button
-                    type="button"
-                    className="btn btn-1 fs-12"
-                    onClick={() => {
-                      response();
-                    }}
-                  >
-                    ОТКЛИКНУТЬСЯ
-                  </button>
-                </div>
-                <button
-                  type="button"
+                {(currentUser && currentToken) &&
+                    <div className="d-flex align-items-center">
+                      <button
+                      type="button"
+                      className="btn btn-1 fs-12"
+                      onClick={() => {
+                        response();
+                      }}
+                      >
+                        ОТКЛИКНУТЬСЯ
+                      </button>
+                    </div>
+                }
+                <NavLink
+                  to='/search'
                   className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3"
-                  onClick={() => navigate("/search")}
+                  state={{fromRoute: data?.route?.toRoute, toRoute: data?.route?.fromRoute}}
                 >
                   <IconContext.Provider
                     value={{ className: "icon me-1 me-lg-3" }}
@@ -356,7 +360,7 @@ export default function RoutePage() {
                     <IoRepeat />
                   </IconContext.Provider>
                   <span>Поиск маршрутов в обратном направлении</span>
-                </button>
+                </NavLink>
               </div>
             </div>
           </div>

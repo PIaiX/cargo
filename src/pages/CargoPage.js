@@ -48,6 +48,7 @@ export default function CargoPage() {
 
   const axiosPrivate = useAxiosPrivate();
   const currentUser = useSelector((state) => state?.currentUser?.data?.user);
+  const currentToken = useSelector(state => state?.currentUser?.data?.token)
   const { id: cargoId } = useParams();
 
   const [cargo, setCargo] = useState({
@@ -202,30 +203,31 @@ export default function CargoPage() {
               <h1 className="mb-0">
                 Груз № {cargo?.item?.id} {getRoute(cargo?.item, true)}
               </h1>
-              <div className="dropdown d-block d-md-none">
+              {(currentUser && currentToken) &&
+                  <div className="dropdown d-block d-md-none">
                 <button
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  className="dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    className="dropdown-toggle"
                 >
-                  <IconContext.Provider value={{ className: "green icon-20" }}>
-                    <IoEllipsisVertical />
+                  <IconContext.Provider value={{className: "green icon-20"}}>
+                    <IoEllipsisVertical/>
                   </IconContext.Provider>
                 </button>
                 <div className="dropdown-menu">
                   <button
-                    type="button"
-                    className="gray-3 d-flex align-items-center"
-                    onClick={() => setShowModalReport(true)}
+                      type="button"
+                      className="gray-3 d-flex align-items-center"
+                      onClick={() => setShowModalReport(true)}
                   >
-                    <IconContext.Provider value={{ className: "gray-4 icon" }}>
-                      <IoWarning />
+                    <IconContext.Provider value={{className: "gray-4 icon"}}>
+                      <IoWarning/>
                     </IconContext.Provider>
                     <span className="ms-2">Подать жалобу</span>
                   </button>
                 </div>
-              </div>
+              </div>}
             </div>
             <div className="row flex-md-row-reverse">
               <div className="col-md-5 col-xl-4 col-xxl-3 d-flex flex-column">
@@ -264,16 +266,17 @@ export default function CargoPage() {
                   contacts={[{ phone: cargo?.item?.user?.phone }]}
                   id={cargo?.item?.user?.id}
                 />
-                <button
-                  type="button"
-                  className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
-                  onClick={() => setShowModalReport(true)}
+                {(currentUser && currentToken) &&
+                    <button
+                    type="button"
+                    className="d-none d-md-block order-4 gray-3 mx-auto mt-3 fs-11 d-flex align-items-center"
+                    onClick={() => setShowModalReport(true)}
                 >
-                  <IconContext.Provider value={{ className: "gray-4 icon" }}>
-                    <IoWarning />
+                  <IconContext.Provider value={{className: "gray-4 icon"}}>
+                    <IoWarning/>
                   </IconContext.Provider>
                   <span className="ms-2">Подать жалобу</span>
-                </button>
+                </button>}
               </div>
               <div className="col-md-7 col-xl-8 col-xxl-9">
                 {cargo?.item?.loadings?.length &&
@@ -497,17 +500,19 @@ export default function CargoPage() {
                   <div>{cargo?.item?.note || "Примечания нет"}</div>
                 </div>
                 <div className="d-flex flex-column flex-xl-row align-items-center align-items-md-stretch justify-content-end">
-                  <div className="d-flex align-items-center">
-                    <button
-                      type="button"
-                      className="btn btn-1 fs-12"
-                      onClick={() => {
-                        response();
-                      }}
-                    >
-                      ОТКЛИКНУТЬСЯ
-                    </button>
-                  </div>
+                  {(currentUser && currentToken) &&
+                    <div className="d-flex align-items-center">
+                      <button
+                        type="button"
+                        className="btn btn-1 fs-12"
+                        onClick={() => {
+                          response();
+                        }}
+                      >
+                        ОТКЛИКНУТЬСЯ
+                      </button>
+                    </div>
+                  }
                   <button
                     type="button"
                     className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3"
