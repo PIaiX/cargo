@@ -15,7 +15,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination } from "swiper";
 import { acceptResponse, getRoutePage, reportRoute } from "../API/route";
 import useAxiosPrivate from "../hooks/axiosPrivate";
-import {NavLink, useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RouteCard from "../components/RouteCard";
 import { searchRoute } from "../API/route";
 import { useSelector } from "react-redux";
@@ -41,7 +41,7 @@ export default function RoutePage() {
   const currentToken = useSelector(state => state?.currentUser?.data?.token)
   const [searchRoutes, setSearchRoutes] = useState([]);
   const { id } = useParams();
-  const [citys, setCitys] = useState({});
+  const [cities, setCities] = useState({});
 
   const [showAlert, setShowAlert] = useState(false);
   const [alertStatus, setAlertStatus] = useState("info");
@@ -65,7 +65,7 @@ export default function RoutePage() {
           navigate("/");
         }, 2500);
       });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (!isLoading && data.route?.isArchive) {
@@ -75,19 +75,19 @@ export default function RoutePage() {
       }, 2500);
     }
 
-    setCitys({
+    setCities({
       toRoute: data?.route?.toRoute,
       fromRoute: data?.route?.fromRoute,
     });
   }, [data]);
 
   useEffect(() => {
-    citys?.toRoute?.length > 2 &&
-      citys?.fromRoute?.length > 2 &&
-      searchRoute(1, 6, { onlyVerified: false, ...citys })
+    cities?.toRoute?.length > 2 &&
+      cities?.fromRoute?.length > 2 &&
+      searchRoute(1, 6, { onlyVerified: false, ...cities })
         .then((res) => setSearchRoutes(res?.data))
         .catch((error) => console.log(error));
-  }, [citys]);
+  }, [cities]);
 
   const [alertResponse, setAlertResponse] = useState({
     alertShow: false,
@@ -349,10 +349,16 @@ export default function RoutePage() {
                       </button>
                     </div>
                 }
-                <NavLink
+                <button
                   to='/search'
                   className="btn btn-3 fs-12 px-1 px-sm-3 px-lg-4 mt-3 mt-xl-0 ms-xl-3"
-                  state={{fromRoute: data?.route?.toRoute, toRoute: data?.route?.fromRoute}}
+                  onClick={() => navigate("/search", {
+                    state: {
+                      searchType: "car",
+                      fromRoute: cities.toRoute,
+                      toRoute: cities.fromRoute,
+                    },
+                  })}
                 >
                   <IconContext.Provider
                     value={{ className: "icon me-1 me-lg-3" }}
@@ -360,7 +366,7 @@ export default function RoutePage() {
                     <IoRepeat />
                   </IconContext.Provider>
                   <span>Поиск маршрутов в обратном направлении</span>
-                </NavLink>
+                </button>
               </div>
             </div>
           </div>

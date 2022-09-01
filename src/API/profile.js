@@ -16,7 +16,6 @@ export const updateUserInfo = async (axiosPrivate, id, formData, ) => {
         const response = await axiosPrivate.patch(`${site}${apiRoutes.ACTIONS_USER}/${id}`, formData)
         return response
     } catch (error) {
-        console.log(error)
         throw error
     }
 }
