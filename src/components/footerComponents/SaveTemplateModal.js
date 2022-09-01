@@ -22,6 +22,10 @@ export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
       setFormError("Название шаблона не может быть пустым");
       return;
     }
+    if (formValue.name.trim().length < 2) {
+      setFormError("Название шаблона не может быть короче 2 символов");
+      return;
+    }
     if (formValue.remark !== "" && formValue.remark.length < 2) {
       setFormError("Примечание может быть пустым, либо не короче 2 символов");
       return;

@@ -39,7 +39,7 @@ const Pattern = (props) => {
                         <li>
                             <button
                             type='button'
-                            onClick={() => props?.callbackForRename && props.callbackForRename(props.id)}
+                            onClick={() => props?.callbackForRename && props.callbackForRename(props.id, props.type)}
                             >
                                 Переименовать
                             </button>
@@ -59,7 +59,7 @@ const Pattern = (props) => {
                     <button
                         type='button'
                         className='btn btn-1 fs-09 ms-2 ms-xxl-3'
-                        onClick={() => props?.callbackForRename && props.callbackForRename(props.id)}
+                        onClick={() => props?.callbackForRename && props.callbackForRename(props.id, props.type)}
                     >
                         Переименовать
                     </button>
