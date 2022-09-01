@@ -23,8 +23,7 @@ const createCar = async (axiosPrivate, payloads, userId) => {
         const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}`, {...payloads, userId})
         return response.data.body
     } catch (error) {
-        console.log(error.message)
-        return error
+        throw error
     }
 }
 
@@ -42,7 +41,7 @@ const updateCar = async (axiosPrivate, payloads, userId) => {
         const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.CAR}/${payloads.id}`, {...payloads, userId})
         return response.data.body
     } catch (error) {
-        console.log(error)
+        throw error
     }
 }
 
