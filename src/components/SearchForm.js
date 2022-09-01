@@ -14,14 +14,22 @@ import { icons } from "../helpers/cargo";
 
 const SearchForm = ({ type, submitHandler, fromMainPage, searchType }) => {
   const axiosPrivate = useAxiosPrivate();
-  const { state: isCollapsedForm, setState: setIsCollapsedForm } =
-    useMatchMedia(false, "(max-width: 767px)");
+  const { state: isNarrowScreen } = useMatchMedia(
+    undefined,
+    "(max-width: 767px)"
+  );
+  const [isExpandedForm, setIsExpandedForm] = useState(undefined);
+
   const [cities, setCities] = useState([]);
 
   const [cargoTypes, setCargoTypes] = useState([]);
   const [carTypes, setCarTypes] = useState([]);
   const [selectType, setSelectType] = useState(null);
   const [selectNote, setSelectNote] = useState(null);
+
+    useEffect(() => {
+      setIsExpandedForm(!isNarrowScreen)
+    }, [isNarrowScreen])
 
   const {
     register,
@@ -164,7 +172,7 @@ const SearchForm = ({ type, submitHandler, fromMainPage, searchType }) => {
             )}
           />
         </div>
-        {isCollapsedForm && (
+        {isExpandedForm && (
           <>
             <div className="col-md-7 col-lg-5 col-xxl-4">
               <div className="row row-cols-sm-2">
@@ -296,8 +304,8 @@ const SearchForm = ({ type, submitHandler, fromMainPage, searchType }) => {
         )}
         <div className="col-md-4 d-md-flex align-items-center">
           <div className="d-flex align-items-center justify-content-center d-md-none mx-auto mb-4">
-            {isCollapsedForm ? (
-              <button type="button" onClick={() => setIsCollapsedForm(false)}>
+            {isExpandedForm ? (
+              <button type="button" onClick={() => setIsExpandedForm(false)}>
                 <span className="blue me-2">Свернуть поиск</span>
                 <IconContext.Provider
                   value={{ className: "blue rotate-180", size: "1.25em" }}
@@ -306,7 +314,7 @@ const SearchForm = ({ type, submitHandler, fromMainPage, searchType }) => {
                 </IconContext.Provider>
               </button>
             ) : (
-              <button type="button" onClick={() => setIsCollapsedForm(true)}>
+              <button type="button" onClick={() => setIsExpandedForm(true)}>
                 <span className="blue me-2">Расширенный поиск</span>
                 <IconContext.Provider
                   value={{ className: "blue", size: "1.25em" }}
