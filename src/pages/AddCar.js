@@ -47,14 +47,17 @@ export default function AddCar() {
 
             createCar(axiosPrivate, formData, userId)
                 .then(result => result?.response?.data?.body?.errors)
-                .then(errors => errors && errors.forEach(
-                    error => setResponseErrors(prev => ({
-                        ...prev,
-                        [error.field]: {
-                            message: error.message
-                        }
-                    }))
-                ))
+                .then(errors => {
+                    errors && errors.forEach(
+                        error => setResponseErrors(prev => ({
+                            ...prev,
+                            [error.field]: {
+                                message: error.message
+                            }
+                        }))
+                    )
+                    console.log(errors)
+                })
                 .catch(() => dispatch(setAlert('danger', 'Не удалось добавить машину')))
         } else if (formData && !userId) {
             dispatch(showNoAuthAlert())
@@ -106,6 +109,8 @@ export default function AddCar() {
             (tooltipNode) => new Tooltip(tooltipNode)
         );
     });
+
+    console.log(responseErrors)
 
     return (
         <main className="bg-gray">

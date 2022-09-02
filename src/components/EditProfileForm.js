@@ -10,6 +10,7 @@ import AsyncSelect from "react-select/async";
 import { onInputHandler, onRadioHandler } from "../helpers/collectForms";
 import CustomModal from "./utilities/CustomModal";
 import { setCurrentUser } from "../store/reducers/currentUser";
+import PhoneInput from "react-phone-input-2";
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const EditProfileForm = () => {
     { data_url: "/img/users/no-photo.png" },
   ]);
   const [selectAccType, setSelectAccType] = useState(null);
+  const [errorsValid, setErrorsValid] = useState(null)
   const [btnSubjectType, setBtnSubjectType] = useState(0);
   const [accType, setAccType] = useState({
     data: [],
@@ -105,7 +107,7 @@ const EditProfileForm = () => {
       formData.append(key, req[key]);
     }
     updateUserInfo(axiosPrivate, currentUser?.id, formData)
-      .then((res) => {
+      .then((res, rej) => {
         setShowCompleteFix({
           show: true,
           complete: true,
@@ -123,11 +125,20 @@ const EditProfileForm = () => {
           navigate("/personal-account/profile");
         }, 1400);
       })
-      .catch((error) => {
+      .catch((errors) => {
         setShowCompleteFix({
           show: true,
           complete: false,
         });
+        const arrErrors = errors?.response?.data?.errors?.errors
+        arrErrors.forEach(
+            error => setErrorsValid(prev => ({
+              ...prev,
+              [error.field]: {
+                message: error.message
+              }
+            }))
+        )
       });
   };
 
@@ -142,12 +153,7 @@ const EditProfileForm = () => {
         taxIdentificationNumber: currentUser.taxIdentificationNumber,
       }));
     }
-  }, [
-    btnSubjectType,
-    currentUser,
-    data?.companyName,
-    data?.taxIdentificationNumber,
-  ]);
+  }, [btnSubjectType, currentUser]);
 
   const deleteAvatar = (e) => {
     e.preventDefault();
@@ -184,6 +190,7 @@ const EditProfileForm = () => {
     show: false,
     complete: null,
   });
+
 
   return (
     <form className="form-profile" onSubmit={submitForm}>
@@ -296,7 +303,11 @@ const EditProfileForm = () => {
 
           <fieldset className="row g-sm-4 mb-sm-4">
             <div className="col-sm-4 mb-1 mb-sm-0">
-              <div className="gray-2 title-font fw-5 fs-12">Тип аккаунта:</div>
+              <div
+                  className="gray-2 title-font fw-5 fs-12"
+              >
+                Тип аккаунта:
+              </div>
             </div>
             <div className="col-sm-8 mb-3 mb-sm-0">
               <AsyncSelect
@@ -326,7 +337,9 @@ const EditProfileForm = () => {
             btnSubjectType === 1 && (
               <fieldset className="row g-sm-4 mb-sm-4">
                 <div className="col-sm-4 mb-1 mb-sm-0">
-                  <div className="gray-2 title-font fw-5 fs-12">
+                  <div
+                      className="gray-2 title-font fw-5 fs-12"
+                  >
                     Название компании:
                   </div>
                 </div>
@@ -336,12 +349,19 @@ const EditProfileForm = () => {
                     className="fs-12"
                     name="companyName"
                     placeholder="Название компании"
-                    value={data?.companyName}
-                    onChange={(e) => onInputHandler(e, setData)}
+                    value={data?.companyName || ''}
+                    onChange={(e) => {
+                      onInputHandler(e, setData)
+                    }}
                   />
                 </div>
                 <div className="col-sm-4 mb-1 mb-sm-0">
-                  <div className="gray-2 title-font fw-5 fs-12">ИНН:</div>
+                  <div
+                      className="gray-2 title-font fw-5 fs-12"
+                      style={{color: (errorsValid?.taxIdentificationNumber) && 'red'}}
+                  >
+                    ИНН:
+                  </div>
                 </div>
                 <div className="col-sm-8 mb-3 mb-sm-0">
                   <input
@@ -349,9 +369,13 @@ const EditProfileForm = () => {
                     className="fs-12"
                     placeholder="ИНН"
                     name="taxIdentificationNumber"
-                    value={data?.taxIdentificationNumber}
-                    onChange={(e) => onInputHandler(e, setData)}
+                    value={data?.taxIdentificationNumber || ''}
+                    onChange={(e) => {
+                      onInputHandler(e, setData)
+                      setErrorsValid(prev => ({...prev, taxIdentificationNumber: null}))
+                    }}
                   />
+                  {(errorsValid?.taxIdentificationNumber) && <span style={{color: 'red'}}>Не верный формат или ИНН занят!</span>}
                 </div>
               </fieldset>
             )
@@ -386,7 +410,12 @@ const EditProfileForm = () => {
             </div>
 
             <div className="col-sm-4 mb-1 mb-sm-0">
-              <div className="gray-2 title-font fw-5 fs-12">Email:</div>
+              <div
+                  className="gray-2 title-font fw-5 fs-12"
+                  style={{color: (errorsValid?.email) && 'red'}}
+              >
+                Email:
+              </div>
             </div>
             <div className="col-sm-8 mb-3 mb-sm-0">
               <input
@@ -395,28 +424,35 @@ const EditProfileForm = () => {
                 placeholder="Email"
                 name="email"
                 value={data?.email}
-                onChange={(e) => onInputHandler(e, setData)}
+                onChange={(e) => {
+                  onInputHandler(e, setData)
+                  setErrorsValid(prev => ({...prev, email: null}))
+                }}
               />
+              {(errorsValid?.email) && <span style={{color: 'red'}}>Не верный формат или email занят!</span>}
             </div>
 
             <div className="col-sm-4 mb-1 mb-sm-0">
-              <div className="gray-2 title-font fw-5 fs-12">Телефон:</div>
+              <div
+                  className="gray-2 title-font fw-5 fs-12"
+                  style={{color: (errorsValid?.phone) && 'red'}}
+              >
+                Телефон:
+              </div>
             </div>
             <div className="col-sm-8 mb-3 mb-sm-0">
-              <NumberFormat
-                placeholder="Телефон"
-                format="+7##########"
-                className="fs-12"
-                name="phone"
-                value={data?.phone}
-                onValueChange={(values) => {
-                  const { formattedValue, value } = values;
-                  setData((prevState) => ({
-                    ...prevState,
-                    phone: formattedValue,
-                  }));
-                }}
+              <PhoneInput
+                  specialLabel={''}
+                  country={'ru'}
+                  countryCodeEditable={false}
+                  disableDropdown={true}
+                  value={data?.phone}
+                  onChange={(phone) => {
+                    setData(prevState => ({...prevState, phone: `+${phone}`}))
+                    setErrorsValid(prev => ({...prev, phone: null}))
+                  }}
               />
+              {(errorsValid?.phone) && <span style={{color: 'red'}}>Не верный формат или номер занят!</span>}
               <div className="fs-08 gray-4">
                 Этот номер будет виден другим пользователям сайта
               </div>
