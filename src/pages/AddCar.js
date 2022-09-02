@@ -53,7 +53,7 @@ export default function AddCar() {
 
       const handleFormSubmit = async () => {
         try {
-          const result = await createCar(axiosPrivate, formData, userId);
+          await createCar(axiosPrivate, formData, userId);
           dispatch(setAlert("success", "Машина успешно добавлена"));
           setTimeout(() => {
             resetForm();
