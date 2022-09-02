@@ -5,7 +5,7 @@ import {Footer} from './Footer';
 import useAlert from '../hooks/alert';
 
 const Layout = () => {
-    const {alertNode} = useAlert(3000)
+    const {alertNode} = useAlert(2500)
 
     return (
         <div className='root-wrapper'>
