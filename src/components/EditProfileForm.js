@@ -442,6 +442,8 @@ const EditProfileForm = () => {
             </div>
             <div className="col-sm-8 mb-3 mb-sm-0">
               <PhoneInput
+                  inputClass='form-control'
+                  inputStyle={{fontSize: 1.2 + 'em'}}
                   specialLabel={''}
                   country={'ru'}
                   countryCodeEditable={false}

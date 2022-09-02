@@ -4091,7 +4091,7 @@ footer .payment-methods img:not(:first-child) {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  padding: 0 4em 0 4em;
+  padding: 0 2em 0 2em;
   font-size: initial;
 }
 .pay-information a {
@@ -4121,4 +4121,22 @@ footer .payment-methods img:not(:first-child) {
 }
 .contacts__second ul li {
   list-style-type: none;
-}/*# sourceMappingURL=style.css.map */
+}
+
+.form-control {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5em;
+  width: 100%;
+  line-height: normal;
+  box-shadow: unset;
+  outline: none;
+  display: block;
+}
+.form-control:focus {
+  border: 1px solid #01bfc4;
+  box-shadow: none;
+}
+
+/*# sourceMappingURL=style.css.map */

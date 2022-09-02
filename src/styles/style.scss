@@ -4054,7 +4054,7 @@ footer {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  padding: 0 4em 0 4em;
+  padding: 0 2em 0 2em;
   font-size: initial;
   a {
     color: $blue;
@@ -4087,5 +4087,21 @@ footer {
         list-style-type: none;
       }
     }
+  }
+}
+
+.form-control {
+  background: #ffffff;
+  border: 1px solid $gray-5;
+  border-radius: $radius;
+  padding: 0.5em;
+  width: 100%;
+  line-height: normal;
+  box-shadow: unset;
+  outline: none;
+  display: block;
+  &:focus {
+    border: 1px solid $green;
+    box-shadow: none;
   }
 }
