@@ -10,7 +10,7 @@ const paginateTopics = async (page, limit) => {
     }
 }
 
-const searchTopics = async (page, limit, query, orderBy = 'asc') => {
+const searchTopics = async (page, limit, query, orderBy = 'desc') => {
     try {
         const response = await axios.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.TOPIC_SEARCH}`, {
             page,
