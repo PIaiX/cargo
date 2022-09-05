@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {memo, useEffect, useState} from 'react';
 import {IoEllipsisVertical} from 'react-icons/io5';
 import {IconContext} from "react-icons";
 import {NavLink} from "react-router-dom";
+import {getRoute} from "../helpers/cargo";
 
-export default function ResponseCard(props) {
 
+const ResponseCard = (props) => {
+    
     const uploadPhoto = (img) => {
         const site = 'https://api.eritrans.ru/uploads/./'
         if (img === null) {
@@ -13,6 +15,10 @@ export default function ResponseCard(props) {
             return `${site}${img}`
         }
     }
+
+    const cargoRoute = getRoute(props.cargo, true)
+
+    console.log(props.userId)
 
     return (
         <div className={"response " + props.className}>
@@ -23,6 +29,16 @@ export default function ResponseCard(props) {
                     <div className='fw-5 mt-1'><NavLink to={`/view-profile/${props.userId}`}>{props.name}</NavLink></div>
                 </div>
             </div>
+            {props.idCargo &&
+                <div>
+                    <NavLink to={`/cargo-page/${props.idCargo}`} className='link-to-product'>Груз №{props.idCargo} {cargoRoute}</NavLink>
+                </div>
+            }
+            {props.idRoute &&
+                <div>
+                    <NavLink to={`/route-page/${props.idRoute}`} className='link-to-product'>Маршрут №{props.idRoute} {props.route.fromRoute} - {props.route.toRoute}</NavLink>
+                </div>
+            }
             {
                 (props.type === 1 && props.inWork === true) ?
                     <div className='px-4'>
@@ -46,7 +62,9 @@ export default function ResponseCard(props) {
                             <button
                                 type='button'
                                 className="btn btn-1 w-100 mt-3"
-                                onClick={() => props?.callbackComplete && props?.callbackComplete(props?.id)}
+                                onClick={() => {
+                                    props?.callbackComplete && props?.callbackComplete(props?.id, (props?.idRoute || props?.idCargo))
+                                }}
                             >
                                 Принять
                             </button>
@@ -90,3 +108,5 @@ export default function ResponseCard(props) {
         </div>
     )
 }
+
+export default memo(ResponseCard)

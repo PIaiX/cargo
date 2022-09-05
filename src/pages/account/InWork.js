@@ -230,24 +230,24 @@ export default function InWork() {
     }, [tab, subTabs, forMeCargosInProcess?.meta?.total, forMeRoutesInProcess?.meta?.total, forMeRoutesComplete?.meta?.total, forMeCargosComplete?.meta?.total])
 
     const returnerTotalsInProcess = () => {
-        if (forMeRoutesInProcess.isLoading && forMeCargosInProcess.isLoading) {
-            return (forMeRoutesInProcess.meta.total + forMeCargosInProcess.meta.total)
-        } else if (forMeCargosInProcess.isLoading) {
-            return forMeCargosInProcess.meta.total
-        } else if (forMeRoutesInProcess.isLoading) {
-            return forMeRoutesInProcess.meta.total
+        if (forMeRoutesInProcess?.isLoading && forMeCargosInProcess?.isLoading) {
+            return (forMeRoutesInProcess?.meta?.total + forMeCargosInProcess?.meta?.total)
+        } else if (forMeCargosInProcess?.isLoading) {
+            return forMeCargosInProcess?.meta?.total
+        } else if (forMeRoutesInProcess?.isLoading) {
+            return forMeRoutesInProcess?.meta?.total
         }  else {
             return 0
         }
     }
 
     const returnerTotalsComplete = () => {
-        if (forMeRoutesComplete.isLoading && forMeCargosComplete.isLoading) {
-            return (forMeRoutesComplete.meta.total + forMeCargosComplete.meta.total)
-        } else if (forMeCargosComplete.isLoading) {
-            return forMeCargosComplete.meta.total
-        } else if (forMeRoutesComplete.isLoading) {
-            return forMeRoutesComplete.meta.total
+        if (forMeRoutesComplete?.isLoading && forMeCargosComplete?.isLoading) {
+            return (forMeRoutesComplete?.meta?.total + forMeCargosComplete?.meta?.total)
+        } else if (forMeCargosComplete?.isLoading) {
+            return forMeCargosComplete?.meta?.total
+        } else if (forMeRoutesComplete?.isLoading) {
+            return forMeRoutesComplete?.meta?.total
         } else {
             return 0
         }
@@ -299,19 +299,21 @@ export default function InWork() {
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeCargosInProcess.isLoading
                                     ? forMeCargosInProcess.data.length
-                                        ? forMeCargosInProcess?.data?.map((route, index) => (
+                                        ? forMeCargosInProcess?.data?.map((cargo, index) => (
                                             <div key={index}>
                                                 <ResponseCard
                                                     inWork={true}
-                                                    id={route.id}
-                                                    type={route.status}
-                                                    userId={route.user.id}
-                                                    subject={route.user.subject}
-                                                    name={route.user.fullName}
-                                                    company={route.user.companyName}
-                                                    img={route.user.avatar}
+                                                    id={cargo.id}
+                                                    type={cargo.status}
+                                                    userId={cargo.user.id}
+                                                    subject={cargo.user.subject}
+                                                    name={cargo.user.fullName}
+                                                    company={cargo.user.companyName}
+                                                    img={cargo.user.avatar}
                                                     callbackComplete={id => setIdComplete(id)}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idCargo={cargo.cargoId}
+                                                    cargo={cargo.cargo}
                                                 />
                                             </div>
                                         ))
@@ -332,18 +334,20 @@ export default function InWork() {
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeRoutesInProcess?.isLoading
                                     ? forMeRoutesInProcess?.data?.length
-                                        ? forMeRoutesInProcess?.data?.map((cargo, index) => (
+                                        ? forMeRoutesInProcess?.data?.map((route, index) => (
                                             <div key={index}>
                                                 <ResponseCard
                                                     inWork={true}
-                                                    id={cargo.id}
-                                                    userId={cargo.user.id}
-                                                    type={cargo.status}
-                                                    name={cargo.user.fullName}
-                                                    company={cargo.companyName}
-                                                    img={cargo.user.avatar}
+                                                    id={route.id}
+                                                    userId={route.user.id}
+                                                    type={route.status}
+                                                    name={route.user.fullName}
+                                                    company={route.companyName}
+                                                    img={route.user.avatar}
                                                     callbackComplete={id => setIdComplete(id)}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idRoute={route.routeId}
+                                                    route={route.route}
                                                 />
                                             </div>
                                         ))
@@ -370,16 +374,18 @@ export default function InWork() {
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeCargosComplete?.isLoading
                                     ? forMeCargosComplete?.data?.length
-                                        ? forMeCargosComplete?.data?.map((route, index) => (
+                                        ? forMeCargosComplete?.data?.map((cargo, index) => (
                                             <div key={index}>
                                                 <ResponseCard
                                                     inWork={true}
-                                                    id={route.id}
-                                                    userId={route.user.id}
-                                                    type={route.status}
-                                                    name={route.user.fullName}
-                                                    company={route.companyName}
-                                                    img={route.user.avatar}
+                                                    id={cargo.id}
+                                                    userId={cargo.user.id}
+                                                    type={cargo.status}
+                                                    name={cargo.user.fullName}
+                                                    company={cargo.companyName}
+                                                    img={cargo.user.avatar}
+                                                    idCargo={cargo.cargoId}
+                                                    cargo={cargo.cargo}
                                                 />
                                             </div>
                                         ))
@@ -396,16 +402,18 @@ export default function InWork() {
                             <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                                 {forMeRoutesComplete?.isLoading
                                     ? forMeRoutesComplete?.data?.length
-                                        ? forMeRoutesComplete?.data?.map((cargo, index) => (
+                                        ? forMeRoutesComplete?.data?.map((route, index) => (
                                             <div key={index}>
                                                 <ResponseCard
                                                     inWork={true}
-                                                    id={cargo.id}
-                                                    userId={cargo.user.id}
-                                                    type={cargo.status}
-                                                    name={cargo.user.fullName}
-                                                    company={cargo.companyName}
-                                                    img={cargo.user.avatar}
+                                                    id={route.id}
+                                                    userId={route.user.id}
+                                                    type={route.status}
+                                                    name={route.user.fullName}
+                                                    company={route.companyName}
+                                                    img={route.user.avatar}
+                                                    idRoute={route.routeId}
+                                                    route={route.route}
                                                 />
                                             </div>
                                         ))

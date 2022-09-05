@@ -26,7 +26,11 @@ export default function Responses() {
     const [subTab, setSubTab] = useState('cargo')
     const responsesPagination = usePagination(initialPageLimit)
     const [paginationItemsAmount, setPaginationItemsAmount] = useState(0)
-    const [idComplete, setIdComplete] = useState(null)
+    const [idComplete, setIdComplete] = useState({
+        idResponse: null,
+        routeId: null,
+        cargoId: null
+    })
     const [idDelete, setIdDelete] = useState(null)
     const [incomingsCargoResponses, setIncomingsCargoResponses] = useState({
         isLoading: false,
@@ -63,7 +67,6 @@ export default function Responses() {
             })))
             .catch(error => setIncomingsCargoResponses(prev => ({...prev, isLoading: true, error})))
     }
-
     const sendIncomingsRouteRequest = (page, limit) => {
         getIncomingsRouteResponses(axiosPrivate, userId, page, limit)
             .then(result => setIncomingsRouteResponses(prev => ({
@@ -127,7 +130,8 @@ export default function Responses() {
     }, [tab, subTab, incomingsCargoResponses?.meta?.total, incomingsRouteResponses?.meta?.total, outgoingsCargoResponses?.meta?.total, outgoingsRouteResponses?.meta?.total])
 
     useEffect(() => {
-        idComplete && acceptResponse(axiosPrivate, idComplete)
+        idComplete.idResponse
+        && acceptResponse(axiosPrivate, idComplete.idResponse, {routeId: idComplete.routeId, cargoId: idComplete.cargoId, userId})
             .then(() => {
                 setTimeout(() => {
                     sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
@@ -137,7 +141,7 @@ export default function Responses() {
                 }, 300)
             })
             .catch()
-    }, [idComplete])
+    }, [idComplete.routeId, idComplete.cargoId, idComplete.idResponse])
 
     useEffect(() => {
         idDelete && rejectResponse(axiosPrivate, idDelete)
@@ -265,7 +269,7 @@ export default function Responses() {
                                 ? incomingsCargoResponses.isLoading
                                     ? incomingsCargoResponses?.items?.length
                                         ? incomingsCargoResponses.items.map(item => (
-                                            <div key={item.id}>
+                                            <div key={item.id}  className='d-flex'>
                                                 <ResponseCard
                                                     inWork={false}
                                                     id={item.id}
@@ -275,18 +279,20 @@ export default function Responses() {
                                                     name={item.user.fullName}
                                                     company={item.user.companyName}
                                                     img={item.user.avatar}
-                                                    callbackComplete={id => setIdComplete(id)}
+                                                    callbackComplete={(idResponse, idCargo) => setIdComplete({idResponse, cargoId: idCargo})}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idCargo={item.cargoId}
+                                                    cargo={item.cargo}
                                                 />
                                             </div>
                                         ))
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
                                     :
                                     <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
-                                : outgoingsCargoResponses.isLoading
+                                : outgoingsCargoResponses?.isLoading
                                     ? outgoingsCargoResponses?.items?.length
                                         ? outgoingsCargoResponses.items.map(item => (
-                                            <div key={item.id}>
+                                            <div key={item.id} className='d-flex'>
                                                 <ResponseCard
                                                     inWork={false}
                                                     id={item.id}
@@ -297,6 +303,10 @@ export default function Responses() {
                                                     company={item.user.companyName}
                                                     img={item.user.avatar}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idCargo={item.cargoId}
+                                                    cargo={item.cargo}
+                                                    loading={item.cargo.loadings}
+                                                    unloading={item.cargo.unloadings}
                                                 />
                                             </div>
                                         ))
@@ -327,8 +337,10 @@ export default function Responses() {
                                                     name={item.user.fullName}
                                                     company={item.user.companyName}
                                                     img={item.user.avatar}
-                                                    callbackComplete={id => setIdComplete(id)}
+                                                    callbackComplete={(idResponse, idRoute) => setIdComplete({idResponse, routeId: idRoute})}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idRoute={item.routeId}
+                                                    route={item.route}
                                                 />
                                             </div>
                                         ))
@@ -349,6 +361,8 @@ export default function Responses() {
                                                     company={item.user.companyName}
                                                     img={item.user.avatar}
                                                     callbackDelete={id => setIdDelete(id)}
+                                                    idRoute={item.routeId}
+                                                    route={item.route}
                                                 />
                                             </div>
                                         ))

@@ -10,9 +10,9 @@ const createResponse = async (axiosPrivate, payload) => {
     }
 }
 
-const acceptResponse = async (axiosPrivate, id) => {
+const acceptResponse = async (axiosPrivate, id, payloads) => {
     try {
-        const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACCEPT}/${id}`)
+        const response = await axiosPrivate.patch(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_ACCEPT}/${id}`, payloads)
         return response.data
     } catch (error) {
         console.log(error)

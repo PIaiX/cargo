@@ -2807,11 +2807,15 @@ article {
 }
 
 .response {
+  width: 100%;
   border-radius: 0.5em;
-    background: #fff;
+  background: #fff;
   box-shadow: 1px 4px 9px rgba($green, 0.34);
   padding: 1em;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 
   img {
     width: 5em;
@@ -2835,6 +2839,15 @@ article {
     position: absolute;
     top: 0.5em;
       right: 0.5em;
+  }
+
+  .link-to-product {
+    font-size: 1.2em;
+    font-weight: 500;
+  }
+
+  .link-to-product:hover {
+    color: #038cb8;
   }
 
   // @media (max-width: 575px){
