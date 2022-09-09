@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import FormErrorMessage from "./../utilities/FormErrorMessage";
 
 const initialFormValue = {
   name: "",
-  remark: "",
+  remark: null,
 };
 
 export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
@@ -18,15 +18,15 @@ export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
   };
 
   const handleFormSubmit = () => {
-    if (!formValue.name.trim()) {
+    if (!formValue?.name?.trim()) {
       setFormError("Название шаблона не может быть пустым");
       return;
     }
-    if (formValue.name.trim().length < 2) {
+    if (formValue?.name.trim()?.length < 2) {
       setFormError("Название шаблона не может быть короче 2 символов");
       return;
     }
-    if (formValue.remark !== "" && formValue.remark.length < 2) {
+    if (formValue?.remark !== "" && formValue?.remark?.length < 2) {
       setFormError("Примечание может быть пустым, либо не короче 2 символов");
       return;
     }
@@ -35,6 +35,12 @@ export default function SaveTemplateModal({ type, setIsShow, onSubmit }) {
     onSubmit(formValue);
     setIsShow(false);
   };
+
+  useEffect(() => {
+      if (formValue?.remark?.length === 0) {
+        setFormValue(prevState => ({...prevState, remark: null}))
+      }
+  }, [formValue?.remark?.length])
 
   return (
     <>
