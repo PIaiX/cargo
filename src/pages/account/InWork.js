@@ -19,7 +19,7 @@ import {Tab, Tabs} from "react-bootstrap";
 import Loader from "../../components/Loader";
 import Select from "react-select";
 
-const initialPageLimit = 2;
+const initialPageLimit = 6;
 
 const options = [{label: 'Отклики по моим объявлениям', value: 'owner'}, {label: 'Мои отклики', value: 'executor'}]
 

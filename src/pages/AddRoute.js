@@ -1591,7 +1591,7 @@ export default function AddRoute() {
                     <button
                       type="button"
                       className="btn btn-1 w-100"
-                      onClick={() => setShowUseTemplate(false)}
+                      onClick={() => setShowModalSave(false)}
                     >
                       Отмена
                     </button>

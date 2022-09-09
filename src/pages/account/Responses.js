@@ -15,7 +15,7 @@ import {
 import Loader from '../../components/Loader';
 import Pagination from '../../components/Pagination';
 
-const initialPageLimit = 2;
+const initialPageLimit = 6;
 
 export default function Responses() {
     const axiosPrivate = useAxiosPrivate()
