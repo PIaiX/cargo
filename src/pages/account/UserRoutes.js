@@ -45,7 +45,7 @@ const UserRoutes = () => {
                 isLoading: true
             })))
             .catch(error => console.log(error))
-    }, [currentUser,  currentUser.roleId, routesPagination.pageLimit, routesPagination.currentPage])
+    }, [currentUser,  currentUser?.roleId, routesPagination.pageLimit, routesPagination.currentPage])
 
     useEffect(() => {
         (currentUser.roleId !== 2) && getArchiveRoutes(archiveRoutesPag.pageLimit, archiveRoutesPag.currentPage, currentUser?.id, axiosPrivate)
@@ -56,7 +56,7 @@ const UserRoutes = () => {
                 isLoading: true
             })))
             .catch(error => console.log(error))
-    }, [archiveRoutesPag.currentPage, archiveRoutesPag.pageLimit, currentUser])
+    }, [currentUser?.roleId, archiveRoutesPag.currentPage, archiveRoutesPag.pageLimit, currentUser])
 
     const onDeleteRoute = (id) => {
         deleteRoute(id, axiosPrivate).then(() => {

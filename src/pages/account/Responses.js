@@ -217,11 +217,11 @@ export default function Responses() {
 
     const returnerTotalsOutGoing = () => {
         if (outgoingsRouteResponses?.isLoading && outgoingsCargoResponses?.isLoading) {
-            return (outgoingsRouteResponses?.meta.total + outgoingsCargoResponses?.meta?.total)
+            return (outgoingsRouteResponses?.meta?.total + outgoingsCargoResponses?.meta?.total)
         } else if (outgoingsCargoResponses?.isLoading) {
-            return outgoingsCargoResponses?.meta.total
+            return outgoingsCargoResponses?.meta?.total
         } else if (outgoingsRouteResponses?.isLoading) {
-            return outgoingsRouteResponses?.meta.total
+            return outgoingsRouteResponses?.meta?.total
         } else {
             return 0
         }
@@ -245,7 +245,7 @@ export default function Responses() {
 
     const forRouteInCom = () => {
         if (tab === 'active' && incomingsRouteResponses?.isLoading) {
-            return incomingsRouteResponses?.meta.total
+            return incomingsRouteResponses?.meta?.total
         } else {
             return 0
         }
