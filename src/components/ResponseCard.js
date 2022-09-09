@@ -18,8 +18,6 @@ const ResponseCard = (props) => {
 
     const cargoRoute = getRoute(props.cargo, true)
 
-    console.log(props.userId)
-
     return (
         <div className={"response " + props.className}>
             <div className='d-flex align-items-center mb-3'>

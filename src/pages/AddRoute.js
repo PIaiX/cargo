@@ -31,6 +31,18 @@ import SearchInput from "../components/utilities/SearchInput";
 import { useDispatch } from "react-redux/es/exports";
 import { setAlert } from "../store/actions/alert";
 
+const fields = {
+  isInValidFromRoute: false,
+  isInValidToRoute: false,
+  isInValidDateType: false,
+  isInValidCar: false,
+  isInValidPrepayment: false,
+  isInValidPhone: false,
+  isInValidFirstName: false,
+  isInValidNameTemplate: false,
+  isInValidForSave: false,
+};
+
 export default function AddRoute() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,20 +67,80 @@ export default function AddRoute() {
   });
 
   const [citys, setCitys] = useState([]);
-
-  const fields = {
-    isInValidFromRoute: false,
-    isInValidToRoute: false,
-    isInValidDateType: false,
-    isInValidCar: false,
-    isInValidPrepayment: false,
-    isInValidPhone: false,
-    isInValidFirstName: false,
-    isInValidNameTemplate: false,
-    isInValidForSave: false,
-  };
-
   const [valid, setValid] = useState(fields);
+  const [cars, setCars] = useState([]);
+  const [dataTemplate, setDataTemplate] = useState({
+    templateName: '',
+    templateNote: null
+  });
+  const [templates, setTemplates] = useState([]);
+  const [showUseTemplate, setShowUseTemplate] = useState(false);
+  const [selectCar, setSelectCar] = useState(null);
+  const [selectPeriodType, setSelectPeriodType] = useState(null);
+  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [alertForSavePattern, setAlertForSavePattern] = useState(false);
+  const [showModalValidation, setShowModalValidation] = useState(false);
+  const [selectDays, setSelectDays] = useState(null);
+
+  useEffect(() => {
+    getCars(axiosPrivate, currentUser?.id, 1)
+        .then((res) =>
+            setCars(res?.data?.map((i) => ({ value: i.id, label: i.name })))
+        )
+        .catch((error) => console.log(error));
+  }, [currentUser]);
+
+  useEffect(() => {
+    setData((prevState) => ({ ...prevState, contacts: [contactsInfo] }));
+  }, [contactsInfo]);
+
+  useEffect(() => {
+    if(dataTemplate?.templateNote?.length === 0) {
+      setDataTemplate(prevState => ({...prevState, templateNote: null}))
+    }
+  }, [dataTemplate?.templateNote?.length])
+
+  useEffect(() => {
+    getTemplates(axiosPrivate, currentUser?.id, 1)
+        .then((r) => setTemplates(r.data?.body?.data))
+        .catch((error) => console.log(error));
+  }, [currentUser]);
+
+  useEffect(() => {
+    setSelectCar({ value: data?.carId, label: data?.carName });
+  }, [data]);
+
+  useEffect(() => {
+    setSelectPeriodType({
+      value: data?.datePeriodType,
+      label: data?.datePeriodTypeForUser,
+    });
+  }, [data?.datePeriodType, data?.datePeriodTypeForUser]);
+
+  useEffect(() => {
+    setSelectDays({
+      value: data?.dateDays,
+      label: `${data?.dateDays} дн.`,
+    });
+  }, [data]);
+
+  useEffect(() => {
+    if (isShowAlert) {
+      setTimeout(() => setIsShowAlert(false), 1500);
+    }
+  }, [isShowAlert]);
+
+  useEffect(() => {
+    data?.date === "Invalid Date" && delete data?.date;
+  }, [data?.date]);
+
+  useEffect(() => {
+    getDate(data?.dateForInput);
+  }, [data?.dateForInput]);
+
+  useEffect(() => {
+    getCities().then((res) => setCitys(res.body));
+  }, []);
 
   const isInValidFromRoute =
     data?.fromRoute === undefined ||
@@ -150,20 +222,6 @@ export default function AddRoute() {
     setContactsArray([]);
   };
 
-  let deleteContacts = (i) => {
-    setContactsArray(contactsArray.filter((obj) => obj !== i));
-  };
-
-  const [cars, setCars] = useState([]);
-
-  useEffect(() => {
-    getCars(axiosPrivate, currentUser?.id, 1)
-      .then((res) =>
-        setCars(res?.data?.map((i) => ({ value: i.id, label: i.name })))
-      )
-      .catch((error) => console.log(error));
-  }, [currentUser]);
-
   const getDate = (dateMe) => {
     const newDate = new Date(dateMe);
     const re = newDate.toLocaleDateString('ru-Ru');
@@ -178,16 +236,6 @@ export default function AddRoute() {
     const find = cars?.find((i) => i.value === carId);
     return <span>{find?.label}</span>;
   };
-
-  useEffect(() => {
-    setData((prevState) => ({ ...prevState, contacts: [contactsInfo] }));
-  }, [contactsInfo]);
-
-  const addContacts = () => {
-    setContactsArray((prevState) => [...prevState, contactsInfo]);
-  };
-
-  const [dataTemplate, setDataTemplate] = useState({});
 
   const saveTemplate = () => {
     const isInValidNameTemplate =
@@ -244,28 +292,12 @@ export default function AddRoute() {
     }
   };
 
-  const [templates, setTemplates] = useState([]);
-
-  useEffect(() => {
-    getTemplates(axiosPrivate, currentUser?.id, 1)
-      .then((r) => setTemplates(r.data?.body?.data))
-      .catch((error) => console.log(error));
-  }, [currentUser]);
-
-  const [showUseTemplate, setShowUseTemplate] = useState(false);
-
   const onDeleteTemplate = async (id) => {
     await deleteTemplate(id, axiosPrivate);
     await getTemplates(axiosPrivate, currentUser?.id, 1)
       .then((r) => setTemplates(r.data?.body?.data))
       .catch((error) => console.log(error));
   };
-
-  const [selectCar, setSelectCar] = useState(null);
-
-  useEffect(() => {
-    setSelectCar({ value: data?.carId, label: data?.carName });
-  }, [data]);
 
   const loadOptions = async (searchKey) => {
     const defaultValue = data?.carId;
@@ -277,15 +309,6 @@ export default function AddRoute() {
       return await cars?.filter((item) => item.label.includes(searchKey));
     }
   };
-
-  const [selectPeriodType, setSelectPeriodType] = useState(null);
-
-  useEffect(() => {
-    setSelectPeriodType({
-      value: data?.datePeriodType,
-      label: data?.datePeriodTypeForUser,
-    });
-  }, [data?.datePeriodType, data?.datePeriodTypeForUser]);
 
   const loadOptions2 = async (searchKey) => {
     const defaultValue = data?.datePeriodType;
@@ -302,15 +325,6 @@ export default function AddRoute() {
     }
   };
 
-  const [selectDays, setSelectDays] = useState(null);
-
-  useEffect(() => {
-    setSelectDays({
-      value: data?.dateDays,
-      label: `${data?.dateDays} дн.`,
-    });
-  }, [data]);
-
   const loadOptions3 = async (searchKey) => {
     const defaultValue = data?.dateDays;
     setSelectDays(
@@ -326,32 +340,27 @@ export default function AddRoute() {
     }
   };
 
-  const [isShowAlert, setIsShowAlert] = useState(false);
-  const [alertForSavePattern, setAlertForSavePattern] = useState(false);
-
-  useEffect(() => {
-    if (isShowAlert) {
-      setTimeout(() => setIsShowAlert(false), 1500);
-    }
-  }, [isShowAlert]);
-
   const currentDate = () => {
     return new Date().toISOString().slice(0, 10);
   };
 
-  useEffect(() => {
-    data?.date === "Invalid Date" && delete data?.date;
-  }, [data?.date]);
-
-  useEffect(() => {
-    getDate(data?.dateForInput);
-  }, [data?.dateForInput]);
-
-  const [showModalValidation, setShowModalValidation] = useState(false);
-
-  useEffect(() => {
-    getCities().then((res) => setCitys(res.body));
-  }, []);
+  const dayPeriodForUser = () => {
+    if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
+      return ''
+    }
+    if (data?.datePeriodType === 0) {
+      return "по рабочим дням"
+    }
+    if (data?.datePeriodType === 1) {
+      return "по выходным"
+    }
+    if (data?.datePeriodType === 2) {
+      return "ежедневно"
+    }
+    if (data?.datePeriodType === 3) {
+      return "через день"
+    }
+  }
 
   return (
     <main className="bg-gray">
@@ -1389,10 +1398,7 @@ export default function AddRoute() {
                       {data?.dateType ? (
                         <>
                           <span>
-                            Постоянно:{" "}
-                            {data?.datePeriodType === 0 && "по рабочим дням"}
-                            {data?.datePeriodType === 1 && "ежедневно"}
-                            {data?.datePeriodType === 2 && "через день"}
+                            Постоянно:{dayPeriodForUser()}
                           </span>
                         </>
                       ) : (
@@ -1576,7 +1582,7 @@ export default function AddRoute() {
                   onChange={(e) =>
                     setDataTemplate((prevState) => ({
                       ...prevState,
-                      note: e.target.value,
+                      templateNote: e.target.value,
                     }))
                   }
                 />

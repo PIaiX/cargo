@@ -73,18 +73,36 @@ const getOutgoingsCargoResponses = async (axiosPrivate, userId, page, limit) => 
     }
 }
 
-const getInProcessRouteResponses = async (axiosPrivate, userId, page, limit) => {
+const getInProcessRouteResponsesOwner = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_ROUTE}/${userId}`, {page, limit})
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_OWNER_ROUTE}/${userId}`, {page, limit})
         return response.data
     } catch (error) {
         console.log(error)
     }
 }
 
-const getInProcessCargoResponses = async (axiosPrivate, userId, page, limit) => {
+const getInProcessRouteResponsesExecutor = async (axiosPrivate, userId, page, limit) => {
     try {
-        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_CARGO}/${userId}`, {page, limit})
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_EXECUTOR_ROUTE}/${userId}`, {page, limit})
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getInProcessCargoResponsesOwner = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_OWNER_CARGO}/${userId}`, {page, limit})
+        return response.data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const getInProcessCargoResponsesExecutor = async (axiosPrivate, userId, page, limit) => {
+    try {
+        const response = await axiosPrivate.post(`${process.env.REACT_APP_BASE_URL}${apiRoutes.RESPONSE_INPROCESS_EXECUTOR_CARGO}/${userId}`, {page, limit})
         return response.data
     } catch (error) {
         console.log(error)
@@ -118,8 +136,10 @@ export {
     getIncomingsCargoResponses,
     getOutgoingsRouteResponses,
     getOutgoingsCargoResponses,
-    getInProcessRouteResponses,
-    getInProcessCargoResponses,
+    getInProcessRouteResponsesOwner,
+    getInProcessRouteResponsesExecutor,
+    getInProcessCargoResponsesOwner,
+    getInProcessCargoResponsesExecutor,
     getCompletedRouteResponses,
     getCompletedCargoResponses
 }

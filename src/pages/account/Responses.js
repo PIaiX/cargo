@@ -7,7 +7,6 @@ import useAxiosPrivate from '../../hooks/axiosPrivate';
 import usePagination from '../../hooks/pagination';
 import {
     acceptResponse,
-    completeResponse,
     getIncomingsCargoResponses,
     getIncomingsRouteResponses,
     getOutgoingsCargoResponses,
@@ -16,7 +15,7 @@ import {
 import Loader from '../../components/Loader';
 import Pagination from '../../components/Pagination';
 
-const initialPageLimit = 6;
+const initialPageLimit = 2;
 
 export default function Responses() {
     const axiosPrivate = useAxiosPrivate()
@@ -121,105 +120,140 @@ export default function Responses() {
     useEffect(() => setSubTab(() => ((roleId === 3) && 'route') || 'cargo'), [roleId])
 
     useEffect(() => {
-        responsesPagination.setCurrentPage(1)
-        responsesPagination.setStartingPage(1)
-        if ((tab === 'active') && (subTab === 'cargo')) setPaginationItemsAmount(incomingsCargoResponses?.meta?.total || 0)
-        if ((tab === 'active') && (subTab === 'route')) setPaginationItemsAmount(incomingsRouteResponses?.meta?.total || 0)
-        if ((tab === 'archive') && (subTab === 'cargo')) setPaginationItemsAmount(outgoingsCargoResponses?.meta?.total || 0)
-        if ((tab === 'archive') && (subTab === 'route')) setPaginationItemsAmount(outgoingsRouteResponses?.meta?.total || 0)
-    }, [tab, subTab, incomingsCargoResponses?.meta?.total, incomingsRouteResponses?.meta?.total, outgoingsCargoResponses?.meta?.total, outgoingsRouteResponses?.meta?.total])
+        if ((subTab === 'cargo') && (tab === 'active')) setPaginationItemsAmount(incomingsCargoResponses?.meta?.total || 0)
+        if ((subTab === 'route') && (tab === 'active')) setPaginationItemsAmount(incomingsRouteResponses?.meta?.total || 0)
+        if ((subTab === 'cargo') && (tab === 'archive')) setPaginationItemsAmount(outgoingsCargoResponses?.meta?.total || 0)
+        if ((subTab === 'route') && (tab === 'archive')) setPaginationItemsAmount(outgoingsRouteResponses?.meta?.total || 0)
+    }, [incomingsCargoResponses?.meta?.total, incomingsRouteResponses?.meta?.total, outgoingsCargoResponses?.meta?.total, outgoingsRouteResponses?.meta?.total, subTab, tab])
 
     useEffect(() => {
-        idComplete.idResponse
+        if((incomingsRouteResponses?.items?.length === 0) && (subTab === 'route') && (tab === 'active')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((incomingsCargoResponses?.items?.length === 0) && (subTab === 'cargo') && (tab === 'active')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((outgoingsCargoResponses?.items?.length === 0) && (subTab === 'cargo') && (tab === 'archive')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((outgoingsRouteResponses?.items?.length === 0) && (subTab === 'route') && (tab === 'archive')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+    }, [tab, subTab, incomingsCargoResponses?.items?.length, incomingsRouteResponses?.items?.length, outgoingsCargoResponses?.items?.length, outgoingsRouteResponses?.items?.length])
+
+    useEffect(() => {
+        if ((subTab === 'cargo') && (tab === 'active')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((subTab === 'route') && (tab === 'active')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((subTab === 'cargo') && (tab === 'archive')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+        if ((subTab === 'route') && (tab === 'archive')) {
+            responsesPagination.setCurrentPage(1)
+            responsesPagination.setStartingPage(1)
+        }
+    }, [subTab, tab])
+
+    useEffect(() => {
+        idComplete?.idResponse
         && acceptResponse(axiosPrivate, idComplete.idResponse, {routeId: idComplete.routeId, cargoId: idComplete.cargoId, userId})
             .then(() => {
-                setTimeout(() => {
-                    sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
-                setTimeout(() => {
-                    sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
+                if (subTab === 'cargo') {
+                    setTimeout(() => {
+                        sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    }, 300)
+                } else {
+                    setTimeout(() => {
+                        sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    }, 300)
+                }
+                setIdComplete({idResponse: null, routeId: null, cargoId: null})
             })
             .catch()
-    }, [idComplete.routeId, idComplete.cargoId, idComplete.idResponse])
+    }, [idComplete?.routeId, idComplete?.cargoId, idComplete?.idResponse, subTab])
 
     useEffect(() => {
         idDelete && rejectResponse(axiosPrivate, idDelete)
             .then(() => {
-                setTimeout(() => {
-                    (subTab === 'cargo' && tab === 'active') && sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
-                setTimeout(() => {
-                    (subTab === 'route' && tab === 'active') && sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
+                if(tab === 'archive'){
+                    if (subTab === 'cargo'){
+                        sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    } else {
+                        sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    }
+                }
+                if (tab === 'active') {
+                    if (subTab === 'cargo') {
+                        sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    } else {
+                        sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
+                    }
+                }
+                setIdDelete(null)
             })
-            .catch()
-    }, [idDelete])
-
-    useEffect(() => {
-        idDelete && rejectResponse(axiosPrivate, idDelete)
-            .then(() => {
-                setTimeout(() => {
-                    (subTab === 'cargo' && tab === 'archive') && sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
-                setTimeout(() => {
-                    (subTab === 'route' && tab === 'archive') && sendOutgoingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-                }, 300)
-            })
-            .catch()
     }, [idDelete])
 
     const returnerTotalsInComing = () => {
-        if (incomingsRouteResponses.isLoading && incomingsCargoResponses.isLoading) {
-            return (incomingsRouteResponses.meta.total + incomingsCargoResponses.meta.total)
-        } else if (incomingsCargoResponses.isLoading) {
-            return incomingsCargoResponses.meta.total
-        } else if (incomingsRouteResponses.isLoading) {
-            return incomingsRouteResponses.meta.total
+        if (incomingsRouteResponses?.isLoading && incomingsCargoResponses?.isLoading) {
+            return (incomingsRouteResponses?.meta?.total + incomingsCargoResponses?.meta?.total)
+        } else if (incomingsCargoResponses?.isLoading) {
+            return incomingsCargoResponses?.meta?.total
+        } else if (incomingsRouteResponses?.isLoading) {
+            return incomingsRouteResponses?.meta?.total
         }  else {
             return 0
         }
     }
 
     const returnerTotalsOutGoing = () => {
-        if (outgoingsRouteResponses.isLoading && outgoingsCargoResponses.isLoading) {
-            return (outgoingsRouteResponses.meta.total + outgoingsCargoResponses.meta.total)
-        } else if (outgoingsCargoResponses.isLoading) {
-            return outgoingsCargoResponses.meta.total
-        } else if (outgoingsRouteResponses.isLoading) {
-            return outgoingsRouteResponses.meta.total
+        if (outgoingsRouteResponses?.isLoading && outgoingsCargoResponses?.isLoading) {
+            return (outgoingsRouteResponses?.meta.total + outgoingsCargoResponses?.meta?.total)
+        } else if (outgoingsCargoResponses?.isLoading) {
+            return outgoingsCargoResponses?.meta.total
+        } else if (outgoingsRouteResponses?.isLoading) {
+            return outgoingsRouteResponses?.meta.total
         } else {
             return 0
         }
     }
 
     const forCargoInCom = () => {
-        if (tab === 'active' && incomingsCargoResponses.isLoading) {
-            return incomingsCargoResponses.meta.total
+        if (tab === 'active' && incomingsCargoResponses?.isLoading) {
+            return incomingsCargoResponses?.meta?.total
         } else {
             return 0
         }
     }
 
     const forCargoOut = () => {
-        if (tab === 'archive' &&  outgoingsCargoResponses.isLoading) {
-            return outgoingsCargoResponses.meta.total
+        if (tab === 'archive' &&  outgoingsCargoResponses?.isLoading) {
+            return outgoingsCargoResponses?.meta?.total
         } else {
             return 0
         }
     }
 
     const forRouteInCom = () => {
-        if (tab === 'active' && incomingsRouteResponses.isLoading) {
-            return incomingsRouteResponses.meta.total
+        if (tab === 'active' && incomingsRouteResponses?.isLoading) {
+            return incomingsRouteResponses?.meta.total
         } else {
             return 0
         }
     }
 
     const forRouteOut = () => {
-        if (tab === 'archive' && outgoingsRouteResponses.isLoading) {
-            return outgoingsRouteResponses.meta.total
+        if (tab === 'archive' && outgoingsRouteResponses?.isLoading) {
+            return outgoingsRouteResponses?.meta?.total
         } else {
             return 0
         }
@@ -305,8 +339,6 @@ export default function Responses() {
                                                     callbackDelete={id => setIdDelete(id)}
                                                     idCargo={item.cargoId}
                                                     cargo={item.cargo}
-                                                    loading={item.cargo.loadings}
-                                                    unloading={item.cargo.unloadings}
                                                 />
                                             </div>
                                         ))

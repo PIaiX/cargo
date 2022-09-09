@@ -18,6 +18,18 @@ import SearchInput from "../components/utilities/SearchInput";
 import {useDispatch} from "react-redux/es/exports";
 import {setAlert} from "../store/actions/alert";
 
+const fields = {
+    isInValidFromRoute: false,
+    isInValidToRoute: false,
+    isInValidDateType: false,
+    isInValidCar: false,
+    isInValidPrepayment: false,
+    isInValidPhone: false,
+    isInValidFirstName: false,
+    isInValidNameTemplate: false,
+    isInValidForSave: false
+}
+
 const EditRoute = () => {
 
     const {id} = useParams()
@@ -37,20 +49,40 @@ const EditRoute = () => {
         }
     )
     const [contactsArray, setContactsArray] = useState([]);
-
-    const [curRoute, setCurRoute] = useState()
-
-    useEffect(() => {
-        getRoutePage(id, axiosPrivate)
-            .then(res => setCurRoute(res?.data?.body))
-            .catch(error => console.log(error))
-    }, [id])
-
     let [data, setData] = useState(
         {
             userId: currentUser.id,
         }
     );
+    const [curRoute, setCurRoute] = useState()
+    const [valid, setValid] = useState(fields);
+    const [showModalSave, setShowModalSave] = useState(false)
+    const [showModalValidation, setShowModalValidation] = useState(false)
+    const [citys, setCitys] = useState([])
+    const [isShowAlert, setIsShowAlert] = useState(false)
+    const [alertForSavePattern, setAlertForSavePattern] = useState(false)
+    const [selectDays, setSelectDays] = useState(null)
+    const [selectPeriodType, setSelectPeriodType] = useState(null)
+    const [selectCar, setSelectCar] = useState(null)
+    const [showUseTemplate, setShowUseTemplate] = useState(false)
+    const [templates, setTemplates] = useState([])
+    const [dataTemplate, setDataTemplate] = useState({
+        templateName: '',
+        templateNote: null,
+    })
+    const [cars, setCars] = useState([])
+
+    useEffect(() => {
+        if (dataTemplate?.templateNote?.length === 0) {
+            setDataTemplate(prevState => ({...prevState, templateNote: null}))
+        }
+    }, [dataTemplate?.templateNote?.length])
+    
+    useEffect(() => {
+        getRoutePage(id, axiosPrivate)
+            .then(res => setCurRoute(res?.data?.body))
+            .catch(error => console.log(error))
+    }, [id])
 
     useEffect(() => {
         setData(prevState => ({
@@ -85,19 +117,44 @@ const EditRoute = () => {
         setData(prevState => ({...prevState, date: getDate(data?.dateForInput)}))
     }, [data?.dateForInput])
 
-    const fields = {
-        isInValidFromRoute: false,
-        isInValidToRoute: false,
-        isInValidDateType: false,
-        isInValidCar: false,
-        isInValidPrepayment: false,
-        isInValidPhone: false,
-        isInValidFirstName: false,
-        isInValidNameTemplate: false,
-        isInValidForSave: false
-    }
+    useEffect(() => {
+        if (data.dateType === 1) {
+            delete data.date;
+            delete data.dateDays
+        } else {
+            delete data.datePeriodType
+        }
+    }, [data])
 
-    const [valid, setValid] = useState(fields);
+    useEffect(() => {
+        getCars(axiosPrivate, currentUser?.id, 1)
+            .then(res => setCars(res?.data?.map(i => ({value: i.id, label: i.name}))))
+            .catch(error => console.log(error))
+    }, [currentUser])
+
+    useEffect(() => {
+        setData(prevState => ({...prevState, contacts: [contactsInfo]}))
+    }, [contactsInfo])
+
+    useEffect(() => {
+        getTemplates(axiosPrivate, currentUser?.id, 1)
+            .then(r => setTemplates(r.data?.body?.data))
+            .catch(error => console.log(error))
+    }, [currentUser])
+
+    useEffect(() => {
+        if (isShowAlert) {
+            setTimeout(() => setIsShowAlert(false), 1500)
+        }
+    }, [isShowAlert])
+
+    useEffect(() => {
+        (data?.date === 'Invalid Date') && delete data?.date
+    }, [data?.date])
+
+    useEffect(() => {
+        getCities().then(res => setCitys(res.body))
+    }, [])
 
     const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
     const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50
@@ -162,23 +219,6 @@ const EditRoute = () => {
         setContactsArray([]);
     };
 
-    useEffect(() => {
-        if (data.dateType === 1) {
-            delete data.date;
-            delete data.dateDays
-        } else {
-            delete data.datePeriodType
-        }
-    }, [data])
-
-    const [cars, setCars] = useState([])
-
-    useEffect(() => {
-        getCars(axiosPrivate, currentUser?.id, 1)
-            .then(res => setCars(res?.data?.map(i => ({value: i.id, label: i.name}))))
-            .catch(error => console.log(error))
-    }, [currentUser])
-
     const getDate = (dateMe) => {
         const newDate = new Date(dateMe)
         const re = newDate.toLocaleDateString('ru-Ru')
@@ -194,15 +234,9 @@ const EditRoute = () => {
         return <span>{find?.label}</span>
     }
 
-    useEffect(() => {
-        setData(prevState => ({...prevState, contacts: [contactsInfo]}))
-    }, [contactsInfo])
-
     const resetFieldVal = (newState, field) => {
         setValid({...valid, [field]: false})
     }
-
-    const [dataTemplate, setDataTemplate] = useState({})
 
     const saveTemplate = () => {
 
@@ -257,26 +291,12 @@ const EditRoute = () => {
         }
     }
 
-    const [showModalSave, setShowModalSave] = useState(false)
-
-    const [templates, setTemplates] = useState([])
-
-    useEffect(() => {
-        getTemplates(axiosPrivate, currentUser?.id, 1)
-            .then(r => setTemplates(r.data?.body?.data))
-            .catch(error => console.log(error))
-    }, [currentUser])
-
-    const [showUseTemplate, setShowUseTemplate] = useState(false)
-
     const onDeleteTemplate = async (id) => {
         await deleteTemplate(id, axiosPrivate)
         await getTemplates(axiosPrivate, currentUser?.id, 1)
             .then(r => setTemplates(r.data?.body?.data))
             .catch(error => console.log(error))
     }
-
-    const [selectCar, setSelectCar] = useState(null)
 
     const loadOptions = async (searchKey) => {
         const defaultValue = data?.carId
@@ -288,8 +308,6 @@ const EditRoute = () => {
             return await cars?.filter(item => item.label.includes(searchKey));
         }
     }
-
-    const [selectPeriodType, setSelectPeriodType] = useState(null)
 
     const loadOptions2 = async (searchKey) => {
 
@@ -303,8 +321,6 @@ const EditRoute = () => {
         }
     }
 
-    const [selectDays, setSelectDays] = useState(null)
-
     const loadOptions3 = async (searchKey) => {
 
         const defaultValue = data?.dateDays
@@ -317,30 +333,27 @@ const EditRoute = () => {
         }
     }
 
-    const [isShowAlert, setIsShowAlert] = useState(false)
-    const [alertForSavePattern, setAlertForSavePattern] = useState(false)
-
-    useEffect(() => {
-        if (isShowAlert) {
-            setTimeout(() => setIsShowAlert(false), 1500)
-        }
-    }, [isShowAlert])
-
     const currentDate = () => {
         return new Date().toISOString().slice(0, 10)
     }
 
-    useEffect(() => {
-        (data?.date === 'Invalid Date') && delete data?.date
-    }, [data?.date])
-
-    const [showModalValidation, setShowModalValidation] = useState(false)
-
-    const [citys, setCitys] = useState([])
-
-    useEffect(() => {
-        getCities().then(res => setCitys(res.body))
-    }, [])
+    const dayPeriodForUser = () => {
+        if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
+            return ''
+        }
+        if (data?.datePeriodType === 0) {
+            return "по рабочим дням"
+        }
+        if (data?.datePeriodType === 1) {
+            return "по выходным"
+        }
+        if (data?.datePeriodType === 2) {
+            return "ежедневно"
+        }
+        if (data?.datePeriodType === 3) {
+            return "через день"
+        }
+    }
 
     return (
         <main className="bg-gray">
@@ -1357,7 +1370,7 @@ const EditRoute = () => {
                                             {data?.dateType
                                                 ?
                                                 <>
-                                                    <span>Постоянно: {(data?.datePeriodType === 0) && "по рабочим дням"}{data?.datePeriodType === 1 && 'ежедневно'}{data?.datePeriodType === 2 && "через день"}</span>
+                                                    <span>Постоянно:{dayPeriodForUser()}</span>
                                                 </>
                                                 :
                                                 <>
@@ -1523,7 +1536,7 @@ const EditRoute = () => {
                                         placeholder="Примечание"
                                         onChange={e => setDataTemplate(prevState => ({
                                             ...prevState,
-                                            note: e.target.value
+                                            templateNote: e.target.value
                                         }))}
                                     />
                                     <div className="row row-cols-sm-2 mt-4">
