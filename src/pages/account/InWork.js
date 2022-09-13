@@ -324,19 +324,19 @@ export default function InWork() {
     }, [subTabs, tab])
 
     useEffect(() => {
-        if((subTabs === 'cargo') && (tab === 'active') && (forMeCargosInProcess?.data?.length === 0) && (selectedType.value === "owner")){
+        if((subTabs === 'cargo') && (tab === 'active') && (forMeCargosInProcess?.data?.length === 0) && (selectedType?.value === "owner")){
             inWorkPag.setCurrentPage(1)
             inWorkPag.setStartingPage(1)
         }
-        if((subTabs === 'route') && (tab === 'active') && (forMeRoutesInProcess?.data?.length === 0) && (selectedType.value === "owner")){
+        if((subTabs === 'route') && (tab === 'active') && (forMeRoutesInProcess?.data?.length === 0) && (selectedType?.value === "owner")){
             inWorkPag.setCurrentPage(1)
             inWorkPag.setStartingPage(1)
         }
-        if((subTabs === 'cargo') && (tab === 'active') && (forMeCargosInProcess?.data?.length === 0) && (selectedType.value === "executor")){
+        if((subTabs === 'cargo') && (tab === 'active') && (forMeCargosInProcess?.data?.length === 0) && (selectedType?.value === "executor")){
             inWorkPag.setCurrentPage(1)
             inWorkPag.setStartingPage(1)
         }
-        if((subTabs === 'route') && (tab === 'active') && (forMeRoutesInProcess?.data?.length === 0) && (selectedType.value === "executor")){
+        if((subTabs === 'route') && (tab === 'active') && (forMeRoutesInProcess?.data?.length === 0) && (selectedType?.value === "executor")){
             inWorkPag.setCurrentPage(1)
             inWorkPag.setStartingPage(1)
         }

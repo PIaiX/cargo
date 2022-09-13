@@ -107,9 +107,9 @@ export default function Responses() {
     }, [roleId])
     
     useEffect(() => {
-        (subTab === 'cargo' && tab === 'active' && incomingsCargoResponses.isLoading) &&
+        (subTab === 'cargo' && tab === 'active' && incomingsCargoResponses?.isLoading) &&
             sendIncomingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
-        (subTab === 'route' && tab === 'active' && incomingsCargoResponses.isLoading) &&
+        (subTab === 'route' && tab === 'active' && incomingsCargoResponses?.isLoading) &&
             sendIncomingsRouteRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
         (subTab === 'cargo' && tab === 'archive') &&
             sendOutgoingsCargoRequest(responsesPagination.currentPage, responsesPagination.pageLimit);
@@ -166,7 +166,7 @@ export default function Responses() {
 
     useEffect(() => {
         idComplete?.idResponse
-        && acceptResponse(axiosPrivate, idComplete.idResponse, {routeId: idComplete.routeId, cargoId: idComplete.cargoId, userId})
+        && acceptResponse(axiosPrivate, idComplete?.idResponse, {routeId: idComplete?.routeId, cargoId: idComplete?.cargoId, userId})
             .then(() => {
                 if (subTab === 'cargo') {
                     setTimeout(() => {
@@ -300,9 +300,9 @@ export default function Responses() {
                     >
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
-                                ? incomingsCargoResponses.isLoading
+                                ? incomingsCargoResponses?.isLoading
                                     ? incomingsCargoResponses?.items?.length
-                                        ? incomingsCargoResponses.items.map(item => (
+                                        ? incomingsCargoResponses?.items?.map(item => (
                                             <div key={item.id}  className='d-flex'>
                                                 <ResponseCard
                                                     inWork={false}
@@ -325,7 +325,7 @@ export default function Responses() {
                                     <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
                                 : outgoingsCargoResponses?.isLoading
                                     ? outgoingsCargoResponses?.items?.length
-                                        ? outgoingsCargoResponses.items.map(item => (
+                                        ? outgoingsCargoResponses?.items?.map(item => (
                                             <div key={item.id} className='d-flex'>
                                                 <ResponseCard
                                                     inWork={false}
@@ -356,9 +356,9 @@ export default function Responses() {
                     >
                         <div className="row row-cols-sm-2 row-cols-xxl-3 g-3 g-md-4">
                             {(tab === 'active')
-                                ? incomingsRouteResponses.isLoading
+                                ? incomingsRouteResponses?.isLoading
                                     ? incomingsRouteResponses?.items?.length
-                                        ? incomingsRouteResponses.items.map(item => (
+                                        ? incomingsRouteResponses?.items?.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
                                                     inWork={false}
@@ -379,9 +379,9 @@ export default function Responses() {
                                         : <h6 className="text-center w-100 p-5">Откликов нет</h6>
                                     :
                                     <div className="w-100 d-flex justify-content-center"><Loader color="#545454"/></div>
-                                : outgoingsRouteResponses.isLoading
+                                : outgoingsRouteResponses?.isLoading
                                     ? outgoingsRouteResponses?.items?.length
-                                        ? outgoingsRouteResponses.items.map(item => (
+                                        ? outgoingsRouteResponses?.items?.map(item => (
                                             <div key={item.id}>
                                                 <ResponseCard
                                                     inWork={false}
