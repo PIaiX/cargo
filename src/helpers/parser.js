@@ -181,7 +181,8 @@ export const parseCargoServerToClient = (serverData, cities) => {
 
   const getCargoValue = (value, key) => {
     if (key === "noteType") {
-      if (value === null) return null;
+      //This could cause some problems
+      if (value === null) return undefined;
       return value.toString();
     }
 
@@ -231,11 +232,13 @@ export const parseCargoServerToClient = (serverData, cities) => {
     if (key === "cargoLoadingTypeId") {
       return value;
     }
-    if (key === "periodType" || typeof value === "number") {
+    if (typeof value === "number") {
+      if(key === "periodType") return value;
       if (!value && value !== 0) return value;
       return value.toString();
     }
-    if (value === null) return value;
+    //This could cause some problems
+    if (value === null) return "";
 
     if (key === "type") return value === false ? "0" : "1";
     if (key === "transportationType") {
