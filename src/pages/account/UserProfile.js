@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {IoShieldCheckmarkSharp} from 'react-icons/io5';
 import {MdModeEdit} from "react-icons/md";
 import {useSelector} from "react-redux";
 

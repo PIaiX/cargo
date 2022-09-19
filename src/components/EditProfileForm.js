@@ -43,19 +43,33 @@ const EditProfileForm = () => {
   });
 
   useEffect(() => {
-    setData({
-      avatar: currentUser?.avatar,
-      city: currentUser?.city,
-      companyName: currentUser?.companyName,
-      email: currentUser?.email,
-      firstName: currentUser?.firstName,
-      fullName: currentUser?.fullName,
-      lastName: currentUser?.lastName,
-      phone: currentUser?.phone,
-      roleId: currentUser?.roleId,
-      subject: currentUser?.subject,
-      taxIdentificationNumber: currentUser?.taxIdentificationNumber,
-    });
+    if (Number(currentUser?.subject) === 0) {
+      setData({
+        avatar: currentUser?.avatar,
+        city: currentUser?.city,
+        email: currentUser?.email,
+        firstName: currentUser?.firstName,
+        fullName: currentUser?.fullName,
+        lastName: currentUser?.lastName,
+        phone: currentUser?.phone,
+        roleId: currentUser?.roleId,
+        subject: currentUser?.subject,
+      })
+    } else {
+      setData({
+        avatar: currentUser?.avatar,
+        city: currentUser?.city,
+        companyName: currentUser?.companyName,
+        email: currentUser?.email,
+        firstName: currentUser?.firstName,
+        fullName: currentUser?.fullName,
+        lastName: currentUser?.lastName,
+        phone: currentUser?.phone,
+        roleId: currentUser?.roleId,
+        subject: currentUser?.subject,
+        taxIdentificationNumber: currentUser?.taxIdentificationNumber,
+      });
+    }
     setBtnSubjectType(Number(currentUser?.subject));
     setSelectAccType({
       value: currentUser?.roleId,
@@ -153,7 +167,7 @@ const EditProfileForm = () => {
         taxIdentificationNumber: currentUser.taxIdentificationNumber,
       }));
     }
-  }, [btnSubjectType, currentUser]);
+  }, [btnSubjectType, currentUser?.subject]);
 
   const deleteAvatar = (e) => {
     e.preventDefault();
