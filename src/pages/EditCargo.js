@@ -1081,7 +1081,7 @@ export default function AddCargo() {
         >
           <div className="d-flex justify-content-between align-items-center mb-5">
             <h1 className="dark-blue text-center text-uppercase mb-0">
-              Добавление Груза
+              Редактирование Груза
             </h1>
             <div className="d-none d-lg-flex align-items-center fs-09">
               <button

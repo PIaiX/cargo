@@ -337,6 +337,8 @@ const EditRoute = () => {
         return new Date().toISOString().slice(0, 10)
     }
 
+    console.log(data)
+
     const dayPeriodForUser = () => {
         if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
             return ''
@@ -1600,7 +1602,7 @@ const EditRoute = () => {
                                                                     carId: item?.route?.carId,
                                                                     carName: item?.route?.car?.name,
                                                                     dateType: Number(item?.route?.dateType),
-                                                                    datePeriodType: item?.route?.dateType,
+                                                                    datePeriodType: item?.route?.datePeriodType,
                                                                     bargainType: item?.route?.bargainType,
                                                                     calculateType: item?.route?.calculateType,
                                                                     vatPrice: item?.route?.vatPrice,
