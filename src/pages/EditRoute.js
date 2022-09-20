@@ -337,8 +337,6 @@ const EditRoute = () => {
         return new Date().toISOString().slice(0, 10)
     }
 
-    console.log(data)
-
     const dayPeriodForUser = () => {
         if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
             return ''
