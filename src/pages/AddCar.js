@@ -137,7 +137,7 @@ export default function AddCar() {
           <div className="col-lg-8">
             <fieldset name="aboutCar" className="mt-lg-5">
               <div className="d-flex align-items-center justify-content-center justify-content-lg-between mb-4 mb-lg-3">
-                <h4 className="text-center text-lg-start mb-0">О Машине</h4>
+                <h4 className="text-center text-lg-start mb-0">Транспорт</h4>
                 <div className="d-none d-lg-flex align-items-center fs-09">
                   <button
                     type="reset"

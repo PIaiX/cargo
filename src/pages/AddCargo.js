@@ -1946,7 +1946,7 @@ export default function AddCargo() {
                         data-warning="false"
                         className="title-font fw-5"
                       >
-                        Тип груза
+                        Название груза
                       </div>
                     </div>
                     <div className="col-md-9">
