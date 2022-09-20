@@ -147,6 +147,7 @@ export default function UserCargo() {
                                                 setIsShowCardModal(true)
                                             }}
                                             hasActions
+                                            cargo={item}
                                         />
                                     })
                                     : <h6 className="text-center w-100 p-5">У вас пока нет грузов</h6>
@@ -182,7 +183,7 @@ export default function UserCargo() {
                                         key={item.id}
                                         id={item.id}
                                         title={item?.type?.name}
-                                        route={getRoute(item)}
+                                        route={getRoute(item, true)}
                                         notesType={notesType}
                                         capacity={generalCapacity}
                                         weight={generalWeight}
@@ -192,6 +193,7 @@ export default function UserCargo() {
                                         }}
                                         archived
                                         hasActions
+                                        cargo={item}
                                     />
                                 })
                                     : <h6 className="text-center w-100 p-5">У вас пока нет грузов</h6>

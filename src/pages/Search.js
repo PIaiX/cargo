@@ -169,10 +169,11 @@ export default function Search() {
                         key={item.id}
                         id={item.id}
                         title={item?.type?.name}
-                        route={getRoute(item)}
+                        route={getRoute(item, true)}
                         notesType={getNotesType(item.items)}
                         capacity={generalCapacity}
                         weight={generalWeight}
+                        cargo={item}
                       />
                     );
                   })

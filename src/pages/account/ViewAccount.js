@@ -250,6 +250,7 @@ export default function ViewAccount() {
                                             notesType={getNotesType(cargo?.items)}
                                             capacity={getGeneralCapacity(cargo?.items)}
                                             weight={getGeneralWeight(cargo?.items)}
+                                            cargo={cargo}
                                         />
                                     </SwiperSlide>
                                 ))}

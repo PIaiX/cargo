@@ -2207,7 +2207,7 @@ export default function AddCargo() {
                       </div>
                     </div>
                     <div className="col-md-9">
-                      <div className="mb-2">опасные грузы, adr:</div>
+                      <div className="mb-3">Опасные грузы, ADR:</div>
                       <div className="row row-cols-3 g-3 mb-4">
                         <div>
                           <label>

@@ -19,15 +19,25 @@ const icons = [
     },
 ];
 
-const getRoute = (data, isOnlyExtreme) => {
+const getRoute = (data, isFullRoute = false) => {
     const loadings = data?.loadings && data.loadings.map(item => item?.town)
     const unloadings = data?.unloadings && data.unloadings.map(item => item?.town)
+    if(!loadings || !unloadings) return
 
-    if (isOnlyExtreme) {
-        return (loadings && unloadings) ? `${loadings[0]} - ${unloadings[unloadings.length - 1]}` : null
-    }
+    if(loadings?.length === 1 && unloadings?.length === 1) return `${loadings[0]} - ${unloadings[unloadings.length - 1]}`
 
-    return (loadings && unloadings) ? loadings.concat(unloadings).join(' - ') : null
+    return isFullRoute ? `${loadings[0]} ... ${unloadings[unloadings?.length - 1]}` : `${loadings[0]} - ${unloadings[unloadings?.length - 1]}`
+}
+
+const getFullRoute = (data) => {
+    const loadings = data?.loadings && data.loadings.map(item => item?.town)
+    const unloadings = data?.unloadings && data.unloadings.map(item => item?.town)
+    if(!loadings || !unloadings) return
+
+    const fullRoute = [...loadings, ...unloadings]
+    if(!fullRoute || fullRoute?.length < 1) return ""
+
+    return fullRoute.join(" - ")
 }
 
 const getGeneralCapacity = (items) => items && items.reduce((acc, currentValue) => acc + currentValue?.capacity, 0)
@@ -43,4 +53,4 @@ const getNotesType = (items) => {
     return uniqNotesType
 }
 
-export {icons, getRoute, getGeneralCapacity, getGeneralWeight, getNotesType}
+export {icons, getRoute, getFullRoute, getGeneralCapacity, getGeneralWeight, getNotesType}

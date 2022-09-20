@@ -112,7 +112,7 @@ export default function CargoPage() {
       }, 2500);
     }
 
-    const result = getRoute(cargo.item);
+    const result = getRoute(cargo.item, false);
     if (!result) return;
 
     const splitRoute = result.split(" ");
@@ -201,7 +201,7 @@ export default function CargoPage() {
           <section id="sec-8" className="container py-4 py-sm-5">
             <div className="d-flex align-items-center justify-content-between mb-4 mb-sm-5">
               <h1 className="mb-0">
-                Груз № {cargo?.item?.id} {getRoute(cargo?.item, true)}
+                Груз № {cargo?.item?.id} {getRoute(cargo?.item, false)}
               </h1>
               {((currentUser && currentToken) && (currentUser?.id !== cargo?.item?.user?.id)) &&
                   <div className="dropdown d-block d-md-none">
@@ -234,7 +234,7 @@ export default function CargoPage() {
                 <div className="order-3 order-md-1 mb-4 mb-xxl-5">
                   <h5 className="mb-2 mb-lg-3">Маршрут</h5>
                   <div className="box p-3">
-                    <div className="mb-2">{getRoute(cargo?.item)}</div>
+                    <div className="mb-2">{getRoute(cargo?.item, false)}</div>
                   </div>
                 </div>
                 <div className="order-2 mb-4 mb-lg-5">
@@ -588,6 +588,7 @@ export default function CargoPage() {
                       notesType={getNotesType(item?.items)}
                       capacity={getGeneralCapacity(item?.items)}
                       weight={getGeneralWeight(item?.items)}
+                      cargo={item}
                     />
                   </SwiperSlide>
                 ))}

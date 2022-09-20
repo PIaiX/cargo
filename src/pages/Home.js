@@ -322,6 +322,7 @@ export default function Home() {
                       notesType={getNotesType(item?.items)}
                       capacity={getGeneralCapacity(item?.items)}
                       weight={getGeneralWeight(item?.items)}
+                      cargo={item}
                     />
                   </SwiperSlide>
                 ))}

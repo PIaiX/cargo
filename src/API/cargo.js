@@ -133,7 +133,9 @@ const fetchAddressSuggestions = debounce(async (query, callback) => {
       }
     );
     const rawSuggestions = response.data?.suggestions;
-    const newOptions = rawSuggestions.map((i) => {
+    const suggestionsWithStreets = rawSuggestions.filter((i) => i?.data?.street)
+    console.log("you suck ", suggestionsWithStreets, rawSuggestions)
+    const newOptions = suggestionsWithStreets.map((i) => {
       const value = formatAddress(i);
       return { label: value, value: value };
     });

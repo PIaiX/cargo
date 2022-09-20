@@ -16,7 +16,7 @@ const ResponseCard = (props) => {
         }
     }
 
-    const cargoRoute = getRoute(props.cargo, true)
+    const cargoRoute = getRoute(props.cargo, false)
 
     return (
         <div className={"response " + props.className}>
