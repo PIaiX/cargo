@@ -2916,8 +2916,29 @@ article {
   color: #000;
   background: #ffffff;
   font-size: 1.4em;
+  cursor: pointer;
+
   @media (max-width: 1659px) {
     font-size: 1.2em;
+  }
+}
+
+.tariff-modal-header {
+  display: block;
+
+  p {
+    text-align: center;
+  }
+}
+
+.tariff-modal-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+
+  button {
+    width: 100%;
   }
 }
 
