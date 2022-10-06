@@ -130,41 +130,73 @@ export default function Home() {
                     className="active"
                     aria-current="true"
                     aria-label="Slide 1"
-                  ></button>
+                  />
                   <button
                     type="button"
                     data-bs-target="#slider-1"
                     data-bs-slide-to="1"
                     aria-label="Slide 2"
-                  ></button>
+                  />
                   <button
                     type="button"
                     data-bs-target="#slider-1"
                     data-bs-slide-to="2"
                     aria-label="Slide 3"
-                  ></button>
+                  />
                 </div>
                 <div className="carousel-inner">
                   <div className="carousel-item active">
                     <img
-                      src="/img/img-slider.png"
+                      src="/img/img1.jpg"
                       className="img"
                       alt="слайд 1"
                     />
+                    <div className="carousel-item__text">
+                      <h2 className="title">
+                        Грузоперевозки по России
+                      </h2>
+                      <p className="description">
+                        Биржа грузоперевозок и экосистема
+                        сервисов для транспортной логистики в
+                        России. Помогаем находить грузы,
+                        проверенных перевозчиков и экономить за
+                        счёт автоматизации процессов
+                      </p>
+                    </div>
                   </div>
                   <div className="carousel-item">
                     <img
-                      src="/img/img-slider.png"
+                      src="/img/img1.jpg"
                       className="img"
                       alt="слайд 2"
                     />
+                    <div className="carousel-item__text">
+                      <h2 className="title">
+                        Грузоперевозки по России
+                      </h2>
+                      <p className="description">
+                        Получите бесплатную
+                        консультацию о пользовании системой по
+                        телефону +7-927-927-80-23
+                      </p>
+                    </div>
                   </div>
                   <div className="carousel-item">
                     <img
-                      src="/img/img-slider.png"
+                      src="/img/img1.jpg"
                       className="img"
                       alt="слайд 3"
                     />
+                    <div className="carousel-item__text">
+                      <h2 className="title">
+                        Грузоперевозки по России
+                      </h2>
+                      <p className="description">
+                        Посетите раздел «форумы»,
+                        вступайте в сообщество и находите
+                        ответы на все вопросы!
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -432,13 +464,27 @@ export default function Home() {
             <div className="col-md-6 col-lg-5 col-xl-4 pt-xxl-4">
               <h2 className="text-md-start">О сервисе</h2>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                Участники сервиса Эритранс (Eritrans)
+                могут организовать весь процесс
+                перевозки грузов в рамках нашей системы:
+                размещать и искать заказы, проверять
+                контрагентов, находить надежных
+                исполнителей, обмениваться
+                необходимыми документами и находить
+                ответы на все вопросы на форуме. Наша
+                цель: снизить количество посредников в
+                организации перевозок и увеличить
+                загрузки транспорта. И следовательно
+                доходов перевозчиков и транспортных
+                компаний. Как? Эритранс (Eritrans)
+                объединяет в одном месте
+                грузоперевозчиков и заказчиков,
+                предоставляя удобный и надежный сервис
+                для работы. Таким образом, онлайн-
+                сервис ускоряет организацию перевозки и
+                убирает лишние звенья в цепи,
+                увеличивая прозрачность процесса и
+                рентабельность перевозок.
               </p>
             </div>
             <div className="col-md-6">
@@ -460,9 +506,9 @@ export default function Home() {
                 <span>1. Размещает груз на площадке</span>
               </div>
               <div className="fs-11">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Легко разместите объявление о
+                грузе с необходимыми параметрами, его
+                увидят все остальные участники
               </div>
             </div>
             <div>
@@ -470,19 +516,20 @@ export default function Home() {
                 <span>3. Готовит заявку</span>
               </div>
               <div className="fs-11">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud
+                Используйте готовые шаблоны
+                документов системы Эритранс (Eritrans),
+                договоритесь с исполнителем о работе
               </div>
             </div>
             <div>
               <div className="title title-left">
-                <span>5. Закрытие сделки</span>
+                <span>5. Закрытие сделки
+                </span>
               </div>
               <div className="fs-11">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Ожидайте выполнение работы
+                исполнителя
+                <br/><br/><br/>
               </div>
             </div>
           </div>
@@ -495,9 +542,9 @@ export default function Home() {
                 <span>2. Берет груз</span>
               </div>
               <div className="fs-11">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Легко найдите необходимый груз,
+                сделайте отклик и получите заказ
+                <br/><br/><br/><br/>
               </div>
             </div>
             <div>
@@ -505,9 +552,8 @@ export default function Home() {
                 <span>4. Одобряет заявку</span>
               </div>
               <div className="fs-11">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud
+                Согласуйте условия и
+                подготовьтесь к работе
               </div>
             </div>
             <div className="py-5">
@@ -533,9 +579,9 @@ export default function Home() {
                 <span>1. Размещает груз на площадке</span>
               </div>
               <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Легко разместите объявление о
+                грузе с необходимыми параметрами, его
+                увидят все остальные участники
               </div>
             </div>
             <div className="ribbon ribbon-left">Грузоотправитель</div>
@@ -549,9 +595,8 @@ export default function Home() {
                 <span>2. Берет груз</span>
               </div>
               <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Легко найдите необходимый груз,
+                сделайте отклик и получите заказ
               </div>
             </div>
             <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
@@ -565,9 +610,9 @@ export default function Home() {
                 <span>3. Готовит заявку</span>
               </div>
               <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Используйте готовые шаблоны
+                документов системы Эритранс (Eritrans),
+                договоритесь с исполнителем о работе
               </div>
             </div>
             <div className="ribbon ribbon-left">Грузоотправитель</div>
@@ -581,9 +626,8 @@ export default function Home() {
                 <span>4. Одобряет заявку</span>
               </div>
               <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Согласуйте условия и
+                подготовьтесь к работе
               </div>
             </div>
             <div className="ribbon ribbon-left">ПеРЕВОЗЧИК</div>
@@ -597,9 +641,8 @@ export default function Home() {
                 <span>5. Закрытие сделки</span>
               </div>
               <div>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud{" "}
+                Ожидайте выполнение работы
+                исполнителя
               </div>
             </div>
             <div className="ribbon ribbon-left">Грузоотправитель</div>

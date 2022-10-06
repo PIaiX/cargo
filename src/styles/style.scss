@@ -1207,6 +1207,53 @@ main {
   }
 }
 
+.carousel-item__text {
+  position: absolute;
+  top: 34px;
+  right: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 10px;
+
+  @media (max-width: 575px) {
+    top: 20px;
+    right: 20px;
+  }
+
+
+  .title {
+    font-family: 'Gotham Pro', serif;
+    font-weight: 900;
+    font-size: 2.25em;
+    line-height: 105%;
+    color: #FFF;
+    max-width: 413px;
+    text-align: right;
+    margin: 0;
+
+    @media (max-width: 575px) {
+      max-width: 300px;
+      font-size: 1.75em;
+    }
+  }
+
+  .description {
+    font-family: 'Roboto', serif;
+    font-weight: 500;
+    font-size: 1.25em;
+    line-height: 120%;
+    color: #FFF;
+    max-width: 351px;
+    text-align: right;
+
+    @media (max-width: 575px) {
+      max-width: 270px;
+      font-size: 0.85em;
+    }
+  }
+}
+
 /* SECTION 2 */
 #sec-2 {
   background: #ffffff;
