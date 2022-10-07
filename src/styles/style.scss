@@ -1207,6 +1207,17 @@ main {
   }
 }
 
+.carousel-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 1em;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 .carousel-item__text {
   position: absolute;
   top: 34px;
@@ -2968,6 +2979,17 @@ article {
   @media (max-width: 1659px) {
     font-size: 1.2em;
   }
+
+  // .tariff__date
+  &__date {
+    font-size: 1.25em;
+    font-weight: 400;
+
+    span {
+      color: $green;
+      font-weight: 900;
+    }
+  }
 }
 
 .tariff-modal-header {
@@ -2985,6 +3007,10 @@ article {
   gap: 15px;
 
   button {
+    width: 100%;
+  }
+
+  a {
     width: 100%;
   }
 }

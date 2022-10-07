@@ -168,7 +168,7 @@ export default function ViewAccount() {
                                 <div className='gray-2 title-font fw-5'>Телефон:</div>
                             </div>
                             <div className='col-sm-8 mb-3 mb-sm-0'>
-                                <div>{user?.phone}</div>
+                                {user?.phone ? <div>{user?.phone}</div> : 'тариф не оплачен'}
                             </div>
 
                             <div className='col-sm-4 mb-1 mb-sm-0'>

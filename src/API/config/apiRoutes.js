@@ -90,4 +90,10 @@ export default {
   TOPIC_MESSAGE_LIKE: "/topic/message/like",
   TOPIC_MESSAGE_PAGINATE: "/topic/message/paginateLastMessages",
   TOPIC_ACTIONS: "/topic",
+
+  // tariffs
+  TARIFFS_GET: "/tariffs",
+
+  // payments
+  PAYMENTS_BUY_TARIFF: "/payments/buyTariff"
 };

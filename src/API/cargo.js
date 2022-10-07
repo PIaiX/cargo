@@ -71,10 +71,10 @@ const unArchiveCargo = async (axiosPrivate, id) => {
   }
 };
 
-const getCargo = async (id) => {
+const getCargo = async (id, userId) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ACTIONS}/${id}`
+      `${process.env.REACT_APP_BASE_URL}${apiRoutes.CARGO_ACTIONS}/${id}/${userId ?? ''}`
     );
     return response.data.body;
   } catch (error) {

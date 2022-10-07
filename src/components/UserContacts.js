@@ -2,26 +2,19 @@ import React, {useState} from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import redirectFromPA from "../helpers/redirectFromPA";
 import {useSelector} from "react-redux";
+import {checkPhotoPath} from '../helpers/photo';
 
 export default function UserContacts(props) {
 
     const [visible, setVisibility] = useState(false);
     const currentUser = useSelector(state => state?.currentUser?.data?.user)
-    const uploadPhoto = (img) => {
-        const site = 'https://api.eritrans.ru/uploads/./'
-        if(img === null) {
-            return '/img/users/no-photo.png'
-        } else {
-            return `${site}${img}`
-        }
-    }
 
     return (
         <div className={"row g-0 user-contacts " + props.className}>
             <div className="col-4 col-sm-5 col-md-12">
                 {
                     (visible) &&
-                    <img src={uploadPhoto(props?.img)} alt={props.title} className="logo"/>
+                    <img src={checkPhotoPath(props?.image)} alt={props.title} className="logo"/>
                 }
             </div>
             <div className="col-8 col-sm-7 col-md-12 ps-3 ps-md-0">
@@ -32,20 +25,8 @@ export default function UserContacts(props) {
                 </h4>
                 {
                     (visible) &&
-                    <div className="d-flex flex-column align-items-left align-items-md-center">
-                        {
-                            props?.contacts?.map(item => {
-                                return (
-                                    <div key={item.phone.toString()} className="mb-2">
-                                        <a href={"tel:"+item.phone}>{item.phone}</a>
-                                        {
-                                            (item.name)&&
-                                            <span className="fw-5 ms-2">{item.name}</span>
-                                        }
-                                    </div>
-                                )
-                            })
-                        }
+                    <div className="text-center">
+                        {props?.phone ? props.phone : 'Тариф не оплачен'}
                     </div>
                 }
                 {
