@@ -197,10 +197,14 @@ export default function AddRoute() {
             dispatch(setAlert("success", "Маршрут успешно добавлен"));
             navigate("/personal-account/user-routes");
           })
-          .catch(() => {
-            setShowModalValidation(true);
-            setIsShowAlert(true);
-            dispatch(setAlert("danger", "Произошла ошибка"));
+          .catch(error => {
+            if(error && error.code === 'TARIFF_EXPIRED') {
+              dispatch(setAlert("danger", "Тариф не оплачен, либо истек срок его действия"));
+            } else {
+              setShowModalValidation(true);
+              setIsShowAlert(true);
+              dispatch(setAlert("danger", "Произошла ошибка"));
+            }
           });
       } catch (error) {
         console.log(error);

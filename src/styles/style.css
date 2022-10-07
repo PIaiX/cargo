@@ -1077,6 +1077,17 @@ main.bg-gray {
   background-color: #038cb8;
 }
 
+.carousel-item.active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 1em;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 .carousel-item__text {
   position: absolute;
   top: 34px;
@@ -3103,6 +3114,14 @@ article.full figure figcaption p {
     font-size: 1.2em;
   }
 }
+.tariff__date {
+  font-size: 1.25em;
+  font-weight: 400;
+}
+.tariff__date span {
+  color: #01bfc4;
+  font-weight: 900;
+}
 
 .tariff-modal-header {
   display: block;
@@ -3118,6 +3137,9 @@ article.full figure figcaption p {
   gap: 15px;
 }
 .tariff-modal-body button {
+  width: 100%;
+}
+.tariff-modal-body a {
   width: 100%;
 }
 

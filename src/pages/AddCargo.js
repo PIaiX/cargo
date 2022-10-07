@@ -861,7 +861,12 @@ export default function AddCargo() {
         navigate(-1);
       }, 2000);
     } catch (error) {
-      window.log(error);
+      if(error && error.code === 'TARIFF_EXPIRED') {
+        setAlertMessage("Тариф не оплачен, либо истек срок его действия");
+        setShowAlert(true);
+      } else {
+        console.log(error)
+      }
     }
   };
 
