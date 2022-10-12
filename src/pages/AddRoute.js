@@ -198,12 +198,12 @@ export default function AddRoute() {
             navigate("/personal-account/user-routes");
           })
           .catch(error => {
-            if(error && error.code === 'TARIFF_EXPIRED') {
+            if(error && error?.response?.data?.code === 'TARIFF_EXPIRED') {
               dispatch(setAlert("danger", "Тариф не оплачен, либо истек срок его действия"));
             } else {
               setShowModalValidation(true);
               setIsShowAlert(true);
-              dispatch(setAlert("danger", "Произошла ошибка"));
+              dispatch(setAlert("danger", "Что-то пошло не так"));
             }
           });
       } catch (error) {

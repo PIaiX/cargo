@@ -861,11 +861,12 @@ export default function AddCargo() {
         navigate(-1);
       }, 2000);
     } catch (error) {
-      if(error && error.code === 'TARIFF_EXPIRED') {
+      if(error && error?.response?.data?.code === 'TARIFF_EXPIRED') {
         setAlertMessage("Тариф не оплачен, либо истек срок его действия");
         setShowAlert(true);
       } else {
-        console.log(error)
+        setAlertMessage("Что-то пошло не так");
+        setShowAlert(true);
       }
     }
   };
