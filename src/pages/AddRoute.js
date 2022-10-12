@@ -720,6 +720,7 @@ export default function AddRoute() {
                             </label>
                           </div>
                         </div>
+                        <span className='fs-08'>*Нужно выбрать коректную дату. Внимание! Используя шаблон дата может устареть.</span>
                       </div>
                       <div className="col-xl-5">
                         <div className="box p-lg-3">
