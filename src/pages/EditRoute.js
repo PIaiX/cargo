@@ -333,9 +333,7 @@ const EditRoute = () => {
         }
     }
 
-    const currentDate = () => {
-        return new Date().toISOString().slice(0, 10)
-    }
+    const currentDate = () => new Date(+new Date() + 86400000).toISOString().slice(0, 10);
 
     const dayPeriodForUser = () => {
         if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
