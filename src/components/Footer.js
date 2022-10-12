@@ -5,6 +5,9 @@ import { IconContext } from "react-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux/es/exports";
 import { logout } from "../API/auth";
+import {ReactComponent as VkIcon} from '../styles/icons/vk.svg';
+import {ReactComponent as TelegramIcon} from '../styles/icons/telegram.svg';
+import {ReactComponent as WhatsappIcon} from '../styles/icons/whatsapp.svg';
 
 export const Footer = () => {
   const dispatch = useDispatch();
@@ -20,7 +23,7 @@ export const Footer = () => {
             <div className="col-sm-9 col-md-8">
               <div className="fs-12 fw-7 mb-4 mb-md-5">КАРТА САЙТА</div>
               <hr />
-              <ul className="list-unstyled row row-cols-sm-2 g-3 g-md-4 mt-1 mt-sm-3">
+              <ul className="list-unstyled row row-cols-sm-3 g-3 g-md-4 mt-1 mt-sm-3">
                 <li>
                   <Link to="/">ГЛАВНАЯ</Link>
                 </li>
@@ -38,6 +41,24 @@ export const Footer = () => {
                 </li>
                 <li>
                   <Link to="/personal-account">ЛИЧНЫЙ КАБИНЕТ</Link>
+                </li>
+                <li>
+                  <Link to="/" className="socials-link">
+                    {/*<span>вк</span>*/}
+                    <VkIcon className="socials-icon"/>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" className="socials-link">
+                    {/*<span>телеграм</span>*/}
+                    <TelegramIcon className="socials-icon" />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/" className="socials-link">
+                    {/*<span>what's app</span>*/}
+                    <WhatsappIcon  className="socials-icon"/>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -57,64 +78,7 @@ export const Footer = () => {
             </span>
           </div>
         </div>
-        {/* <div className="container d-flex flex-wrap flex-lg-nowrap justify-content-between align-items-center h-100">
-          <div className="info d-lg-flex align-items-center">
-            <img
-              src="/img/logo-light.png"
-              alt="Название сайта"
-              className="logo me-4 me-xl-5"
-            />
-            <div className="mt-2 mt-md-3 mt-lg-0">
-              <div>@ 2022 Грузоперевозки</div>
-              <div className="mt-2 green">
-                <a href="#">Политика конфиденциальности</a>
-              </div>
-              <div className="mt-2 green">
-                <a href="#">Публичная оферта</a>
-              </div>
-            </div>
-          </div>
-          <div className="menu d-flex d-md-block d-lg-flex">
-            <ul className="list-unstyled text-uppercase fw-5 me-4 me-xl-5">
-              <li>Поиск</li>
-              <li className="mt-2 mt-lg-3">Форум</li>
-            </ul>
-            <ul className="list-unstyled text-uppercase fw-5">
-              <li className="mt-md-2 mt-lg-0">Информация</li>
-              <li className="mt-2 mt-lg-3">Новости</li>
-            </ul>
-          </div>
-          <div className="contacts fw-5">
-            <div>
-              <a href="tel:+79000000000">+7 900 000 00 00</a>
-            </div>
-            <div className="mt-2 mt-md-3">
-              <a href="mailto:mail@mail.ru">mail@mail.ru</a>
-            </div>
-          </div>
-          <div className="social">
-            <div className="text-end">Наши социальные сети:</div>
-            <div className="d-flex justify-content-end mt-3">
-              <Link to="https://vk.com/">
-                <IconContext.Provider value={{ className: "green icon-25" }}>
-                  <ImVk />
-                </IconContext.Provider>
-              </Link>
-              <Link to="https://vk.com/" className="ms-3 ms-sm-4">
-                <IconContext.Provider value={{ className: "green icon-25" }}>
-                  <ImWhatsapp />
-                </IconContext.Provider>
-              </Link>
-              <Link to="https://vk.com/" className="ms-3 ms-sm-4">
-                <IconContext.Provider value={{ className: "green icon-25" }}>
-                  <ImTelegram />
-                </IconContext.Provider>
-              </Link>
-            </div>
-          </div>
-        </div> */}
       </footer>
-      {/* Modal */}
 
       <div
         className="modal fade"
