@@ -72,20 +72,51 @@ export default function UserDocuments() {
                 <div
                     className='docs-preview mt-3 mb-3'
                 >
-                    <div className='title'>Доверенность(1)</div>
-                    <div className='contractor'><a href='/documents/doverenost(1).docx' download>Скачать</a></div>
+                    <div className='title'>Доверенность</div>
+                    <div className='contractor'><a href='/documents/doverennost.docx' download>Скачать</a></div>
                 </div>
                 <div
                     className='docs-preview mt-3 mb-3'
                 >
-                    <div className='title'>Доверенность(2)</div>
-                    <div className='contractor'><a href='/documents/doverenost(2).docx' download>Скачать</a></div>
+                    <div className='title'>Доверенность ТМС</div>
+                    <div className='contractor'><a href='/documents/doverennost_TMS.docx' download>Скачать</a></div>
                 </div>
                 <div
                     className='docs-preview mt-3 mb-3'
                 >
                     <div className='title'>Товарно-транспортная накладная</div>
-                    <div className='contractor'><a href='/documents/tovarTransportNaklod.docx' download>Скачать</a></div>
+                    <div className='contractor'><a href='/documents/ttn.docx' download>Скачать</a></div>
+                </div>
+                <div
+                    className='docs-preview mt-3 mb-3'
+                >
+                    <div className='title'>Договор</div>
+                    <div className='contractor'><a href='/documents/dogovor.docx' download>Скачать</a></div>
+                </div>
+                <div
+                    className='docs-preview mt-3 mb-3'
+                >
+                    <div className='title'>Договор-заявка</div>
+                    <div className='contractor'><a href='/documents/dogovor-zayavka.docx' download>Скачать</a></div>
+                </div>
+
+                <div
+                    className='docs-preview mt-3 mb-3'
+                >
+                    <div className='title'>Акт</div>
+                    <div className='contractor'><a href='/documents/act.docx' download>Скачать</a></div>
+                </div>
+                <div
+                    className='docs-preview mt-3 mb-3'
+                >
+                    <div className='title'>Счет</div>
+                    <div className='contractor'><a href='/documents/schet.docx' download>Скачать</a></div>
+                </div>
+                <div
+                    className='docs-preview mt-3 mb-3'
+                >
+                    <div className='title'>Путевой лист</div>
+                    <div className='contractor'><a href='/documents/putevoi_list.xlsx' download>Скачать</a></div>
                 </div>
             </div>
         </div>
