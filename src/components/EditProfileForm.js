@@ -450,7 +450,7 @@ const EditProfileForm = () => {
                   country={'ru'}
                   countryCodeEditable={false}
                   disableDropdown={true}
-                  value={data?.phone}
+                  value={data?.phone || ''}
                   onChange={(phone) => {
                     setData(prevState => ({...prevState, phone: `+${phone}`}))
                     setErrorsValid(prev => ({...prev, phone: null}))
