@@ -15,7 +15,7 @@ export const Footer = () => {
   return (
     <>
       <footer>
-        <div className="container py-4 py-sm-5">
+        <div className="container pt-4 pt-sm-5">
           <div className="row mb-4 mb-md-5">
             <div className="d-none d-sm-block col-sm-3 col-md-4">
               <img src="/img/logo.png" alt="Грузоперевозки" className="logo" />
