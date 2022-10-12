@@ -153,7 +153,7 @@ const EditRoute = () => {
     }, [data?.date])
 
     useEffect(() => {
-        getCities().then(res => setCitys(res.body))
+        getCities().then(res => setCitys(res?.body))
     }, [])
 
     const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
