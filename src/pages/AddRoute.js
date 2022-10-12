@@ -139,7 +139,7 @@ export default function AddRoute() {
   }, [data?.dateForInput]);
 
   useEffect(() => {
-    getCities().then((res) => setCitys(res.body));
+    getCities().then((res) => setCitys(res?.body));
   }, []);
 
   const isInValidFromRoute =
