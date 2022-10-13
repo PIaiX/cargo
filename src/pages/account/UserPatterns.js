@@ -57,7 +57,7 @@ export default function UserPatterns() {
   }, [isShowModalRenameRoute])
 
   useEffect(() => {
-    (currentUser?.roleId === 3 || currentUser?.roleId === 4) &&
+    (currentUser?.roleId === 3 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
       getTemplates(
         axiosPrivate,
         currentUser?.id,
@@ -78,7 +78,7 @@ export default function UserPatterns() {
   }, [currentUser, routeTemplatesPag.pageLimit, routeTemplatesPag.currentPage]);
 
   useEffect(() => {
-    (currentUser?.roleId === 2 || currentUser?.roleId === 4) &&
+    (currentUser?.roleId === 2 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
       getCargoTemplates(
         axiosPrivate,
         currentUser?.id,
@@ -270,7 +270,7 @@ export default function UserPatterns() {
 
     const templateUnloadings = template?.cargo.unloadings;
     const lastUnloadingIndex = templateUnloadings.length - 1;
-    const town = templateUnloadings[lastUnloadingIndex].town;
+    const town = templateUnloadings[lastUnloadingIndex]?.town;
     return town;
   };
 
@@ -306,7 +306,7 @@ export default function UserPatterns() {
           className={tab === "routes" ? "active tab-btn" : "tab-btn"}
           onClick={() => setTab("routes")}
         >
-          {(currentUser?.roleId === 3 || currentUser?.roleId === 4) &&
+          {(currentUser?.roleId === 3 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
             `Маршруты (${routesTemplates?.meta?.total || 0})`}
         </button>
         <button
@@ -318,7 +318,7 @@ export default function UserPatterns() {
           }
           onClick={() => setTab("cargo")}
         >
-          {(currentUser?.roleId === 2 || currentUser?.roleId === 4) &&
+          {(currentUser?.roleId === 2 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
             `Грузы (${cargoTemplates?.meta?.total || 0})`}
         </button>
         {complete && (
@@ -341,27 +341,27 @@ export default function UserPatterns() {
         )}
       </div>
       {tab === "routes" &&
-        ((currentUser?.roleId === 3 || currentUser?.roleId === 4) &&
+        ((currentUser?.roleId === 3 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
         routesTemplates?.isLoading ? (
           routesTemplates?.data?.length ? (
             routesTemplates?.data?.map((i, index) => (
               <div key={index}>
                 <Pattern
-                  id={i.id}
+                  id={i?.id}
                   type="route"
                   className="mb-3 mb-sm-4"
-                  title={i.name}
-                  note={i.note}
-                  toRoute={i.route.toRoute}
-                  date={i.route.date}
-                  fromRoute={i.route.fromRoute}
-                  car={i.route.car}
-                  bargainType={i.route.bargainType}
-                  calculateType={i.route.calculateType}
-                  vatPrice={i.route.vatPrice}
-                  notVatPrice={i.route.noVatPrice}
-                  prepayment={i.route.prepayment}
-                  contacts={i.route.contacts}
+                  title={i?.name}
+                  note={i?.note}
+                  toRoute={i?.route.toRoute}
+                  date={i?.route.date}
+                  fromRoute={i?.route.fromRoute}
+                  car={i?.route.car}
+                  bargainType={i?.route.bargainType}
+                  calculateType={i?.route.calculateType}
+                  vatPrice={i?.route.vatPrice}
+                  notVatPrice={i?.route.noVatPrice}
+                  prepayment={i?.route.prepayment}
+                  contacts={i?.route.contacts}
                   callbackForRename={handleRenameTemplate}
                   callbackForDelete={(id) => {
                     setIsShowModalDeleteTemplateRoute(true);
@@ -379,27 +379,27 @@ export default function UserPatterns() {
           </div>
         ))}
       {tab === "cargo" &&
-        ((currentUser?.roleId === 2 || currentUser?.roleId === 4) &&
+        ((currentUser?.roleId === 2 || currentUser?.roleId === 4 || currentUser?.roleId === 1) &&
         cargoTemplates?.isLoading ? (
           cargoTemplates?.data?.length ? (
             cargoTemplates?.data?.map((i, index) => (
               <div key={index}>
                 <Pattern
-                  id={i.id}
+                  id={i?.id}
                   type="cargo"
                   className="mb-3 mb-sm-4"
-                  title={i.name}
-                  note={i.note}
-                  fromRoute={getFirstRouteForCargo(i.id)}
-                  date={i.cargo.loadings[0].date}
-                  toRoute={getLastRouteForCargo(i.id)}
-                  cargoInfo={getCargoInfo(i.id)}
-                  bargainType={i.cargo.bargainType}
-                  calculateType={i.cargo.calculateType}
-                  vatPrice={i.cargo.vatPrice}
-                  notVatPrice={i.cargo.noVatPrice}
-                  prepayment={i.cargo.prepayment}
-                  contacts={i.cargo.contacts}
+                  title={i?.name}
+                  note={i?.note}
+                  fromRoute={getFirstRouteForCargo(i?.id)}
+                  date={i?.cargo?.loadings[0]?.date}
+                  toRoute={getLastRouteForCargo(i?.id)}
+                  cargoInfo={getCargoInfo(i?.id)}
+                  bargainType={i?.cargo?.bargainType}
+                  calculateType={i?.cargo?.calculateType}
+                  vatPrice={i?.cargo?.vatPrice}
+                  notVatPrice={i?.cargo?.noVatPrice}
+                  prepayment={i?.cargo?.prepayment}
+                  contacts={i?.cargo?.contacts}
                   url={`/add-cargo`}
                   callbackForRename={handleRenameTemplate}
                   callbackForDelete={(id) => {

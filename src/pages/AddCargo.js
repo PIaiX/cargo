@@ -364,19 +364,19 @@ export default function AddCargo() {
 
   useEffect(() => {
     getCities().then((res) => {
-      if (res.status === 200) {
-        const citiesOptions = res.body.map((item, idx) => {
+      if (res?.status === 200) {
+        const citiesOptions = res?.body?.map((item, idx) => {
           return {
-            value: idx.toString(),
+            value: idx?.toString(),
             label: item,
           };
         });
         setCities(citiesOptions);
 
-        const newDefaultOptions = optionsTowns.map((item) => {
+        const newDefaultOptions = optionsTowns?.map((item) => {
           const newTown = {
-            label: item.label,
-            value: citiesOptions.find((i) => i.label === item.label).value,
+            label: item?.label,
+            value: citiesOptions?.find((i) => i?.label === item?.label).value,
           };
           return newTown;
         });
@@ -393,10 +393,10 @@ export default function AddCargo() {
         const packageResponse = await axiosPrivate.get("/cargo/packageTypes");
         const loadingResponse = await axiosPrivate.get("/cargo/loadingTypes");
         const carTypesResponse = await axiosPrivate.get("/car/bodyTypes")
-        setItemTypes(itemResponse.data.body);
-        setPackageTypes(packageResponse.data.body);
-        setLoadingTypes(loadingResponse.data.body);
-        setCarBodyTypes(carTypesResponse.data.body);
+        setItemTypes(itemResponse?.data?.body);
+        setPackageTypes(packageResponse?.data?.body);
+        setLoadingTypes(loadingResponse?.data?.body);
+        setCarBodyTypes(carTypesResponse?.data?.body);
       } catch (error) {
         window.log(error);
       }
