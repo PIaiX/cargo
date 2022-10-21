@@ -24,6 +24,8 @@ import Loader from "../components/Loader";
 import CustomModal from "../components/utilities/CustomModal";
 import AlertCustom from "../components/utilities/AlertCustom";
 import { createResponse } from "../API/response";
+import {notVatPriceWithPrepayment} from "../helpers/priceWithPrepayment";
+import {vatPrice} from "../helpers/vatPrice";
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -215,12 +217,23 @@ export default function RoutePage() {
               <div className="order-2 mb-4 mb-lg-5">
                 <h5 className="mb-2 mb-lg-3">Оплата</h5>
                 <div className="box p-3">
-                  <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
-                    <div>{data?.route?.vatPrice} ₽ с НДС</div>
-                  </div>
+
                   <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
                     <div>{data?.route?.noVatPrice} ₽ без НДС</div>
                   </div>
+
+                  <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
+                    <div>{data?.route?.vatPrice} ₽ с НДС</div>
+                  </div>
+
+                  <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
+                    <div>{notVatPriceWithPrepayment(data?.route?.noVatPrice, data?.route?.prepayment)} ₽ предоплата без НДС</div>
+                  </div>
+
+                  <div className="d-flex justify-content-between fs-13 fw-5 mb-3">
+                    <div>{notVatPriceWithPrepayment(vatPrice(data?.route?.vatPrice), data?.route?.prepayment)} ₽ предоплата с НДС</div>
+                  </div>
+
                   <div className="d-flex justify-content-between fs-13 fw-5">
                     <div>
                       {data?.route?.bargainType ? (

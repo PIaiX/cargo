@@ -1,0 +1,1 @@
+export const vatPrice = (price) => +price + Math.floor(price * 20/ 100);

@@ -1,0 +1,1 @@
+export const notVatPriceWithPrepayment = (price, prepayment) => Math.floor(price / 100 * prepayment )

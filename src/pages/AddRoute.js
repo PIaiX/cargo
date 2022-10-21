@@ -30,6 +30,8 @@ import { getCities } from "../API/cities";
 import SearchInput from "../components/utilities/SearchInput";
 import { useDispatch } from "react-redux/es/exports";
 import { setAlert } from "../store/actions/alert";
+import {notVatPriceWithPrepayment} from "../helpers/priceWithPrepayment";
+import {vatPrice} from "../helpers/vatPrice";
 
 const fields = {
   isInValidFromRoute: false,
@@ -64,6 +66,7 @@ export default function AddRoute() {
     calculateType: 0,
     contacts: [contactsInfo],
     dateType: 0,
+    prepayment: 0
   });
 
   const [citys, setCitys] = useState([]);
@@ -141,6 +144,10 @@ export default function AddRoute() {
   useEffect(() => {
     getCities().then((res) => setCitys(res?.body));
   }, []);
+
+  useEffect(() => {
+      setData(prevState => ({...prevState, vatPrice: vatPrice(data?.noVatPrice)}))
+  }, [data?.noVatPrice])
 
   const isInValidFromRoute =
     data?.fromRoute === undefined ||
@@ -222,6 +229,7 @@ export default function AddRoute() {
       dateType: 0,
       bargainType: 0,
       calculateType: 0,
+      prepayment: 0
     });
     setContactsArray([]);
   };
@@ -1028,24 +1036,23 @@ export default function AddRoute() {
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
-                      data-label="priceVat"
-                      data-warning="false"
-                      className="title-font fs-12 fw-5"
+                        data-label="priceNovat"
+                        data-warning="false"
+                        className="title-font fs-12 fw-5"
                     >
-                      С НДС
+                      Цена без НДС
                     </div>
                   </div>
                   <div className="col-sm-9">
-                    <div className="row gx-2 gx-sm-4">
+                    <div className="row">
                       <div className="col-8 col-sm-5 col-xl-4">
                         <input
-                          type="number"
-                          min="1"
-                          value={data?.vatPrice || ""}
-                          name="vatPrice"
-                          placeholder="0"
-                          onChange={(e) => onInputHandler(e, setData)}
-                          className="price-per-km w-100 fs-12"
+                            type="number"
+                            value={data?.noVatPrice || ""}
+                            name="noVatPrice"
+                            placeholder="0"
+                            onChange={(e) => onInputHandler(e, setData)}
+                            className="price w-100 fs-12"
                         />
                       </div>
                     </div>
@@ -1054,30 +1061,30 @@ export default function AddRoute() {
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
-                      data-label="priceNovat"
+                      data-label="priceVat"
                       data-warning="false"
                       className="title-font fs-12 fw-5"
                     >
-                      без НДС
+                      Цена с НДС
                     </div>
                   </div>
                   <div className="col-sm-9">
-                    <div className="row">
+                    <div className="row gx-2 gx-sm-4">
                       <div className="col-8 col-sm-5 col-xl-4">
                         <input
                           type="number"
-                          min="1"
-                          value={data?.noVatPrice || ""}
-                          name="noVatPrice"
+                          disabled
+                          value={vatPrice(data?.noVatPrice) || ''}
+                          name="vatPrice"
                           placeholder="0"
-                          onChange={(e) => onInputHandler(e, setData)}
-                          className="price-per-km w-100 fs-12"
+                          className="price w-100 fs-12"
+                          onChange={e => setData(prevState => ({...prevState, vatPrice: e.target.value}))}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="row align-items-center">
+                <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
                       data-label="prepay"
@@ -1094,7 +1101,7 @@ export default function AddRoute() {
                           type="number"
                           min="0"
                           max="100"
-                          value={data?.prepayment || ""}
+                          value={data?.prepayment}
                           style={{
                             borderColor: valid.isInValidPrepayment && "red",
                           }}
@@ -1116,6 +1123,52 @@ export default function AddRoute() {
                             Поле обязательно для заполнения
                           </span>
                         )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата без НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            value={notVatPriceWithPrepayment(data?.noVatPrice, data?.prepayment) || ""}
+                            name="noVatPrice"
+                            placeholder="0"
+                            disabled
+                            className="price w-100 fs-12"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата с НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            disabled
+                            value={notVatPriceWithPrepayment(vatPrice(data?.noVatPrice), data?.prepayment) || ""}
+                            name="noVatPrice"
+                            placeholder="0"
+                            className="price w-100 fs-12"
+                        />
                       </div>
                     </div>
                   </div>
@@ -1657,7 +1710,6 @@ export default function AddRoute() {
                             item?.route?.datePeriodTypeForUser,
                           bargainType: item?.route?.bargainType,
                           calculateType: item?.route?.calculateType,
-                          vatPrice: item?.route?.vatPrice,
                           noVatPrice: item?.route?.noVatPrice,
                           prepayment: item?.route?.prepayment,
                           contacts: item?.route?.contacts,

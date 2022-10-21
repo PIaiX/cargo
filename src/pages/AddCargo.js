@@ -40,6 +40,8 @@ import { fetchAddressSuggestions } from "../API/cargo";
 import "react-dadata/dist/react-dadata.css";
 
 import { getCities } from "../API/cities";
+import {vatPrice} from "../helpers/vatPrice";
+import {notVatPriceWithPrepayment} from "../helpers/priceWithPrepayment";
 
 const initialLoading = [
   [
@@ -297,7 +299,7 @@ const initialPayment = [
   },
   {
     name: "prepay",
-    value: "",
+    value: "0",
     required: true,
   },
 ];
@@ -362,6 +364,8 @@ export default function AddCargo() {
   const [currentTemplate, setCurrentTemplate] = useState(null);
   const [allCargoTemplates, setAllCargoTemplates] = useState([]);
 
+  const [pay, setPay] = useState({})
+
   useEffect(() => {
     getCities().then((res) => {
       if (res?.status === 200) {
@@ -386,6 +390,10 @@ export default function AddCargo() {
     setCities(defaultTownsOptions);
   }, []);
 
+  useEffect(() => {
+    setPay(prevState => ({...prevState, vatPrice: vatPrice(pay.priceNovat)}))
+  }, [pay?.priceNovat])
+  
   useEffect(() => {
     const getOptions = async () => {
       try {
@@ -422,6 +430,7 @@ export default function AddCargo() {
       requirements,
       payment,
       contacts,
+      pay,
       contactsField: newContactsField,
     };
   };
@@ -443,6 +452,7 @@ export default function AddCargo() {
     const newTemplate = parseCargoServerToClient(currentTemplate.cargo, cities);
 
     setLoading(newTemplate.loading);
+    setPay({priceNovat:currentTemplate.cargo.noVatPrice})
     setUnloading(newTemplate.unloading);
     setCargo(newTemplate.cargo);
     setRequirements(newTemplate.requirements);
@@ -711,7 +721,7 @@ export default function AddCargo() {
     }
   };
   const getVal = (state, param) => {
-    let val = state.find((obj) => obj.name === param).value;
+    let val = state.find((obj) => obj?.name === param)?.value;
     if (val !== null && val !== undefined && val !== "") {
       return val;
     } else {
@@ -792,7 +802,7 @@ export default function AddCargo() {
 
   //проверка fieldset на заполнение
   const checkFieldset = (state) => {
-    let requiredArr = state.filter((item) => item.required === true);
+    let requiredArr = state.filter((item) => item?.required === true);
     const emptyRequiredFields = requiredArr.filter((elem) => {
       if (elem.name === "prepay" && elem.value === 0) return false;
       return !elem.value;
@@ -2685,24 +2695,27 @@ export default function AddCargo() {
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
-                      data-label="priceVat"
-                      data-warning="false"
-                      className="title-font fs-12 fw-5"
+                        data-label="priceNovat"
+                        data-warning="false"
+                        className="title-font fs-12 fw-5"
                     >
-                      С НДС
+                      Цена без НДС
                     </div>
                   </div>
                   <div className="col-sm-9">
-                    <div className="row gx-2 gx-sm-4">
+                    <div className="row">
                       <div className="col-8 col-sm-5 col-xl-4">
                         <input
-                          type="number"
-                          min="1"
-                          name="priceVat"
-                          placeholder="0"
-                          value={getVal(payment, "priceVat")}
-                          onChange={(e) => fillData(e, setPayment, payment)}
-                          className="price-per-km w-100 fs-12"
+                            type="number"
+                            min="1"
+                            name="priceNovat"
+                            placeholder="0"
+                            value={pay?.priceNovat || ''}
+                            onChange={(e) => {
+                              fillData(e, setPayment, payment)
+                              setPay(prevState => ({...prevState, priceNovat: e.target.value}))
+                            }}
+                            className="price w-100 fs-12"
                         />
                       </div>
                     </div>
@@ -2711,30 +2724,29 @@ export default function AddCargo() {
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
-                      data-label="priceNovat"
+                      data-label="priceVat"
                       data-warning="false"
                       className="title-font fs-12 fw-5"
                     >
-                      без НДС
+                      Цена с НДС
                     </div>
                   </div>
                   <div className="col-sm-9">
-                    <div className="row">
+                    <div className="row gx-2 gx-sm-4">
                       <div className="col-8 col-sm-5 col-xl-4">
                         <input
                           type="number"
-                          min="1"
-                          name="priceNovat"
+                          disabled
+                          name="priceVat"
                           placeholder="0"
-                          value={getVal(payment, "priceNovat")}
-                          onChange={(e) => fillData(e, setPayment, payment)}
-                          className="price-per-km w-100 fs-12"
+                          value={vatPrice(pay?.priceNovat) || ''}
+                          className="price w-100 fs-12"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="row align-items-center">
+                <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
                       data-label="prepay"
@@ -2763,6 +2775,54 @@ export default function AddCargo() {
                             "percent w-100 fs-12",
                             "border border-danger"
                           )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата без НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row gx-2 gx-sm-4">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            disabled
+                            name="priceVat"
+                            placeholder="0"
+                            value={notVatPriceWithPrepayment(pay?.priceNovat, payment.find(i => i.name === 'prepay').value) || ''}
+                            className="price w-100 fs-12"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        data-label="priceVat"
+                        data-warning="false"
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата с НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row gx-2 gx-sm-4">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            disabled
+                            name="priceVat"
+                            placeholder="0"
+                            value={notVatPriceWithPrepayment(vatPrice(pay?.priceNovat), payment.find(i => i.name === 'prepay').value) || ''}
+                            className="price w-100 fs-12"
                         />
                       </div>
                     </div>
@@ -3313,18 +3373,18 @@ export default function AddCargo() {
                       )}
                       {getVal(payment, "cash") && (
                         <span className="me-1">
-                          , наличными&nbsp;{getVal(payment, "cash")}&nbsp;р/км
+                          , наличными&nbsp;{getVal(payment, "cash")}&nbsp;р
                         </span>
                       )}
                       {getVal(payment, "priceVat") && (
                         <span className="me-1">
-                          , с&nbsp;НДС {getVal(payment, "priceVat")}&nbsp;р/км
+                          , с&nbsp;НДС {getVal(payment, "priceVat")}&nbsp;р
                         </span>
                       )}
                       {getVal(payment, "priceNovat") && (
                         <span className="me-1">
                           , без&nbsp;НДС {getVal(payment, "priceNovat")}
-                          &nbsp;р/км
+                          &nbsp;р
                         </span>
                       )}
                       {getVal(payment, "prepay") && (

@@ -17,6 +17,8 @@ import {getCities} from "../API/cities";
 import SearchInput from "../components/utilities/SearchInput";
 import {useDispatch} from "react-redux/es/exports";
 import {setAlert} from "../store/actions/alert";
+import {vatPrice} from "../helpers/vatPrice";
+import {notVatPriceWithPrepayment} from "../helpers/priceWithPrepayment";
 
 const fields = {
     isInValidFromRoute: false,
@@ -77,7 +79,7 @@ const EditRoute = () => {
             setDataTemplate(prevState => ({...prevState, templateNote: null}))
         }
     }, [dataTemplate?.templateNote?.length])
-    
+
     useEffect(() => {
         getRoutePage(id, axiosPrivate)
             .then(res => setCurRoute(res?.data?.body))
@@ -98,7 +100,6 @@ const EditRoute = () => {
             datePeriodType: curRoute?.datePeriodType,
             bargainType: curRoute?.bargainType,
             calculateType: curRoute?.calculateType,
-            vatPrice: curRoute?.vatPrice,
             noVatPrice: curRoute?.noVatPrice,
             prepayment: curRoute?.prepayment,
             contacts: curRoute?.contacts,
@@ -155,6 +156,10 @@ const EditRoute = () => {
     useEffect(() => {
         getCities().then(res => setCitys(res?.body))
     }, [])
+
+    useEffect(() => {
+        setData(prevState => ({...prevState, vatPrice: vatPrice(data?.noVatPrice)}))
+    }, [data?.noVatPrice])
 
     const isInValidFromRoute = data?.fromRoute === undefined || data?.fromRoute?.length < 2 || data?.fromRoute?.length > 50
     const isInValidToRoute = data?.toRoute === undefined || data?.toRoute?.length < 2 || data?.toRoute?.length > 50
@@ -275,12 +280,12 @@ const EditRoute = () => {
                 }
                 saveTemplateRoute(data, dataTemplate, axiosPrivate)
                     .then(() => {
-                    setIsShowAlert(true)
-                    setAlertForSavePattern(true)
+                        setIsShowAlert(true)
+                        setAlertForSavePattern(true)
                         getTemplates(axiosPrivate, currentUser?.id, 1)
                             .then(r => setTemplates(r.data?.body?.data))
                             .catch(error => console.log(error))
-                })
+                    })
                     .catch(() => {
                         setAlertForSavePattern(false)
                         setIsShowAlert(true)
@@ -336,7 +341,7 @@ const EditRoute = () => {
     const currentDate = () => new Date(+new Date() + 86400000).toISOString().slice(0, 10);
 
     const dayPeriodForUser = () => {
-        if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)){
+        if ((data?.datePeriodType === undefined) && (data?.datePeriodType === null)) {
             return ''
         }
         if (data?.datePeriodType === 0) {
@@ -961,37 +966,11 @@ const EditRoute = () => {
                                 <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div
-                                            data-label="priceVat"
-                                            data-warning="false"
-                                            className="title-font fs-12 fw-5"
-                                        >
-                                            С НДС
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-9">
-                                        <div className="row gx-2 gx-sm-4">
-                                            <div className="col-8 col-sm-5 col-xl-4">
-                                                <input
-                                                    type="number"
-                                                    min="1"
-                                                    value={data?.vatPrice || ''}
-                                                    name="vatPrice"
-                                                    placeholder="0"
-                                                    onChange={e => onInputHandler(e, setData)}
-                                                    className="price-per-km w-100 fs-12"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="row align-items-center mb-4">
-                                    <div className="col-sm-3 mb-2 mb-sm-0">
-                                        <div
                                             data-label="priceNovat"
                                             data-warning="false"
                                             className="title-font fs-12 fw-5"
                                         >
-                                            без НДС
+                                           Цена без НДС
                                         </div>
                                     </div>
                                     <div className="col-sm-9">
@@ -1004,13 +983,36 @@ const EditRoute = () => {
                                                     name="noVatPrice"
                                                     placeholder="0"
                                                     onChange={e => onInputHandler(e, setData)}
-                                                    className="price-per-km w-100 fs-12"
+                                                    className="price w-100 fs-12"
                                                 />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row align-items-center">
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div
+                                            className="title-font fs-12 fw-5"
+                                        >
+                                            Цена с НДС
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className="row gx-2 gx-sm-4">
+                                            <div className="col-8 col-sm-5 col-xl-4">
+                                                <input
+                                                    type="number"
+                                                    disabled
+                                                    value={data?.vatPrice || ''}
+                                                    name="vatPrice"
+                                                    placeholder="0"
+                                                    className="price w-100 fs-12"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
                                     <div className="col-sm-3 mb-2 mb-sm-0">
                                         <div
                                             data-label="prepay"
@@ -1039,6 +1041,56 @@ const EditRoute = () => {
                                                 />
                                                 {valid.isInValidPrepayment && <span className='position-absolute'
                                                                                     style={{color: valid.isInValidPrepayment && 'red'}}>Поле обязательно для заполнения</span>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div
+                                            data-label="priceVat"
+                                            data-warning="false"
+                                            className="title-font fs-12 fw-5"
+                                        >
+                                            Предоплата без НДС
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className="row gx-2 gx-sm-4">
+                                            <div className="col-8 col-sm-5 col-xl-4">
+                                                <input
+                                                    type="number"
+                                                    disabled
+                                                    value={notVatPriceWithPrepayment(data?.noVatPrice, data?.prepayment) || ""}
+                                                    name="vatPrice"
+                                                    placeholder="0"
+                                                    className="price w-100 fs-12"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row align-items-center mb-4">
+                                    <div className="col-sm-3 mb-2 mb-sm-0">
+                                        <div
+                                            data-label="priceVat"
+                                            data-warning="false"
+                                            className="title-font fs-12 fw-5"
+                                        >
+                                            Предоплата с НДС
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-9">
+                                        <div className="row gx-2 gx-sm-4">
+                                            <div className="col-8 col-sm-5 col-xl-4">
+                                                <input
+                                                    type="number"
+                                                    disabled
+                                                    value={notVatPriceWithPrepayment(vatPrice(data?.noVatPrice), data?.prepayment) || ""}
+                                                    name="vatPrice"
+                                                    placeholder="0"
+                                                    className="price w-100 fs-12"
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -1602,7 +1654,6 @@ const EditRoute = () => {
                                                                     datePeriodType: item?.route?.datePeriodType,
                                                                     bargainType: item?.route?.bargainType,
                                                                     calculateType: item?.route?.calculateType,
-                                                                    vatPrice: item?.route?.vatPrice,
                                                                     noVatPrice: item?.route?.noVatPrice,
                                                                     prepayment: item?.route?.prepayment,
                                                                     contacts: item?.route?.contacts,
@@ -1611,9 +1662,18 @@ const EditRoute = () => {
                                                             setBtnRadioDate(Number(item?.route?.dateType))
                                                             setBtnRadioCalculate(Number(item?.route?.calculateType))
                                                             setBtnRadioBargain(Number(item?.route?.bargainType))
-                                                            setSelectCar({value: item?.route?.carId, label: item?.route?.car?.carName})
-                                                            setSelectPeriodType({value: item?.route?.datePeriodType, label: item?.route?.datePeriodTypeForUser})
-                                                            setSelectDays({value: item?.route?.dateDays, label: `${item?.route?.dateDays} дн.`})
+                                                            setSelectCar({
+                                                                value: item?.route?.carId,
+                                                                label: item?.route?.car?.carName
+                                                            })
+                                                            setSelectPeriodType({
+                                                                value: item?.route?.datePeriodType,
+                                                                label: item?.route?.datePeriodTypeForUser
+                                                            })
+                                                            setSelectDays({
+                                                                value: item?.route?.dateDays,
+                                                                label: `${item?.route?.dateDays} дн.`
+                                                            })
                                                         }}
                                                     >
                                                         Выбрать

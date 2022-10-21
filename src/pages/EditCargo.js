@@ -41,6 +41,8 @@ import "react-dadata/dist/react-dadata.css";
 import { getCargo, updateCargo } from "../API/cargo";
 
 import { getCities } from "../API/cities";
+import {notVatPriceWithPrepayment} from "../helpers/priceWithPrepayment";
+import {vatPrice} from "../helpers/vatPrice";
 
 const initialLoading = [
   [
@@ -328,7 +330,7 @@ export default function AddCargo() {
   const params = useParams();
 
   const [cities, setCities] = useState([]);
-
+  const [pay, setPay] = useState({})
   useEffect(() => {
     getCities().then((res) => {
       if (res.status === 200) {
@@ -357,6 +359,7 @@ export default function AddCargo() {
     getCargo(params.id).then((data) => {
       const formattedData = parseCargoServerToClient(data, cities);
       setLoading(formattedData.loading);
+      setPay({priceNovat: data?.noVatPrice})
       setUnloading(formattedData.unloading);
       setCargo(formattedData.cargo);
       setRequirements(formattedData.requirements);
@@ -410,6 +413,7 @@ export default function AddCargo() {
   const [currentTemplate, setCurrentTemplate] = useState(null);
   const [allCargoTemplates, setAllCargoTemplates] = useState([]);
 
+
   useEffect(() => {
     const getOptions = async () => {
       try {
@@ -429,6 +433,10 @@ export default function AddCargo() {
     getOptions();
   }, []);
 
+  useEffect(() => {
+    setPay(prevState => ({...prevState, vatPrice: vatPrice(pay.priceNovat)}))
+  }, [pay?.priceNovat])
+
   const getEntireFormValue = () => {
     const newContactsField = [
       {
@@ -446,6 +454,7 @@ export default function AddCargo() {
       requirements,
       payment,
       contacts,
+      pay,
       contactsField: newContactsField,
     };
   };
@@ -472,6 +481,7 @@ export default function AddCargo() {
     setRequirements(newTemplate.requirements);
     setPayment(newTemplate.payment);
     setContacts(newTemplate.contacts);
+    setPay({priceNovat:currentTemplate.cargo.noVatPrice})
     setContactsField([
       { name: "contactsData", value: newTemplate.contacts },
       {
@@ -2714,11 +2724,40 @@ export default function AddCargo() {
                 <div className="row align-items-center mb-4">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
+                        data-label="priceNovat"
+                        data-warning="false"
+                        className="title-font fs-12 fw-5"
+                    >
+                      Цена без НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            min="1"
+                            name="priceNovat"
+                            placeholder="0"
+                            value={pay?.priceNovat || ''}
+                            onChange={(e) => {
+                              fillData(e, setPayment, payment)
+                              setPay(prevState => ({...prevState, priceNovat: e.target.value}))
+                            }}
+                            className="price w-100 fs-12"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
                       data-label="priceVat"
                       data-warning="false"
                       className="title-font fs-12 fw-5"
                     >
-                      С НДС
+                      Цена с НДС
                     </div>
                   </div>
                   <div className="col-sm-9">
@@ -2729,41 +2768,14 @@ export default function AddCargo() {
                           min="1"
                           name="priceVat"
                           placeholder="0"
-                          value={getVal(payment, "priceVat")}
-                          onChange={(e) => fillData(e, setPayment, payment)}
-                          className="price-per-km w-100 fs-12"
+                          value={vatPrice(pay.priceNovat)}
+                          className="price w-100 fs-12"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="row align-items-center mb-4">
-                  <div className="col-sm-3 mb-2 mb-sm-0">
-                    <div
-                      data-label="priceNovat"
-                      data-warning="false"
-                      className="title-font fs-12 fw-5"
-                    >
-                      без НДС
-                    </div>
-                  </div>
-                  <div className="col-sm-9">
-                    <div className="row">
-                      <div className="col-8 col-sm-5 col-xl-4">
-                        <input
-                          type="number"
-                          min="1"
-                          name="priceNovat"
-                          placeholder="0"
-                          value={getVal(payment, "priceNovat")}
-                          onChange={(e) => fillData(e, setPayment, payment)}
-                          className="price-per-km w-100 fs-12"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row align-items-center">
                   <div className="col-sm-3 mb-2 mb-sm-0">
                     <div
                       data-label="prepay"
@@ -2792,6 +2804,52 @@ export default function AddCargo() {
                             "percent w-100 fs-12",
                             "border border-danger"
                           )}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата без НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row gx-2 gx-sm-4">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            min="1"
+                            name="priceVat"
+                            placeholder="0"
+                            value={notVatPriceWithPrepayment(pay?.priceNovat, payment.find(i => i.name === 'prepay').value)}
+                            className="price w-100 fs-12"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row align-items-center mb-4">
+                  <div className="col-sm-3 mb-2 mb-sm-0">
+                    <div
+                        className="title-font fs-12 fw-5"
+                    >
+                      Предоплата с НДС
+                    </div>
+                  </div>
+                  <div className="col-sm-9">
+                    <div className="row gx-2 gx-sm-4">
+                      <div className="col-8 col-sm-5 col-xl-4">
+                        <input
+                            type="number"
+                            min="1"
+                            name="priceVat"
+                            placeholder="0"
+                            value={notVatPriceWithPrepayment(vatPrice(pay?.priceNovat),payment.find(i => i.name === 'prepay').value)}
+                            className="price w-100 fs-12"
                         />
                       </div>
                     </div>
@@ -3342,18 +3400,18 @@ export default function AddCargo() {
                       )}
                       {getVal(payment, "cash") && (
                         <span className="me-1">
-                          , наличными&nbsp;{getVal(payment, "cash")}&nbsp;р/км
+                          , наличными&nbsp;{getVal(payment, "cash")}&nbsp;р
                         </span>
                       )}
                       {getVal(payment, "priceVat") && (
                         <span className="me-1">
-                          , с&nbsp;НДС {getVal(payment, "priceVat")}&nbsp;р/км
+                          , с&nbsp;НДС {getVal(payment, "priceVat")}&nbsp;р
                         </span>
                       )}
                       {getVal(payment, "priceNovat") && (
                         <span className="me-1">
                           , без&nbsp;НДС {getVal(payment, "priceNovat")}
-                          &nbsp;р/км
+                          &nbsp;р
                         </span>
                       )}
                       {getVal(payment, "prepay") && (
